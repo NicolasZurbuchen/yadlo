@@ -246,10 +246,22 @@ Built unofficially, with the explicit aim of becoming the association's official
 
 ### Platform and shape
 
-- Compose Multiplatform (Android + iOS) on the developer's existing KMP template.
-  **The template has not been inspected**; three capabilities are assumed and must be
-  verified first: offline-first disk caching, local notifications on both platforms, and
-  disk-cached remote images (Coil3).
+- Compose Multiplatform (Android + iOS) on the developer's existing KMP template, forked and
+  renamed to `io.nicolaszurbuchen.yadlo`. Clean Architecture with an MVI presentation layer
+  (MVIKotlin), Koin, Navigation 3, Ktor, SQLDelight, Coil3, and Konsist enforcing all of it.
+- **The template has now been read, and the three capabilities this spec assumed do not stand
+  equally.** Correcting the earlier draft:
+  - *Offline-first disk caching* — **partly there.** SQLDelight is fully wired with an
+    `expect`/`actual` driver factory on both platforms, so persisting a fetched bundle is
+    routine. The **bundled-snapshot fallback does not exist** and is new work.
+  - *Local notifications* — **absent entirely.** `infra/platform/` contains only `BackHandler`
+    and `Platform`; there is no notification code, no `expect`/`actual` seam, and no
+    `POST_NOTIFICATIONS` permission in the manifest. The `Notifier` interface is not a
+    formality wrapping an existing capability — it is the whole feature, on two platforms.
+  - *Disk-cached remote images* — **not configured.** Coil3 is wired to the shared Ktor client
+    in `App.kt`, but the `ImageLoader` is built with no `diskCache { }` block, so the app is
+    relying on whatever Coil defaults to. For a festival app whose images must survive a field
+    with no signal, this needs to be set explicitly and verified on iOS, not assumed.
 - Four bottom-nav destinations: **Accueil · Programme · Mon Yadlo · Plus**.
 - **The default destination follows the phase**: Programme (scrolled to now) during LIVE,
   Accueil for the rest of the year.
@@ -385,18 +397,63 @@ screen presents — never on how it was computed. No test should name a private 
 cache key, or a JSON field it does not need. A test that breaks when the layout changes but
 the behaviour does not is a bad test.
 
-**One seam, at the highest point: the screen state producer.** Every screen is a pure
-function of `(content, clock, saved ids)` → a state object the composable renders. Tests
-drive that function with fixture content and a fake clock and assert on the state. This is
-the only seam v1 needs, and it is deliberately above the repository, the HTTP client and the
-cache.
+**The seams are not open for proposal — they are already fixed and enforced.** An earlier
+draft of this spec proposed a single new seam at "the screen state producer". That was written
+before the template was read, and it is wrong for this codebase. `konsistTest/TestingTest.kt`
+*mandates* a test file for every one of these, and the build fails without them:
 
-Consequences:
+| Production file | Required test |
+|---|---|
+| `*Mapper` (in a `mapper/` package) | `*MapperTest` |
+| `*RepositoryImpl` | `*RepositoryImplTest` |
+| `*DataSourceImpl` | `*DataSourceImplTest` |
+| `*UseCase` | `*UseCaseTest` |
+| `*UiMapper` | `*UiMapperTest` |
+| `*StoreFactory` | **both** `*ReducerTest` and `*ExecutorTest` |
 
-- **No mocking of HTTP.** A `ContentSource` interface is fed a fixture in tests; the real
-  implementation (fetch → cache → bundled fallback) is exercised in a small number of
-  integration tests around that interface alone.
-- **The clock is injected everywhere.** No `Clock.System.now()` outside the composition root.
+So the correct move is the skill's own rule — prefer existing seams — and the existing seams
+are the layer boundaries the architecture already draws. Two of them carry most of the weight
+for Yadlo:
+
+- **`*UiMapper` is the "what the user observes" seam.** `State` never leaves the
+  Store/Executor/Reducer/UiMapper boundary (enforced by `PresentationLayerTest.kt`), so the
+  `UiModel` a `UiMapper` produces *is* what the screen renders. Asserting on it is asserting
+  on what a user would see. This is where live-state pills, countdown text, dimming and
+  written category labels get tested.
+- **`*UseCase` is the seam for derived time.** Phase derivation and FestivalDay assignment
+  touch a port (the clock), which is exactly what the convention reserves a UseCase for, and
+  that earns them an enforced test file.
+
+**No mocking library** — a rule of the repo, not a preference. A seam is either a hand-written
+fake or an injected lambda:
+
+- A **file-local `private class`** for a one-off data-source or API double.
+- A **single shared `Fake<Feature>Repository`** in `domain/fake/` once several test files for
+  the same feature need it. Konsist enforces that anything named `Fake*` implements an
+  interface and lives in `..domain.fake`.
+
+I was also wrong to write "no mocking of HTTP". The template fakes HTTP at Ktor's
+`MockEngine`, and `PokemonApiImplTest` is the prior art: build the client with a mock engine,
+capture the outgoing `HttpRequestData` to assert the URL, and hand back a canned JSON body to
+assert deserialisation. The content bundle's `*Api` gets the same treatment — including a
+malformed-body case, which is otherwise unreachable.
+
+**The injected clock is a supported pattern here, not an imposition.** The architecture
+convention already documents it, along with the Koin trap it sets: `singleOf(::Impl)` resolves
+*every* constructor parameter by reflection, including ones with Kotlin defaults, so a class
+holding a defaulted clock lambda needs an explicit `single<Interface> { Impl(get(), get()) }`
+binding instead. Get this wrong and the "injected clock" silently comes from the DI graph in
+tests too. No `Clock.System.now()` outside the composition root.
+
+**Mechanics, all established by the template:** `runTest` wraps every suspend test
+unconditionally, even with no async work. Turbine is for `Label` flows only; `StateFlow` state
+is read synchronously after `testDispatcher.scheduler.runCurrent()` / `advanceTimeBy(...)`.
+Tests are named `subject_condition_expectedOutcome`
+(`generationStarted_setsLoadingTrueAndClearsError`).
+
+**When Yadlo establishes a new category of production file, add it to `TestingTest.kt`'s
+coverage list** — that file is the spec for what must be tested, and leaving it stale is how
+coverage rules quietly stop meaning anything.
 
 **What gets tested, in priority order:**
 
@@ -422,7 +479,11 @@ cannot reach: the collapsing toolbar reaching its collapsed state on scroll, and
 rendering on Programme and the fiches. Screenshot tests are optional and, if added, should
 cover light and dark for one screen per tab rather than everything.
 
-**Prior art: none.** Greenfield. These conventions are the prior art for whatever comes next.
+**Prior art exists and should be copied, not reinvented.** `feature/pokemonexplorer/` carries
+a worked example of every test category above and is deliberately still in the tree for that
+reason. Read `MainReducerTest` before writing a reducer test, `PokemonApiImplTest` before an
+API test, `FakePokemonExplorerRepository` before a fake. Delete the feature once the first
+real Yadlo slice has replaced each of those as the reference.
 
 ## Out of Scope
 
