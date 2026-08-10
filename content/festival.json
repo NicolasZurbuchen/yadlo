@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 1,
+  "name": { "fr": "Yadlo" },
+  "tagline": { "fr": "Mouille ton corps, arrose ton esprit" },
+  "currentEditionId": "2026",
+
+  "histoire": {
+    "foundedYear": 2015,
+    "body": {
+      "fr": "Yadlo est né en 2015 d'un petit groupe d'amis passionnés de windsurf, de surf et de sports nautiques à Préverenges. Ce qui n'était alors qu'une esquisse a peu à peu attiré des personnes motivées de toute la région. Le festival vit aujourd'hui grâce à ses bénévoles, ses partenaires et les amoureux de la plage et du Léman."
+    },
+    "journee": {
+      "title": { "fr": "Une journée à Yadlo" },
+      "body": {
+        "fr": "Tôt le matin, les paddles glissent sur une eau encore calme. En milieu de matinée, le yoga s'installe sur la plage. L'après-midi, on s'étale sur les transats avec un sirop maison ou une bière artisanale de la région, entre deux activités et un passage par les food trucks. Le soir venu, la fête continue au rythme des concerts, et l'on danse au clair de lune."
+      },
+      "provenance": "unverified"
+    },
+    "provenance": "confirmed"
+  },
+
+  "responsable": {
+    "charters": [
+      {
+        "id": "festiplus",
+        "name": { "fr": "FestiPlus" },
+        "body": {
+          "fr": "Yadlo est membre de FestiPlus, une charte vaudoise qui promeut le bien-être en festival et la prévention des risques liés à l'alcool et aux substances psychotropes."
+        },
+        "url": null,
+        "provenance": "confirmed"
+      }
+    ]
+  },
+
+  "contact": {
+    "address": {
+      "lines": ["Avenue de la Plage 1", "1028 Préverenges", "Suisse"],
+      "provenance": "confirmed"
+    },
+    "phone": null,
+    "emails": [
+      { "id": "hello", "address": "hello@yadlo.ch", "label": { "fr": "Informations générales", "en": "General enquiries" } },
+      { "id": "communication", "address": "communication@yadlo.ch", "label": { "fr": "Communication" } },
+      { "id": "animations", "address": "animations@yadlo.ch", "label": { "fr": "Animations" } },
+      { "id": "foodtrucks", "address": "foodtrucks@yadlo.ch", "label": { "fr": "Food trucks" } },
+      { "id": "lac", "address": "lac@yadlo.ch", "label": { "fr": "Lac" } },
+      { "id": "musique", "address": "musique@yadlo.ch", "label": { "fr": "Programmation musicale", "en": "Music programming" } },
+      { "id": "fnb", "address": "fnb@yadlo.ch", "label": { "fr": "Restauration et boissons", "en": "Food & beverage" } },
+      { "id": "staff", "address": "staff@yadlo.ch", "label": { "fr": "Staff" } },
+      { "id": "silentparty", "address": "silentparty@yadlo.ch", "label": { "fr": "Silent Party" } }
+    ],
+    "provenance": "confirmed"
+  },
+
+  "social": [
+    { "id": "instagram", "name": "Instagram", "url": "https://www.instagram.com/yadlo_ch/" },
+    { "id": "facebook", "name": "Facebook", "url": "https://www.facebook.com/yadlosuisse" },
+    { "id": "youtube", "name": "YouTube", "url": "https://www.youtube.com/@yadloCH" },
+    { "id": "tiktok", "name": "TikTok", "url": "https://www.tiktok.com/@yadlo_festival" }
+  ],
+
+  "links": [
+    { "id": "newsletter", "label": { "fr": "Newsletter" }, "url": "http://eepurl.com/dPUvrX" },
+    { "id": "don", "label": { "fr": "Faire un don", "en": "Donate" }, "url": "https://www.paypal.com/donate?hosted_button_id=J93D3JZ2SXNR8" }
+  ],
+
+  "transports": {
+    "sections": [],
+    "provenance": "unverified"
+  },
+
+  "paiement": {
+    "body": null,
+    "provenance": "unverified"
+  },
+
+  "accessibilite": {
+    "confirmed": [],
+    "toConfirm": [],
+    "contactEmailId": "hello",
+    "provenance": "unverified"
+  },
+
+  "besoin": {
+    "emergencyNumbers": [
+      { "id": "urgences", "label": { "fr": "Urgences (numéro européen)", "en": "Emergency (European number)" }, "number": "112" },
+      { "id": "ambulance", "label": { "fr": "Ambulance" }, "number": "144" },
+      { "id": "police", "label": { "fr": "Police" }, "number": "117" },
+      { "id": "pompiers", "label": { "fr": "Pompiers", "en": "Fire" }, "number": "118" }
+    ],
+    "lostPropertyEmailId": "hello",
+    "provenance": "unverified"
+  },
+
+  "simpliquer": {
+    "hotstaff": {
+      "name": { "fr": "Hot'Staff" },
+      "body": {
+        "fr": "Les bénévoles s'engagent pour un minimum de 6 heures pendant l'événement, réparties en plusieurs postes — par exemple 3 × 2 heures. Les journées de montage et de démontage sont aussi les bienvenues."
+      },
+      "perks": [
+        { "fr": "Tote bag et t-shirt Hot Staff" },
+        { "fr": "Boissons offertes au bar selon les heures effectuées" },
+        { "fr": "Bons food trucks dès 6 à 8 heures cumulées" },
+        { "fr": "Repas végane chaque jour" },
+        { "fr": "Réduction sur le merchandising" },
+        { "fr": "Accès à l'AfterStaff et à son blind test" },
+        { "fr": "Baignades encouragées pendant les pauses" }
+      ],
+      "signupUrl": "https://ehro.app/o/yadlo/",
+      "contactEmailId": "staff",
+      "provenance": "confirmed"
+    },
+    "partenaire": {
+      "name": { "fr": "Devenir partenaire", "en": "Become a partner" },
+      "body": null,
+      "contactEmailId": "hello",
+      "provenance": "unverified"
+    }
+  }
+}

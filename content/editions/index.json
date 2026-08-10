@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "editions": [
+    {
+      "id": "2026",
+      "year": 2026,
+      "path": "editions/2026.json",
+      "startDate": "2026-07-10",
+      "endDate": "2026-07-12"
+    }
+  ]
+}
