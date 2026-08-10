@@ -1,0 +1,492 @@
+# Spec — Yadlo companion app, v1
+
+Vocabulary: [CONTEXT.md](./CONTEXT.md). Reasoning and rejected alternatives:
+[DECISIONS.md](./DECISIONS.md). This document is what to build.
+
+**Design references** (interactive, published):
+
+| | |
+|---|---|
+| Programme tab — 4 layouts, B2 retained | https://claude.ai/code/artifact/0c2b066e-8ab2-4199-8544-9a5000f63bf9 |
+| Accueil — all five phases, clock control | https://claude.ai/code/artifact/a5755f3b-9b91-4235-997c-09a56e26bf71 |
+| Mon Yadlo — 3 layouts, variante 3 retained | https://claude.ai/code/artifact/8398454a-cd2e-4819-ab70-7a1fa2b977c0 |
+| Visual identity — 5 directions, direction 5 retained | https://claude.ai/code/artifact/4543e10d-31f0-4c9e-8a83-e695a3a48baf |
+| Fiches — artist, activity, stand (v1→v3, v3 retained) | https://claude.ai/code/artifact/4f41f2e7-b93b-4320-b720-74480ce36572 |
+| Plus — root, partners, contact, history, template, archives | https://claude.ai/code/artifact/aac2d18b-dc29-4631-93f2-6d72dfb63b4c |
+| Plus · sur place — 7 screens | https://claude.ai/code/artifact/0dd3d937-4484-4ca9-990f-0c8c7ab4543a |
+
+---
+
+## Problem Statement
+
+Yadlo is a three-day lakeside festival at Préverenges, running since 2015, drawing roughly
+6000 visitors across a weekend each July. Its only information channel is a page-builder
+website, and that website fails its visitors in ways that compound:
+
+- **The information is not data.** Partner names, and much else, exist only inside images.
+  Nothing is searchable, filterable, or usable offline.
+- **Most of it is simply absent.** There are no stand names, no menus, no prices, no site
+  map, and — most strikingly — **no statement anywhere of what time the festival opens or
+  closes**. Activity hours exist for some activities and not others.
+- **The site rots visibly.** Its sitemap carries roughly fourteen orphaned `copie-de-*`
+  duplicates, published and indexed, because editing a page means duplicating it.
+- **It cannot be personal.** A visitor who wants to catch three specific sets across three
+  days has to hold that in their head or on paper.
+
+On site the situation is worse than at home: sunlight, one cell tower shared by thousands of
+phones, and a phone at 30% battery. The website is not usable in those conditions, and its
+most consequential fact — **the festival is cashless, card and TWINT only** — is buried
+where someone will find it after arriving with cash.
+
+## Solution
+
+A Compose Multiplatform app for Android and iOS that is the first place Yadlo's information
+exists as structured data, and therefore the first place it can be personal, searchable and
+available offline.
+
+Four tabs — **Accueil · Programme · Mon Yadlo · Plus** — over a single content model. The
+visitor browses the programme, taps a heart on any date to build a personal schedule, gets a
+local reminder before each saved slot, and finds every practical fact the website has (plus
+several it does not) in a grouped list that works with no network.
+
+The app reshapes itself across the year from a countdown and a news feed, through the lineup
+announcement, into a live companion during the festival weekend, and back out through a
+thank-you — without changing its navigation, and without anyone remembering to flip a
+switch.
+
+Built unofficially, with the explicit aim of becoming the association's official app for the
+2027 edition.
+
+## User Stories
+
+**Finding out what is on**
+
+1. As a visitor, I want to see everything happening on a given day in one chronological
+   list, so that I can plan my day without cross-referencing pages.
+2. As a visitor, I want to see at a glance which things are running right now, so that I can
+   decide what to walk towards.
+3. As a visitor, I want to see how far through a running set I am, so that I know whether
+   it is worth going.
+4. As a visitor, I want to see what is about to start, so that I do not miss the beginning
+   of something I care about.
+5. As a visitor, I want things that have finished to fade but stay visible, so that I can
+   still read the shape of the day I am in.
+6. As a visitor, I want to filter the programme by kind — music, water, land, children,
+   Silent Party — so that I can find what suits the people I am with.
+7. As a visitor, I want to search across the whole programme at once, so that I do not have
+   to guess which day something is on.
+8. As a visitor, I want a search result to be a thing rather than an occurrence, so that an
+   activity running all three days appears once and lists its dates.
+9. As a visitor, I want search to also find practical information, so that typing "twint" or
+   "parking" gets me an answer.
+10. As a visitor, I want the programme to open scrolled to now during the festival, so that
+    the app is useful in the two seconds I look at it.
+
+**Building a personal festival**
+
+11. As a visitor, I want to save a specific date of something to my own schedule, so that
+    the app tracks my weekend rather than the whole programme.
+12. As a visitor, I want saving to be one tap on the row I am already looking at, so that I
+    never have to answer a dialog about which date I meant.
+13. As a visitor, I want to unsave with the same tap, so that there is never a separate
+    removal flow to find.
+14. As a visitor, I want an activity running on several days to let me save each date
+    independently, so that I can commit to Saturday without committing to Sunday.
+15. As a visitor, I want my saved items on a timeline grouped by day, so that I can read my
+    festival the way I will live it.
+16. As a visitor, I want a reminder shortly before each saved item starts, so that I can
+    stop watching the clock.
+17. As a visitor, I want a warning as a saved item nears its end, so that I do not discover
+    the paddle rental closed ten minutes ago.
+18. As a visitor, I want to save a food stand separately from my schedule, so that "things I
+    want to try" does not clutter my timetable.
+19. As a visitor, I want my saved stands grouped by what they sell, so that I can find the
+    one I wanted while queuing.
+20. As a visitor, I want the app not to warn me that two saved things overlap, because at a
+    site this small catching half of each is a normal evening.
+21. As a first-time user, I want an empty personal tab to explain what it will do for me,
+    so that I understand why I would fill it.
+22. As a visitor, I want to build my schedule the week before from my sofa, because I will
+    not do it standing in the sun.
+
+**Deciding what to eat and drink**
+
+23. As a visitor, I want a list of every food and drink stand, so that I can see my options
+    without walking the site.
+24. As a visitor, I want each stand's opening hours in the list, so that I know the bar runs
+    later than the buvette.
+25. As a visitor, I want to filter stands by dietary offer, so that I can find something I
+    can actually eat.
+26. As a visitor with a dietary requirement, I want dietary marks on individual dishes, so
+    that I know which items work rather than which trucks might.
+27. As a visitor, I want a stand's full menu with prices, so that I know what a round costs
+    before I am at the counter.
+28. As a visitor, I want to know that prices are last year's and unconfirmed when they are,
+    so that I am not misled.
+29. As a visitor, I want to know where to return a deposit glass and what it is worth, so
+    that I get my money back.
+
+**Getting there and home**
+
+30. As a visitor, I want to know that the site is cashless before I leave home, so that I do
+    not arrive with only cash.
+31. As a visitor, I want to know which cards and wallets are accepted, so that I can check I
+    have one.
+32. As a visitor without TWINT, I want pointing at the official source, so that I install
+    the right app for my bank rather than the wrong one.
+33. As a visitor, I want the bus lines and stop, so that I can get there without a car.
+34. As a visitor, I want the night bus departures grouped by night, so that I can read them
+    in one glance rather than scrolling a list of rows.
+35. As a visitor, I want to know that the last Saturday departure has no onward connection,
+    so that I do not get stranded at Morges.
+36. As a driver, I want to know parking is limited and distances vary, so that I arrive
+    early or come another way.
+37. As a cyclist, I want to know there is bike parking at the entrance.
+38. As a visitor, I want to know how long the walk from Morges is, so that I can decide to
+    walk it.
+
+**Being able to come at all**
+
+39. As a visitor with reduced mobility, I want to know exactly what is confirmed accessible,
+    so that I can decide whether to come.
+40. As a visitor with reduced mobility, I want to see plainly what is *not yet* confirmed,
+    so that I am not misled by a reassuring but vague page.
+41. As a visitor with reduced mobility, I want a direct way to write ahead, so that the team
+    can arrange what the page cannot promise.
+42. As a parent, I want to know where the children's corner is and where lost children are
+    reunited, so that I have a plan before I need one.
+43. As a visitor, I want emergency numbers and the first aid post in one place, so that I
+    find them under stress.
+44. As a visitor, I want to know how to recognise a staff member, so that I know who to ask.
+45. As a visitor, I want to know where lost property goes during and after the festival.
+
+**Orientation on site**
+
+46. As a visitor, I want a site map with the stages, bars, food, children's area, toilets
+    and first aid, so that I can orient myself on arrival.
+47. As a visitor, I want map markers numbered as well as coloured, so that they work in
+    sunlight and for colour-blind readers.
+48. As a visitor, I want to jump from a thing to its place on the map, so that "where is
+    that" is one tap.
+49. As a visitor, I want to know when the site opens and closes each day, because that is
+    the single question this screen exists to answer.
+
+**Depth on a single thing**
+
+50. As a visitor, I want an artist's genre, description and links, so that I can decide
+    whether to plan around them.
+51. As a visitor, I want an activity's price, minimum age and level, so that I know whether
+    it suits my group.
+52. As a visitor, I want to know whether equipment is provided and whether booking is
+    needed, so that I turn up correctly prepared.
+53. As a visitor, I want to book the Silent Party from its own screen, so that I do not have
+    to find the ticketing site myself.
+54. As a visitor, I want to share a thing with a friend, so that we can agree to meet there.
+55. As a visitor, I want facts that are not links to not look like buttons, so that I do not
+    tap things that do nothing.
+
+**Across the year**
+
+56. As a follower, I want a countdown out of season, so that the app is worth keeping
+    installed.
+57. As a follower, I want announcements from the organisers in the app, so that I hear about
+    the lineup, tickets and volunteering.
+58. As a follower, I want the app to tell me the moment the programme is published, so that
+    I can start planning.
+59. As a visitor in the week before, I want the app to nudge me to build my schedule, so
+    that I do it while I still realistically can.
+60. As a visitor on the opening morning, I want the app already in festival mode even before
+    the gates open, so that it matches where my head is.
+61. As a visitor at 02:15, I want the app to tell me it is over for tonight and when
+    tomorrow starts, rather than showing an empty "now".
+62. As a visitor on the Monday, I want a thank-you rather than a countdown, so that the app
+    finishes the weekend gracefully.
+63. As a returning visitor, I want to browse past editions, so that I can remember who
+    played.
+64. As a visitor, I want the app never to say "the lineup is here" before it is.
+
+**Working offline and on a bad network**
+
+65. As a visitor, I want the entire programme available with no signal, so that the app
+    works when the cell tower is saturated.
+66. As a visitor, I want practical information available offline, so that "what time is the
+    last bus" is answerable at 02:00.
+67. As a visitor, I want previously viewed images to stay available offline.
+68. As a first-time user opening the app on site with no signal, I want a usable app from
+    the bundled snapshot rather than a spinner.
+
+**Language and accessibility**
+
+69. As a French-speaking visitor, I want the app in French.
+70. As a non-French-speaking visitor, I want the app in English.
+71. As a user, I want French shown when an English translation is missing, rather than a
+    blank or a key.
+72. As a user with large text enabled, I want every screen to remain usable, so that nothing
+    depends on a fixed-width column.
+73. As a screen reader user, I want a slot's state read aloud, because it is written in
+    words rather than expressed as position.
+74. As a colour-blind user, I want every category named in text, so that colour is never the
+    only carrier of meaning.
+
+**Maintaining the thing**
+
+75. As the maintainer, I want to publish content without shipping an app build, so that I
+    can fix a wrong price during the festival.
+76. As the maintainer, I want one file per edition, so that content can never be half-updated.
+77. As the maintainer, I want to mark content as unconfirmed, so that the app can be honest
+    and I can flip a flag when the association confirms.
+78. As the maintainer, I want the app phase derived rather than set, so that I cannot forget
+    to flip it on the one weekend I am not at a laptop.
+79. As the maintainer, I want a settable clock in the app, so that I can develop and test the
+    live phase eleven months before it happens.
+80. As a committee member who downloads this, I want to see who made it and how to reach
+    them, so that I can start a conversation.
+
+## Implementation Decisions
+
+### Platform and shape
+
+- Compose Multiplatform (Android + iOS) on the developer's existing KMP template.
+  **The template has not been inspected**; three capabilities are assumed and must be
+  verified first: offline-first disk caching, local notifications on both platforms, and
+  disk-cached remote images (Coil3).
+- Four bottom-nav destinations: **Accueil · Programme · Mon Yadlo · Plus**.
+- **The default destination follows the phase**: Programme (scrolled to now) during LIVE,
+  Accueil for the rest of the year.
+
+### Domain model
+
+Terms are defined in CONTEXT.md and must be used in code.
+
+- `Happening` — sealed: `Artist` | `Activity` | `Stand`. Identity, description, images,
+  detail payload.
+- `Slot` — one Happening at one time, in one Lane, at one Venue, on one FestivalDay. **The
+  atomic unit**: what is favourited, what a reminder fires for. Ids are **Edition-qualified**
+  (`2026:dubside-sat`) so a reused id cannot resurrect last year's saves.
+- `FestivalDay` — an explicit window with real start/end instants, **not a calendar date**.
+  Friday runs to roughly 03:00 Saturday, so a 01:30 set belongs to Friday.
+- `Lane` and `Venue` are separate: three lanes can share one venue (the lake), one lane can
+  host two stages.
+- `Menu` → `Group{name, items}` → `Item{name, price, description?, marks?}`. Only name and
+  price required.
+- `Provenance` on curated content — confirmed | archived | unverified.
+- **`Attendance` was removed from the model.** Every Slot behaves identically. Its last job
+  was clash detection, and clash warnings were dropped.
+- **Five activity kinds**, not six: `musique`, `eau`, `terre`, `enfants`, `silent`.
+
+### Content architecture
+
+Two bundles, split by *frozen record* vs *live truth* — the test being "would a past-edition
+archive need its own copy?".
+
+```
+content/
+  festival.json        live:   histoire, contact, réseaux, transports,
+                               paiement, Hot'Staff, devenir partenaire
+  editions/
+    index.json         list of available editions (archives only)
+    2026.json          frozen: programme, activités, stands, menus, prix,
+                               horaires, partenaires, chiffres
+    2027.json
+    2026/images/
+```
+
+- Static HTTPS from a versioned repo. No CMS, no Firebase.
+- **One file per edition** (60–150 KB): one fetch, one ETag, atomic consistency.
+- Fetch on launch → cache to disk → bundled snapshot as fallback. Offline-first at all times.
+- Archives are the **only** feature reading a third file, fetched on demand, and the only one
+  that does not work offline unless previously opened.
+- Images remote and disk-cached; only app chrome and category icons bundled.
+
+### Phase
+
+Derived from **(clock, last-fetched content)** only. Never authored.
+
+```
+OFF_SEASON    default
+ANNOUNCED     edition has published slots      →  J-7
+APPROACHING   J-7                              →  00:00 on day one
+LIVE          00:00 on day one                 →  11:00 the morning after the last day
+ENDED         then                             →  +6 weeks
+```
+
+- ANNOUNCED keys off `slots.any()`, not a countdown threshold — the hero it triggers claims
+  the programme exists, and a date cannot make that claim honestly.
+- Phase boundaries are **deliberately wider** than FestivalDay windows.
+- **Recompute on a ticker while running**, not only at launch — the same ticker drives live
+  state pills and countdowns.
+- All comparisons in **`Europe/Zurich`** instants, never the device wall clock.
+- A **settable clock** must exist from the first commit.
+
+### Screens
+
+**Accueil** — a block stack per phase (blocks enumerated in DECISIONS.md). Global search
+appears only in ANNOUNCED / APPROACHING / LIVE. LIVE is deliberately thin because the app
+opens on Programme then.
+
+**Programme** — layout B2: one chronological list per day, no calendar column, no "now"
+line. Each row carries live state as a text pill (`dans 15 min` / `en cours` / `se termine` /
+`terminé`), a raised progress bar while running, and dims when past. Past rows are never
+collapsed. Countdowns appear only within a four-hour window.
+
+**Mon Yadlo** — the rail variant: date pinned left, items scrolling past, time written once
+as a range, same row vocabulary as Programme. Timeline plus one full-width Wishlist tile.
+**Recall-only** — no browsing, no add-flow.
+
+**Fiches** — one template for Artist, Activity and Stand: collapsing toolbar over a photo
+(category colour as a radial blob bottom-right, title rising into the bar on scroll, status
+bar taking the colour), written category label, attribute-only tags, sections. Round icon
+actions in the bar. Silent Party = same template + booking row.
+
+**Plus** — iOS-style grouped list, four cards: *Sur place* · *Le festival* · *S'impliquer* ·
+*L'application*. Payment is the third row of the tab. Lost property, first aid, children and
+emergency numbers merge into a single **"En cas de besoin"** screen — justified by a shared
+user situation, not by tidiness. Most remaining entries share one text-page template.
+
+### Interaction rules
+
+- **The heart is attached to what you are saving, and the whole row is the target.** Slot →
+  date row. Stand → button in the bar. Never two hearts for one thing on a screen. Never a
+  selection dialog.
+- **Lists compare, cards separate.** Programme and Mon Yadlo use rows; stand lists and
+  grouped Plus entries use cards. Measured: cards cost +32% vertical space in Programme.
+- **Facts must not look tappable.** Card-with-chevron is reserved for navigation; `↗` marks
+  an external link, `›` internal, `✉` opens mail.
+- **Annonce actions are typed**, never free-form URLs:
+  `none | programme(day?) | happening(id) | plus(entry) | url(external)`. An unresolvable
+  target renders the annonce **without its button**, never as a broken screen.
+- **S'impliquer is a router, not a form** — no backend, no stored messages, and the
+  association's existing recruitment pipeline keeps receiving its applications.
+
+### Identity
+
+```
+Bandeau / marque   #74AEE0      Primaire  #14618F      Encre  #12242F
+musique #DD3B7A   eau #1B86C9   terre #2FA35A   enfants #F5B000   silent #8A4FD4
+```
+
+Chosen on measured perceptual separation (ΔE 58.5 light / 49.2 dark, best of five
+directions). **Dark ink on light brand colour everywhere** — the website's white-on-`#74AEE0`
+is 2.4:1; navy on the same blue is 5.4:1. Typography: **Barlow** (SIL OFL), Semi Condensed
+for display, regular for body; **no monospace** — times use the display face with tabular
+figures. Accent `#E27BA6` is still open (see DECISIONS.md).
+
+### Notifications and i18n
+
+- **Local only** in v1: countdown, per-slot reminders, end-of-slot warnings. Remote push sits
+  behind a `Notifier` interface so FCM can arrive without a rewrite.
+- **French and English**, opening in device locale, falling back to **French**. UI strings
+  authored EN→FR; content authored FR→EN. Missing English content renders the French.
+
+## Testing Decisions
+
+**What makes a good test here.** Tests assert on what a user would observe — the state a
+screen presents — never on how it was computed. No test should name a private function, a
+cache key, or a JSON field it does not need. A test that breaks when the layout changes but
+the behaviour does not is a bad test.
+
+**One seam, at the highest point: the screen state producer.** Every screen is a pure
+function of `(content, clock, saved ids)` → a state object the composable renders. Tests
+drive that function with fixture content and a fake clock and assert on the state. This is
+the only seam v1 needs, and it is deliberately above the repository, the HTTP client and the
+cache.
+
+Consequences:
+
+- **No mocking of HTTP.** A `ContentSource` interface is fed a fixture in tests; the real
+  implementation (fetch → cache → bundled fallback) is exercised in a small number of
+  integration tests around that interface alone.
+- **The clock is injected everywhere.** No `Clock.System.now()` outside the composition root.
+
+**What gets tested, in priority order:**
+
+1. **Phase derivation** — the highest-value pure function in the app. Table-driven across
+   every boundary: OFF_SEASON with an edition file but no slots; the flip to ANNOUNCED on
+   publish; J-7; midnight on day one; 11:00 the morning after; six weeks later. Plus timezone
+   cases: a device in another timezone must derive the same phase.
+2. **Live state of a Slot** — upcoming / running / ending / finished, the four-hour countdown
+   window, and the midnight-crossing case (a 23:30–01:30 set belongs to Friday).
+3. **FestivalDay assignment** — the case that will break with any naive date formatter.
+4. **Plan and Wishlist** — a saved Slot lands on the timeline; a saved Stand lands on the
+   checklist; a Stand never reaches the timeline however long its hours; edition-qualified
+   ids do not collide across years; saving and unsaving are the same operation.
+5. **Content fallback** — no network with a warm cache serves the cache; no network and a
+   cold cache serves the bundle; a malformed edition file does not crash the app.
+6. **Annonce actions** — an action pointing at an unknown Happening renders the annonce
+   without its button.
+7. **Search** — returns Happenings not Slots; matches practical information; is
+   diacritic-insensitive ("preverenges" finds "Préverenges").
+
+**UI tests are deliberately few.** A handful of Compose tests for things state assertions
+cannot reach: the collapsing toolbar reaching its collapsed state on scroll, and large-text
+rendering on Programme and the fiches. Screenshot tests are optional and, if added, should
+cover light and dark for one screen per tab rather than everything.
+
+**Prior art: none.** Greenfield. These conventions are the prior art for whatever comes next.
+
+## Out of Scope
+
+- **Remote push (FCM/APNs)** — the interface exists, the implementation does not. An
+  unofficial app broadcasting operational claims is a content problem, not a technical one.
+- **Volunteer group chat** — a second product: identity, roles, moderation, retention, and
+  someone on call at 02:00. Requires being official.
+- **Personal transport reminders** — dropped from v1. Timetables stay as static content. The
+  design that survived scrutiny is recorded in DECISIONS.md for when it returns.
+- **Live transport API calls** — a network request at 02:00 with 6000 phones on one tower.
+- **A live Instagram feed** — not reachable unofficially since the Basic Display API shut
+  down; needs a Business account and a Meta app authorised by the account owner.
+- **The timetable grid (Paléo-style)** — possibly worth it on tablet, not in v1.
+- **Multi-edition browsing UI beyond a simple archive list.**
+- **Preserving a user's Plan across editions** — it is discarded when a new Edition
+  publishes.
+- **Menu-item-level favouriting** — the Wishlist saves Stands. Additive later if wanted.
+- **Clash warnings** — a big-festival feature.
+- **Accounts, sync, backup** — everything is local. Uninstalling loses the Plan, accepted.
+- **A photo gallery** — the aftermovie is one link; photos live on Instagram.
+- **An interactive map with live positioning** — the site is visible in 360° from the middle.
+  A static, zoomable, numbered plan is the answer.
+
+## Further Notes
+
+### The real dependency is content, not code
+
+Every code decision here is reversible in an afternoon. The list below is not, and it is the
+project's binding constraint:
+
+- **The festival's own opening hours.** Stated nowhere. All `FestivalDay` windows are
+  currently guesses, and the entire timeline rests on them. **Twelve numbers** would resolve
+  it — three days × (site, bar, restauration, activités).
+- **Stand data of every kind** — names, menus, prices, hours. Zero exists. Every food feature
+  depends on it.
+- **Artist detail** — the site gives a name, a time, a stage and sometimes a genre.
+- **A site plan** — only a parking PDF exists; the booth map must be drawn with the
+  association.
+- **Activity hours** for the items that publish none.
+
+**There is a direct line to a founder.** Asking is strictly cheaper than reconstructing:
+this data is not lost, it is in someone's spreadsheet. *"Can you send me last year's stand
+list, I'm building something"* is an easier first message than a pitch, and it is also the
+first step toward the app becoming official.
+
+### Timing
+
+The 2026 edition ended 12 July 2026. The 2027 lineup is expected around May 2027. That is
+roughly eleven months of runway with **no live event to test against** — which is why the
+settable clock is a first-commit requirement rather than a debug convenience.
+
+The strongest argument to the committee is not a pitch deck but a working app on a phone
+showing *their* 2026 festival. Autumn, while the debrief is fresh, is the window.
+
+### Open questions carried forward
+
+Listed in full in DECISIONS.md § Open. The ones that will bite soonest:
+
+1. **The accent colour** `#E27BA6` versus `musique` `#DD3B7A` — a pink accent and a magenta
+   kind-dot may read as one signal.
+2. **Whether sorting survives** in Programme (Heure / A–Z / Prix) — time is arguably the only
+   order that makes sense, and the control costs a permanent row of chrome.
+3. **Whether search covers practical information** — nearly free at this corpus size.
+4. **Whether dietary marks stay coloured** in the stand list, where category colour was
+   deliberately removed.
+5. Facts to verify with the association: is there an ATM nearby; is there a glass deposit and
+   how much; do they issue wristbands for children.
