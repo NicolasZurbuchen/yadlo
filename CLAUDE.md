@@ -102,6 +102,32 @@ to get wrong once.
 
 ---
 
+## How work lands: branch and pull request, never straight to `main`
+
+**Never commit or push to `main`.** Every change — code, content, documentation, a one-line
+typo fix — goes on a branch and reaches `main` through a pull request that the maintainer
+merges.
+
+```bash
+git checkout -b feat/some-change
+```
+
+This is not ceremony. An agent can run the whole verification suite, read its own diff and
+still be confident about something wrong; the pull request is where a human sees the change as
+a whole before it becomes the trunk. Speed is not the constraint on this project — the festival
+is eleven months out — so there is no work worth skipping review to land faster.
+
+Branch names follow the commit type: `feat/…`, `fix/…`, `refactor/…`, `docs/…`, `ci/…`,
+`build/…`. Commit messages keep the Conventional Commits format enforced by Commitlint, and
+the scope list in `commitlint.config.js` is the only vocabulary allowed.
+
+Open the pull request with `gh pr create`. The body should say what changed and, more usefully,
+what was verified and what was *not* — an unrun code path, a decision taken under an
+assumption, a behaviour that needs a device to confirm. Do not merge your own pull request
+unless explicitly asked to.
+
+---
+
 ## Verification before calling anything done
 
 ```bash
