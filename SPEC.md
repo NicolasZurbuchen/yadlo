@@ -282,8 +282,11 @@ Terms are defined in CONTEXT.md and must be used in code.
   site opens at 12:00; the split turned out to be unnecessary, because a Slot's day is authored
   on the Slot rather than derived from the times. A Slot outside opening hours is therefore
   legal and merely worth flagging. The Programme derives its own range from the Slots it shows.
-- `Lane` and `Venue` are separate: three lanes can share one venue (the lake), one lane can
-  host two stages.
+- **`Category` is the only grouping axis** — musique, silent, eau, terre, enfants, restauration,
+  créateurs — declared in the content with a label and an order so the Programme's filter chips
+  come from data. `Lane`, `Section` and per-place `Venue` were removed: they described rows of
+  the Paléo grid, which is out of scope, and nothing in the app ever grouped or displayed by
+  them. The one-stage constraint is now asserted directly — no two `musique` Slots may overlap.
 - `Menu` → `Group{name, items}` → `Item{name, price, description?, marks?}`. Only name and
   price required.
 - `Provenance` on curated content — confirmed | archived | unverified.

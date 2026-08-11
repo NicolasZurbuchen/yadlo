@@ -109,29 +109,27 @@ is the actual question someone is asking when they scan a row of food stands. A 
 must never be repeated on every one of its items.
 _Avoid_: Tag, label, icon, allergen
 
-### Where things are, and how they are laid out
+### How things are grouped
+
+**Category**:
+What kind of thing a Happening is — musique, silent, eau, terre, enfants, restauration,
+créateurs. Declared in the content with a display name and an order, so the filter chips on the
+Programme get their French labels and their sequence from the data rather than from a hardcoded
+list in Kotlin. The **colour** attached to each Category lives in the app, not the content,
+because colour is a design decision made once against a measured palette.
+_Avoid_: Type, kind, tag, section, lane
 
 **Venue**:
-A physical place a visitor walks to, and the unit the site map pins. The lake, the
-beach, the main stage, the children's corner.
-_Avoid_: Location, place, area, spot
+Where the Edition takes place — the Plage de Préverenges, with an address and coordinates. One
+per Edition, and part of the frozen record: if the festival ever moves, the 2026 archive must
+still say Préverenges.
+_Avoid_: Location, place, site
 
-**Lane**:
-One row of the Timetable — a presentation axis, deliberately distinct from Venue. Three
-Lanes (GladiaSUP, SUP Yoga, floating trampoline) can share the Venue "the lake", and one
-Lane ("Musique") can host Slots at two stages. Lanes are declared in content, ordered,
-and grouped into Sections.
-_Avoid_: Row, track, stage, channel
-
-**Section**:
-A named, collapsible group of Lanes in the Timetable — Musique, Sur l'eau, Sur terre,
-Enfants, Restauration.
-_Avoid_: Group, category
-
-**Timetable**:
-The day-by-day grid view: Lanes down the side, time across, one grid per FestivalDay.
-Rendered to the user as _la grille_.
-_Avoid_: Grid, schedule, programme
+> **Lane, Section and Timetable were removed.** They existed to describe rows of the Paléo-style
+> grid, which is out of scope; nothing in the app grouped by them, and Category does the
+> filtering they were imagined for. Reintroduce them only alongside an actual Timetable.
+> Individual places within the site — the lake, the beach, the village — were dropped with them:
+> the site is small enough to see in one turn, and no screen ever displayed them.
 
 ### The user's own festival
 
