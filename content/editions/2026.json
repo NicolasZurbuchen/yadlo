@@ -402,7 +402,7 @@
       "name": "GladiaSUP",
       "category": "eau",
       "images": [],
-      "description": "Parcours d'obstacles en stand-up paddle, contre vos amis ou contre le chrono.",
+      "description": "Parcours d'obstacles sur stand-up paddle, matériel inclus. Venez défier vos amis ou le chronomètre pour tenter de remporter le gros lot.",
       "provenance": "confirmed",
       "activity": {
         "price": { "amount": 5, "currency": "CHF", "per": "personne", "provenance": "confirmed" },
@@ -416,12 +416,12 @@
       "name": "SUP Yoga",
       "category": "eau",
       "images": [],
-      "description": "Une heure de yoga sur stand-up paddle, encadrée par un coach.",
+      "description": "Du yoga sur un stand-up paddle ? C'est possible. Un cours d'une heure sous la supervision d'un coach, tout le matériel inclus. Trois séances par jour, à 14h, 16h et 18h.",
       "provenance": "confirmed",
       "activity": {
         "price": { "amount": 10, "currency": "CHF", "per": "personne", "provenance": "confirmed" },
         "equipmentProvided": true,
-        "suitability": "Une expérience préalable du SUP est un plus."
+        "suitability": "Aisance sur SUP préférable avant de se lancer."
       }
     },
     {
@@ -430,7 +430,7 @@
       "name": "Air Track sur la plage",
       "category": "eau",
       "images": [],
-      "description": "Tapis gonflable de six mètres pour enchaîner les figures.",
+      "description": "Une piste de gymnastique rebondissante de six mètres de long, à disposition gratuitement sur la plage. Venez montrer vos plus belles figures.",
       "provenance": "confirmed",
       "activity": { "price": { "free": true, "provenance": "confirmed" }, "bookingRequired": false, "equipmentProvided": true }
     },
@@ -440,7 +440,7 @@
       "name": "Trampoline flottant",
       "category": "eau",
       "images": [],
-      "description": "Trampoline de quatre mètres de diamètre sur l'eau, jusqu'à trois personnes à la fois.",
+      "description": "Un trampoline de quatre mètres de diamètre qui flotte sur le lac. Jusqu'à trois personnes à la fois peuvent aller sauter à la surface de l'eau. Il se transforme volontiers en plateforme de jeux par équipes au fil de la journée.",
       "provenance": "confirmed",
       "activity": {
         "price": { "amount": 5, "currency": "CHF", "per": "personne", "provenance": "confirmed" },
@@ -454,7 +454,7 @@
       "name": "Yoga",
       "category": "eau",
       "images": [],
-      "description": "Séance matinale sur la plage, tous niveaux, sans inscription.",
+      "description": "Cours de yoga matinal sur la plage, sans inscription, tous niveaux bienvenus. Venez avec votre tapis — s'il vous reste de l'énergie après la Silent Party.",
       "provenance": "confirmed",
       "activity": { "price": { "free": true, "provenance": "confirmed" }, "bookingRequired": false, "equipmentProvided": false, "suitability": "Apportez votre tapis." }
     },
@@ -464,7 +464,7 @@
       "name": "Acro-yoga",
       "category": "eau",
       "images": [],
-      "description": "Séance matinale sur la plage, tous niveaux, sans inscription et sans partenaire imposé.",
+      "description": "Cours d'acro-yoga matinal sur la plage, sans inscription. Pas besoin de partenaire et tous les niveaux sont les bienvenus. Amenez un tapis et c'est parti.",
       "provenance": "confirmed",
       "activity": { "price": { "free": true, "provenance": "confirmed" }, "bookingRequired": false, "equipmentProvided": false, "suitability": "Apportez votre tapis." }
     },
@@ -676,8 +676,12 @@
 
     { "id": "2026:gladiasup-sat", "happeningId": "gladiasup", "dayId": "2026:sat", "start": "2026-07-11T12:00:00+02:00", "end": "2026-07-11T19:00:00+02:00", "provenance": "confirmed" },
     { "id": "2026:gladiasup-sun", "happeningId": "gladiasup", "dayId": "2026:sun", "start": "2026-07-12T12:00:00+02:00", "end": "2026-07-12T19:00:00+02:00", "provenance": "confirmed" },
-    { "id": "2026:sup-yoga-sat", "happeningId": "sup-yoga", "dayId": "2026:sat", "start": "2026-07-11T14:00:00+02:00", "end": "2026-07-11T19:00:00+02:00", "provenance": "confirmed" },
-    { "id": "2026:sup-yoga-sun", "happeningId": "sup-yoga", "dayId": "2026:sun", "start": "2026-07-12T14:00:00+02:00", "end": "2026-07-12T19:00:00+02:00", "provenance": "confirmed" },
+    { "id": "2026:sup-yoga-sat-14", "happeningId": "sup-yoga", "dayId": "2026:sat", "start": "2026-07-11T14:00:00+02:00", "end": "2026-07-11T15:00:00+02:00", "provenance": "confirmed" },
+    { "id": "2026:sup-yoga-sat-16", "happeningId": "sup-yoga", "dayId": "2026:sat", "start": "2026-07-11T16:00:00+02:00", "end": "2026-07-11T17:00:00+02:00", "provenance": "confirmed" },
+    { "id": "2026:sup-yoga-sat-18", "happeningId": "sup-yoga", "dayId": "2026:sat", "start": "2026-07-11T18:00:00+02:00", "end": "2026-07-11T19:00:00+02:00", "provenance": "confirmed" },
+    { "id": "2026:sup-yoga-sun-14", "happeningId": "sup-yoga", "dayId": "2026:sun", "start": "2026-07-12T14:00:00+02:00", "end": "2026-07-12T15:00:00+02:00", "provenance": "confirmed" },
+    { "id": "2026:sup-yoga-sun-16", "happeningId": "sup-yoga", "dayId": "2026:sun", "start": "2026-07-12T16:00:00+02:00", "end": "2026-07-12T17:00:00+02:00", "provenance": "confirmed" },
+    { "id": "2026:sup-yoga-sun-18", "happeningId": "sup-yoga", "dayId": "2026:sun", "start": "2026-07-12T18:00:00+02:00", "end": "2026-07-12T19:00:00+02:00", "provenance": "confirmed" },
     { "id": "2026:airtrack-fri", "happeningId": "airtrack", "dayId": "2026:fri", "start": "2026-07-10T16:00:00+02:00", "end": "2026-07-10T19:00:00+02:00", "provenance": "confirmed" },
     { "id": "2026:airtrack-sat", "happeningId": "airtrack", "dayId": "2026:sat", "start": "2026-07-11T12:00:00+02:00", "end": "2026-07-11T19:00:00+02:00", "provenance": "confirmed" },
     { "id": "2026:airtrack-sun", "happeningId": "airtrack", "dayId": "2026:sun", "start": "2026-07-12T12:00:00+02:00", "end": "2026-07-12T19:00:00+02:00", "provenance": "confirmed" },

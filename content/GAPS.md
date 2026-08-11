@@ -265,10 +265,11 @@ dimanche — and deliberately gives no hours, because the clues sit around the f
 whole duration. The three slots keep `start: null` and are now `provenance: "confirmed"`: the
 absence of times *is* the published fact, not missing data.
 
-That makes it the reference case for how the Programme handles an untimed Slot — it cannot be
-placed in the chronological list, and belongs in a "toute la journée" group sorted after the
-timed rows. The validator still warns on it, correctly, because the app has to decide what to do
-rather than silently drop it.
+**Whether the app should keep it that way is an open decision, not a content gap** — see
+SPEC.md § Open questions, item 0. The alternative is to treat "all day" as the day's opening
+hours, which removes a nullable time and a second layout from every screen that formats a time.
+The validator still warns on the three slots, correctly, because the app has to decide what to
+do with them rather than silently drop them.
 
 ## 8b. Does the site really open at 12:00 on Saturday and Sunday?
 

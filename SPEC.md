@@ -564,6 +564,19 @@ showing *their* 2026 festival. Autumn, while the debrief is fresh, is the window
 
 Listed in full in DECISIONS.md § Open. The ones that will bite soonest:
 
+0. **Do all-day Slots really exist?** — undecided, and it is the one that changes the Programme's
+   shape. One Slot has no times at all: Chasse au trésor, whose poster names three days and
+   deliberately gives no hours because the clues sit around the site all festival. Two readings:
+   - **All-day is a real state.** A Slot may have `start: null`, the Programme grows a "toute la
+     journée" group after the timed rows, and every screen that formats a time must handle its
+     absence. Honest, but it is a second layout and a nullable time on every row.
+   - **All-day means the day's opening hours.** The Slot gets `16:00–02:00` like any other,
+     every row formats identically, and one shape disappears from the app. Slightly overstated —
+     nobody claims the treasure hunt starts on the dot — but nobody is misled either.
+
+   Kept as `null` for now. Deciding for opening hours would delete a branch from every
+   time-formatting path, which is why it is worth deciding **before** the Programme is built
+   rather than after.
 1. **The accent colour** `#E27BA6` versus `musique` `#DD3B7A` — a pink accent and a magenta
    kind-dot may read as one signal.
 2. **Whether sorting survives** in Programme (Heure / A–Z / Prix) — time is arguably the only
