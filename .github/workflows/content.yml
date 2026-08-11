@@ -1,0 +1,53 @@
+name: content
+
+# Publishes content/ to GitHub Pages. The validator gates the deploy: broken content never
+# reaches the app, which matters because the app fetches this at launch and a malformed edition
+# file would be indistinguishable from being offline.
+on:
+  push:
+    branches: [main]
+    paths: ['content/**', '.github/workflows/content.yml']
+  pull_request:
+    paths: ['content/**', '.github/workflows/content.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Never let two deploys race; never cancel one in flight, since a half-published edition is
+# worse than a late one.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node content/validate.js
+
+  deploy:
+    needs: validate
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+        with:
+          enablement: true
+      # Only content/ is uploaded, so the site root is the content root and no /content/
+      # segment appears in any published URL. The Kotlin source is not published.
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: content
+      - id: deployment
+        uses: actions/deploy-pages@v4
