@@ -139,14 +139,17 @@ so each was found and confirmed by loading the site and reading its title.
 
 | Partner | Tier | Note |
 |---|---|---|
-| AP Consulting André Prahin SA | cygnes d'or | Lausanne, Place Saint-François 2. Only directory listings. |
 | Edifice | cygnes d'or | No match. `EDIFEA SA` exists in Vaud — a different name, not assumed. |
-| Cham Properties | cygnes de bronze | `champroperties.ch` is **Cham Swiss Properties AG**, a listed CHF 1.7 bn firm in Zug. Bronze-tier sponsorship of a Préverenges beach festival by that company is a stretch, so it was **not** linked. Confirm before using. |
 | GladiaSUP | partenaires | Runs the SUP course at the festival; no independent site found. |
-| Clash Solutions | partenaires | No match in Suisse romande. |
 
-**One name correction:** the list read *Garno Maté*; the company is **Grano Maté**, a Vevey maté
-brewer — `granomate.ch`. Recorded under the correct name.
+**Two name corrections:** the list read *Garno Maté* → **Grano Maté**, a Vevey maté brewer; and
+*Clash Solutions* → **Cash Solutions** (`cash-solutions.ch`), which is why it could not be found.
+
+> **Cham Properties was withheld in error.** It really is Cham Swiss Properties AG, the listed
+> Zug firm — the reasoning that a CHF 1.7 bn company would not sponsor a Préverenges beach
+> festival at bronze tier was wrong, and it is now linked. Its URL is stored as the site root
+> rather than the `/en` path it was supplied as, on the same rule that strips Spotify's
+> `/intl-ja/`: a locale in a stored URL is the collector's browser setting, not the address.
 
 **Three partners are also festival content**, worth knowing before the fiche and partner screens
 are built, since they should probably cross-link:
@@ -193,15 +196,39 @@ Three whole artists missing and one on the wrong day is not drift, it is a page 
 working copy of the programme lives somewhere else — a spreadsheet, a Notion page, the Instagram
 drafts — that is the thing the app should be fed from.
 
-## 7. Artist photos
+## 7. Images — the fields exist, nothing fills them
 
-Every artist has links and text but **no image**. `/artistes` carries press photos as page
-assets — filenames like `AMC.jpg`, `AlbertChinet_PhotoPresse.jpg`, `Carlos.JPG`, `dubside.jpg` —
-which suggests the association holds proper press kits.
+**36/36 happenings have no image and 33/33 partners have no logo.** The fields are in place, so
+this is now purely a matter of supplying files.
 
-The fiche design puts a photo behind a collapsing toolbar, so this is the single most visible
-piece of missing content after the food trucks. Needed: one landscape-ish image per artist, plus
-whatever credit the photographer requires.
+| Field | On | Shape |
+|---|---|---|
+| `images` | every happening — artist, activity, stand | `[{ "src": …, "credit": … }]`, empty when unknown |
+| `logo` | every partner | a single `src`, or `null` |
+
+**A `src` is either an absolute `https://` URL, or a path relative to the edition's
+`imageBaseUrl`.** That field is `null` today because hosting is not settled, and while it is null
+only absolute URLs are accepted — the validator says so rather than letting a relative path sit
+there resolving against nothing. Setting `imageBaseUrl` once turns every path short and lets the
+whole image set move host by editing one line.
+
+**Photos and logos are deliberately different fields.** A photo gets cropped into a collapsing
+toolbar behind a scrim; a logo must never be cropped, tinted or bled to an edge. Same data type,
+opposite handling, so they do not share a name.
+
+`credit` exists because press photos usually carry a photographer's condition. It is optional and
+`null` today.
+
+**What is needed:**
+
+- **One photo per artist.** `/artistes` carries press photos as page assets — `AMC.jpg`,
+  `AlbertChinet_PhotoPresse.jpg`, `Carlos.JPG`, `dubside.jpg` — so the association holds proper
+  kits. The fiche puts this behind a collapsing toolbar, making it the most visible gap after the
+  food trucks.
+- **One photo per activity and per stand.** The stand list is the screen where a photo does most
+  work: people choose food by looking at it.
+- **A logo per partner.** These already exist on `/partenaires`, as images with no text — the
+  same reason the names had to be supplied by hand.
 
 ## 8. Times missing for programmed activities
 

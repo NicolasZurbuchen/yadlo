@@ -313,6 +313,14 @@ content/
 - Archives are the **only** feature reading a third file, fetched on demand, and the only one
   that does not work offline unless previously opened.
 - Images remote and disk-cached; only app chrome and category icons bundled.
+- **Image references are relative by default.** Every Happening carries `images: [{src, credit}]`
+  and every partner a `logo`; a `src` is either an absolute `https://` URL or a path resolved
+  against the edition's `imageBaseUrl`. Relative is the intended form — it moves the whole image
+  set to a new host by editing one field, which matters while hosting is unsettled. `credit` is
+  there because press photos usually carry a photographer's condition.
+- **A photo and a logo are separate fields, not one image field.** A photo is cropped into a
+  collapsing toolbar behind a scrim; a logo must never be cropped, tinted or bled to an edge.
+  Sharing a field name is what leads to a sponsor's logo being rendered like a press shot.
 
 ### Phase
 

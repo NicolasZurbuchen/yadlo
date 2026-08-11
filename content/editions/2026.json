@@ -3,6 +3,7 @@
   "id": "2026",
   "year": 2026,
   "name": "Yadlo 2026",
+  "imageBaseUrl": null,
   "venue": {
     "name": "Plage de Préverenges",
     "address": "Avenue de la Plage 1, 1028 Préverenges, Suisse",
@@ -93,6 +94,7 @@
       "kind": "artist",
       "name": "DJ ALF",
       "category": "musique",
+      "images": [],
       "description": "Elliot Guyot, étudiant à HEC Lausanne devenu une figure des nuits vaudoises. Résident hebdomadaire du MAD Club et du D! Club, il a joué au Montreux Jazz, au Venoge et à Caribana, ainsi qu'au Flow à Paris. Un répertoire volontairement large — house, reggaeton, afrobeat et throwbacks des années 2010 — résumé par sa devise : « Bangers Only ».",
       "provenance": "confirmed",
       "artist": {
@@ -111,6 +113,7 @@
       "kind": "artist",
       "name": "CÆSURE",
       "category": "musique",
+      "images": [],
       "description": "Guitare acoustique et production électro. Son premier EP, « J'essaie », est sorti le 10 juillet 2026 : six titres, dont « Souvenir » et « Rêve de star » en collaboration avec Andy Wheelr.",
       "provenance": "confirmed",
       "artist": {
@@ -127,6 +130,7 @@
       "kind": "artist",
       "name": "Diggin'",
       "category": "musique",
+      "images": [],
       "description": "Groupe d'indie-soul né à Lausanne en 2020, porté par Dany Cerone à la guitare et Julien Portenguen au chant, en collectif évolutif de quatre à six musiciens — avec notamment Gabriel Scheder à la batterie et Simon Palluel à la basse. Influencé par Nick Hakim, Skinshape et Yellow Days, le groupe mêle influences rétro et modernité lo-fi. Après une série d'EP en 2023 et 2024, le premier album « New, Again » marque un tournant en 2025 : artiste Radar RTS, deux années consécutives au Cully Jazz et au Montreux Jazz. Le deuxième album « Viewpoints » vient de sortir, accompagné d'une tournée 2026.",
       "provenance": "confirmed",
       "artist": {
@@ -144,6 +148,7 @@
       "kind": "artist",
       "name": "AMC",
       "category": "musique",
+      "images": [],
       "description": "Son style a rapidement capté l'attention de la scène, avec le soutien d'artistes reconnus comme Mau P ou Cloonee. En 2024, il sort son premier titre sur le label Nervous Records, étape majeure de son ascension dans la musique électronique.",
       "provenance": "confirmed",
       "artist": {
@@ -159,6 +164,7 @@
       "kind": "artist",
       "name": "JAYJAY",
       "category": "musique",
+      "images": [],
       "description": "DJ house vaudois, lié au Collectif 52 et aux scènes de Morges et de Lausanne.",
       "provenance": "confirmed",
       "artist": {
@@ -171,6 +177,7 @@
       "kind": "artist",
       "name": "Carlos Willengton",
       "category": "musique",
+      "images": [],
       "description": "Il a joué ses premiers sets à l'époque où seuls les vinyles tournaient. Sa collection s'est étoffée en même temps que son métier, jusqu'à devenir DJ professionnel. Il se produit aujourd'hui dans le monde entier avec des sets 100 % vinyles et une maîtrise absolue des platines.",
       "provenance": "confirmed",
       "artist": {
@@ -187,6 +194,7 @@
       "kind": "artist",
       "name": "Thalassothérapie",
       "category": "musique",
+      "images": [],
       "description": "Une odyssée musicale qui traverse les décennies et les frontières, entre reprises inattendues et trésors cachés venus des quatre coins du globe. Parfois doux et relaxant, parfois un peu fou : un mix éclectique qui surprend à chaque instant.",
       "provenance": "confirmed",
       "artist": {
@@ -199,6 +207,7 @@
       "kind": "artist",
       "name": "Dubside",
       "category": "musique",
+      "images": [],
       "description": "Collectif de trois amis d'enfance originaires de Préverenges et Denges. Portés depuis toujours par une passion commune pour la musique électronique et sa culture, ils ont construit au fil des années une identité sonore forte et authentique, en mixant à deux ou à trois derrière les platines, chacun son tour — une approche rare qui les distingue des formats B2B classiques.",
       "provenance": "confirmed",
       "artist": {
@@ -214,6 +223,7 @@
       "kind": "artist",
       "name": "Gauthier Quenis",
       "category": "musique",
+      "images": [],
       "description": "DJ et producteur, membre du Collectif 52.",
       "provenance": "confirmed",
       "artist": {
@@ -226,6 +236,7 @@
       "kind": "artist",
       "name": "Refaire le monde",
       "category": "musique",
+      "images": [],
       "description": "Indie pop et alt rock. Après les albums « Enough » (2024) et « September » (2025), le groupe a sorti l'EP « Polaroids » en 2026.",
       "provenance": "confirmed",
       "artist": {
@@ -241,6 +252,7 @@
       "kind": "artist",
       "name": "Albert Chinet",
       "category": "musique",
+      "images": [],
       "description": "Après avoir performé en solo, puis en trio pendant des années, il propose désormais une formation à quatre : batterie, guitares électrique et acoustique, basse et synthés. Entre dérision et mise à nu, Albert Chinet ne choisit pas — il offre un spectacle total, humain et profondément vibrant.",
       "provenance": "confirmed",
       "artist": {
@@ -256,6 +268,7 @@
       "kind": "artist",
       "name": "Léman Records",
       "category": "musique",
+      "images": [],
       "description": "Label lancé en 2023 par l'ancien collectif Limited Brothers, actif depuis plus de dix ans. Avant tout des amis de longue date réunis par le même goût des grooves rares et des disques poussiéreux. Leurs résidences ont accueilli des sélectionneurs acclamés — Mark Grusane, Volcov, Alexander Nut, Fredfades, Alton Miller — et leur sélection de joyaux soulful et de sons plus profonds apporte des vibrations lumineuses sur le dancefloor.",
       "provenance": "confirmed",
       "artist": {
@@ -273,6 +286,7 @@
       "kind": "artist",
       "name": "Tree House",
       "category": "musique",
+      "images": [],
       "description": "Collectif musical vaudois — « Tree House Music Collective » — que l'on retrouve en club comme en festival.",
       "provenance": "confirmed",
       "artist": {
@@ -286,6 +300,7 @@
       "kind": "activity",
       "name": "Silent Party",
       "category": "silent",
+      "images": [],
       "description": "Trois canaux musicaux — vert, bleu, rouge — un seul dancefloor et des centaines de casques illuminés.",
       "provenance": "confirmed",
       "activity": {
@@ -308,6 +323,7 @@
       "kind": "activity",
       "name": "Le coin enfants",
       "category": "enfants",
+      "images": [],
       "description": "Un espace encadré par des bénévoles, dédié au jeu, au dessin, au bricolage et au maquillage. Vous pouvez y déposer vos enfants pour deux heures au maximum, le temps de souffler ou de faire un tour du festival.",
       "provenance": "confirmed",
       "activity": {
@@ -323,6 +339,7 @@
       "kind": "activity",
       "name": "Le mur de grimpe",
       "category": "enfants",
+      "images": [],
       "description": "Envie de prendre de la hauteur ? Un mur de grimpe encadré par Totem Escalade, pour découvrir l'escalade en toute sécurité.",
       "provenance": "confirmed",
       "activity": {
@@ -338,6 +355,7 @@
       "kind": "activity",
       "name": "Jeux de société",
       "category": "terre",
+      "images": [],
       "description": "Jeux prêtés et règles expliquées par Ch'piil.",
       "provenance": "confirmed",
       "activity": { "bookingRequired": false, "equipmentProvided": true }
@@ -347,6 +365,7 @@
       "kind": "activity",
       "name": "Chasse au trésor",
       "category": "terre",
+      "images": [],
       "description": "Un parcours d'indices à travers le festival, ponctué de défis.",
       "provenance": "confirmed",
       "activity": { "bookingRequired": false, "suitability": "Familles et groupes" }
@@ -356,6 +375,7 @@
       "kind": "activity",
       "name": "Mini Escape Game",
       "category": "terre",
+      "images": [],
       "description": "Quatre escape games différents, en équipe.",
       "provenance": "confirmed",
       "activity": {
@@ -368,6 +388,7 @@
       "kind": "activity",
       "name": "Tournoi de UNO",
       "category": "terre",
+      "images": [],
       "description": "Tournoi de UNO ouvert à tous.",
       "provenance": "confirmed",
       "activity": { "bookingRequired": false, "equipmentProvided": true }
@@ -377,6 +398,7 @@
       "kind": "activity",
       "name": "Diffusion de match",
       "category": "terre",
+      "images": [],
       "description": "Diffusion sur grand écran, sans le son.",
       "provenance": "confirmed",
       "activity": { "price": { "free": true, "provenance": "unverified" }, "bookingRequired": false }
@@ -386,6 +408,7 @@
       "kind": "activity",
       "name": "Initiation salsa et bachata",
       "category": "terre",
+      "images": [],
       "description": "Une heure de cours avec l'école AliaSalsa, puis danse libre.",
       "provenance": "confirmed",
       "activity": { "equipmentProvided": false }
@@ -395,6 +418,7 @@
       "kind": "activity",
       "name": "Initiation slackline",
       "category": "terre",
+      "images": [],
       "description": "Slackline et parcours d'obstacles : concentration, coordination et persévérance.",
       "provenance": "confirmed",
       "activity": { "bookingRequired": false, "equipmentProvided": true }
@@ -404,6 +428,7 @@
       "kind": "activity",
       "name": "Le trésor de Black Sam",
       "category": "terre",
+      "images": [],
       "description": "Aventure de pirates en équipe : résoudre les énigmes pour ouvrir le coffre.",
       "provenance": "confirmed",
       "activity": {
@@ -416,6 +441,7 @@
       "kind": "activity",
       "name": "GladiaSUP",
       "category": "eau",
+      "images": [],
       "description": "Parcours d'obstacles en stand-up paddle, contre vos amis ou contre le chrono.",
       "provenance": "confirmed",
       "activity": {
@@ -429,6 +455,7 @@
       "kind": "activity",
       "name": "SUP Yoga",
       "category": "eau",
+      "images": [],
       "description": "Une heure de yoga sur stand-up paddle, encadrée par un coach.",
       "provenance": "confirmed",
       "activity": {
@@ -442,6 +469,7 @@
       "kind": "activity",
       "name": "Air Track sur la plage",
       "category": "eau",
+      "images": [],
       "description": "Tapis gonflable de six mètres pour enchaîner les figures.",
       "provenance": "confirmed",
       "activity": { "price": { "free": true, "provenance": "confirmed" }, "bookingRequired": false, "equipmentProvided": true }
@@ -451,6 +479,7 @@
       "kind": "activity",
       "name": "Trampoline flottant",
       "category": "eau",
+      "images": [],
       "description": "Trampoline de quatre mètres de diamètre sur l'eau, jusqu'à trois personnes à la fois.",
       "provenance": "confirmed",
       "activity": {
@@ -464,6 +493,7 @@
       "kind": "activity",
       "name": "Yoga",
       "category": "eau",
+      "images": [],
       "description": "Séance matinale sur la plage, tous niveaux, sans inscription.",
       "provenance": "confirmed",
       "activity": { "price": { "free": true, "provenance": "confirmed" }, "bookingRequired": false, "equipmentProvided": false, "suitability": "Apportez votre tapis." }
@@ -473,6 +503,7 @@
       "kind": "activity",
       "name": "Acro-yoga",
       "category": "eau",
+      "images": [],
       "description": "Séance matinale sur la plage, tous niveaux, sans inscription et sans partenaire imposé.",
       "provenance": "confirmed",
       "activity": { "price": { "free": true, "provenance": "confirmed" }, "bookingRequired": false, "equipmentProvided": false, "suitability": "Apportez votre tapis." }
@@ -483,6 +514,7 @@
       "kind": "stand",
       "name": "Vegan Fabrik",
       "category": "restauration",
+      "images": [],
       "description": "Une cuisine 100 % végétale qui prouve qu'on peut allier gourmandise, créativité et produits de qualité. Entre plats mijotés, mezzés, douceurs sucrées et glaces, il y en a pour tous les appétits. Seitan fait maison, tofu suisse Swissoja, desserts à la crème végétale, à l'aquafaba ou à la crème de cajou.",
       "provenance": "confirmed",
       "stand": {
@@ -541,6 +573,7 @@
       "kind": "stand",
       "name": "Guliko",
       "category": "restauration",
+      "images": [],
       "description": "Embarquez pour un voyage en Géorgie avec des spécialités traditionnelles préparées dans le respect des recettes authentiques. Une cuisine généreuse, parfumée et pleine de caractère.",
       "provenance": "confirmed",
       "stand": { "cuisine": "Cuisine géorgienne", "marks": [], "links": [], "menu": [] }
@@ -550,6 +583,7 @@
       "kind": "stand",
       "name": "Man'ouchy",
       "category": "restauration",
+      "images": [],
       "description": "Les saveurs du Liban s'invitent au Yadlo. Shawarmas, falafels et assiettes gourmandes préparés à la minute font découvrir toute la richesse de la cuisine levantine. Née en 2016 d'un food truck à la Riponne, la maison tient aujourd'hui un restaurant à la rue César-Roux à Lausanne.",
       "provenance": "confirmed",
       "stand": {
@@ -568,6 +602,7 @@
       "kind": "stand",
       "name": "De l'Or Bokit",
       "category": "restauration",
+      "images": [],
       "description": "Impossible de passer à côté des célèbres bokits guadeloupéens. Ces sandwichs frits, généreusement garnis et relevés d'une touche créole, vous feront voyager sous les tropiques. Le bokit naît en Guadeloupe après l'abolition de l'esclavage, d'une simple pâte frite devenue emblème de la cuisine caribéenne.",
       "provenance": "confirmed",
       "stand": {
@@ -609,6 +644,7 @@
       "kind": "stand",
       "name": "Gyros Greek & La Focacceria",
       "category": "restauration",
+      "images": [],
       "description": "Deux incontournables de la cuisine méditerranéenne réunis sur un même stand. Entre gyros grecs généreux et focaccias italiennes garnies de produits de qualité, il y a de quoi satisfaire toutes les envies.",
       "provenance": "confirmed",
       "stand": { "cuisine": "Cuisine méditerranéenne", "marks": [], "links": [], "menu": [] }
@@ -618,6 +654,7 @@
       "kind": "stand",
       "name": "Surf Shop",
       "category": "restauration",
+      "images": [],
       "description": "Pour une pause gourmande à toute heure de la journée, le Surf Shop propose un choix de crêpes, gaufres et glaces. L'idéal pour une douceur entre deux concerts ou pour terminer la soirée sur une note sucrée.",
       "provenance": "confirmed",
       "stand": { "cuisine": "Crêpes, gaufres et glaces", "marks": [], "links": [], "menu": [] }
@@ -685,11 +722,11 @@
       "order": 1,
       "provenance": "confirmed",
       "members": [
-        { "id": "garage-dind", "name": "Garage Dind", "url": "https://www.garagedind.ch/" },
-        { "id": "la-nebuleuse", "name": "La Nébuleuse", "url": "https://lanebuleuse.ch/" },
-        { "id": "white-horse-pub", "name": "White Horse Pub", "url": "https://www.whitehorse.ch/" },
-        { "id": "anae", "name": "anae — atelier nature architecture environnement", "url": "https://www.anae.archi/" },
-        { "id": "fishermans-friend", "name": "Fisherman's Friend", "url": "https://www.fishermansfriend.ch/" }
+        { "id": "garage-dind", "name": "Garage Dind", "url": "https://www.garagedind.ch/", "logo": null },
+        { "id": "la-nebuleuse", "name": "La Nébuleuse", "url": "https://lanebuleuse.ch/", "logo": null },
+        { "id": "white-horse-pub", "name": "White Horse Pub", "url": "https://www.whitehorse.ch/", "logo": null },
+        { "id": "anae", "name": "anae — atelier nature architecture environnement", "url": "https://www.anae.archi/", "logo": null },
+        { "id": "fishermans-friend", "name": "Fisherman's Friend", "url": "https://www.fishermansfriend.ch/", "logo": null }
       ]
     },
     {
@@ -698,10 +735,10 @@
       "order": 2,
       "provenance": "confirmed",
       "members": [
-        { "id": "ap-consulting", "name": "AP Consulting André Prahin SA", "url": null },
-        { "id": "arenaz", "name": "Arenaz Automobiles", "url": "https://www.arenaz.ch/" },
-        { "id": "edifice", "name": "Edifice", "url": null },
-        { "id": "mbc", "name": "MBC — Transports de la région Morges-Bière-Cossonay", "url": "https://www.mbc.ch/" }
+        { "id": "ap-consulting", "name": "AP Consulting André Prahin SA", "url": "https://ap-consulting-andre-prahin.digitalone.site/", "logo": null },
+        { "id": "arenaz", "name": "Arenaz Automobiles", "url": "https://www.arenaz.ch/", "logo": null },
+        { "id": "edifice", "name": "Edifice", "url": null, "logo": null },
+        { "id": "mbc", "name": "MBC — Transports de la région Morges-Bière-Cossonay", "url": "https://www.mbc.ch/", "logo": null }
       ]
     },
     {
@@ -710,8 +747,8 @@
       "order": 3,
       "provenance": "confirmed",
       "members": [
-        { "id": "bcv", "name": "BCV — Banque Cantonale Vaudoise", "url": "https://www.bcv.ch/" },
-        { "id": "romande-energie", "name": "Romande Energie", "url": "https://www.romande-energie.ch/" }
+        { "id": "bcv", "name": "BCV — Banque Cantonale Vaudoise", "url": "https://www.bcv.ch/", "logo": null },
+        { "id": "romande-energie", "name": "Romande Energie", "url": "https://www.romande-energie.ch/", "logo": null }
       ]
     },
     {
@@ -720,11 +757,11 @@
       "order": 4,
       "provenance": "confirmed",
       "members": [
-        { "id": "cham-properties", "name": "Cham Properties", "url": null },
-        { "id": "ellgass-plastiline", "name": "Ellgass Plastiline", "url": "https://www.ellgass.ch/" },
-        { "id": "retripa", "name": "Retripa", "url": "https://www.retripa.ch/" },
-        { "id": "vaudoise", "name": "Vaudoise Assurances", "url": "https://www.vaudoise.ch/" },
-        { "id": "von-auw", "name": "Von Auw SA", "url": "https://www.vonauw.ch/" }
+        { "id": "cham-properties", "name": "Cham Swiss Properties", "url": "https://www.champroperties.ch/", "logo": null },
+        { "id": "ellgass-plastiline", "name": "Ellgass Plastiline", "url": "https://www.ellgass.ch/", "logo": null },
+        { "id": "retripa", "name": "Retripa", "url": "https://www.retripa.ch/", "logo": null },
+        { "id": "vaudoise", "name": "Vaudoise Assurances", "url": "https://www.vaudoise.ch/", "logo": null },
+        { "id": "von-auw", "name": "Von Auw SA", "url": "https://www.vonauw.ch/", "logo": null }
       ]
     },
     {
@@ -733,21 +770,21 @@
       "order": 5,
       "provenance": "confirmed",
       "members": [
-        { "id": "totem-climbing", "name": "Totem Escalade", "url": "https://www.totem.ch/" },
-        { "id": "bertola", "name": "Bertola Construction SA", "url": "https://www.bertola.ch/" },
-        { "id": "dream-garden", "name": "Dream Garden", "url": "https://www.dreamgarden.ch/" },
-        { "id": "surf-shop", "name": "Surfshop Préverenges", "url": "https://www.surfshop.ch/" },
-        { "id": "volt-a", "name": "Volt-A Solutions Électriques", "url": "https://www.volt-a.ch/" },
-        { "id": "vsm-nettoyage", "name": "VSM Nettoyage & Services", "url": "https://www.vsm-nettoyage.ch/" },
-        { "id": "summit-video", "name": "Summit Video", "url": "https://www.summitvideo.ch/" },
-        { "id": "rivella", "name": "Rivella", "url": "https://www.rivella.ch/" },
-        { "id": "gladiasup", "name": "GladiaSUP", "url": null },
-        { "id": "brocello", "name": "BroCello", "url": "https://www.brocello.ch/" },
-        { "id": "grano-mate", "name": "Grano Maté", "url": "https://granomate.ch/" },
-        { "id": "clash-solutions", "name": "Clash Solutions", "url": null },
-        { "id": "frisco", "name": "Nestlé Frisco", "url": "https://www.frisco.ch/" },
-        { "id": "lfm", "name": "LFM", "url": "https://www.lfm.ch/" },
-        { "id": "sherlock-events", "name": "Sherlock Events", "url": "https://www.sherlock-events.ch/" }
+        { "id": "totem-climbing", "name": "Totem Escalade", "url": "https://www.totem.ch/", "logo": null },
+        { "id": "bertola", "name": "Bertola Construction SA", "url": "https://www.bertola.ch/", "logo": null },
+        { "id": "dream-garden", "name": "Dream Garden", "url": "https://www.dreamgarden.ch/", "logo": null },
+        { "id": "surf-shop", "name": "Surfshop Préverenges", "url": "https://www.surfshop.ch/", "logo": null },
+        { "id": "volt-a", "name": "Volt-A Solutions Électriques", "url": "https://www.volt-a.ch/", "logo": null },
+        { "id": "vsm-nettoyage", "name": "VSM Nettoyage & Services", "url": "https://www.vsm-nettoyage.ch/", "logo": null },
+        { "id": "summit-video", "name": "Summit Video", "url": "https://www.summitvideo.ch/", "logo": null },
+        { "id": "rivella", "name": "Rivella", "url": "https://www.rivella.ch/", "logo": null },
+        { "id": "gladiasup", "name": "GladiaSUP", "url": null, "logo": null },
+        { "id": "brocello", "name": "BroCello", "url": "https://www.brocello.ch/", "logo": null },
+        { "id": "grano-mate", "name": "Grano Maté", "url": "https://granomate.ch/", "logo": null },
+        { "id": "cash-solutions", "name": "Cash Solutions", "url": "https://cash-solutions.ch/", "logo": null },
+        { "id": "frisco", "name": "Nestlé Frisco", "url": "https://www.frisco.ch/", "logo": null },
+        { "id": "lfm", "name": "LFM", "url": "https://www.lfm.ch/", "logo": null },
+        { "id": "sherlock-events", "name": "Sherlock Events", "url": "https://www.sherlock-events.ch/", "logo": null }
       ]
     },
     {
@@ -756,8 +793,8 @@
       "order": 6,
       "provenance": "confirmed",
       "members": [
-        { "id": "preverenges", "name": "Commune de Préverenges", "url": "https://www.preverenges.ch/" },
-        { "id": "morges-region", "name": "Morges Région Slow Tourisme", "url": "https://www.morges-tourisme.ch/" }
+        { "id": "preverenges", "name": "Commune de Préverenges", "url": "https://www.preverenges.ch/", "logo": null },
+        { "id": "morges-region", "name": "Morges Région Slow Tourisme", "url": "https://www.morges-tourisme.ch/", "logo": null }
       ]
     }
   ],

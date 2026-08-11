@@ -27,6 +27,29 @@ const MARKS = new Set(['végé', 'végan', 'sans gluten', 'sans lactose', 'piqua
 const PROVENANCE = new Set(['confirmed', 'archived', 'unverified']);
 const ts = s => (s ? new Date(s) : null);
 
+// An image src is either an absolute https URL, or a path relative to the edition's
+// imageBaseUrl. Relative wins when the association hosts its own assets - the whole set moves
+// to a new host by editing one field. Absolute is for anything already living elsewhere.
+// While imageBaseUrl is null there is nothing to resolve a relative path against, so only
+// absolute is legal; setting the base is what unlocks the short form.
+function checkSrc(src, where) {
+  if (typeof src !== 'string' || !src) return errors.push(`${where}: src must be a non-empty string`);
+  const absolute = /^https:\/\//.test(src);
+  if (/^http:\/\//.test(src)) return errors.push(`${where}: src must be https - ${src}`);
+  if (!absolute) {
+    if (ed.imageBaseUrl === null)
+      return errors.push(`${where}: relative src "${src}" but imageBaseUrl is null - use an absolute https URL, or set imageBaseUrl`);
+    if (src.startsWith('/')) errors.push(`${where}: relative src must not start with "/" - ${src}`);
+  }
+  for (const [re, what] of DIRTY_URL)
+    if (re.test(src)) errors.push(`${where}: src carries a ${what}`);
+}
+
+if (ed.imageBaseUrl !== null) {
+  if (!/^https:\/\//.test(ed.imageBaseUrl)) errors.push('imageBaseUrl must be https or null');
+  else if (!ed.imageBaseUrl.endsWith('/')) errors.push('imageBaseUrl must end with "/" so paths join cleanly');
+}
+
 for (const [lid, l] of Object.entries(lanes))
   if (!sections.has(l.sectionId)) errors.push(`lane ${lid}: unknown sectionId ${l.sectionId}`);
 
@@ -51,6 +74,14 @@ for (const [hid, h] of Object.entries(haps)) {
   if (typeof h.name !== 'string' || !h.name) errors.push(`happening ${hid}: name must be a non-empty string`);
   if ('description' in h && typeof h.description !== 'string')
     errors.push(`happening ${hid}: description must be a string`);
+
+  if (!Array.isArray(h.images)) errors.push(`happening ${hid}: images must be an array`);
+  else h.images.forEach((im, i) => {
+    if (!im || typeof im !== 'object') return errors.push(`happening ${hid}: images[${i}] must be an object`);
+    checkSrc(im.src, `happening ${hid}/images[${i}]`);
+    if ('credit' in im && im.credit !== null && typeof im.credit !== 'string')
+      errors.push(`happening ${hid}: images[${i}].credit must be a string or null`);
+  });
 
   const payload = h[h.kind];
   if (payload && 'genres' in payload) {
@@ -179,6 +210,10 @@ for (const tier of ed.partners) {
     partnerIds.add(m.id);
     if (!m.name) errors.push(`partner ${m.id}: no name`);
     if (m.url === undefined) errors.push(`partner ${m.id}: url must be present, use null if unknown`);
+    // A partner has a logo, not a photo: never cropped, never behind a scrim. Keeping the field
+    // name distinct from "images" is what stops one being rendered as the other.
+    if (m.logo === undefined) errors.push(`partner ${m.id}: logo must be present, use null if unknown`);
+    else if (m.logo !== null) checkSrc(m.logo, `partner ${m.id}/logo`);
     if (m.url !== null) {
       if (!/^https:\/\//.test(m.url)) errors.push(`partner ${m.id}: url is not https - ${m.url}`);
       for (const [re, what] of DIRTY_URL)
@@ -201,6 +236,13 @@ const refs = [
 for (const [p, v] of refs) if (!emailIds.has(v)) errors.push(`festival.json ${p}: unknown email id ${v}`);
 if (fest.currentEditionId !== ed.id)
   warns.push(`festival.json currentEditionId=${fest.currentEditionId} but only edition ${ed.id} authored`);
+
+// Counted rather than listed: one line per missing image would be 36 warnings drowning the rest.
+const allMembers = ed.partners.flatMap(t => t.members);
+const noImage = ed.happenings.filter(h => !h.images || h.images.length === 0);
+const noLogo = allMembers.filter(m => !m.logo);
+if (noImage.length) warns.push(`${noImage.length}/${ed.happenings.length} happenings have no image`);
+if (noLogo.length) warns.push(`${noLogo.length}/${allMembers.length} partners have no logo`);
 
 console.log(`slots=${ed.slots.length}  happenings=${Object.keys(haps).length}  days=${ed.days.length}  lanes=${ed.lanes.length}`);
 console.log(`midnight-crossing slots: ${JSON.stringify(crossers)}`);
