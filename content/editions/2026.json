@@ -92,16 +92,34 @@
       "kind": "artist",
       "name": "DJ ALF",
       "category": "musique",
+      "description": "Elliot Guyot, étudiant à HEC Lausanne devenu une figure des nuits vaudoises. Résident hebdomadaire du MAD Club et du D! Club, il a joué au Montreux Jazz, au Venoge et à Caribana, ainsi qu'au Flow à Paris. Un répertoire volontairement large — house, reggaeton, afrobeat et throwbacks des années 2010 — résumé par sa devise : « Bangers Only ».",
       "provenance": "confirmed",
-      "artist": { "genres": ["Commercial", "Afro house", "House'n'disco"], "links": [] }
+      "artist": {
+        "genres": ["Commercial", "Afro house", "House'n'disco"],
+        "links": [
+          { "type": "website", "url": "https://djalf.ch/" },
+          { "type": "instagram", "url": "https://www.instagram.com/elliot_guyot/" },
+          { "type": "soundcloud", "url": "https://soundcloud.com/djalf_music" },
+          { "type": "tiktok", "url": "https://www.tiktok.com/@dj.alf_" },
+          { "type": "facebook", "url": "https://www.facebook.com/elliot.guyot" }
+        ]
+      }
     },
     {
       "id": "caesure",
       "kind": "artist",
       "name": "CÆSURE",
       "category": "musique",
+      "description": "Guitare acoustique et production électro. Son premier EP, « J'essaie », est sorti le 10 juillet 2026 : six titres, dont « Souvenir » et « Rêve de star » en collaboration avec Andy Wheelr.",
       "provenance": "confirmed",
-      "artist": { "genres": ["Guitare acoustique", "Prod électro"], "links": [] }
+      "artist": {
+        "genres": ["Guitare acoustique", "Prod électro"],
+        "links": [
+          { "type": "spotify", "url": "https://open.spotify.com/artist/7MtGXTDmWG8SXdkV3H20Ra" },
+          { "type": "instagram", "url": "https://www.instagram.com/ceasure.music/" },
+          { "type": "appleMusic", "url": "https://music.apple.com/us/artist/c%C3%A6sure/6788565297" }
+        ]
+      }
     },
     {
       "id": "diggin",
@@ -127,24 +145,41 @@
       "category": "musique",
       "description": "Son style a rapidement capté l'attention de la scène, avec le soutien d'artistes reconnus comme Mau P ou Cloonee. En 2024, il sort son premier titre sur le label Nervous Records, étape majeure de son ascension dans la musique électronique.",
       "provenance": "confirmed",
-      "artist": { "genres": ["Electro"], "links": [] }
+      "artist": {
+        "genres": ["Electro"],
+        "links": [
+          { "type": "soundcloud", "url": "https://soundcloud.com/thisisamc" },
+          { "type": "beatport", "url": "https://www.beatport.com/artist/amc-ch/1294638" }
+        ]
+      }
     },
     {
       "id": "jayjay",
       "kind": "artist",
       "name": "JAYJAY",
       "category": "musique",
+      "description": "DJ house vaudois, lié au Collectif 52 et aux scènes de Morges et de Lausanne.",
       "provenance": "confirmed",
-      "artist": { "genres": ["House"], "links": [] }
+      "artist": {
+        "genres": ["House"],
+        "links": [{ "type": "instagram", "url": "https://www.instagram.com/jayjay.musik/" }]
+      }
     },
     {
-      "id": "carlos-willenghton",
+      "id": "carlos-willengton",
       "kind": "artist",
-      "name": "Carlos Willenghton",
+      "name": "Carlos Willengton",
       "category": "musique",
       "description": "Il a joué ses premiers sets à l'époque où seuls les vinyles tournaient. Sa collection s'est étoffée en même temps que son métier, jusqu'à devenir DJ professionnel. Il se produit aujourd'hui dans le monde entier avec des sets 100 % vinyles et une maîtrise absolue des platines.",
       "provenance": "confirmed",
-      "artist": { "genres": ["House", "Disco"], "links": [] }
+      "artist": {
+        "genres": ["House", "Disco"],
+        "links": [
+          { "type": "instagram", "url": "https://www.instagram.com/dj_carlos_willengton/" },
+          { "type": "tiktok", "url": "https://www.tiktok.com/@dj_carlos_willengton" },
+          { "type": "youtube", "url": "https://www.youtube.com/@carloswillengton4127" }
+        ]
+      }
     },
     {
       "id": "thalassotherapie",
@@ -153,7 +188,10 @@
       "category": "musique",
       "description": "Une odyssée musicale qui traverse les décennies et les frontières, entre reprises inattendues et trésors cachés venus des quatre coins du globe. Parfois doux et relaxant, parfois un peu fou : un mix éclectique qui surprend à chaque instant.",
       "provenance": "confirmed",
-      "artist": { "genres": ["Tropical chill"], "links": [] }
+      "artist": {
+        "genres": ["Tropical chill"],
+        "links": [{ "type": "soundcloud", "url": "https://soundcloud.com/thalassotherapie" }]
+      }
     },
     {
       "id": "dubside",
@@ -162,23 +200,40 @@
       "category": "musique",
       "description": "Collectif de trois amis d'enfance originaires de Préverenges et Denges. Portés depuis toujours par une passion commune pour la musique électronique et sa culture, ils ont construit au fil des années une identité sonore forte et authentique, en mixant à deux ou à trois derrière les platines, chacun son tour — une approche rare qui les distingue des formats B2B classiques.",
       "provenance": "confirmed",
-      "artist": { "genres": ["Techno-house"], "links": [] }
+      "artist": {
+        "genres": ["Techno-house"],
+        "links": [
+          { "type": "instagram", "url": "https://www.instagram.com/dubside_collectif/" },
+          { "type": "facebook", "url": "https://www.facebook.com/dubsidedj/" }
+        ]
+      }
     },
     {
-      "id": "gautier-quenis",
+      "id": "gauthier-quenis",
       "kind": "artist",
-      "name": "Gautier Quenis",
+      "name": "Gauthier Quenis",
       "category": "musique",
+      "description": "DJ et producteur, membre du Collectif 52.",
       "provenance": "confirmed",
-      "artist": { "genres": ["Années 2000"], "links": [] }
+      "artist": {
+        "genres": ["Années 2000"],
+        "links": [{ "type": "instagram", "url": "https://www.instagram.com/gauthier_quenis/" }]
+      }
     },
     {
       "id": "refaire-le-monde",
       "kind": "artist",
       "name": "Refaire le monde",
       "category": "musique",
+      "description": "Indie pop et alt rock. Après les albums « Enough » (2024) et « September » (2025), le groupe a sorti l'EP « Polaroids » en 2026.",
       "provenance": "confirmed",
-      "artist": { "genres": ["Indie pop", "Alt rock"], "links": [] }
+      "artist": {
+        "genres": ["Indie pop", "Alt rock"],
+        "links": [
+          { "type": "spotify", "url": "https://open.spotify.com/artist/15rQgRhMKhO2WdsDct95bm" },
+          { "type": "instagram", "url": "https://www.instagram.com/refairelemondeofficial/" }
+        ]
+      }
     },
     {
       "id": "albert-chinet",
@@ -217,8 +272,12 @@
       "kind": "artist",
       "name": "Tree House",
       "category": "musique",
+      "description": "Collectif musical vaudois — « Tree House Music Collective » — que l'on retrouve en club comme en festival.",
       "provenance": "confirmed",
-      "artist": { "genres": ["House", "Disco"], "links": [] }
+      "artist": {
+        "genres": ["House", "Disco"],
+        "links": [{ "type": "instagram", "url": "https://www.instagram.com/tree.house.music/" }]
+      }
     },
 
     {
@@ -404,13 +463,13 @@
     { "id": "2026:diggin-fri", "happeningId": "diggin", "dayId": "2026:fri", "laneId": "musique", "venueId": "scene", "start": "2026-07-10T20:00:00+02:00", "end": "2026-07-10T21:00:00+02:00", "provenance": "confirmed" },
     { "id": "2026:amc-fri", "happeningId": "amc", "dayId": "2026:fri", "laneId": "musique", "venueId": "scene", "start": "2026-07-10T21:30:00+02:00", "end": "2026-07-10T22:30:00+02:00", "provenance": "confirmed" },
     { "id": "2026:jayjay-fri", "happeningId": "jayjay", "dayId": "2026:fri", "laneId": "musique", "venueId": "scene", "start": "2026-07-10T22:30:00+02:00", "end": "2026-07-10T23:30:00+02:00", "provenance": "confirmed" },
-    { "id": "2026:carlos-willenghton-fri", "happeningId": "carlos-willenghton", "dayId": "2026:fri", "laneId": "musique", "venueId": "scene", "start": "2026-07-10T23:30:00+02:00", "end": "2026-07-11T01:30:00+02:00", "provenance": "confirmed" },
+    { "id": "2026:carlos-willengton-fri", "happeningId": "carlos-willengton", "dayId": "2026:fri", "laneId": "musique", "venueId": "scene", "start": "2026-07-10T23:30:00+02:00", "end": "2026-07-11T01:30:00+02:00", "provenance": "confirmed" },
 
     { "id": "2026:thalassotherapie-sat", "happeningId": "thalassotherapie", "dayId": "2026:sat", "laneId": "musique", "venueId": "scene", "start": "2026-07-11T14:00:00+02:00", "end": "2026-07-11T16:00:00+02:00", "provenance": "confirmed" },
     { "id": "2026:dubside-sat", "happeningId": "dubside", "dayId": "2026:sat", "laneId": "musique", "venueId": "scene", "start": "2026-07-11T16:00:00+02:00", "end": "2026-07-11T18:00:00+02:00", "provenance": "confirmed" },
     { "id": "2026:silent-party-sat", "happeningId": "silent-party", "dayId": "2026:sat", "laneId": "silent-party", "venueId": "plage", "start": "2026-07-11T20:00:00+02:00", "end": "2026-07-12T02:00:00+02:00", "provenance": "confirmed" },
 
-    { "id": "2026:gautier-quenis-sun", "happeningId": "gautier-quenis", "dayId": "2026:sun", "laneId": "musique", "venueId": "scene", "start": "2026-07-12T12:00:00+02:00", "end": "2026-07-12T15:00:00+02:00", "provenance": "confirmed" },
+    { "id": "2026:gauthier-quenis-sun", "happeningId": "gauthier-quenis", "dayId": "2026:sun", "laneId": "musique", "venueId": "scene", "start": "2026-07-12T12:00:00+02:00", "end": "2026-07-12T15:00:00+02:00", "provenance": "confirmed" },
     { "id": "2026:refaire-le-monde-sun", "happeningId": "refaire-le-monde", "dayId": "2026:sun", "laneId": "musique", "venueId": "scene", "start": "2026-07-12T15:30:00+02:00", "end": "2026-07-12T16:30:00+02:00", "provenance": "confirmed" },
     { "id": "2026:albert-chinet-sun", "happeningId": "albert-chinet", "dayId": "2026:sun", "laneId": "musique", "venueId": "scene", "start": "2026-07-12T17:00:00+02:00", "end": "2026-07-12T18:00:00+02:00", "provenance": "confirmed" },
     { "id": "2026:leman-records-sun", "happeningId": "leman-records", "dayId": "2026:sun", "laneId": "musique", "venueId": "scene", "start": "2026-07-12T18:00:00+02:00", "end": "2026-07-12T19:30:00+02:00", "provenance": "confirmed" },

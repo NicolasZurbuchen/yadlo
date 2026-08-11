@@ -43,28 +43,31 @@ in the data and the accidental case still gets caught.
 
 ---
 
-## 1. Artist links — 10 of 13 still missing
+## ✅ Resolved — artist links, spellings and descriptions
 
-Each artist carries a `links` array (`spotify`, `instagram`, `website`, `soundcloud`,
-`bandcamp`, `facebook`). Three were found and verified:
+**All 13 artists** now carry links and a description. Link types in use: `spotify`, `instagram`,
+`website`, `soundcloud`, `bandcamp`, `facebook`, `youtube`, `tiktok`, `beatport`, `appleMusic`.
 
-| Artist | Found |
-|---|---|
-| Diggin' | Spotify, Instagram, site, Facebook |
-| Albert Chinet | Spotify, Instagram |
-| Léman Records | Instagram, SoundCloud, Bandcamp, Facebook — no Spotify artist page; it is a label |
+The links settled all three open spellings, because an artist's own handle is the authority —
+and each source turned out to be right about one and wrong about another:
 
-**The other ten have nothing**: DJ ALF, CÆSURE, AMC, JAYJAY, Carlos Willenghton,
-Thalassothérapie, Dubside, Gautier Quenis, Refaire le monde, Tree House.
+| | Website | Instagram | Settled by | Correct |
+|---|---|---|---|---|
+| Quenis | GAUTHIER | GAUTIER | `@gauthier_quenis` + his booking address | **Gauthier** |
+| Willengton | WILLENGHTON | WILLENGTON | `@dj_carlos_willengton`, TikTok, YouTube | **Willengton** |
+| Tree House | TREEHOUSE | TREE HOUSE | bio reads "Tree House Music Collective" | **Tree House** |
 
-They were searched for and deliberately left empty. Names like *AMC*, *JAYJAY*, *Tree House* and
-*Dubside* return confident-looking matches that are demonstrably **other acts** — a reggae
-project, a podcast, a sea-kayaker — and a wrong link on an artist's page is worse than no link.
-Local Swiss DJs are largely invisible to search.
+Descriptions were written from the artists' own pages where there was anything to read. Two of
+them are only lightly sourced and worth a glance before they ship:
 
-**The ask:** the association booked these artists and holds their press kits. One Spotify URL and
-one Instagram handle each is a five-minute job for whoever did the booking, and impossible to do
-reliably from outside.
+- **JAYJAY** — his Instagram bio is nothing but four tags (`@collectif52`, `@jdl.morges`,
+  `@gare.z_lausanne`, `@swissvinoclub`), so "lié au Collectif 52 et aux scènes de Morges et de
+  Lausanne" is inference from those tags, not a statement he has made.
+- **Tree House** — "en club comme en festival" is drawn from story highlights named after
+  venues. Reasonable, but not a claim they wrote down.
+
+Two artists have no readable bio anywhere and their descriptions come only from confirmed facts:
+**AMC** (SoundCloud blocks fetching; the text is the website's) and **Thalassothérapie** (same).
 
 ## 2. Restauration — `stands` is still empty
 
@@ -137,24 +140,15 @@ Three whole artists missing and one on the wrong day is not drift, it is a page 
 working copy of the programme lives somewhere else — a spreadsheet, a Notion page, the Instagram
 drafts — that is the thing the app should be fed from.
 
-## 7. Spellings still unresolved
+## 7. Artist photos
 
-`Léman Records` is settled. Three remain, and they become permanent ids and screen titles:
+Every artist has links and text but **no image**. `/artistes` carries press photos as page
+assets — filenames like `AMC.jpg`, `AlbertChinet_PhotoPresse.jpg`, `Carlos.JPG`, `dubside.jpg` —
+which suggests the association holds proper press kits.
 
-| Website | Instagram | Currently used |
-|---|---|---|
-| GAUTHIER QUENIS | GAUTIER QUENIS | **Gautier Quenis** |
-| CARLOS WILLENGHTON | CARLOS WILLENGTON | **Carlos Willenghton** — website, which now has two independent sightings |
-| TREEHOUSE | TREE HOUSE | **Tree House** |
-
-Artist names are the one thing that must be spelled the way the artist spells it. Confirming the
-links in gap 1 would settle all three at once, since the artist's own page is the authority.
-
-## 7b. Six artists have no description
-
-`DJ ALF`, `CÆSURE`, `JAYJAY`, `Gautier Quenis`, `Refaire le monde` and `Tree House` have no
-biography — they were never on `/artistes` at all. The other seven carry one, condensed from the
-website copy.
+The fiche design puts a photo behind a collapsing toolbar, so this is the single most visible
+piece of missing content after the food trucks. Needed: one landscape-ish image per artist, plus
+whatever credit the photographer requires.
 
 ## 8. Times missing for programmed activities
 

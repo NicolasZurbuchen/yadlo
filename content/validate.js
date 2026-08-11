@@ -27,7 +27,17 @@ const ts = s => (s ? new Date(s) : null);
 for (const [lid, l] of Object.entries(lanes))
   if (!sections.has(l.sectionId)) errors.push(`lane ${lid}: unknown sectionId ${l.sectionId}`);
 
-const LINK_TYPES = new Set(['spotify', 'instagram', 'website', 'soundcloud', 'bandcamp', 'facebook', 'youtube', 'appleMusic']);
+const LINK_TYPES = new Set(['spotify', 'instagram', 'website', 'soundcloud', 'bandcamp', 'facebook', 'youtube', 'tiktok', 'beatport', 'appleMusic']);
+// Stored URLs must be canonical: no session ids, no viewer-locale prefixes. A link copied out of
+// a browser carries whichever locale that browser was in - /intl-ja/ and /ja/ are Japanese, and
+// they would follow the user into the app.
+const DIRTY_URL = [
+  [/[?&]si=/, '?si= session id'],
+  [/[?&]srsltid=/, '?srsltid= tracking param'],
+  [/[?&]hl=/, '?hl= locale param'],
+  [/\/intl-[a-z]{2}\//, '/intl-xx/ locale path'],
+  [/beatport\.com\/[a-z]{2}\//, 'locale path'],
+];
 
 for (const [hid, h] of Object.entries(haps)) {
   if (!CATEGORIES.has(h.category)) errors.push(`happening ${hid}: unknown category ${h.category}`);
@@ -47,8 +57,8 @@ for (const [hid, h] of Object.entries(haps)) {
   for (const l of (payload && payload.links) || []) {
     if (!LINK_TYPES.has(l.type)) errors.push(`happening ${hid}: unknown link type ${l.type}`);
     if (!/^https:\/\//.test(l.url)) errors.push(`happening ${hid}: link ${l.type} is not https`);
-    // A tracking param in a stored URL is someone's session, not part of the address.
-    if (/[?&]si=/.test(l.url)) errors.push(`happening ${hid}: link ${l.type} carries a ?si= tracking param`);
+    for (const [re, what] of DIRTY_URL)
+      if (re.test(l.url)) errors.push(`happening ${hid}: link ${l.type} carries a ${what} - ${l.url}`);
   }
   if (h.kind === 'artist' && (!payload.links || payload.links.length === 0))
     warns.push(`artist ${hid}: no links - needs Spotify/Instagram from the association`);
