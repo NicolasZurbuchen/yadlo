@@ -192,15 +192,21 @@ for (const s of ed.slots) {
   if (!PROVENANCE.has(s.provenance)) errors.push(`slot ${sid}: bad provenance ${s.provenance}`);
   if ('laneId' in s || 'venueId' in s) errors.push(`slot ${sid}: laneId/venueId are gone`);
 
+  // Every Slot is timed. "All day" is not a state the app models: a Happening that runs for the
+  // whole festival gets its day's opening hours written out like any other Slot, so that no
+  // screen has to format an absent time and no Slot is unplaceable on the Programme. Enforced
+  // here rather than left to the app, because a null that reaches a mapper is a crash or a
+  // blank row, and the fix belongs in the content.
+  if (!s.start) errors.push(`slot ${sid}: no start - "all day" is written out as the day's opening hours`);
+  if (!s.end) errors.push(`slot ${sid}: no end - "all day" is written out as the day's opening hours`);
+
   const st = ts(s.start), en = ts(s.end);
   if (st && en && en <= st) errors.push(`slot ${sid}: end is not after start`);
-  if (en && !st) errors.push(`slot ${sid}: has an end but no start`);
   const d = days[s.dayId];
   if (st && d) {
     if (st < ts(d.start)) warns.push(`slot ${sid}: starts ${s.start.slice(11, 16)}, before the site opens at ${d.start.slice(11, 16)}`);
     if (en && en > ts(d.end)) warns.push(`slot ${sid}: ends after closing time ${d.end.slice(11, 16)}`);
   }
-  if (!s.start && !s.end) warns.push(`slot ${sid}: no start and no end - cannot be placed on the Programme`);
 }
 
 // A Stand's Slots are its opening windows, and nobody has published them - so a Stand with no

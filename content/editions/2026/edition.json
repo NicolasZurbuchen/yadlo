@@ -693,9 +693,9 @@
     { "id": "2026:acro-yoga-sat", "happeningId": "acro-yoga", "dayId": "2026:sat", "start": "2026-07-11T10:00:00+02:00", "end": "2026-07-11T11:00:00+02:00", "provenance": "confirmed" },
     { "id": "2026:yoga-plage-sun", "happeningId": "yoga-plage", "dayId": "2026:sun", "start": "2026-07-12T10:00:00+02:00", "end": "2026-07-12T11:00:00+02:00", "provenance": "confirmed" },
 
-    { "id": "2026:chasse-au-tresor-fri", "happeningId": "chasse-au-tresor", "dayId": "2026:fri", "start": null, "end": null, "provenance": "confirmed" },
-    { "id": "2026:chasse-au-tresor-sat", "happeningId": "chasse-au-tresor", "dayId": "2026:sat", "start": null, "end": null, "provenance": "confirmed" },
-    { "id": "2026:chasse-au-tresor-sun", "happeningId": "chasse-au-tresor", "dayId": "2026:sun", "start": null, "end": null, "provenance": "confirmed" },
+    { "id": "2026:chasse-au-tresor-fri", "happeningId": "chasse-au-tresor", "dayId": "2026:fri", "start": "2026-07-10T16:00:00+02:00", "end": "2026-07-11T02:00:00+02:00", "provenance": "unverified" },
+    { "id": "2026:chasse-au-tresor-sat", "happeningId": "chasse-au-tresor", "dayId": "2026:sat", "start": "2026-07-11T12:00:00+02:00", "end": "2026-07-12T03:00:00+02:00", "provenance": "unverified" },
+    { "id": "2026:chasse-au-tresor-sun", "happeningId": "chasse-au-tresor", "dayId": "2026:sun", "start": "2026-07-12T12:00:00+02:00", "end": "2026-07-12T22:00:00+02:00", "provenance": "unverified" },
     { "id": "2026:coin-enfant-fri", "happeningId": "coin-enfant", "dayId": "2026:fri", "start": "2026-07-10T16:00:00+02:00", "end": "2026-07-10T18:30:00+02:00", "provenance": "confirmed" },
     { "id": "2026:coin-enfant-sat", "happeningId": "coin-enfant", "dayId": "2026:sat", "start": "2026-07-11T12:00:00+02:00", "end": "2026-07-11T18:00:00+02:00", "provenance": "confirmed" },
     { "id": "2026:coin-enfant-sun", "happeningId": "coin-enfant", "dayId": "2026:sun", "start": "2026-07-12T12:00:00+02:00", "end": "2026-07-12T18:00:00+02:00", "provenance": "confirmed" },

@@ -52,12 +52,14 @@ already live, whatever time the gates open.
 _Avoid_: State, mode, season, status
 
 **Slot**:
-One Happening occurring at one time, in one Lane, at one Venue, on one FestivalDay. The
-atomic unit of the programme: a Happening with three timeslots has three Slots. This is
-what a user favourites and what a reminder fires for. Every Slot behaves the same way,
-whether it is a two-hour concert or a seven-hour open activity — you can arrive late to
-either.
-_Avoid_: Event, session, occurrence, showing
+One Happening occurring at one time on one FestivalDay. The atomic unit of the programme: a
+Happening with three timeslots has three Slots. This is what a user favourites and what a
+reminder fires for. Every Slot behaves the same way, whether it is a two-hour concert or a
+seven-hour open activity — you can arrive late to either.
+**A Slot always has a start and an end.** There is no all-day Slot: a Happening that runs for
+the whole festival carries its day's opening hours, authored in the content and marked
+`unverified` because those instants were derived rather than published.
+_Avoid_: Event, session, occurrence, showing, all-day
 
 ### The things themselves
 

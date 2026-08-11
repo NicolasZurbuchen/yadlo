@@ -468,6 +468,28 @@ avoids symbols that mean "contains" in one country and "free from" in another.
 and "Allergènes sur demande auprès du stand" belong in *Bon à savoir*. A festival truck will
 not publish an allergen table but will answer if asked.
 
+**All-day Slots do not exist. Every Slot is timed.** Chasse au trésor was the only case: its
+poster names three days and deliberately gives no hours, because the clues sit around the site
+for the whole festival. The alternative — `start: null`, a "toute la journée" group pinned
+above the timeline, the convention every calendar app already uses — was rejected. It is the
+more honest encoding, but honesty in the data was not free: an untimed Slot still needs a
+deliberate answer for sorting, for what "15 minutes before" means, and for whether the live
+pill says *en cours*, so the special case survives the modelling and lands in three places
+instead of one.
+
+Writing the day's opening hours into the content answers all three at once, keeps a single row
+shape on the Programme, and removes an absent-time branch from every screen that formats a
+time. What it gives up is real and worth naming: the treasure hunt now sorts to the top of
+Friday as though it began at 16:00, and reads *en cours* at 01:30. Both are overstatements
+rather than errors — the clues genuinely are out there — and they are confined to one Happening
+out of thirty-eight.
+
+The derivation is recorded rather than hidden. Those three Slots carry
+`provenance: "unverified"`, which is the distinction the field exists to make: the days are
+confirmed, the hours are inferred. Leaving them `confirmed` would have asserted that the
+organisers published times they did not. `validate.js` rejects a null `start` or `end`, so the
+invariant lives in the content pipeline and the app never has to defend against it.
+
 ## Open
 
 **The accent colour.** `#14618F` is the primary, not an accent — the terminology in earlier
@@ -520,9 +542,9 @@ missing fact and it underpins the whole timeline.
 **Stand data of every kind.** No names, no menus, no prices, for food, drink, clothing or
 game stands. Every Wishlist feature is blocked on someone authoring this.
 
-**Activity hours.** "Chasse au trésor" and "Coin enfant" publish no hours, so no honest live
-state can be shown for them — most likely they simply run for the festival's opening hours,
-which resolves once the item above does.
+**Activity hours.** "Chasse au trésor" publishes none, and now carries its day's opening hours
+as `unverified` under the no-all-day rule above. If the association ever states real hours, the
+fix is a content edit and nothing in the app changes.
 
 **Artist detail.** The programme gives a name, a time, a stage and sometimes a genre. No
 biographies, no links, no photos beyond page decoration.

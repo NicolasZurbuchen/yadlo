@@ -125,6 +125,10 @@ year's saved festival.
 - **Times are written with their offset** (`2026-07-10T23:30:00+02:00`). A set running past
   midnight keeps the `dayId` of the day it started — Friday's 23:30 set ends at 01:30 and is
   still Friday's.
+- **Every Slot has a `start` and an `end`** — the validator rejects a null. There is no "all
+  day": a Happening that runs the whole festival gets its day's opening hours written out, with
+  `provenance: "unverified"`, because those instants were derived rather than published. This is
+  a content rule precisely so the app never has to format an absent time.
 - **A day's `start`/`end` are the festival's opening hours**, not a bounding box. Activities may
   legitimately fall outside them: the beach is public, so the morning yoga runs before the stands
   open. The validator warns, which is the point — next year one of those may be a mistake.

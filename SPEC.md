@@ -272,9 +272,17 @@ Terms are defined in CONTEXT.md and must be used in code.
 
 - `Happening` — sealed: `Artist` | `Activity` | `Stand`. Identity, description, images,
   detail payload.
-- `Slot` — one Happening at one time, in one Lane, at one Venue, on one FestivalDay. **The
-  atomic unit**: what is favourited, what a reminder fires for. Ids are **Edition-qualified**
-  (`2026:dubside-sat`) so a reused id cannot resurrect last year's saves.
+- `Slot` — one Happening at one time on one FestivalDay. **The atomic unit**: what is
+  favourited, what a reminder fires for. Ids are **Edition-qualified** (`2026:dubside-sat`) so a
+  reused id cannot resurrect last year's saves.
+- **Every Slot is timed — `start` and `end` are non-null.** "All day" is not a state the app
+  models. A Happening that runs for the whole festival, such as the treasure hunt whose poster
+  deliberately gives no hours, has its day's opening hours written into the content instead.
+  This keeps one shape on the Programme, one sort order, one reminder rule and one live-state
+  rule, and it deletes an absent-time branch from every path that formats a time. The cost is
+  that those instants are derived rather than published, which is recorded where the model
+  already records exactly that: their `provenance` is `unverified`, not `confirmed`. The
+  validator rejects a null `start` or `end`, so the invariant cannot be reintroduced by content.
 - `FestivalDay` — an explicit window with real start/end instants, **not a calendar date**.
   Friday runs to roughly 03:00 Saturday, so a 01:30 set belongs to Friday.
 - **A FestivalDay's start/end ARE the opening hours** — one pair of instants, not a window plus
@@ -590,19 +598,6 @@ showing *their* 2026 festival. Autumn, while the debrief is fresh, is the window
 
 Listed in full in DECISIONS.md § Open. The ones that will bite soonest:
 
-0. **Do all-day Slots really exist?** — undecided, and it is the one that changes the Programme's
-   shape. One Slot has no times at all: Chasse au trésor, whose poster names three days and
-   deliberately gives no hours because the clues sit around the site all festival. Two readings:
-   - **All-day is a real state.** A Slot may have `start: null`, the Programme grows a "toute la
-     journée" group after the timed rows, and every screen that formats a time must handle its
-     absence. Honest, but it is a second layout and a nullable time on every row.
-   - **All-day means the day's opening hours.** The Slot gets `16:00–02:00` like any other,
-     every row formats identically, and one shape disappears from the app. Slightly overstated —
-     nobody claims the treasure hunt starts on the dot — but nobody is misled either.
-
-   Kept as `null` for now. Deciding for opening hours would delete a branch from every
-   time-formatting path, which is why it is worth deciding **before** the Programme is built
-   rather than after.
 1. **The accent colour** `#E27BA6` versus `musique` `#DD3B7A` — a pink accent and a magenta
    kind-dot may read as one signal.
 2. **Whether sorting survives** in Programme (Heure / A–Z / Prix) — time is arguably the only

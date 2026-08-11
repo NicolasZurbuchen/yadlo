@@ -293,22 +293,22 @@ opposite handling, so they do not share a name.
 - **A logo per partner.** These already exist on `/partenaires`, as images with no text — the
   same reason the names had to be supplied by hand.
 
-## ✅ Resolved — every timed Slot now has an end
+## ✅ Resolved — every Slot now has a start and an end
 
 `Diffusion de match` runs **two hours** per screening: Friday 21:00–23:00, Saturday 23:00–01:00.
-The Saturday one is the third Slot in the file to cross midnight. Its price is confirmed free on
-the same rule as the other activities, and it is no longer `unverified`.
+The Saturday one crosses midnight. Its price is confirmed free on the same rule as the other
+activities, and it is no longer `unverified`.
 
-**Chasse au trésor is no longer a gap.** Its poster states the days — vendredi, samedi,
-dimanche — and deliberately gives no hours, because the clues sit around the festival for its
-whole duration. The three slots keep `start: null` and are now `provenance: "confirmed"`: the
-absence of times *is* the published fact, not missing data.
+**Chasse au trésor now carries its day's opening hours.** Its poster states the days —
+vendredi, samedi, dimanche — and deliberately gives no hours, because the clues sit around the
+festival for its whole duration. All-day Slots were rejected as a model (DECISIONS.md §
+Settled), so the three slots are written as 16:00–02:00, 12:00–03:00 and 12:00–22:00 with
+`provenance: "unverified"` — the days are confirmed, the hours are derived. The validator now
+**errors** on a null `start` or `end`, so the state cannot come back.
 
-**Whether the app should keep it that way is an open decision, not a content gap** — see
-SPEC.md § Open questions, item 0. The alternative is to treat "all day" as the day's opening
-hours, which removes a nullable time and a second layout from every screen that formats a time.
-The validator still warns on the three slots, correctly, because the app has to decide what to
-do with them rather than silently drop them.
+**Still worth asking the association**, because it would turn three inferred instants into
+published ones: *la chasse au trésor a-t-elle des horaires précis, ou tourne-t-elle pendant
+toute l'ouverture du festival ?* Either answer is a content edit; nothing in the app changes.
 
 ## ✅ Resolved — opening hours are real but soft, and the app says so
 
