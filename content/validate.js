@@ -27,13 +27,41 @@ const ts = s => (s ? new Date(s) : null);
 for (const [lid, l] of Object.entries(lanes))
   if (!sections.has(l.sectionId)) errors.push(`lane ${lid}: unknown sectionId ${l.sectionId}`);
 
+const LINK_TYPES = new Set(['spotify', 'instagram', 'website', 'soundcloud', 'bandcamp', 'facebook', 'youtube', 'appleMusic']);
+
 for (const [hid, h] of Object.entries(haps)) {
   if (!CATEGORIES.has(h.category)) errors.push(`happening ${hid}: unknown category ${h.category}`);
   if (!PROVENANCE.has(h.provenance)) errors.push(`happening ${hid}: bad provenance ${h.provenance}`);
   if (!['artist', 'activity', 'stand'].includes(h.kind)) errors.push(`happening ${hid}: bad kind ${h.kind}`);
   else if (!(h.kind in h)) errors.push(`happening ${hid}: kind=${h.kind} but no '${h.kind}' payload`);
-  if (!h.name || !h.name.fr) errors.push(`happening ${hid}: name has no 'fr'`);
+  // Content is French-only: every human-readable field is a plain string, never a {fr, en} object.
+  if (typeof h.name !== 'string' || !h.name) errors.push(`happening ${hid}: name must be a non-empty string`);
+  if ('description' in h && typeof h.description !== 'string')
+    errors.push(`happening ${hid}: description must be a string`);
+
+  const payload = h[h.kind];
+  if (payload && 'genres' in payload) {
+    if (!Array.isArray(payload.genres)) errors.push(`happening ${hid}: genres must be an array`);
+    else if (payload.genres.some(g => typeof g !== 'string')) errors.push(`happening ${hid}: genres must be strings`);
+  }
+  for (const l of (payload && payload.links) || []) {
+    if (!LINK_TYPES.has(l.type)) errors.push(`happening ${hid}: unknown link type ${l.type}`);
+    if (!/^https:\/\//.test(l.url)) errors.push(`happening ${hid}: link ${l.type} is not https`);
+    // A tracking param in a stored URL is someone's session, not part of the address.
+    if (/[?&]si=/.test(l.url)) errors.push(`happening ${hid}: link ${l.type} carries a ?si= tracking param`);
+  }
+  if (h.kind === 'artist' && (!payload.links || payload.links.length === 0))
+    warns.push(`artist ${hid}: no links - needs Spotify/Instagram from the association`);
 }
+
+// Nothing anywhere may still be a {fr, en} object.
+(function noLocalizedObjects(node, path) {
+  if (Array.isArray(node)) return node.forEach((v, i) => noLocalizedObjects(v, `${path}[${i}]`));
+  if (node && typeof node === 'object') {
+    if ('fr' in node) errors.push(`${path}: still a localized {fr,...} object - content is French-only`);
+    for (const [k, v] of Object.entries(node)) noLocalizedObjects(v, `${path}.${k}`);
+  }
+})(ed, '2026.json');
 
 const seen = new Set();
 for (const s of ed.slots) {
@@ -71,10 +99,14 @@ for (const d of ed.days) {
   if (ts(d.opening.start) < ts(d.start) || ts(d.opening.end) > ts(d.end))
     errors.push(`day ${d.id}: opening ${d.opening.start}->${d.opening.end} falls outside window ${d.start}->${d.end}`);
 }
+// A slot before opening is legitimate - the beach is public, so yoga runs before the gates.
+// The data has to say so on purpose; an unflagged one is a mistake.
 for (const s of ed.slots) {
   const d = days[s.dayId];
-  if (s.start && d && d.opening && ts(s.start) < ts(d.opening.start))
-    warns.push(`slot ${s.id}: starts ${s.start}, before the site opens at ${d.opening.start}`);
+  if (s.start && d && d.opening && ts(s.start) < ts(d.opening.start) && s.beforeOpening !== true)
+    errors.push(`slot ${s.id}: starts ${s.start}, before the site opens at ${d.opening.start} - set "beforeOpening": true if deliberate`);
+  if (s.beforeOpening === true && d && d.opening && ts(s.start) >= ts(d.opening.start))
+    warns.push(`slot ${s.id}: flagged beforeOpening but does not start before ${d.opening.start}`);
 }
 
 // One music stage: no two slots in the same lane at the same venue may overlap.

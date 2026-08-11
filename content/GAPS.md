@@ -28,20 +28,43 @@ authoritative.** See gap 6 for what that implies about the site.
 
 ---
 
-## 1. Two activities start before the site opens
+## ✅ Resolved — yoga before opening, and Léman Records
 
-`acro-yoga` runs Saturday 10:00–11:00 and `yoga-plage` Sunday 10:00–11:00, but the site opens at
-12:00 on both days. The validator flags both.
-
-Plausible as-is: the beach at Préverenges is public, so a morning yoga session two hours before
-the gates is perfectly coherent. But it could equally be a stale time on `/activites`.
-
-**The ask:** are the yoga sessions genuinely before opening, on the open beach — or should they
-read 12:00?
+`acro-yoga` (samedi 10:00) and `yoga-plage` (dimanche 10:00) genuinely run before the site opens
+at 12:00, on the public beach. Both slots now carry `"beforeOpening": true`, and the validator
+**errors** on any unflagged slot that starts before opening — so the deliberate case is declared
+in the data and the accidental case still gets caught.
 
 > This is why `FestivalDay.start/end` and `FestivalDay.opening` are separate fields. The window
-> has to stretch to 10:00 to contain the yoga; the opening hours stay at 12:00 because that is
-> what a visitor needs to be told.
+> stretches to 10:00 to contain the yoga; the opening hours stay at 12:00 because that is what a
+> visitor needs to be told.
+
+`Léman Records` is confirmed as the correct spelling.
+
+---
+
+## 1. Artist links — 10 of 13 still missing
+
+Each artist carries a `links` array (`spotify`, `instagram`, `website`, `soundcloud`,
+`bandcamp`, `facebook`). Three were found and verified:
+
+| Artist | Found |
+|---|---|
+| Diggin' | Spotify, Instagram, site, Facebook |
+| Albert Chinet | Spotify, Instagram |
+| Léman Records | Instagram, SoundCloud, Bandcamp, Facebook — no Spotify artist page; it is a label |
+
+**The other ten have nothing**: DJ ALF, CÆSURE, AMC, JAYJAY, Carlos Willenghton,
+Thalassothérapie, Dubside, Gautier Quenis, Refaire le monde, Tree House.
+
+They were searched for and deliberately left empty. Names like *AMC*, *JAYJAY*, *Tree House* and
+*Dubside* return confident-looking matches that are demonstrably **other acts** — a reggae
+project, a podcast, a sea-kayaker — and a wrong link on an artist's page is worse than no link.
+Local Swiss DJs are largely invisible to search.
+
+**The ask:** the association booked these artists and holds their press kits. One Spotify URL and
+one Instagram handle each is a five-minute job for whoever did the booking, and impossible to do
+reliably from outside.
 
 ## 2. Restauration — `stands` is still empty
 
@@ -114,18 +137,24 @@ Three whole artists missing and one on the wrong day is not drift, it is a page 
 working copy of the programme lives somewhere else — a spreadsheet, a Notion page, the Instagram
 drafts — that is the thing the app should be fed from.
 
-## 7. Spellings to confirm
+## 7. Spellings still unresolved
 
-The two sources disagree, and these become permanent ids and screen titles:
+`Léman Records` is settled. Three remain, and they become permanent ids and screen titles:
 
-| Website | Instagram | Used |
+| Website | Instagram | Currently used |
 |---|---|---|
-| GAUTHIER QUENIS | GAUTIER QUENIS | **Gautier Quenis** (Instagram) |
-| CARLOS WILLENGHTON | CARLOS WILLENGTON | **Carlos Willengton** (Instagram) |
-| LÉMAN RECORDS | LEMAN RECORD | **Léman Records** (website — the accent and plural look right for a label name) |
-| TREEHOUSE | TREE HOUSE | **Tree House** (Instagram) |
+| GAUTHIER QUENIS | GAUTIER QUENIS | **Gautier Quenis** |
+| CARLOS WILLENGHTON | CARLOS WILLENGTON | **Carlos Willenghton** — website, which now has two independent sightings |
+| TREEHOUSE | TREE HOUSE | **Tree House** |
 
-Artist names are the one thing that must be spelled the way the artist spells it.
+Artist names are the one thing that must be spelled the way the artist spells it. Confirming the
+links in gap 1 would settle all three at once, since the artist's own page is the authority.
+
+## 7b. Six artists have no description
+
+`DJ ALF`, `CÆSURE`, `JAYJAY`, `Gautier Quenis`, `Refaire le monde` and `Tree House` have no
+biography — they were never on `/artistes` at all. The other seven carry one, condensed from the
+website copy.
 
 ## 8. Times missing for programmed activities
 

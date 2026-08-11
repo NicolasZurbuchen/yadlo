@@ -391,8 +391,14 @@ figures. Accent `#E27BA6` is still open (see DECISIONS.md).
 
 - **Local only** in v1: countdown, per-slot reminders, end-of-slot warnings. Remote push sits
   behind a `Notifier` interface so FCM can arrive without a rewrite.
-- **French and English**, opening in device locale, falling back to **French**. UI strings
-  authored EN→FR; content authored FR→EN. Missing English content renders the French.
+- **Content is French-only.** Revised after authoring the real 2026 bundle: every human-readable
+  field in the content files is a plain string, not a `{fr, en}` object. The festival is French,
+  its programme is French, and carrying an `en` key that is empty on all 29 happenings bought
+  nothing but noise. `validate.js` fails the build if a localized object reappears.
+- **UI strings stay translatable** — they are Compose Multiplatform resources and independent of
+  the content bundle, so an English UI over French content remains possible without a schema
+  change. If content translation is ever wanted, it returns as a parallel field or a parallel
+  file, and that is a deliberate migration rather than something to carry speculatively now.
 
 ## Testing Decisions
 

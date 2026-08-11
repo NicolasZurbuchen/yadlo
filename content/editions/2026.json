@@ -1,10 +1,10 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "id": "2026",
   "year": 2026,
-  "name": { "fr": "Yadlo 2026" },
+  "name": "Yadlo 2026",
   "venue": {
-    "name": { "fr": "Plage de Préverenges" },
+    "name": "Plage de Préverenges",
     "address": "Avenue de la Plage 1, 1028 Préverenges, Suisse",
     "latitude": 46.5122,
     "longitude": 6.5347,
@@ -14,7 +14,7 @@
   "days": [
     {
       "id": "2026:fri",
-      "name": { "fr": "Vendredi", "en": "Friday" },
+      "name": "Vendredi",
       "date": "2026-07-10",
       "start": "2026-07-10T16:00:00+02:00",
       "end": "2026-07-11T02:00:00+02:00",
@@ -27,7 +27,7 @@
     },
     {
       "id": "2026:sat",
-      "name": { "fr": "Samedi", "en": "Saturday" },
+      "name": "Samedi",
       "date": "2026-07-11",
       "start": "2026-07-11T10:00:00+02:00",
       "end": "2026-07-12T03:00:00+02:00",
@@ -40,7 +40,7 @@
     },
     {
       "id": "2026:sun",
-      "name": { "fr": "Dimanche", "en": "Sunday" },
+      "name": "Dimanche",
       "date": "2026-07-12",
       "start": "2026-07-12T10:00:00+02:00",
       "end": "2026-07-12T22:00:00+02:00",
@@ -54,166 +54,188 @@
   ],
 
   "venues": [
-    { "id": "scene", "name": { "fr": "Scène" }, "description": { "fr": "L'unique scène musicale du festival." }, "provenance": "confirmed" },
-    { "id": "plage", "name": { "fr": "La plage", "en": "The beach" }, "provenance": "confirmed" },
-    { "id": "lac", "name": { "fr": "Le lac", "en": "The lake" }, "provenance": "confirmed" },
-    { "id": "village", "name": { "fr": "Le village", "en": "The village" }, "provenance": "unverified" },
-    { "id": "coin-enfant", "name": { "fr": "Coin enfant", "en": "Children's corner" }, "provenance": "confirmed" },
-    { "id": "totem", "name": { "fr": "Le Totem" }, "description": { "fr": "Mur de grimpe pour enfants." }, "provenance": "confirmed" }
+    { "id": "scene", "name": "Scène", "description": "L'unique scène musicale du festival.", "provenance": "confirmed" },
+    { "id": "plage", "name": "La plage", "provenance": "confirmed" },
+    { "id": "lac", "name": "Le lac", "provenance": "confirmed" },
+    { "id": "village", "name": "Le village", "provenance": "unverified" },
+    { "id": "coin-enfant", "name": "Coin enfant", "provenance": "confirmed" },
+    { "id": "totem", "name": "Le Totem", "description": "Mur de grimpe pour enfants.", "provenance": "confirmed" }
   ],
 
   "sections": [
-    { "id": "musique", "name": { "fr": "Musique", "en": "Music" }, "order": 1 },
-    { "id": "eau", "name": { "fr": "Sur l'eau", "en": "On the water" }, "order": 2 },
-    { "id": "terre", "name": { "fr": "Sur terre", "en": "On land" }, "order": 3 },
-    { "id": "enfants", "name": { "fr": "Enfants", "en": "Children" }, "order": 4 },
-    { "id": "restauration", "name": { "fr": "Restauration", "en": "Food & drink" }, "order": 5 }
+    { "id": "musique", "name": "Musique", "order": 1 },
+    { "id": "eau", "name": "Sur l'eau", "order": 2 },
+    { "id": "terre", "name": "Sur terre", "order": 3 },
+    { "id": "enfants", "name": "Enfants", "order": 4 },
+    { "id": "restauration", "name": "Restauration", "order": 5 }
   ],
 
   "lanes": [
-    { "id": "musique", "name": { "fr": "Musique", "en": "Music" }, "sectionId": "musique", "order": 1 },
-    { "id": "silent-party", "name": { "fr": "Silent Party" }, "sectionId": "musique", "order": 2 },
-    { "id": "gladiasup", "name": { "fr": "GladiaSUP" }, "sectionId": "eau", "order": 1 },
-    { "id": "sup-yoga", "name": { "fr": "SUP Yoga" }, "sectionId": "eau", "order": 2 },
-    { "id": "trampoline", "name": { "fr": "Trampoline flottant" }, "sectionId": "eau", "order": 3 },
-    { "id": "airtrack", "name": { "fr": "Air Track" }, "sectionId": "eau", "order": 4 },
-    { "id": "yoga-plage", "name": { "fr": "Yoga sur la plage" }, "sectionId": "eau", "order": 5 },
-    { "id": "jeux", "name": { "fr": "Jeux" }, "sectionId": "terre", "order": 1 },
-    { "id": "escape", "name": { "fr": "Escape games" }, "sectionId": "terre", "order": 2 },
-    { "id": "danse", "name": { "fr": "Danse" }, "sectionId": "terre", "order": 3 },
-    { "id": "slackline", "name": { "fr": "Slackline" }, "sectionId": "terre", "order": 4 },
-    { "id": "ecran", "name": { "fr": "Grand écran" }, "sectionId": "terre", "order": 5 },
-    { "id": "coin-enfant", "name": { "fr": "Coin enfant" }, "sectionId": "enfants", "order": 1 }
+    { "id": "musique", "name": "Musique", "sectionId": "musique", "order": 1 },
+    { "id": "silent-party", "name": "Silent Party", "sectionId": "musique", "order": 2 },
+    { "id": "gladiasup", "name": "GladiaSUP", "sectionId": "eau", "order": 1 },
+    { "id": "sup-yoga", "name": "SUP Yoga", "sectionId": "eau", "order": 2 },
+    { "id": "trampoline", "name": "Trampoline flottant", "sectionId": "eau", "order": 3 },
+    { "id": "airtrack", "name": "Air Track", "sectionId": "eau", "order": 4 },
+    { "id": "yoga-plage", "name": "Yoga sur la plage", "sectionId": "eau", "order": 5 },
+    { "id": "jeux", "name": "Jeux", "sectionId": "terre", "order": 1 },
+    { "id": "escape", "name": "Escape games", "sectionId": "terre", "order": 2 },
+    { "id": "danse", "name": "Danse", "sectionId": "terre", "order": 3 },
+    { "id": "slackline", "name": "Slackline", "sectionId": "terre", "order": 4 },
+    { "id": "ecran", "name": "Grand écran", "sectionId": "terre", "order": 5 },
+    { "id": "coin-enfant", "name": "Coin enfant", "sectionId": "enfants", "order": 1 }
   ],
 
   "happenings": [
     {
       "id": "dj-alf",
       "kind": "artist",
-      "name": { "fr": "DJ ALF" },
+      "name": "DJ ALF",
       "category": "musique",
       "provenance": "confirmed",
-      "artist": { "genre": { "fr": "Commercial, afro house, house'n'disco" }, "links": [] }
+      "artist": { "genres": ["Commercial", "Afro house", "House'n'disco"], "links": [] }
     },
     {
       "id": "caesure",
       "kind": "artist",
-      "name": { "fr": "CÆSURE" },
+      "name": "CÆSURE",
       "category": "musique",
       "provenance": "confirmed",
-      "artist": { "genre": { "fr": "Guitare acoustique et prod électro" }, "links": [] }
+      "artist": { "genres": ["Guitare acoustique", "Prod électro"], "links": [] }
     },
     {
       "id": "diggin",
       "kind": "artist",
-      "name": { "fr": "Diggin'" },
+      "name": "Diggin'",
       "category": "musique",
-      "description": { "fr": "Groupe lausannois entre influences rétro et modernité lo-fi." },
+      "description": "Groupe d'indie-soul né à Lausanne en 2020, porté par Dany Cerone à la guitare et Julien Portenguen au chant, en collectif évolutif de quatre à six musiciens — avec notamment Gabriel Scheder à la batterie et Simon Palluel à la basse. Influencé par Nick Hakim, Skinshape et Yellow Days, le groupe mêle influences rétro et modernité lo-fi. Après une série d'EP en 2023 et 2024, le premier album « New, Again » marque un tournant en 2025 : artiste Radar RTS, deux années consécutives au Cully Jazz et au Montreux Jazz. Le deuxième album « Viewpoints » vient de sortir, accompagné d'une tournée 2026.",
       "provenance": "confirmed",
-      "artist": { "genre": { "fr": "Indie-soul" }, "links": [] }
+      "artist": {
+        "genres": ["Indie-soul"],
+        "links": [
+          { "type": "spotify", "url": "https://open.spotify.com/artist/5t2dGRWkWoQ3z5NA2T4kDw" },
+          { "type": "instagram", "url": "https://www.instagram.com/digginthesoul/" },
+          { "type": "website", "url": "https://digging.ch/" },
+          { "type": "facebook", "url": "https://www.facebook.com/digginlausanne" }
+        ]
+      }
     },
     {
       "id": "amc",
       "kind": "artist",
-      "name": { "fr": "AMC" },
+      "name": "AMC",
       "category": "musique",
-      "description": { "fr": "Premier disque sorti en 2024 sur Nervous Records." },
+      "description": "Son style a rapidement capté l'attention de la scène, avec le soutien d'artistes reconnus comme Mau P ou Cloonee. En 2024, il sort son premier titre sur le label Nervous Records, étape majeure de son ascension dans la musique électronique.",
       "provenance": "confirmed",
-      "artist": { "genre": { "fr": "Electro" }, "links": [] }
+      "artist": { "genres": ["Electro"], "links": [] }
     },
     {
       "id": "jayjay",
       "kind": "artist",
-      "name": { "fr": "JAYJAY" },
+      "name": "JAYJAY",
       "category": "musique",
       "provenance": "confirmed",
-      "artist": { "genre": { "fr": "House" }, "links": [] }
+      "artist": { "genres": ["House"], "links": [] }
     },
     {
-      "id": "carlos-willengton",
+      "id": "carlos-willenghton",
       "kind": "artist",
-      "name": { "fr": "Carlos Willengton" },
+      "name": "Carlos Willenghton",
       "category": "musique",
-      "description": { "fr": "DJ professionnel, sets « 100 % vinyles »." },
+      "description": "Il a joué ses premiers sets à l'époque où seuls les vinyles tournaient. Sa collection s'est étoffée en même temps que son métier, jusqu'à devenir DJ professionnel. Il se produit aujourd'hui dans le monde entier avec des sets 100 % vinyles et une maîtrise absolue des platines.",
       "provenance": "confirmed",
-      "artist": { "genre": { "fr": "House et disco" }, "links": [] }
+      "artist": { "genres": ["House", "Disco"], "links": [] }
     },
     {
       "id": "thalassotherapie",
       "kind": "artist",
-      "name": { "fr": "Thalassothérapie" },
+      "name": "Thalassothérapie",
       "category": "musique",
-      "description": { "fr": "DJ set aux couleurs exotiques." },
+      "description": "Une odyssée musicale qui traverse les décennies et les frontières, entre reprises inattendues et trésors cachés venus des quatre coins du globe. Parfois doux et relaxant, parfois un peu fou : un mix éclectique qui surprend à chaque instant.",
       "provenance": "confirmed",
-      "artist": { "genre": { "fr": "Tropical chill" }, "links": [] }
+      "artist": { "genres": ["Tropical chill"], "links": [] }
     },
     {
       "id": "dubside",
       "kind": "artist",
-      "name": { "fr": "Dubside" },
+      "name": "Dubside",
       "category": "musique",
-      "description": { "fr": "Collectif de trois amis d'enfance, en back to back à trois." },
+      "description": "Collectif de trois amis d'enfance originaires de Préverenges et Denges. Portés depuis toujours par une passion commune pour la musique électronique et sa culture, ils ont construit au fil des années une identité sonore forte et authentique, en mixant à deux ou à trois derrière les platines, chacun son tour — une approche rare qui les distingue des formats B2B classiques.",
       "provenance": "confirmed",
-      "artist": { "genre": { "fr": "Techno-house" }, "links": [] }
+      "artist": { "genres": ["Techno-house"], "links": [] }
     },
     {
       "id": "gautier-quenis",
       "kind": "artist",
-      "name": { "fr": "Gautier Quenis" },
+      "name": "Gautier Quenis",
       "category": "musique",
       "provenance": "confirmed",
-      "artist": { "genre": { "fr": "Années 2000" }, "links": [] }
+      "artist": { "genres": ["Années 2000"], "links": [] }
     },
     {
       "id": "refaire-le-monde",
       "kind": "artist",
-      "name": { "fr": "Refaire le monde" },
+      "name": "Refaire le monde",
       "category": "musique",
       "provenance": "confirmed",
-      "artist": { "genre": { "fr": "Indie pop et alt rock" }, "links": [] }
+      "artist": { "genres": ["Indie pop", "Alt rock"], "links": [] }
     },
     {
       "id": "albert-chinet",
       "kind": "artist",
-      "name": { "fr": "Albert Chinet" },
+      "name": "Albert Chinet",
       "category": "musique",
-      "description": { "fr": "En formation complète : batterie, guitares électrique et acoustique, basse et synthés." },
+      "description": "Après avoir performé en solo, puis en trio pendant des années, il propose désormais une formation à quatre : batterie, guitares électrique et acoustique, basse et synthés. Entre dérision et mise à nu, Albert Chinet ne choisit pas — il offre un spectacle total, humain et profondément vibrant.",
       "provenance": "confirmed",
-      "artist": { "genre": { "fr": "Chanson française et pop moderne" }, "links": [] }
+      "artist": {
+        "genres": ["Chanson française", "Pop moderne"],
+        "links": [
+          { "type": "spotify", "url": "https://open.spotify.com/artist/0VW4h2yrbFtLUQl96TcLCm" },
+          { "type": "instagram", "url": "https://www.instagram.com/albert.chinet/" }
+        ]
+      }
     },
     {
       "id": "leman-records",
       "kind": "artist",
-      "name": { "fr": "Léman Records" },
+      "name": "Léman Records",
       "category": "musique",
-      "description": { "fr": "Label lancé en 2023." },
+      "description": "Label lancé en 2023 par l'ancien collectif Limited Brothers, actif depuis plus de dix ans. Avant tout des amis de longue date réunis par le même goût des grooves rares et des disques poussiéreux. Leurs résidences ont accueilli des sélectionneurs acclamés — Mark Grusane, Volcov, Alexander Nut, Fredfades, Alton Miller — et leur sélection de joyaux soulful et de sons plus profonds apporte des vibrations lumineuses sur le dancefloor.",
       "provenance": "confirmed",
-      "artist": { "genre": { "fr": "Electro" }, "links": [] }
+      "artist": {
+        "genres": ["Electro"],
+        "links": [
+          { "type": "instagram", "url": "https://www.instagram.com/leman.records/" },
+          { "type": "soundcloud", "url": "https://soundcloud.com/lemanrecords" },
+          { "type": "bandcamp", "url": "https://lmanrecords.bandcamp.com/" },
+          { "type": "facebook", "url": "https://www.facebook.com/lemanrecords/" }
+        ]
+      }
     },
     {
       "id": "treehouse",
       "kind": "artist",
-      "name": { "fr": "Tree House" },
+      "name": "Tree House",
       "category": "musique",
       "provenance": "confirmed",
-      "artist": { "genre": { "fr": "House et disco" }, "links": [] }
+      "artist": { "genres": ["House", "Disco"], "links": [] }
     },
 
     {
       "id": "silent-party",
       "kind": "activity",
-      "name": { "fr": "Silent Party" },
+      "name": "Silent Party",
       "category": "silent",
-      "description": { "fr": "Trois canaux musicaux — vert, bleu, rouge — un seul dancefloor et des centaines de casques illuminés." },
+      "description": "Trois canaux musicaux — vert, bleu, rouge — un seul dancefloor et des centaines de casques illuminés.",
       "provenance": "confirmed",
       "activity": {
-        "genre": { "fr": "All style" },
+        "genres": ["All style"],
         "price": {
           "tiers": [
-            { "label": { "fr": "Adulte", "en": "Adult" }, "amount": 25, "currency": "CHF" },
-            { "label": { "fr": "Moins de 16 ans", "en": "Under 16" }, "amount": 15, "currency": "CHF" }
+            { "label": "Adulte", "amount": 25, "currency": "CHF" },
+            { "label": "Moins de 16 ans", "amount": 15, "currency": "CHF" }
           ],
-          "deposit": { "amount": 50, "currency": "CHF", "note": { "fr": "Caution casque, préautorisée à la réservation et débitée à la remise du casque." } },
+          "deposit": { "amount": 50, "currency": "CHF", "note": "Caution casque, préautorisée à la réservation et débitée à la remise du casque." },
           "provenance": "confirmed"
         },
         "bookingRequired": true,
@@ -224,99 +246,99 @@
     {
       "id": "coin-enfant",
       "kind": "activity",
-      "name": { "fr": "Coin enfant", "en": "Children's corner" },
+      "name": "Coin enfant",
       "category": "enfants",
-      "description": { "fr": "Espace dédié au jeu, au dessin, au bricolage et au maquillage, avec un mur de grimpe miniature." },
+      "description": "Espace dédié au jeu, au dessin, au bricolage et au maquillage, avec un mur de grimpe miniature.",
       "provenance": "confirmed",
       "activity": { "price": { "free": true, "provenance": "unverified" }, "bookingRequired": false, "equipmentProvided": true }
     },
     {
       "id": "jeux-de-societe",
       "kind": "activity",
-      "name": { "fr": "Jeux de société", "en": "Board games" },
+      "name": "Jeux de société",
       "category": "terre",
-      "description": { "fr": "Jeux prêtés et règles expliquées par Ch'piil." },
+      "description": "Jeux prêtés et règles expliquées par Ch'piil.",
       "provenance": "confirmed",
       "activity": { "bookingRequired": false, "equipmentProvided": true }
     },
     {
       "id": "chasse-au-tresor",
       "kind": "activity",
-      "name": { "fr": "Chasse au trésor", "en": "Treasure hunt" },
+      "name": "Chasse au trésor",
       "category": "terre",
-      "description": { "fr": "Un parcours d'indices à travers le festival, ponctué de défis." },
+      "description": "Un parcours d'indices à travers le festival, ponctué de défis.",
       "provenance": "confirmed",
-      "activity": { "bookingRequired": false, "suitability": { "fr": "Familles et groupes" } }
+      "activity": { "bookingRequired": false, "suitability": "Familles et groupes" }
     },
     {
       "id": "mini-escape-game",
       "kind": "activity",
-      "name": { "fr": "Mini Escape Game" },
+      "name": "Mini Escape Game",
       "category": "terre",
-      "description": { "fr": "Quatre escape games différents, en équipe." },
+      "description": "Quatre escape games différents, en équipe.",
       "provenance": "confirmed",
       "activity": {
-        "price": { "amount": 10, "currency": "CHF", "per": { "fr": "équipe", "en": "team" }, "provenance": "confirmed" },
+        "price": { "amount": 10, "currency": "CHF", "per": "équipe", "provenance": "confirmed" },
         "equipmentProvided": true
       }
     },
     {
       "id": "tournoi-uno",
       "kind": "activity",
-      "name": { "fr": "Tournoi de UNO", "en": "UNO tournament" },
+      "name": "Tournoi de UNO",
       "category": "terre",
-      "description": { "fr": "Tournoi de UNO ouvert à tous." },
+      "description": "Tournoi de UNO ouvert à tous.",
       "provenance": "confirmed",
       "activity": { "bookingRequired": false, "equipmentProvided": true }
     },
     {
       "id": "diffusion-match",
       "kind": "activity",
-      "name": { "fr": "Diffusion de match", "en": "Match screening" },
+      "name": "Diffusion de match",
       "category": "terre",
-      "description": { "fr": "Diffusion sur grand écran, sans le son." },
+      "description": "Diffusion sur grand écran, sans le son.",
       "provenance": "confirmed",
       "activity": { "price": { "free": true, "provenance": "unverified" }, "bookingRequired": false }
     },
     {
       "id": "salsa-bachata",
       "kind": "activity",
-      "name": { "fr": "Initiation salsa et bachata", "en": "Salsa & bachata taster" },
+      "name": "Initiation salsa et bachata",
       "category": "terre",
-      "description": { "fr": "Une heure de cours avec l'école AliaSalsa, puis danse libre." },
+      "description": "Une heure de cours avec l'école AliaSalsa, puis danse libre.",
       "provenance": "confirmed",
       "activity": { "equipmentProvided": false }
     },
     {
       "id": "slackline",
       "kind": "activity",
-      "name": { "fr": "Initiation slackline", "en": "Slackline taster" },
+      "name": "Initiation slackline",
       "category": "terre",
-      "description": { "fr": "Slackline et parcours d'obstacles : concentration, coordination et persévérance." },
+      "description": "Slackline et parcours d'obstacles : concentration, coordination et persévérance.",
       "provenance": "confirmed",
       "activity": { "bookingRequired": false, "equipmentProvided": true }
     },
     {
       "id": "tresor-black-sam",
       "kind": "activity",
-      "name": { "fr": "Le trésor de Black Sam" },
+      "name": "Le trésor de Black Sam",
       "category": "terre",
-      "description": { "fr": "Aventure de pirates en équipe : résoudre les énigmes pour ouvrir le coffre." },
+      "description": "Aventure de pirates en équipe : résoudre les énigmes pour ouvrir le coffre.",
       "provenance": "confirmed",
       "activity": {
-        "price": { "amount": 10, "currency": "CHF", "per": { "fr": "équipe", "en": "team" }, "provenance": "confirmed" },
+        "price": { "amount": 10, "currency": "CHF", "per": "équipe", "provenance": "confirmed" },
         "equipmentProvided": true
       }
     },
     {
       "id": "gladiasup",
       "kind": "activity",
-      "name": { "fr": "GladiaSUP" },
+      "name": "GladiaSUP",
       "category": "eau",
-      "description": { "fr": "Parcours d'obstacles en stand-up paddle, contre vos amis ou contre le chrono." },
+      "description": "Parcours d'obstacles en stand-up paddle, contre vos amis ou contre le chrono.",
       "provenance": "confirmed",
       "activity": {
-        "price": { "amount": 5, "currency": "CHF", "per": { "fr": "personne", "en": "person" }, "provenance": "confirmed" },
+        "price": { "amount": 5, "currency": "CHF", "per": "personne", "provenance": "confirmed" },
         "bookingRequired": false,
         "equipmentProvided": true
       }
@@ -324,34 +346,34 @@
     {
       "id": "sup-yoga",
       "kind": "activity",
-      "name": { "fr": "SUP Yoga" },
+      "name": "SUP Yoga",
       "category": "eau",
-      "description": { "fr": "Une heure de yoga sur stand-up paddle, encadrée par un coach." },
+      "description": "Une heure de yoga sur stand-up paddle, encadrée par un coach.",
       "provenance": "confirmed",
       "activity": {
-        "price": { "amount": 10, "currency": "CHF", "per": { "fr": "personne", "en": "person" }, "provenance": "confirmed" },
+        "price": { "amount": 10, "currency": "CHF", "per": "personne", "provenance": "confirmed" },
         "equipmentProvided": true,
-        "suitability": { "fr": "Une expérience préalable du SUP est un plus." }
+        "suitability": "Une expérience préalable du SUP est un plus."
       }
     },
     {
       "id": "airtrack",
       "kind": "activity",
-      "name": { "fr": "Air Track sur la plage", "en": "Beach air track" },
+      "name": "Air Track sur la plage",
       "category": "eau",
-      "description": { "fr": "Tapis gonflable de six mètres pour enchaîner les figures." },
+      "description": "Tapis gonflable de six mètres pour enchaîner les figures.",
       "provenance": "confirmed",
       "activity": { "price": { "free": true, "provenance": "confirmed" }, "bookingRequired": false, "equipmentProvided": true }
     },
     {
       "id": "trampoline-flottant",
       "kind": "activity",
-      "name": { "fr": "Trampoline flottant", "en": "Floating trampoline" },
+      "name": "Trampoline flottant",
       "category": "eau",
-      "description": { "fr": "Trampoline de quatre mètres de diamètre sur l'eau, jusqu'à trois personnes à la fois." },
+      "description": "Trampoline de quatre mètres de diamètre sur l'eau, jusqu'à trois personnes à la fois.",
       "provenance": "confirmed",
       "activity": {
-        "price": { "amount": 5, "currency": "CHF", "per": { "fr": "personne", "en": "person" }, "provenance": "confirmed" },
+        "price": { "amount": 5, "currency": "CHF", "per": "personne", "provenance": "confirmed" },
         "bookingRequired": false,
         "equipmentProvided": true
       }
@@ -359,20 +381,20 @@
     {
       "id": "yoga-plage",
       "kind": "activity",
-      "name": { "fr": "Yoga" },
+      "name": "Yoga",
       "category": "eau",
-      "description": { "fr": "Séance matinale sur la plage, tous niveaux, sans inscription." },
+      "description": "Séance matinale sur la plage, tous niveaux, sans inscription.",
       "provenance": "confirmed",
-      "activity": { "price": { "free": true, "provenance": "confirmed" }, "bookingRequired": false, "equipmentProvided": false, "suitability": { "fr": "Apportez votre tapis." } }
+      "activity": { "price": { "free": true, "provenance": "confirmed" }, "bookingRequired": false, "equipmentProvided": false, "suitability": "Apportez votre tapis." }
     },
     {
       "id": "acro-yoga",
       "kind": "activity",
-      "name": { "fr": "Acro-yoga" },
+      "name": "Acro-yoga",
       "category": "eau",
-      "description": { "fr": "Séance matinale sur la plage, tous niveaux, sans inscription et sans partenaire imposé." },
+      "description": "Séance matinale sur la plage, tous niveaux, sans inscription et sans partenaire imposé.",
       "provenance": "confirmed",
-      "activity": { "price": { "free": true, "provenance": "confirmed" }, "bookingRequired": false, "equipmentProvided": false, "suitability": { "fr": "Apportez votre tapis." } }
+      "activity": { "price": { "free": true, "provenance": "confirmed" }, "bookingRequired": false, "equipmentProvided": false, "suitability": "Apportez votre tapis." }
     }
   ],
 
@@ -382,7 +404,7 @@
     { "id": "2026:diggin-fri", "happeningId": "diggin", "dayId": "2026:fri", "laneId": "musique", "venueId": "scene", "start": "2026-07-10T20:00:00+02:00", "end": "2026-07-10T21:00:00+02:00", "provenance": "confirmed" },
     { "id": "2026:amc-fri", "happeningId": "amc", "dayId": "2026:fri", "laneId": "musique", "venueId": "scene", "start": "2026-07-10T21:30:00+02:00", "end": "2026-07-10T22:30:00+02:00", "provenance": "confirmed" },
     { "id": "2026:jayjay-fri", "happeningId": "jayjay", "dayId": "2026:fri", "laneId": "musique", "venueId": "scene", "start": "2026-07-10T22:30:00+02:00", "end": "2026-07-10T23:30:00+02:00", "provenance": "confirmed" },
-    { "id": "2026:carlos-willengton-fri", "happeningId": "carlos-willengton", "dayId": "2026:fri", "laneId": "musique", "venueId": "scene", "start": "2026-07-10T23:30:00+02:00", "end": "2026-07-11T01:30:00+02:00", "provenance": "confirmed" },
+    { "id": "2026:carlos-willenghton-fri", "happeningId": "carlos-willenghton", "dayId": "2026:fri", "laneId": "musique", "venueId": "scene", "start": "2026-07-10T23:30:00+02:00", "end": "2026-07-11T01:30:00+02:00", "provenance": "confirmed" },
 
     { "id": "2026:thalassotherapie-sat", "happeningId": "thalassotherapie", "dayId": "2026:sat", "laneId": "musique", "venueId": "scene", "start": "2026-07-11T14:00:00+02:00", "end": "2026-07-11T16:00:00+02:00", "provenance": "confirmed" },
     { "id": "2026:dubside-sat", "happeningId": "dubside", "dayId": "2026:sat", "laneId": "musique", "venueId": "scene", "start": "2026-07-11T16:00:00+02:00", "end": "2026-07-11T18:00:00+02:00", "provenance": "confirmed" },
@@ -414,8 +436,8 @@
     { "id": "2026:trampoline-flottant-fri", "happeningId": "trampoline-flottant", "dayId": "2026:fri", "laneId": "trampoline", "venueId": "lac", "start": "2026-07-10T16:00:00+02:00", "end": "2026-07-10T19:00:00+02:00", "provenance": "confirmed" },
     { "id": "2026:trampoline-flottant-sat", "happeningId": "trampoline-flottant", "dayId": "2026:sat", "laneId": "trampoline", "venueId": "lac", "start": "2026-07-11T12:00:00+02:00", "end": "2026-07-11T19:00:00+02:00", "provenance": "confirmed" },
     { "id": "2026:trampoline-flottant-sun", "happeningId": "trampoline-flottant", "dayId": "2026:sun", "laneId": "trampoline", "venueId": "lac", "start": "2026-07-12T12:00:00+02:00", "end": "2026-07-12T19:00:00+02:00", "provenance": "confirmed" },
-    { "id": "2026:acro-yoga-sat", "happeningId": "acro-yoga", "dayId": "2026:sat", "laneId": "yoga-plage", "venueId": "plage", "start": "2026-07-11T10:00:00+02:00", "end": "2026-07-11T11:00:00+02:00", "provenance": "confirmed" },
-    { "id": "2026:yoga-plage-sun", "happeningId": "yoga-plage", "dayId": "2026:sun", "laneId": "yoga-plage", "venueId": "plage", "start": "2026-07-12T10:00:00+02:00", "end": "2026-07-12T11:00:00+02:00", "provenance": "confirmed" },
+    { "id": "2026:acro-yoga-sat", "happeningId": "acro-yoga", "dayId": "2026:sat", "laneId": "yoga-plage", "venueId": "plage", "start": "2026-07-11T10:00:00+02:00", "end": "2026-07-11T11:00:00+02:00", "beforeOpening": true, "provenance": "confirmed" },
+    { "id": "2026:yoga-plage-sun", "happeningId": "yoga-plage", "dayId": "2026:sun", "laneId": "yoga-plage", "venueId": "plage", "start": "2026-07-12T10:00:00+02:00", "end": "2026-07-12T11:00:00+02:00", "beforeOpening": true, "provenance": "confirmed" },
 
     { "id": "2026:chasse-au-tresor-fri", "happeningId": "chasse-au-tresor", "dayId": "2026:fri", "laneId": "jeux", "venueId": null, "start": null, "end": null, "provenance": "unverified" },
     { "id": "2026:chasse-au-tresor-sat", "happeningId": "chasse-au-tresor", "dayId": "2026:sat", "laneId": "jeux", "venueId": null, "start": null, "end": null, "provenance": "unverified" },
@@ -428,17 +450,17 @@
   "stands": [],
 
   "partners": [
-    { "id": "sponsors-generaux", "name": { "fr": "Sponsors généraux" }, "order": 1, "members": [], "provenance": "confirmed" },
-    { "id": "cygnes-or", "name": { "fr": "Sponsors cygnes d'or" }, "order": 2, "members": [], "provenance": "confirmed" },
-    { "id": "cygnes-argent", "name": { "fr": "Sponsors cygnes d'argent" }, "order": 3, "members": [], "provenance": "confirmed" },
-    { "id": "cygnes-bronze", "name": { "fr": "Sponsors cygnes de bronze" }, "order": 4, "members": [], "provenance": "confirmed" },
-    { "id": "partenaires", "name": { "fr": "Partenaires" }, "order": 5, "members": [], "provenance": "confirmed" }
+    { "id": "sponsors-generaux", "name": "Sponsors généraux", "order": 1, "members": [], "provenance": "confirmed" },
+    { "id": "cygnes-or", "name": "Sponsors cygnes d'or", "order": 2, "members": [], "provenance": "confirmed" },
+    { "id": "cygnes-argent", "name": "Sponsors cygnes d'argent", "order": 3, "members": [], "provenance": "confirmed" },
+    { "id": "cygnes-bronze", "name": "Sponsors cygnes de bronze", "order": 4, "members": [], "provenance": "confirmed" },
+    { "id": "partenaires", "name": "Partenaires", "order": 5, "members": [], "provenance": "confirmed" }
   ],
 
   "figures": [
-    { "id": "visiteurs", "value": "6000", "label": { "fr": "visiteurs", "en": "visitors" }, "provenance": "confirmed" },
-    { "id": "heures-musique", "value": "45", "label": { "fr": "heures de DJ sets et concerts", "en": "hours of DJ sets and live music" }, "provenance": "confirmed" },
-    { "id": "litres-biere", "value": "3200", "label": { "fr": "litres de bière", "en": "litres of beer" }, "provenance": "confirmed" },
-    { "id": "benevoles", "value": "160", "label": { "fr": "bénévoles", "en": "volunteers" }, "provenance": "confirmed" }
+    { "id": "visiteurs", "value": "6000", "label": "visiteurs", "provenance": "confirmed" },
+    { "id": "heures-musique", "value": "45", "label": "heures de DJ sets et concerts", "provenance": "confirmed" },
+    { "id": "litres-biere", "value": "3200", "label": "litres de bière", "provenance": "confirmed" },
+    { "id": "benevoles", "value": "160", "label": "bénévoles", "provenance": "confirmed" }
   ]
 }
