@@ -180,18 +180,28 @@ are built, since they should probably cross-link:
 > The page renders all three cygne tiers as "800€", which is almost certainly a copy-paste error
 > rather than three tiers at one price. Worth confirming before it is reproduced in the app.
 
-## 5. Prices not stated
+## ✅ Resolved — activity prices
 
-Confirmed: Mini Escape Game and Trésor de Black Sam CHF 10/équipe · GladiaSUP and Trampoline
-flottant CHF 5/personne · SUP Yoga CHF 10/personne · Air Track, Yoga, Acro-yoga free · Silent
-Party CHF 25 adulte / CHF 15 moins de 16 ans, caution casque CHF 50.
+**Every activity now has a price.** The association's activity posters carry a price when there
+is one and nothing when there is not, so a poster with no price is a statement that the activity
+is free, not an omission. That converted the last five unknowns into confirmed free: Jeux de
+société, Chasse au trésor, Tournoi de UNO, Salsa et bachata, Slackline.
 
-**Missing:** Jeux de société, Chasse au trésor, Tournoi de UNO, Initiation salsa et bachata,
-Initiation slackline. Almost certainly free, but the app should not assert it — "free" and "we
-don't know" are different claims. `Coin enfant` and `Diffusion de match` are marked free with
-`provenance: "unverified"` for the same reason.
+| | |
+|---|---|
+| Free | Coin enfants · Mur de grimpe · Jeux de société · Chasse au trésor · Tournoi de UNO · Salsa et bachata · Slackline · Air Track · Yoga · Acro-yoga |
+| CHF 5 / personne | GladiaSUP · Trampoline flottant |
+| CHF 10 / personne | SUP Yoga |
+| CHF 10 / équipe | Mini Escape Game · Trésor de Black Sam |
+| CHF 25 / 15 | Silent Party, plus a CHF 50 headset deposit |
 
-**Also: is entry itself free?** Nothing on the site says so either way.
+**One left:** `Diffusion de match` is marked free with `provenance: "unverified"` — it has no
+poster of its own, so the rule above cannot be applied to it.
+
+## 5. Is entry to the festival free?
+
+Nothing on the site or in any post says so either way, and it is the single most-asked question
+about any festival. Everything inside is now priced; the gate is not.
 
 ## 6. The website's artist page is stale — how stale?
 
@@ -248,13 +258,17 @@ opposite handling, so they do not share a name.
 
 ## 8. Times missing for programmed activities
 
-| Activity | Missing |
-|---|---|
-| Chasse au trésor | Runs "vendredi à dimanche" with no hours at all — three slots with `start: null` |
-| Diffusion de match | Start times only (Fri 21:00, Sat 23:00), no end time |
+Only `Diffusion de match` now: start times (Fri 21:00, Sat 23:00) but no end.
 
-Open-ended slots are legitimate in the model, but a slot with neither start nor end cannot be
-placed on the Programme at all.
+**Chasse au trésor is no longer a gap.** Its poster states the days — vendredi, samedi,
+dimanche — and deliberately gives no hours, because the clues sit around the festival for its
+whole duration. The three slots keep `start: null` and are now `provenance: "confirmed"`: the
+absence of times *is* the published fact, not missing data.
+
+That makes it the reference case for how the Programme handles an untimed Slot — it cannot be
+placed in the chronological list, and belongs in a "toute la journée" group sorted after the
+timed rows. The validator still warns on it, correctly, because the app has to decide what to do
+rather than silently drop it.
 
 ## 8b. Does the site really open at 12:00 on Saturday and Sunday?
 

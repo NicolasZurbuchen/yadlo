@@ -261,7 +261,7 @@
       "name": "Silent Party",
       "category": "silent",
       "images": [],
-      "description": "Trois canaux musicaux — vert, bleu, rouge — un seul dancefloor et des centaines de casques illuminés.",
+      "description": "Trois ambiances, un seul dancefloor et des centaines de casques illuminés. Choisissez votre musique, changez de canal — vert, bleu ou rouge — au gré de vos envies. L'expérience immersive du samedi soir à Yadlo.",
       "provenance": "confirmed",
       "activity": {
         "genres": ["All style"],
@@ -316,9 +316,9 @@
       "name": "Jeux de société",
       "category": "terre",
       "images": [],
-      "description": "Jeux prêtés et règles expliquées par Ch'piil.",
+      "description": "Ch'piil met à disposition une sélection de jeux de société et accompagne les joueurs, en expliquant les règles et en animant les parties. Joueur confirmé ou simple curieux, une place vous attend autour de la table.",
       "provenance": "confirmed",
-      "activity": { "bookingRequired": false, "equipmentProvided": true }
+      "activity": { "price": { "free": true, "provenance": "confirmed" }, "bookingRequired": false, "equipmentProvided": true }
     },
     {
       "id": "chasse-au-tresor",
@@ -326,9 +326,9 @@
       "name": "Chasse au trésor",
       "category": "terre",
       "images": [],
-      "description": "Un parcours d'indices à travers le festival, ponctué de défis.",
+      "description": "Partez à l'aventure en famille ou entre amis. Suivez les pistes disséminées à travers le festival, relevez les défis qui vous attendent et tentez de percer le mystère avant la fin du parcours.",
       "provenance": "confirmed",
-      "activity": { "bookingRequired": false, "suitability": "Familles et groupes" }
+      "activity": { "price": { "free": true, "provenance": "confirmed" }, "bookingRequired": false, "suitability": "Familles et groupes" }
     },
     {
       "id": "mini-escape-game",
@@ -349,9 +349,9 @@
       "name": "Tournoi de UNO",
       "category": "terre",
       "images": [],
-      "description": "Tournoi de UNO ouvert à tous.",
+      "description": "Une carte peut tout changer. Tentez de vous hisser jusqu'à la victoire malgré les +4, les changements de sens et les coups bas de vos adversaires. Fous rires, suspense et revanche garantis.",
       "provenance": "confirmed",
-      "activity": { "bookingRequired": false, "equipmentProvided": true }
+      "activity": { "price": { "free": true, "provenance": "confirmed" }, "bookingRequired": false, "equipmentProvided": true }
     },
     {
       "id": "diffusion-match",
@@ -369,19 +369,19 @@
       "name": "Initiation salsa et bachata",
       "category": "terre",
       "images": [],
-      "description": "Une heure de cours avec l'école AliaSalsa, puis danse libre.",
+      "description": "Découvrez les bases de la salsa et de la bachata lors d'une initiation animée par des professionnels de l'école AliaSalsa. Après une heure d'apprentissage, place à la danse libre — juste avant de rejoindre la Silent Party.",
       "provenance": "confirmed",
-      "activity": { "equipmentProvided": false }
+      "activity": { "price": { "free": true, "provenance": "confirmed" }, "bookingRequired": false, "equipmentProvided": false }
     },
     {
       "id": "slackline",
       "kind": "activity",
-      "name": "Initiation slackline",
+      "name": "Slackline — parcours d'équilibre",
       "category": "terre",
       "images": [],
-      "description": "Slackline et parcours d'obstacles : concentration, coordination et persévérance.",
+      "description": "Saurez-vous garder l'équilibre ? Une série de défis ludiques qui mettront à l'épreuve votre concentration, votre coordination et votre persévérance. Ouvert à toutes et tous, du simple curieux au véritable funambule.",
       "provenance": "confirmed",
-      "activity": { "bookingRequired": false, "equipmentProvided": true }
+      "activity": { "price": { "free": true, "provenance": "confirmed" }, "bookingRequired": false, "equipmentProvided": true }
     },
     {
       "id": "tresor-black-sam",
@@ -687,9 +687,9 @@
     { "id": "2026:acro-yoga-sat", "happeningId": "acro-yoga", "dayId": "2026:sat", "start": "2026-07-11T10:00:00+02:00", "end": "2026-07-11T11:00:00+02:00", "provenance": "confirmed" },
     { "id": "2026:yoga-plage-sun", "happeningId": "yoga-plage", "dayId": "2026:sun", "start": "2026-07-12T10:00:00+02:00", "end": "2026-07-12T11:00:00+02:00", "provenance": "confirmed" },
 
-    { "id": "2026:chasse-au-tresor-fri", "happeningId": "chasse-au-tresor", "dayId": "2026:fri", "start": null, "end": null, "provenance": "unverified" },
-    { "id": "2026:chasse-au-tresor-sat", "happeningId": "chasse-au-tresor", "dayId": "2026:sat", "start": null, "end": null, "provenance": "unverified" },
-    { "id": "2026:chasse-au-tresor-sun", "happeningId": "chasse-au-tresor", "dayId": "2026:sun", "start": null, "end": null, "provenance": "unverified" },
+    { "id": "2026:chasse-au-tresor-fri", "happeningId": "chasse-au-tresor", "dayId": "2026:fri", "start": null, "end": null, "provenance": "confirmed" },
+    { "id": "2026:chasse-au-tresor-sat", "happeningId": "chasse-au-tresor", "dayId": "2026:sat", "start": null, "end": null, "provenance": "confirmed" },
+    { "id": "2026:chasse-au-tresor-sun", "happeningId": "chasse-au-tresor", "dayId": "2026:sun", "start": null, "end": null, "provenance": "confirmed" },
     { "id": "2026:coin-enfant-fri", "happeningId": "coin-enfant", "dayId": "2026:fri", "start": "2026-07-10T16:00:00+02:00", "end": "2026-07-10T18:30:00+02:00", "provenance": "confirmed" },
     { "id": "2026:coin-enfant-sat", "happeningId": "coin-enfant", "dayId": "2026:sat", "start": "2026-07-11T12:00:00+02:00", "end": "2026-07-11T18:00:00+02:00", "provenance": "confirmed" },
     { "id": "2026:coin-enfant-sun", "happeningId": "coin-enfant", "dayId": "2026:sun", "start": "2026-07-12T12:00:00+02:00", "end": "2026-07-12T18:00:00+02:00", "provenance": "confirmed" },
