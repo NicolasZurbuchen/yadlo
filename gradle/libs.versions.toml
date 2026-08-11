@@ -5,6 +5,7 @@ composeMultiplatform = "1.11.1"
 material3 = "1.9.0"
 materialIconsExtended = "1.7.3"
 kotlinx-coroutines = "1.11.0"
+kotlinx-datetime = "0.7.0"
 kotlinx-serialization = "1.11.0"
 
 # Android
@@ -80,6 +81,10 @@ coil-network-ktor3 = { module = "io.coil-kt.coil3:coil-network-ktor3", version.r
 
 # Serialization
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
+
+# Time. Instant and Clock come from the Kotlin stdlib; this is here for TimeZone, LocalDate and
+# LocalDateTime, which every Europe/Zurich conversion and every FestivalDay window needs.
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
 
 # Persistence (SQLDelight)
 android-driver = { module = "app.cash.sqldelight:android-driver", version.ref = "sqlDelight" }

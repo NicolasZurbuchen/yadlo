@@ -85,6 +85,7 @@ kotlin {
             implementation(libs.compose.material.icons.extended)
             implementation(libs.koin.compose.viewmodel)
             implementation(libs.koin.core)
+            implementation(libs.kotlinx.datetime)
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.navigation3.ui)
             implementation(libs.sqldelight.coroutines)

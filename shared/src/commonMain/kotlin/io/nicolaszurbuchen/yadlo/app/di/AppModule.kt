@@ -6,6 +6,7 @@ import io.nicolaszurbuchen.yadlo.infra.database.databaseModule
 import io.nicolaszurbuchen.yadlo.infra.mvi.storeModule
 import io.nicolaszurbuchen.yadlo.infra.navigation.infraNavigationModule
 import io.nicolaszurbuchen.yadlo.infra.network.networkModule
+import io.nicolaszurbuchen.yadlo.infra.time.timeModule
 
 val appModule =
     listOf(
@@ -14,5 +15,6 @@ val appModule =
         infraNavigationModule,
         networkModule,
         storeModule,
+        timeModule,
         pokemonExplorerModule,
     )
