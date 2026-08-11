@@ -28,11 +28,25 @@ content/
 lives under `editions/2026/`, so an edition can be added or archived as one unit and its image
 paths never collide with another year's.
 
-**Logos sit outside the editions.** A partner logo is the same file every year, so keeping it in
-`editions/2026/logos/` would mean copying it into 2027 and 2028. Photos are the opposite: a
-picture of Dubside playing in 2026 belongs to 2026 and nowhere else. If a partner ever rebrands
-and an old edition must keep the old mark, that is the moment to add a per-edition override —
-not before.
+**`shared/` holds assets that outlive an edition.** A partner logo is the same file every year,
+and so is a photo of the GladiaSUP course — 25 of the 38 happenings in 2026 are activities and
+stands that mostly recur. Keeping those under `editions/2026/` would mean copying them into 2027
+and 2028.
+
+**Where a file sits is a filing convention, not a modelling decision.** Each edition declares its
+own `images` array, so any edition may point at any path — `shared/`, its own folder, even
+another year's. Nothing in the model constrains it. That means getting the folders wrong costs a
+file move and a find-and-replace, never a schema change.
+
+Given that, one rule and one default:
+
+- **`shared/`** — the subject does not change year to year. Partner logos; a photo of the
+  floating trampoline; a stand's own branding.
+- **`editions/{year}/images/`** — the asset belongs to that year. Artist press photos, which the
+  artist supplies fresh and which date badly; anything shot at that edition.
+- **When in doubt, put it in the edition.** The two mistakes are not symmetrical: a file wrongly
+  shared makes 2027 silently show a 2026 photo, which nobody notices and everybody is misled by.
+  A file wrongly duplicated wastes 200 KB.
 
 ## The split between the two JSON files
 
@@ -44,6 +58,23 @@ The test is: **would a past-edition archive need its own copy?**
 - **`edition.json`** — programme, activities, stands, menus, prices, opening hours, partners,
   closing figures, and whether entry was free. If the festival moves or starts charging, the 2026
   record must still say Préverenges and still say free.
+
+### Repeating a Happening next year means copying it, and that is deliberate
+
+GladiaSUP will run again in 2027, and its entry will be duplicated into `editions/2027/`. That is
+the intended cost of a self-contained edition, not an oversight:
+
+- An archive has to be readable **alone**. Opening 2019 fetches one file and shows everything;
+  it does not depend on a shared catalogue that has since been edited.
+- One file means **one fetch and one ETag**, so an edition is never half-updated.
+- The things that look duplicated mostly are not. Prices move, descriptions get rewritten, an
+  activity gains a booking link. Copying last year's file forces someone to look at each entry
+  and confirm it is still true — which is the same work a shared catalogue would only defer.
+
+**Happening ids are deliberately *not* edition-qualified** — `gladiasup`, not `2026:gladiasup` —
+because a Happening is scoped to the file it lives in. **Slot ids are** (`2026:gladiasup-sat`),
+because those are what a user saves into their plan, and a reused id must never resurrect last
+year's saved festival.
 
 ## Images
 
