@@ -69,24 +69,52 @@ them are only lightly sourced and worth a glance before they ship:
 Two artists have no readable bio anywhere and their descriptions come only from confirmed facts:
 **AMC** (SoundCloud blocks fetching; the text is the website's) and **Thalassothérapie** (same).
 
-## 2. Restauration — `stands` is still empty
+## 2. Restauration — six stands in, four without a menu
 
-`stands: []`. No food truck or bar listing exists on the site, and no page for one in either
-sitemap.
+The festival does have a restauration page; it is simply not findable, which is why it was missed
+on the first pass. Six stands are now recorded:
 
-This is the **most valuable content in the app** and the one thing that exists nowhere else. A
-visitor cannot currently find out what there is to eat, or what it costs, without walking the
-site. Needed per stand:
+| Stand | Cuisine | Links | Menu |
+|---|---|---|---|
+| Vegan Fabrik | végétale, `végan` + `bio` | ✅ | 11 items, all prices **vendor-sourced** |
+| De l'Or Bokit | guadeloupéenne | ✅ | 4 bokits + 3 sauces, from their own carte |
+| Man'ouchy | libanaise | ✅ | ❌ — their site keeps the carte in PDFs |
+| Guliko | géorgienne | ❌ | ❌ |
+| Gyros Greek & La Focacceria | méditerranéenne | ❌ | ❌ |
+| Surf Shop | crêpes, gaufres, glaces | ❌ | ❌ |
 
-- Name, kind of food, and where it stands
-- Opening windows per day
-- The **menu**: groups (plats / menus / boissons), then items with a name and a price
-- Dietary **marks** where they apply: végé, végan, sans gluten, sans lactose, piquant
+**Still needed:**
 
-Even the bar plus three trucks is worth more than a complete programme.
+1. **Menus for the four without one.** Man'ouchy's exists as a PDF — a link, or the plain text,
+   would do. The other three have nothing anywhere.
+2. **Opening hours for all six.** A Stand's Slots are its opening windows, and not one is
+   published, so every stand currently has none. Are they simply open whenever the site is?
+3. **Prices confirmed for Yadlo.** Everything priced is marked `unverified` because none of it
+   comes from the festival — see below.
+4. **Links for Guliko, Gyros Greek & La Focacceria, and Surf Shop.**
 
-**If this only ever existed on a printed board at the festival, say so** — that changes the job
-from scraping to authoring, and it should start now rather than in June.
+### Why every price is `unverified`
+
+Two different weaknesses, both short of "confirmed by the organisers", and each item records
+which one applies in its group's `source`:
+
+- **De l'Or Bokit** — from the carte published on `delorbokit.ch`. Reliable as *their* pricing,
+  but it is their Lausanne carte, not necessarily what they charge at a festival.
+- **Vegan Fabrik** — the three plats came from an unattributed list; the eight other items were
+  **read off a photograph of a handwritten chalkboard of unknown date**.
+
+One reading in that photo is genuinely uncertain: a `Fr. 4.50` sits between `Mini pizza Fr. 5.00`
+and `Lassi`, and it is recorded as the **Lassi's** price on the basis that the prices are
+right-aligned. If it belongs to the pizza instead, then the pizza is 4.50 and the lassi has no
+price. The four tartelette prices are solid — a second photo shows the same figures on the
+individual labels.
+
+### Le Totem and the restauration colour
+
+Stands use `category: "restauration"`, a sixth category beside the five that drive the palette.
+Stands never appear on the Programme, so this does not need a sixth measured palette colour —
+the brand primary `#14618F` is the natural choice for a stand fiche. **Worth confirming** before
+the fiche template is built.
 
 ## 3. Le Totem
 

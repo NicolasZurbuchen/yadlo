@@ -20,7 +20,10 @@ const lanes = Object.fromEntries(ed.lanes.map(l => [l.id, l]));
 const sections = new Set(ed.sections.map(s => s.id));
 const haps = Object.fromEntries(ed.happenings.map(h => [h.id, h]));
 
-const CATEGORIES = new Set(['musique', 'eau', 'terre', 'enfants', 'silent']);
+// The five activity kinds drive the palette. "restauration" is a sixth category for Stands only,
+// which are never on the Programme and so never need a category colour beside the other five.
+const CATEGORIES = new Set(['musique', 'eau', 'terre', 'enfants', 'silent', 'restauration']);
+const MARKS = new Set(['végé', 'végan', 'sans gluten', 'sans lactose', 'piquant', 'bio']);
 const PROVENANCE = new Set(['confirmed', 'archived', 'unverified']);
 const ts = s => (s ? new Date(s) : null);
 
@@ -62,6 +65,29 @@ for (const [hid, h] of Object.entries(haps)) {
   }
   if (h.kind === 'artist' && (!payload.links || payload.links.length === 0))
     warns.push(`artist ${hid}: no links - needs Spotify/Instagram from the association`);
+
+  for (const m of (payload && payload.marks) || [])
+    if (!MARKS.has(m)) errors.push(`happening ${hid}: unknown stand mark "${m}"`);
+
+  if (h.kind === 'stand') {
+    const groupIds = new Set();
+    for (const g of payload.menu || []) {
+      if (!g.id || !g.name) errors.push(`stand ${hid}: menu group needs an id and a name`);
+      if (groupIds.has(g.id)) errors.push(`stand ${hid}: duplicate menu group id ${g.id}`);
+      groupIds.add(g.id);
+      if (!Array.isArray(g.items) || g.items.length === 0)
+        errors.push(`stand ${hid}: menu group ${g.id} has no items`);
+      for (const it of g.items || []) {
+        if (!it.name) errors.push(`stand ${hid}/${g.id}: item without a name`);
+        if (it.price && (typeof it.price.amount !== 'number' || !it.price.currency))
+          errors.push(`stand ${hid}/${g.id}/${it.name}: price needs a numeric amount and a currency`);
+        if (!PROVENANCE.has(it.provenance)) errors.push(`stand ${hid}/${g.id}/${it.name}: bad provenance`);
+        for (const m of it.marks || [])
+          if (!MARKS.has(m)) errors.push(`stand ${hid}/${g.id}/${it.name}: unknown mark "${m}"`);
+      }
+    }
+    if (!payload.menu || payload.menu.length === 0) warns.push(`stand ${hid}: no menu`);
+  }
 }
 
 // Nothing anywhere may still be a {fr, en} object.
@@ -98,8 +124,13 @@ for (const s of ed.slots) {
   if (!s.start && !s.end) warns.push(`slot ${sid}: no start and no end - cannot be placed on the Programme`);
 }
 
-for (const hid of Object.keys(haps))
-  if (!ed.slots.some(s => s.happeningId === hid)) warns.push(`happening ${hid}: has no slots`);
+// A Stand's Slots are its opening windows, and nobody has published them - so a Stand with no
+// Slots is a known gap, not a broken record. Artists and Activities without one are a real fault.
+for (const [hid, h] of Object.entries(haps)) {
+  if (ed.slots.some(s => s.happeningId === hid)) continue;
+  if (h.kind === 'stand') warns.push(`stand ${hid}: no opening hours`);
+  else errors.push(`happening ${hid}: has no slots`);
+}
 
 // Published opening hours must sit inside the FestivalDay window. They are different things:
 // the window has to contain everything programmed that day, opening hours are what the public

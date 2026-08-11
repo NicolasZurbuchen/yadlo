@@ -454,6 +454,151 @@
       "description": "Séance matinale sur la plage, tous niveaux, sans inscription et sans partenaire imposé.",
       "provenance": "confirmed",
       "activity": { "price": { "free": true, "provenance": "confirmed" }, "bookingRequired": false, "equipmentProvided": false, "suitability": "Apportez votre tapis." }
+    },
+
+    {
+      "id": "vegan-fabrik",
+      "kind": "stand",
+      "name": "Vegan Fabrik",
+      "category": "restauration",
+      "description": "Une cuisine 100 % végétale qui prouve qu'on peut allier gourmandise, créativité et produits de qualité. Entre plats mijotés, mezzés, douceurs sucrées et glaces, il y en a pour tous les appétits. Seitan fait maison, tofu suisse Swissoja, desserts à la crème végétale, à l'aquafaba ou à la crème de cajou.",
+      "provenance": "confirmed",
+      "stand": {
+        "cuisine": "Cuisine végétale",
+        "marks": ["végan", "bio"],
+        "links": [
+          { "type": "website", "url": "https://vegan-fabrik.ch/" },
+          { "type": "instagram", "url": "https://www.instagram.com/vegan.fabrik/" },
+          { "type": "facebook", "url": "https://www.facebook.com/vegan.fabrik" }
+        ],
+        "menu": [
+          {
+            "id": "plats",
+            "name": "Plats",
+            "source": "Liste transmise, non publiée par le festival",
+            "items": [
+              { "name": "Assiette de mezzés", "price": { "amount": 15, "currency": "CHF" }, "provenance": "unverified" },
+              { "name": "Seitan à la cantonaise", "price": { "amount": 18, "currency": "CHF" }, "provenance": "unverified" },
+              { "name": "Ragoût de tofu", "price": { "amount": 19, "currency": "CHF" }, "provenance": "unverified" },
+              { "name": "Mini pizza", "price": { "amount": 5, "currency": "CHF" }, "provenance": "unverified" }
+            ]
+          },
+          {
+            "id": "tartelettes",
+            "name": "Tartelettes",
+            "source": "Photo du tableau du stand, date inconnue",
+            "items": [
+              { "name": "Myrtilles", "price": { "amount": 5.5, "currency": "CHF" }, "provenance": "unverified" },
+              { "name": "Pommes", "price": { "amount": 4.5, "currency": "CHF" }, "provenance": "unverified" },
+              { "name": "Abricots", "price": { "amount": 4.5, "currency": "CHF" }, "provenance": "unverified" },
+              { "name": "Citron", "price": { "amount": 4.5, "currency": "CHF" }, "provenance": "unverified" }
+            ]
+          },
+          {
+            "id": "a-grignoter",
+            "name": "À grignoter",
+            "source": "Photo du tableau du stand, date inconnue",
+            "items": [
+              { "name": "Salade de fruits", "price": { "amount": 4.5, "currency": "CHF" }, "provenance": "unverified" },
+              { "name": "Chips, le paquet", "price": { "amount": 5, "currency": "CHF" }, "provenance": "unverified" }
+            ]
+          },
+          {
+            "id": "boissons",
+            "name": "Boissons",
+            "source": "Photo du tableau du stand, date inconnue",
+            "items": [
+              { "name": "Lassi", "price": { "amount": 4.5, "currency": "CHF" }, "provenance": "unverified" }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "guliko",
+      "kind": "stand",
+      "name": "Guliko",
+      "category": "restauration",
+      "description": "Embarquez pour un voyage en Géorgie avec des spécialités traditionnelles préparées dans le respect des recettes authentiques. Une cuisine généreuse, parfumée et pleine de caractère.",
+      "provenance": "confirmed",
+      "stand": { "cuisine": "Cuisine géorgienne", "marks": [], "links": [], "menu": [] }
+    },
+    {
+      "id": "manouchy",
+      "kind": "stand",
+      "name": "Man'ouchy",
+      "category": "restauration",
+      "description": "Les saveurs du Liban s'invitent au Yadlo. Shawarmas, falafels et assiettes gourmandes préparés à la minute font découvrir toute la richesse de la cuisine levantine. Née en 2016 d'un food truck à la Riponne, la maison tient aujourd'hui un restaurant à la rue César-Roux à Lausanne.",
+      "provenance": "confirmed",
+      "stand": {
+        "cuisine": "Cuisine libanaise",
+        "marks": [],
+        "links": [
+          { "type": "website", "url": "https://manouchy.ch/" },
+          { "type": "instagram", "url": "https://www.instagram.com/manouchy.ch/" },
+          { "type": "facebook", "url": "https://www.facebook.com/manouchy1" }
+        ],
+        "menu": []
+      }
+    },
+    {
+      "id": "de-lor-bokit",
+      "kind": "stand",
+      "name": "De l'Or Bokit",
+      "category": "restauration",
+      "description": "Impossible de passer à côté des célèbres bokits guadeloupéens. Ces sandwichs frits, généreusement garnis et relevés d'une touche créole, vous feront voyager sous les tropiques. Le bokit naît en Guadeloupe après l'abolition de l'esclavage, d'une simple pâte frite devenue emblème de la cuisine caribéenne.",
+      "provenance": "confirmed",
+      "stand": {
+        "cuisine": "Cuisine guadeloupéenne",
+        "marks": [],
+        "links": [
+          { "type": "website", "url": "https://delorbokit.ch/" },
+          { "type": "instagram", "url": "https://www.instagram.com/delorbokit_lausanne/" },
+          { "type": "facebook", "url": "https://www.facebook.com/delorbokit/" }
+        ],
+        "menu": [
+          {
+            "id": "bokits",
+            "name": "Bokits",
+            "description": "Sandwich frit guadeloupéen",
+            "source": "Carte publiée sur delorbokit.ch",
+            "items": [
+              { "name": "Quelle Histwa", "description": "Poulet (CH) mariné au sel Caraïbes, pikliz", "price": { "amount": 17, "currency": "CHF" }, "provenance": "unverified" },
+              { "name": "Le Gosier", "description": "Bœuf (CH) mariné au sel Caraïbes, pikliz", "price": { "amount": 18, "currency": "CHF" }, "provenance": "unverified" },
+              { "name": "Le Gwada", "description": "Chiquetaille de morue (MSC), pikliz", "price": { "amount": 18, "currency": "CHF" }, "provenance": "unverified" },
+              { "name": "Le Végé", "description": "Feta, concombre, pikliz", "price": { "amount": 15, "currency": "CHF" }, "marks": ["végé"], "provenance": "unverified" }
+            ]
+          },
+          {
+            "id": "sauces",
+            "name": "Sauces maison",
+            "source": "Carte publiée sur delorbokit.ch",
+            "items": [
+              { "name": "Créole", "description": "Oignon, ail, piment, huile, épices", "marks": ["piquant"], "provenance": "unverified" },
+              { "name": "Chien", "description": "Tomates, oignon, ail, cives, ciboulette, persil, citron, huile, épices", "provenance": "unverified" },
+              { "name": "Pikliz", "description": "Carotte, oignon rouge, chou blanc, poivron, citron, épices", "marks": ["piquant"], "provenance": "unverified" }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "gyros-greek-focacceria",
+      "kind": "stand",
+      "name": "Gyros Greek & La Focacceria",
+      "category": "restauration",
+      "description": "Deux incontournables de la cuisine méditerranéenne réunis sur un même stand. Entre gyros grecs généreux et focaccias italiennes garnies de produits de qualité, il y a de quoi satisfaire toutes les envies.",
+      "provenance": "confirmed",
+      "stand": { "cuisine": "Cuisine méditerranéenne", "marks": [], "links": [], "menu": [] }
+    },
+    {
+      "id": "surf-shop",
+      "kind": "stand",
+      "name": "Surf Shop",
+      "category": "restauration",
+      "description": "Pour une pause gourmande à toute heure de la journée, le Surf Shop propose un choix de crêpes, gaufres et glaces. L'idéal pour une douceur entre deux concerts ou pour terminer la soirée sur une note sucrée.",
+      "provenance": "confirmed",
+      "stand": { "cuisine": "Crêpes, gaufres et glaces", "marks": [], "links": [], "menu": [] }
     }
   ],
 
@@ -506,7 +651,6 @@
     { "id": "2026:coin-enfant-sun", "happeningId": "coin-enfant", "dayId": "2026:sun", "laneId": "coin-enfant", "venueId": "coin-enfant", "start": null, "end": null, "provenance": "unverified" }
   ],
 
-  "stands": [],
 
   "partners": [
     { "id": "sponsors-generaux", "name": "Sponsors généraux", "order": 1, "members": [], "provenance": "confirmed" },

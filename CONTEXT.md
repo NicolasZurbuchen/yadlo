@@ -94,8 +94,19 @@ neither. The most valuable content in the app, and the one thing that exists now
 _Avoid_: Carte, price list, offering
 
 **Mark**:
-A short dietary or preparation note on a menu Item — végé, végan, sans gluten, sans lactose,
-piquant. Always written out, never a pictogram.
+A short dietary or preparation note — végé, végan, sans gluten, sans lactose, piquant, bio.
+Always written out, never a pictogram.
+
+A Mark sits at one of two levels, and the level is the meaning:
+
+- **On the Stand**, it describes the whole stand. Vegan Fabrik is `végan` and `bio` because
+  everything it sells is.
+- **On an Item**, it describes only that item. De l'Or Bokit carries no Mark, but its `Le Végé`
+  is `végé` — feta, so vegetarian and not vegan.
+
+This is what separates "this stand is entirely vegan" from "this stand has a vegan option", which
+is the actual question someone is asking when they scan a row of food stands. A stand-level Mark
+must never be repeated on every one of its items.
 _Avoid_: Tag, label, icon, allergen
 
 ### Where things are, and how they are laid out
