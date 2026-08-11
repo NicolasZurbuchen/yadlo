@@ -145,18 +145,26 @@ Le Totem is the name of a bouldering gym, Totem Escalade, which is also a festiv
 The Coin enfants is supervised by volunteers and children can be left there, which is why it
 carries an age range and a maximum duration where nothing else does. Both are `enfants`.
 
-## 4. Partners — 5 websites of 33 still missing
+## 4. Partners — 3 websites of 39 outstanding, 2 closed as unsolvable
 
-All 33 partners are in, across six tiers (a `soutien-public` tier was added for the two public
-bodies). **28 have a verified website**; the logos on `/partenaires` carry no hyperlinks at all,
-so each was found and confirmed by loading the site and reading its title.
+All 39 partners are in, across six tiers. **34 have a verified website**; the logos on
+`/partenaires` carry no hyperlinks at all, so each was found and confirmed by loading the site
+and reading its title.
 
-**Not found — likely no website:**
+**Closed — no website exists. Do not search for these again:**
 
-| Partner | Tier | Note |
+| Partner | Tier | |
 |---|---|---|
-| Edifice | cygnes d'or | No match. `EDIFEA SA` exists in Vaud — a different name, not assumed. |
-| GladiaSUP | partenaires | Runs the SUP course at the festival; no independent site found. |
+| Edifice | cygnes d'or | No findable site and the logo matches nothing. `EDIFEA SA` exists in Vaud but is a different company and was not assumed. |
+| GladiaSUP | partenaires | Not a company with a web presence — it is the SUP obstacle course, an activity of the festival that also appears in the partner list. |
+
+> GladiaSUP being both an Activity and a partner is not unique: **Surfshop Préverenges** is a
+> stand and a partner, **Totem Escalade** runs the mur de grimpe, and Sherlock Events and Summit
+> Video almost certainly supply the escape games and the giant screen. Nothing links a partner to
+> its Happening today. If the partner screen ever wants to say "they run this", or a fiche wants
+> to credit its supplier, that is a `happeningId` on the partner and nothing more.
+
+**Still open — genuinely not yet found:** SuperNaturalClub, Swan, Wineatypic.
 
 **Two name corrections:** the list read *Garno Maté* → **Grano Maté**, a Vevey maté brewer; and
 *Clash Solutions* → **Cash Solutions** (`cash-solutions.ch`), which is why it could not be found.
@@ -198,14 +206,43 @@ société, Chasse au trésor, Tournoi de UNO, Salsa et bachata, Slackline.
 **One left:** `Diffusion de match` is marked free with `provenance: "unverified"` — it has no
 poster of its own, so the rule above cannot be applied to it.
 
-## 5. Is entry to the festival free?
+## ✅ Resolved — entry is free, and it exposed a missing screen
 
-Nothing on the site or in any post says so either way, and it is the single most-asked question
-about any festival. Everything inside is now priced; the gate is not.
+**Entry to Yadlo is free, all three days.** Recorded as `entry.free` on the Edition rather than
+in `festival.json`, so that a later edition charging admission cannot retroactively rewrite what
+2026 cost.
 
-## 6. The website's artist page is stale — how stale?
+The interesting part is that **no mock had anywhere to put this**. The plainest question a
+first-time visitor asks — *is it free?* — had no home in Accueil, Programme, Mon Yadlo or Plus.
+That is the whole problem in miniature: the association's information is split across a stale
+website and a live Instagram, so the ordinary questions have no single place to live.
 
-Instagram and `/artistes` disagree, and Instagram wins on every point checked:
+Hence a **FAQ in Plus › Sur place**, now in `festival.json` as a `faq` list and recorded in
+SPEC.md. It has one entry so far. Candidates that need an answer before they can be added:
+
+- Peut-on payer en carte, ou faut-il des espèces ? Y a-t-il un bancomat à proximité ?
+- Les chiens sont-ils admis ?
+- Peut-on se baigner pendant le festival, et la plage est-elle surveillée ?
+- Y a-t-il des toilettes, des douches, des vestiaires ? De l'eau potable gratuite ?
+- Peut-on apporter sa nourriture ou ses boissons ?
+- Que se passe-t-il en cas de pluie ?
+- Y a-t-il des consignes ou un vestiaire pour les sacs ?
+
+> The entry answer exists twice — as prose in `faq` and as `entry.free` on the Edition. Keep them
+> in step, and prefer the structured field wherever a screen can use it.
+
+## ✅ Resolved — Instagram is the source of truth
+
+**The website is maintained in a way nobody can rely on; Instagram is current and complete.**
+Everything needed has been gathered from posts, and that is where it should be gathered from in
+future. `/artistes` should be treated as unreliable, not merely lagging.
+
+The consequence is worth stating plainly: **there is no feed to scrape**, so these files are
+hand-transcribed from Instagram posts and will stay that way until the association adopts them as
+their own source. That is also the best argument for the app becoming official — the JSON would
+stop being a copy of their communication and start being what their communication comes from.
+
+The original evidence, kept because it is the reason:
 
 | | `/artistes` | Instagram |
 |---|---|---|
@@ -256,9 +293,11 @@ opposite handling, so they do not share a name.
 - **A logo per partner.** These already exist on `/partenaires`, as images with no text — the
   same reason the names had to be supplied by hand.
 
-## 8. Times missing for programmed activities
+## ✅ Resolved — every timed Slot now has an end
 
-Only `Diffusion de match` now: start times (Fri 21:00, Sat 23:00) but no end.
+`Diffusion de match` runs **two hours** per screening: Friday 21:00–23:00, Saturday 23:00–01:00.
+The Saturday one is the third Slot in the file to cross midnight. Its price is confirmed free on
+the same rule as the other activities, and it is no longer `unverified`.
 
 **Chasse au trésor is no longer a gap.** Its poster states the days — vendredi, samedi,
 dimanche — and deliberately gives no hours, because the clues sit around the festival for its
@@ -271,18 +310,24 @@ hours, which removes a nullable time and a second layout from every screen that 
 The validator still warns on the three slots, correctly, because the app has to decide what to
 do with them rather than silently drop them.
 
-## 8b. Does the site really open at 12:00 on Saturday and Sunday?
+## ✅ Resolved — opening hours are real but soft, and the app says so
 
-This is worth a second look. **Four slots now start at 10:00 on days the published opening is
-12:00** — acro-yoga (sam), yoga (dim), and the mur de grimpe on *both* days.
+**There are no gates.** Entry is free and the plage de Préverenges is a public beach, so the site
+is physically open at any hour; the published times are when the stands, bars and animations are
+running. That is why four Slots legitimately start at 10:00 on days the festival "opens" at
+12:00 — the morning yoga on the open beach, and the mur de grimpe, which is inside the festival
+and is the genuinely odd one.
 
-One activity before the gates is easy to believe on a public beach. Three, on a wall that needs
-staffing by Totem Escalade, is a pattern rather than a coincidence. Either the published
-"horaires d'ouverture du site" means something narrower than it sounds — the bars and food, say —
-or the site genuinely opens at 10:00 and the 12:00 is wrong.
+**The times stay as published.** What the app adds is honesty rather than a correction: the
+Edition carries an `openingNote` for the Horaires screen —
 
-All four carry `"beforeOpening": true` and the data is internally consistent either way. But the
-answer changes what the Horaires screen tells someone planning their Saturday morning.
+> L'entrée est libre et la plage de Préverenges est publique : on peut s'y trouver à toute heure.
+> Les horaires ci-dessus sont ceux du festival — quand les stands, les bars et les animations
+> tournent. Quelques activités commencent avant, comme le yoga du matin et le mur de grimpe.
+
+The validator keeps warning on those four Slots. That is deliberate: the note explains the
+situation to a visitor, but whoever edits this file should still be told when a Slot falls
+outside the hours, because next year one of them may be a mistake.
 
 ## 9. Transport, payment, accessibility
 
@@ -297,10 +342,11 @@ there is no page for any of them.
   Splitting this into "confirmed" and "to confirm" beats silence; an empty accessibility page
   tells a wheelchair user nothing.
 
-## 10. The match screening may be 2025 content
+## ✅ Resolved — the match screening is 2026, not leftover
 
-`/activites` describes the Saturday screening as **Norway–England**, which was a 2025 tournament
-fixture. Given gap 6, this line is likely left over. Both match slots are `unverified`.
+The screenings are **Coupe du monde 2026** fixtures. The Friday quarter-final and the Saturday
+match are current content, not the stale 2025 line they were suspected of being. Both slots are
+`confirmed`.
 
 ## 11. Past editions
 

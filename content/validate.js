@@ -90,6 +90,21 @@ for (const d of ed.days) {
   if (!PROVENANCE.has(d.provenance)) errors.push(`day ${d.id}: bad provenance`);
 }
 
+// --- edition-level --------------------------------------------------------------------------
+if (!ed.entry || typeof ed.entry.free !== 'boolean') errors.push('edition: entry.free must be a boolean');
+else if (!PROVENANCE.has(ed.entry.provenance)) errors.push('edition: entry has bad provenance');
+if ('openingNote' in ed && typeof ed.openingNote !== 'string') errors.push('edition: openingNote must be a string');
+
+// --- faq ------------------------------------------------------------------------------------
+const faqIds = new Set();
+for (const f of fest.faq || []) {
+  if (faqIds.has(f.id)) errors.push(`faq ${f.id}: duplicate id`);
+  faqIds.add(f.id);
+  if (!f.question || !f.answer) errors.push(`faq ${f.id}: needs a question and an answer`);
+  if (!PROVENANCE.has(f.provenance)) errors.push(`faq ${f.id}: bad provenance`);
+}
+if (!(fest.faq || []).length) warns.push('festival.json: faq is empty');
+
 // --- categories ---------------------------------------------------------------------------
 const catIds = new Set();
 for (const c of ed.categories) {

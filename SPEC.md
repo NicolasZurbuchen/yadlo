@@ -312,6 +312,14 @@ content/
 ```
 
 - Static HTTPS from a versioned repo. No CMS, no Firebase.
+- **Instagram is the association's source of truth, not the website.** Established while
+  authoring the 2026 bundle: `/artistes` was missing three of six Friday acts and had Diggin' on
+  the wrong day, while every Instagram post was current and more detailed. The website is
+  maintained in a way nobody can rely on. Practically this means the content files are
+  **hand-transcribed from Instagram posts** — there is no feed to scrape and no API worth using,
+  so authoring is manual and stays manual until the association adopts these files as their own
+  source. That is also the strongest argument for the app becoming official: the JSON would stop
+  being a copy of their communication and start being what their communication is generated from.
 - **One file per edition** (60–150 KB): one fetch, one ETag, atomic consistency.
 - Fetch on launch → cache to disk → bundled snapshot as fallback. Offline-first at all times.
 - Archives are the **only** feature reading a third file, fetched on demand, and the only one
@@ -370,6 +378,15 @@ actions in the bar. Silent Party = same template + booking row.
 *L'application*. Payment is the third row of the tab. Lost property, first aid, children and
 emergency numbers merge into a single **"En cas de besoin"** screen — justified by a shared
 user situation, not by tidiness. Most remaining entries share one text-page template.
+
+**A FAQ belongs in *Sur place*, and it was missed in the prototypes.** It surfaced from the
+plainest possible question — *is entry free?* — which no screen answered and no mock had a place
+for. That is the shape of the whole problem: the association's information is scattered across a
+stale site and a live Instagram, so the questions a first-time visitor actually asks have no
+single home. `festival.json` carries a `faq` list of question/answer pairs; the entry answer also
+exists as structured `entry.free` on the Edition, because a past-edition archive has to be able
+to state it even if a later edition starts charging. **Those two must not drift** — prefer the
+structured field wherever a screen can use it.
 
 ### Interaction rules
 
