@@ -17,8 +17,13 @@
       "name": { "fr": "Vendredi", "en": "Friday" },
       "date": "2026-07-10",
       "start": "2026-07-10T16:00:00+02:00",
-      "end": "2026-07-11T03:00:00+02:00",
-      "provenance": "unverified"
+      "end": "2026-07-11T02:00:00+02:00",
+      "opening": {
+        "start": "2026-07-10T16:00:00+02:00",
+        "end": "2026-07-11T02:00:00+02:00",
+        "provenance": "confirmed"
+      },
+      "provenance": "confirmed"
     },
     {
       "id": "2026:sat",
@@ -26,7 +31,12 @@
       "date": "2026-07-11",
       "start": "2026-07-11T10:00:00+02:00",
       "end": "2026-07-12T03:00:00+02:00",
-      "provenance": "unverified"
+      "opening": {
+        "start": "2026-07-11T12:00:00+02:00",
+        "end": "2026-07-12T03:00:00+02:00",
+        "provenance": "confirmed"
+      },
+      "provenance": "confirmed"
     },
     {
       "id": "2026:sun",
@@ -34,17 +44,22 @@
       "date": "2026-07-12",
       "start": "2026-07-12T10:00:00+02:00",
       "end": "2026-07-12T22:00:00+02:00",
-      "provenance": "unverified"
+      "opening": {
+        "start": "2026-07-12T12:00:00+02:00",
+        "end": "2026-07-12T22:00:00+02:00",
+        "provenance": "confirmed"
+      },
+      "provenance": "confirmed"
     }
   ],
 
   "venues": [
-    { "id": "scene", "name": { "fr": "Scène" }, "provenance": "confirmed" },
-    { "id": "totem", "name": { "fr": "TOTEM" }, "provenance": "confirmed" },
+    { "id": "scene", "name": { "fr": "Scène" }, "description": { "fr": "L'unique scène musicale du festival." }, "provenance": "confirmed" },
     { "id": "plage", "name": { "fr": "La plage", "en": "The beach" }, "provenance": "confirmed" },
     { "id": "lac", "name": { "fr": "Le lac", "en": "The lake" }, "provenance": "confirmed" },
     { "id": "village", "name": { "fr": "Le village", "en": "The village" }, "provenance": "unverified" },
-    { "id": "coin-enfant", "name": { "fr": "Coin enfant", "en": "Children's corner" }, "provenance": "confirmed" }
+    { "id": "coin-enfant", "name": { "fr": "Coin enfant", "en": "Children's corner" }, "provenance": "confirmed" },
+    { "id": "totem", "name": { "fr": "Le Totem" }, "description": { "fr": "Mur de grimpe pour enfants." }, "provenance": "confirmed" }
   ],
 
   "sections": [
@@ -73,58 +88,20 @@
 
   "happenings": [
     {
-      "id": "thalassotherapie",
+      "id": "dj-alf",
       "kind": "artist",
-      "name": { "fr": "Thalassothérapie" },
+      "name": { "fr": "DJ ALF" },
       "category": "musique",
-      "description": { "fr": "DJ set aux couleurs exotiques." },
       "provenance": "confirmed",
-      "artist": { "genre": { "fr": "DJ set" }, "links": [] }
+      "artist": { "genre": { "fr": "Commercial, afro house, house'n'disco" }, "links": [] }
     },
     {
-      "id": "amc",
+      "id": "caesure",
       "kind": "artist",
-      "name": { "fr": "AMC" },
+      "name": { "fr": "CÆSURE" },
       "category": "musique",
-      "description": { "fr": "DJ set groovy et scratché. Premier disque sorti en 2024 sur Nervous Records." },
       "provenance": "confirmed",
-      "artist": { "genre": { "fr": "DJ set" }, "links": [] }
-    },
-    {
-      "id": "albert-chinet",
-      "kind": "artist",
-      "name": { "fr": "Albert Chinet" },
-      "category": "musique",
-      "description": { "fr": "Néo-soul en formation complète : batterie, guitares électrique et acoustique, basse et synthés." },
-      "provenance": "confirmed",
-      "artist": { "genre": { "fr": "Néo-soul" }, "links": [] }
-    },
-    {
-      "id": "carlos-willenghton",
-      "kind": "artist",
-      "name": { "fr": "Carlos Willenghton" },
-      "category": "musique",
-      "description": { "fr": "DJ professionnel, sets « 100 % vinyles »." },
-      "provenance": "confirmed",
-      "artist": { "genre": { "fr": "Pop hybridée" }, "links": [] }
-    },
-    {
-      "id": "dubside",
-      "kind": "artist",
-      "name": { "fr": "Dubside" },
-      "category": "musique",
-      "description": { "fr": "Collectif de trois amis d'enfance, en back to back à trois." },
-      "provenance": "confirmed",
-      "artist": { "genre": { "fr": "Pop déviante" }, "links": [] }
-    },
-    {
-      "id": "leman-records",
-      "kind": "artist",
-      "name": { "fr": "Léman Records" },
-      "category": "musique",
-      "description": { "fr": "Label lancé en 2023. DJ set en back to back." },
-      "provenance": "confirmed",
-      "artist": { "genre": { "fr": "DJ set" }, "links": [] }
+      "artist": { "genre": { "fr": "Guitare acoustique et prod électro" }, "links": [] }
     },
     {
       "id": "diggin",
@@ -136,28 +113,90 @@
       "artist": { "genre": { "fr": "Indie-soul" }, "links": [] }
     },
     {
-      "id": "gauthier-quenis",
+      "id": "amc",
       "kind": "artist",
-      "name": { "fr": "Gauthier Quenis" },
+      "name": { "fr": "AMC" },
       "category": "musique",
-      "provenance": "unverified",
-      "artist": { "genre": null, "links": [] }
+      "description": { "fr": "Premier disque sorti en 2024 sur Nervous Records." },
+      "provenance": "confirmed",
+      "artist": { "genre": { "fr": "Electro" }, "links": [] }
+    },
+    {
+      "id": "jayjay",
+      "kind": "artist",
+      "name": { "fr": "JAYJAY" },
+      "category": "musique",
+      "provenance": "confirmed",
+      "artist": { "genre": { "fr": "House" }, "links": [] }
+    },
+    {
+      "id": "carlos-willengton",
+      "kind": "artist",
+      "name": { "fr": "Carlos Willengton" },
+      "category": "musique",
+      "description": { "fr": "DJ professionnel, sets « 100 % vinyles »." },
+      "provenance": "confirmed",
+      "artist": { "genre": { "fr": "House et disco" }, "links": [] }
+    },
+    {
+      "id": "thalassotherapie",
+      "kind": "artist",
+      "name": { "fr": "Thalassothérapie" },
+      "category": "musique",
+      "description": { "fr": "DJ set aux couleurs exotiques." },
+      "provenance": "confirmed",
+      "artist": { "genre": { "fr": "Tropical chill" }, "links": [] }
+    },
+    {
+      "id": "dubside",
+      "kind": "artist",
+      "name": { "fr": "Dubside" },
+      "category": "musique",
+      "description": { "fr": "Collectif de trois amis d'enfance, en back to back à trois." },
+      "provenance": "confirmed",
+      "artist": { "genre": { "fr": "Techno-house" }, "links": [] }
+    },
+    {
+      "id": "gautier-quenis",
+      "kind": "artist",
+      "name": { "fr": "Gautier Quenis" },
+      "category": "musique",
+      "provenance": "confirmed",
+      "artist": { "genre": { "fr": "Années 2000" }, "links": [] }
     },
     {
       "id": "refaire-le-monde",
       "kind": "artist",
       "name": { "fr": "Refaire le monde" },
       "category": "musique",
-      "provenance": "unverified",
-      "artist": { "genre": null, "links": [] }
+      "provenance": "confirmed",
+      "artist": { "genre": { "fr": "Indie pop et alt rock" }, "links": [] }
+    },
+    {
+      "id": "albert-chinet",
+      "kind": "artist",
+      "name": { "fr": "Albert Chinet" },
+      "category": "musique",
+      "description": { "fr": "En formation complète : batterie, guitares électrique et acoustique, basse et synthés." },
+      "provenance": "confirmed",
+      "artist": { "genre": { "fr": "Chanson française et pop moderne" }, "links": [] }
+    },
+    {
+      "id": "leman-records",
+      "kind": "artist",
+      "name": { "fr": "Léman Records" },
+      "category": "musique",
+      "description": { "fr": "Label lancé en 2023." },
+      "provenance": "confirmed",
+      "artist": { "genre": { "fr": "Electro" }, "links": [] }
     },
     {
       "id": "treehouse",
       "kind": "artist",
-      "name": { "fr": "Treehouse" },
+      "name": { "fr": "Tree House" },
       "category": "musique",
-      "provenance": "unverified",
-      "artist": { "genre": null, "links": [] }
+      "provenance": "confirmed",
+      "artist": { "genre": { "fr": "House et disco" }, "links": [] }
     },
 
     {
@@ -168,6 +207,7 @@
       "description": { "fr": "Trois canaux musicaux — vert, bleu, rouge — un seul dancefloor et des centaines de casques illuminés." },
       "provenance": "confirmed",
       "activity": {
+        "genre": { "fr": "All style" },
         "price": {
           "tiers": [
             { "label": { "fr": "Adulte", "en": "Adult" }, "amount": 25, "currency": "CHF" },
@@ -337,18 +377,22 @@
   ],
 
   "slots": [
-    { "id": "2026:amc-fri", "happeningId": "amc", "dayId": "2026:fri", "laneId": "musique", "venueId": "totem", "start": "2026-07-10T21:30:00+02:00", "end": "2026-07-10T22:30:00+02:00", "provenance": "confirmed" },
-    { "id": "2026:carlos-willenghton-fri", "happeningId": "carlos-willenghton", "dayId": "2026:fri", "laneId": "musique", "venueId": "scene", "start": "2026-07-10T23:30:00+02:00", "end": "2026-07-11T01:30:00+02:00", "provenance": "confirmed" },
-    { "id": "2026:thalassotherapie-sat", "happeningId": "thalassotherapie", "dayId": "2026:sat", "laneId": "musique", "venueId": "totem", "start": "2026-07-11T14:00:00+02:00", "end": "2026-07-11T16:00:00+02:00", "provenance": "confirmed" },
-    { "id": "2026:dubside-sat", "happeningId": "dubside", "dayId": "2026:sat", "laneId": "musique", "venueId": "scene", "start": "2026-07-11T16:00:00+02:00", "end": "2026-07-11T18:00:00+02:00", "provenance": "confirmed" },
-    { "id": "2026:diggin-sat", "happeningId": "diggin", "dayId": "2026:sat", "laneId": "musique", "venueId": "scene", "start": "2026-07-11T20:00:00+02:00", "end": "2026-07-11T21:00:00+02:00", "provenance": "confirmed" },
-    { "id": "2026:gauthier-quenis-sun", "happeningId": "gauthier-quenis", "dayId": "2026:sun", "laneId": "musique", "venueId": null, "start": "2026-07-12T12:00:00+02:00", "end": "2026-07-12T14:30:00+02:00", "provenance": "unverified" },
-    { "id": "2026:refaire-le-monde-sun", "happeningId": "refaire-le-monde", "dayId": "2026:sun", "laneId": "musique", "venueId": null, "start": "2026-07-12T14:30:00+02:00", "end": "2026-07-12T15:30:00+02:00", "provenance": "unverified" },
-    { "id": "2026:albert-chinet-sun", "happeningId": "albert-chinet", "dayId": "2026:sun", "laneId": "musique", "venueId": "totem", "start": "2026-07-12T17:00:00+02:00", "end": "2026-07-12T18:00:00+02:00", "provenance": "confirmed" },
-    { "id": "2026:leman-records-sun", "happeningId": "leman-records", "dayId": "2026:sun", "laneId": "musique", "venueId": "scene", "start": "2026-07-12T18:00:00+02:00", "end": "2026-07-12T19:30:00+02:00", "provenance": "confirmed" },
-    { "id": "2026:treehouse-sun", "happeningId": "treehouse", "dayId": "2026:sun", "laneId": "musique", "venueId": null, "start": "2026-07-12T19:30:00+02:00", "end": "2026-07-12T21:00:00+02:00", "provenance": "unverified" },
+    { "id": "2026:dj-alf-fri", "happeningId": "dj-alf", "dayId": "2026:fri", "laneId": "musique", "venueId": "scene", "start": "2026-07-10T17:00:00+02:00", "end": "2026-07-10T18:30:00+02:00", "provenance": "confirmed" },
+    { "id": "2026:caesure-fri", "happeningId": "caesure", "dayId": "2026:fri", "laneId": "musique", "venueId": "scene", "start": "2026-07-10T18:30:00+02:00", "end": "2026-07-10T19:30:00+02:00", "provenance": "confirmed" },
+    { "id": "2026:diggin-fri", "happeningId": "diggin", "dayId": "2026:fri", "laneId": "musique", "venueId": "scene", "start": "2026-07-10T20:00:00+02:00", "end": "2026-07-10T21:00:00+02:00", "provenance": "confirmed" },
+    { "id": "2026:amc-fri", "happeningId": "amc", "dayId": "2026:fri", "laneId": "musique", "venueId": "scene", "start": "2026-07-10T21:30:00+02:00", "end": "2026-07-10T22:30:00+02:00", "provenance": "confirmed" },
+    { "id": "2026:jayjay-fri", "happeningId": "jayjay", "dayId": "2026:fri", "laneId": "musique", "venueId": "scene", "start": "2026-07-10T22:30:00+02:00", "end": "2026-07-10T23:30:00+02:00", "provenance": "confirmed" },
+    { "id": "2026:carlos-willengton-fri", "happeningId": "carlos-willengton", "dayId": "2026:fri", "laneId": "musique", "venueId": "scene", "start": "2026-07-10T23:30:00+02:00", "end": "2026-07-11T01:30:00+02:00", "provenance": "confirmed" },
 
+    { "id": "2026:thalassotherapie-sat", "happeningId": "thalassotherapie", "dayId": "2026:sat", "laneId": "musique", "venueId": "scene", "start": "2026-07-11T14:00:00+02:00", "end": "2026-07-11T16:00:00+02:00", "provenance": "confirmed" },
+    { "id": "2026:dubside-sat", "happeningId": "dubside", "dayId": "2026:sat", "laneId": "musique", "venueId": "scene", "start": "2026-07-11T16:00:00+02:00", "end": "2026-07-11T18:00:00+02:00", "provenance": "confirmed" },
     { "id": "2026:silent-party-sat", "happeningId": "silent-party", "dayId": "2026:sat", "laneId": "silent-party", "venueId": "plage", "start": "2026-07-11T20:00:00+02:00", "end": "2026-07-12T02:00:00+02:00", "provenance": "confirmed" },
+
+    { "id": "2026:gautier-quenis-sun", "happeningId": "gautier-quenis", "dayId": "2026:sun", "laneId": "musique", "venueId": "scene", "start": "2026-07-12T12:00:00+02:00", "end": "2026-07-12T15:00:00+02:00", "provenance": "confirmed" },
+    { "id": "2026:refaire-le-monde-sun", "happeningId": "refaire-le-monde", "dayId": "2026:sun", "laneId": "musique", "venueId": "scene", "start": "2026-07-12T15:30:00+02:00", "end": "2026-07-12T16:30:00+02:00", "provenance": "confirmed" },
+    { "id": "2026:albert-chinet-sun", "happeningId": "albert-chinet", "dayId": "2026:sun", "laneId": "musique", "venueId": "scene", "start": "2026-07-12T17:00:00+02:00", "end": "2026-07-12T18:00:00+02:00", "provenance": "confirmed" },
+    { "id": "2026:leman-records-sun", "happeningId": "leman-records", "dayId": "2026:sun", "laneId": "musique", "venueId": "scene", "start": "2026-07-12T18:00:00+02:00", "end": "2026-07-12T19:30:00+02:00", "provenance": "confirmed" },
+    { "id": "2026:treehouse-sun", "happeningId": "treehouse", "dayId": "2026:sun", "laneId": "musique", "venueId": "scene", "start": "2026-07-12T19:30:00+02:00", "end": "2026-07-12T21:00:00+02:00", "provenance": "confirmed" },
 
     { "id": "2026:jeux-de-societe-fri", "happeningId": "jeux-de-societe", "dayId": "2026:fri", "laneId": "jeux", "venueId": "village", "start": "2026-07-10T19:00:00+02:00", "end": "2026-07-10T23:00:00+02:00", "provenance": "confirmed" },
     { "id": "2026:mini-escape-game-fri", "happeningId": "mini-escape-game", "dayId": "2026:fri", "laneId": "escape", "venueId": "village", "start": "2026-07-10T16:00:00+02:00", "end": "2026-07-10T19:00:00+02:00", "provenance": "confirmed" },

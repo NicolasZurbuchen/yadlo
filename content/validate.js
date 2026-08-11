@@ -63,6 +63,33 @@ for (const s of ed.slots) {
 for (const hid of Object.keys(haps))
   if (!ed.slots.some(s => s.happeningId === hid)) warns.push(`happening ${hid}: has no slots`);
 
+// Published opening hours must sit inside the FestivalDay window. They are different things:
+// the window has to contain everything programmed that day, opening hours are what the public
+// is told - beach yoga runs before the gates open.
+for (const d of ed.days) {
+  if (!d.opening) { warns.push(`day ${d.id}: no published opening hours`); continue; }
+  if (ts(d.opening.start) < ts(d.start) || ts(d.opening.end) > ts(d.end))
+    errors.push(`day ${d.id}: opening ${d.opening.start}->${d.opening.end} falls outside window ${d.start}->${d.end}`);
+}
+for (const s of ed.slots) {
+  const d = days[s.dayId];
+  if (s.start && d && d.opening && ts(s.start) < ts(d.opening.start))
+    warns.push(`slot ${s.id}: starts ${s.start}, before the site opens at ${d.opening.start}`);
+}
+
+// One music stage: no two slots in the same lane at the same venue may overlap.
+const byLaneVenue = {};
+for (const s of ed.slots) {
+  if (!s.start || !s.end || !s.venueId) continue;
+  (byLaneVenue[`${s.laneId}@${s.venueId}`] ||= []).push(s);
+}
+for (const [key, group] of Object.entries(byLaneVenue)) {
+  group.sort((a, b) => ts(a.start) - ts(b.start));
+  for (let i = 1; i < group.length; i++)
+    if (ts(group[i].start) < ts(group[i - 1].end))
+      errors.push(`overlap in ${key}: ${group[i - 1].id} (ends ${group[i - 1].end}) vs ${group[i].id} (starts ${group[i].start})`);
+}
+
 // Compare the LOCAL calendar dates as written, not toISOString() - that converts to UTC and
 // silently misses a 23:30->01:30 set, since +02:00 puts both ends on the same UTC day.
 const crossers = ed.slots

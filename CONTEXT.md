@@ -35,6 +35,15 @@ instant — not a calendar date. Friday runs from Friday afternoon to roughly 03
 Saturday, so a 01:30 set belongs to Friday.
 _Avoid_: Day, date
 
+**Opening hours**:
+When the public may be on site on a given FestivalDay, as published by the organisers.
+Deliberately distinct from the FestivalDay window: the window must contain everything
+programmed that day, while the opening hours are only what visitors are told. The two really
+do differ — the beach yoga starts at 10:00 on a day the site opens at 12:00, because the beach
+is public. The window answers "which day does this Slot belong to"; the opening hours answer
+"when can I come".
+_Avoid_: Gates, doors, schedule, day times
+
 **Phase**:
 Where the year is, from the app's point of view — off season, announced, approaching, live,
 or ended. Derived from the clock and the published content, never set by hand. Deliberately

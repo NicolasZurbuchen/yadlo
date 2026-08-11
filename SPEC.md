@@ -277,6 +277,10 @@ Terms are defined in CONTEXT.md and must be used in code.
   (`2026:dubside-sat`) so a reused id cannot resurrect last year's saves.
 - `FestivalDay` — an explicit window with real start/end instants, **not a calendar date**.
   Friday runs to roughly 03:00 Saturday, so a 01:30 set belongs to Friday.
+- **Opening hours are a separate field on the FestivalDay, not the window itself.** Forced by
+  the real 2026 data: the site opens at 12:00 on Saturday and Sunday, but beach yoga runs at
+  10:00 on both, because the beach is public. The window must contain everything programmed;
+  the opening hours are only what the visitor is told.
 - `Lane` and `Venue` are separate: three lanes can share one venue (the lake), one lane can
   host two stages.
 - `Menu` → `Group{name, items}` → `Item{name, price, description?, marks?}`. Only name and
