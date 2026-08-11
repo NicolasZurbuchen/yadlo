@@ -30,19 +30,19 @@ anything curated rather than given — prices above all.
 _Avoid_: Source, confidence, status
 
 **FestivalDay**:
-One named day of an Edition, declared as an explicit window with a real start and end
-instant — not a calendar date. Friday runs from Friday afternoon to roughly 03:00 on
-Saturday, so a 01:30 set belongs to Friday.
-_Avoid_: Day, date
+One named day of an Edition, whose start and end are **the hours the site is open** to the
+public that day — Friday 16:00 to 02:00, not a calendar date. Friday's window runs past
+midnight, which is why a 01:30 set still belongs to Friday.
 
-**Opening hours**:
-When the public may be on site on a given FestivalDay, as published by the organisers.
-Deliberately distinct from the FestivalDay window: the window must contain everything
-programmed that day, while the opening hours are only what visitors are told. The two really
-do differ — the beach yoga starts at 10:00 on a day the site opens at 12:00, because the beach
-is public. The window answers "which day does this Slot belong to"; the opening hours answer
-"when can I come".
-_Avoid_: Gates, doors, schedule, day times
+Two things follow, and both matter:
+
+- **A Slot may fall outside it.** The beach at Préverenges is public, so the yoga and the
+  climbing wall run from 10:00 on days the site opens at 12:00. The window is what visitors are
+  told, not a bounding box around the programme.
+- **Which day a Slot belongs to is authored on the Slot**, never inferred by testing an instant
+  against these times. That is what keeps a 01:30 set on Friday without the window having to be
+  stretched to prove it.
+_Avoid_: Day, date, opening hours as a separate concept
 
 **Phase**:
 Where the year is, from the app's point of view — off season, announced, approaching, live,

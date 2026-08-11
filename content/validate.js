@@ -22,32 +22,24 @@ const haps = Object.fromEntries(ed.happenings.map(h => [h.id, h]));
 
 // The five activity kinds drive the palette. "restauration" is a sixth category for Stands only,
 // which are never on the Programme and so never need a category colour beside the other five.
-const CATEGORIES = new Set(['musique', 'eau', 'terre', 'enfants', 'silent', 'restauration']);
+// The five activity kinds drive the palette. Stands use their own two, and never appear on the
+// Programme, so they never need a colour beside the other five.
+const CATEGORIES = new Set(['musique', 'eau', 'terre', 'enfants', 'silent', 'restauration', 'createurs']);
 const MARKS = new Set(['végé', 'végan', 'sans gluten', 'sans lactose', 'piquant', 'bio']);
 const PROVENANCE = new Set(['confirmed', 'archived', 'unverified']);
 const ts = s => (s ? new Date(s) : null);
 
-// An image src is either an absolute https URL, or a path relative to the edition's
-// imageBaseUrl. Relative wins when the association hosts its own assets - the whole set moves
-// to a new host by editing one field. Absolute is for anything already living elsewhere.
-// While imageBaseUrl is null there is nothing to resolve a relative path against, so only
-// absolute is legal; setting the base is what unlocks the short form.
+// An image src is either an absolute https URL, or a path relative to wherever this file was
+// fetched from - exactly like a relative href in a web page. No imageBaseUrl field: the app
+// already knows the address it fetched the edition from, so declaring it again in the content
+// would be the same fact written twice, free to drift.
 function checkSrc(src, where) {
   if (typeof src !== 'string' || !src) return errors.push(`${where}: src must be a non-empty string`);
-  const absolute = /^https:\/\//.test(src);
   if (/^http:\/\//.test(src)) return errors.push(`${where}: src must be https - ${src}`);
-  if (!absolute) {
-    if (ed.imageBaseUrl === null)
-      return errors.push(`${where}: relative src "${src}" but imageBaseUrl is null - use an absolute https URL, or set imageBaseUrl`);
-    if (src.startsWith('/')) errors.push(`${where}: relative src must not start with "/" - ${src}`);
-  }
+  if (!/^https:\/\//.test(src) && src.startsWith('/'))
+    errors.push(`${where}: a relative src must not start with "/" - ${src}`);
   for (const [re, what] of DIRTY_URL)
     if (re.test(src)) errors.push(`${where}: src carries a ${what}`);
-}
-
-if (ed.imageBaseUrl !== null) {
-  if (!/^https:\/\//.test(ed.imageBaseUrl)) errors.push('imageBaseUrl must be https or null');
-  else if (!ed.imageBaseUrl.endsWith('/')) errors.push('imageBaseUrl must end with "/" so paths join cleanly');
 }
 
 for (const [lid, l] of Object.entries(lanes))
@@ -145,12 +137,13 @@ for (const s of ed.slots) {
   const st = ts(s.start), en = ts(s.end);
   if (st && en && en <= st) errors.push(`slot ${sid}: end ${s.end} is not after start ${s.start}`);
   if (en && !st) errors.push(`slot ${sid}: has an end but no start`);
+  // day.start/end are the festival's OPENING HOURS, not a bounding box. A Slot may legitimately
+  // fall outside them - the beach is public, so yoga and the climbing wall run before the gates.
+  // Which day a Slot belongs to is authored on the Slot, never derived from these times.
   if (st && days[s.dayId]) {
-    const d = days[s.dayId], dstart = ts(d.start), dend = ts(d.end);
-    if (st < dstart || st >= dend)
-      errors.push(`slot ${sid}: start ${s.start} outside day window ${d.id} (${d.start} -> ${d.end})`);
-    if (en && en > dend)
-      errors.push(`slot ${sid}: end ${s.end} runs past day window end ${d.end}`);
+    const d = days[s.dayId];
+    if (st < ts(d.start)) warns.push(`slot ${sid}: starts ${s.start.slice(11, 16)}, before the site opens at ${d.start.slice(11, 16)}`);
+    if (en && en > ts(d.end)) warns.push(`slot ${sid}: ends after closing time ${d.end.slice(11, 16)}`);
   }
   if (!s.start && !s.end) warns.push(`slot ${sid}: no start and no end - cannot be placed on the Programme`);
 }
@@ -163,22 +156,9 @@ for (const [hid, h] of Object.entries(haps)) {
   else errors.push(`happening ${hid}: has no slots`);
 }
 
-// Published opening hours must sit inside the FestivalDay window. They are different things:
-// the window has to contain everything programmed that day, opening hours are what the public
-// is told - beach yoga runs before the gates open.
 for (const d of ed.days) {
-  if (!d.opening) { warns.push(`day ${d.id}: no published opening hours`); continue; }
-  if (ts(d.opening.start) < ts(d.start) || ts(d.opening.end) > ts(d.end))
-    errors.push(`day ${d.id}: opening ${d.opening.start}->${d.opening.end} falls outside window ${d.start}->${d.end}`);
-}
-// A slot before opening is legitimate - the beach is public, so yoga runs before the gates.
-// The data has to say so on purpose; an unflagged one is a mistake.
-for (const s of ed.slots) {
-  const d = days[s.dayId];
-  if (s.start && d && d.opening && ts(s.start) < ts(d.opening.start) && s.beforeOpening !== true)
-    errors.push(`slot ${s.id}: starts ${s.start}, before the site opens at ${d.opening.start} - set "beforeOpening": true if deliberate`);
-  if (s.beforeOpening === true && d && d.opening && ts(s.start) >= ts(d.opening.start))
-    warns.push(`slot ${s.id}: flagged beforeOpening but does not start before ${d.opening.start}`);
+  if (ts(d.end) <= ts(d.start)) errors.push(`day ${d.id}: closes at or before it opens`);
+  if ('opening' in d) errors.push(`day ${d.id}: "opening" is gone - start/end ARE the opening hours`);
 }
 
 // One music stage: no two slots in the same lane at the same venue may overlap.

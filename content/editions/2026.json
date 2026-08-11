@@ -3,7 +3,6 @@
   "id": "2026",
   "year": 2026,
   "name": "Yadlo 2026",
-  "imageBaseUrl": null,
   "venue": {
     "name": "Plage de Préverenges",
     "address": "Avenue de la Plage 1, 1028 Préverenges, Suisse",
@@ -19,37 +18,22 @@
       "date": "2026-07-10",
       "start": "2026-07-10T16:00:00+02:00",
       "end": "2026-07-11T02:00:00+02:00",
-      "opening": {
-        "start": "2026-07-10T16:00:00+02:00",
-        "end": "2026-07-11T02:00:00+02:00",
-        "provenance": "confirmed"
-      },
       "provenance": "confirmed"
     },
     {
       "id": "2026:sat",
       "name": "Samedi",
       "date": "2026-07-11",
-      "start": "2026-07-11T10:00:00+02:00",
+      "start": "2026-07-11T12:00:00+02:00",
       "end": "2026-07-12T03:00:00+02:00",
-      "opening": {
-        "start": "2026-07-11T12:00:00+02:00",
-        "end": "2026-07-12T03:00:00+02:00",
-        "provenance": "confirmed"
-      },
       "provenance": "confirmed"
     },
     {
       "id": "2026:sun",
       "name": "Dimanche",
       "date": "2026-07-12",
-      "start": "2026-07-12T10:00:00+02:00",
+      "start": "2026-07-12T12:00:00+02:00",
       "end": "2026-07-12T22:00:00+02:00",
-      "opening": {
-        "start": "2026-07-12T12:00:00+02:00",
-        "end": "2026-07-12T22:00:00+02:00",
-        "provenance": "confirmed"
-      },
       "provenance": "confirmed"
     }
   ],
@@ -518,7 +502,7 @@
       "description": "Une cuisine 100 % végétale qui prouve qu'on peut allier gourmandise, créativité et produits de qualité. Entre plats mijotés, mezzés, douceurs sucrées et glaces, il y en a pour tous les appétits. Seitan fait maison, tofu suisse Swissoja, desserts à la crème végétale, à l'aquafaba ou à la crème de cajou.",
       "provenance": "confirmed",
       "stand": {
-        "cuisine": "Cuisine végétale",
+        "offering": "Cuisine végétale",
         "marks": ["végan", "bio"],
         "links": [
           { "type": "website", "url": "https://vegan-fabrik.ch/" },
@@ -576,7 +560,7 @@
       "images": [],
       "description": "Embarquez pour un voyage en Géorgie avec des spécialités traditionnelles préparées dans le respect des recettes authentiques. Une cuisine généreuse, parfumée et pleine de caractère.",
       "provenance": "confirmed",
-      "stand": { "cuisine": "Cuisine géorgienne", "marks": [], "links": [], "menu": [] }
+      "stand": { "offering": "Cuisine géorgienne", "marks": [], "links": [], "menu": [] }
     },
     {
       "id": "manouchy",
@@ -587,7 +571,7 @@
       "description": "Les saveurs du Liban s'invitent au Yadlo. Shawarmas, falafels et assiettes gourmandes préparés à la minute font découvrir toute la richesse de la cuisine levantine. Née en 2016 d'un food truck à la Riponne, la maison tient aujourd'hui un restaurant à la rue César-Roux à Lausanne.",
       "provenance": "confirmed",
       "stand": {
-        "cuisine": "Cuisine libanaise",
+        "offering": "Cuisine libanaise",
         "marks": [],
         "links": [
           { "type": "website", "url": "https://manouchy.ch/" },
@@ -606,7 +590,7 @@
       "description": "Impossible de passer à côté des célèbres bokits guadeloupéens. Ces sandwichs frits, généreusement garnis et relevés d'une touche créole, vous feront voyager sous les tropiques. Le bokit naît en Guadeloupe après l'abolition de l'esclavage, d'une simple pâte frite devenue emblème de la cuisine caribéenne.",
       "provenance": "confirmed",
       "stand": {
-        "cuisine": "Cuisine guadeloupéenne",
+        "offering": "Cuisine guadeloupéenne",
         "marks": [],
         "links": [
           { "type": "website", "url": "https://delorbokit.ch/" },
@@ -647,7 +631,7 @@
       "images": [],
       "description": "Deux incontournables de la cuisine méditerranéenne réunis sur un même stand. Entre gyros grecs généreux et focaccias italiennes garnies de produits de qualité, il y a de quoi satisfaire toutes les envies.",
       "provenance": "confirmed",
-      "stand": { "cuisine": "Cuisine méditerranéenne", "marks": [], "links": [], "menu": [] }
+      "stand": { "offering": "Cuisine méditerranéenne", "marks": [], "links": [], "menu": [] }
     },
     {
       "id": "surf-shop",
@@ -657,7 +641,32 @@
       "images": [],
       "description": "Pour une pause gourmande à toute heure de la journée, le Surf Shop propose un choix de crêpes, gaufres et glaces. L'idéal pour une douceur entre deux concerts ou pour terminer la soirée sur une note sucrée.",
       "provenance": "confirmed",
-      "stand": { "cuisine": "Crêpes, gaufres et glaces", "marks": [], "links": [], "menu": [] }
+      "stand": { "offering": "Crêpes, gaufres et glaces", "marks": [], "links": [], "menu": [] }
+    },
+    {
+      "id": "la-fanfrelucherie",
+      "kind": "stand",
+      "name": "La Fanfrelucherie",
+      "category": "createurs",
+      "images": [],
+      "description": "Des costumes excentriques de seconde main à dénicher pour le week-end.",
+      "provenance": "confirmed",
+      "stand": { "offering": "Costumes de seconde main", "marks": [], "links": [], "menu": [] }
+    },
+    {
+      "id": "les-secrets-de-houna",
+      "kind": "stand",
+      "name": "Les Secrets de Houna",
+      "category": "createurs",
+      "images": [],
+      "description": "Une sélection d'huiles précieuses 100 % pures et de soins naturels, entre rituels méditerranéens et savoir-faire suisse.",
+      "provenance": "confirmed",
+      "stand": {
+        "offering": "Huiles précieuses et soins naturels",
+        "marks": [],
+        "links": [{ "type": "website", "url": "https://lessecretsdehouna.ch/" }],
+        "menu": []
+      }
     }
   ],
 
@@ -699,8 +708,8 @@
     { "id": "2026:trampoline-flottant-fri", "happeningId": "trampoline-flottant", "dayId": "2026:fri", "laneId": "trampoline", "venueId": "lac", "start": "2026-07-10T16:00:00+02:00", "end": "2026-07-10T19:00:00+02:00", "provenance": "confirmed" },
     { "id": "2026:trampoline-flottant-sat", "happeningId": "trampoline-flottant", "dayId": "2026:sat", "laneId": "trampoline", "venueId": "lac", "start": "2026-07-11T12:00:00+02:00", "end": "2026-07-11T19:00:00+02:00", "provenance": "confirmed" },
     { "id": "2026:trampoline-flottant-sun", "happeningId": "trampoline-flottant", "dayId": "2026:sun", "laneId": "trampoline", "venueId": "lac", "start": "2026-07-12T12:00:00+02:00", "end": "2026-07-12T19:00:00+02:00", "provenance": "confirmed" },
-    { "id": "2026:acro-yoga-sat", "happeningId": "acro-yoga", "dayId": "2026:sat", "laneId": "yoga-plage", "venueId": "plage", "start": "2026-07-11T10:00:00+02:00", "end": "2026-07-11T11:00:00+02:00", "beforeOpening": true, "provenance": "confirmed" },
-    { "id": "2026:yoga-plage-sun", "happeningId": "yoga-plage", "dayId": "2026:sun", "laneId": "yoga-plage", "venueId": "plage", "start": "2026-07-12T10:00:00+02:00", "end": "2026-07-12T11:00:00+02:00", "beforeOpening": true, "provenance": "confirmed" },
+    { "id": "2026:acro-yoga-sat", "happeningId": "acro-yoga", "dayId": "2026:sat", "laneId": "yoga-plage", "venueId": "plage", "start": "2026-07-11T10:00:00+02:00", "end": "2026-07-11T11:00:00+02:00", "provenance": "confirmed" },
+    { "id": "2026:yoga-plage-sun", "happeningId": "yoga-plage", "dayId": "2026:sun", "laneId": "yoga-plage", "venueId": "plage", "start": "2026-07-12T10:00:00+02:00", "end": "2026-07-12T11:00:00+02:00", "provenance": "confirmed" },
 
     { "id": "2026:chasse-au-tresor-fri", "happeningId": "chasse-au-tresor", "dayId": "2026:fri", "laneId": "jeux", "venueId": null, "start": null, "end": null, "provenance": "unverified" },
     { "id": "2026:chasse-au-tresor-sat", "happeningId": "chasse-au-tresor", "dayId": "2026:sat", "laneId": "jeux", "venueId": null, "start": null, "end": null, "provenance": "unverified" },
@@ -710,8 +719,8 @@
     { "id": "2026:coin-enfant-sun", "happeningId": "coin-enfant", "dayId": "2026:sun", "laneId": "coin-enfant", "venueId": "coin-enfant", "start": "2026-07-12T12:00:00+02:00", "end": "2026-07-12T18:00:00+02:00", "provenance": "confirmed" },
 
     { "id": "2026:mur-de-grimpe-fri", "happeningId": "mur-de-grimpe", "dayId": "2026:fri", "laneId": "mur-de-grimpe", "venueId": "totem", "start": "2026-07-10T16:00:00+02:00", "end": "2026-07-10T20:00:00+02:00", "provenance": "confirmed" },
-    { "id": "2026:mur-de-grimpe-sat", "happeningId": "mur-de-grimpe", "dayId": "2026:sat", "laneId": "mur-de-grimpe", "venueId": "totem", "start": "2026-07-11T10:00:00+02:00", "end": "2026-07-11T18:00:00+02:00", "beforeOpening": true, "provenance": "confirmed" },
-    { "id": "2026:mur-de-grimpe-sun", "happeningId": "mur-de-grimpe", "dayId": "2026:sun", "laneId": "mur-de-grimpe", "venueId": "totem", "start": "2026-07-12T10:00:00+02:00", "end": "2026-07-12T18:00:00+02:00", "beforeOpening": true, "provenance": "confirmed" }
+    { "id": "2026:mur-de-grimpe-sat", "happeningId": "mur-de-grimpe", "dayId": "2026:sat", "laneId": "mur-de-grimpe", "venueId": "totem", "start": "2026-07-11T10:00:00+02:00", "end": "2026-07-11T18:00:00+02:00", "provenance": "confirmed" },
+    { "id": "2026:mur-de-grimpe-sun", "happeningId": "mur-de-grimpe", "dayId": "2026:sun", "laneId": "mur-de-grimpe", "venueId": "totem", "start": "2026-07-12T10:00:00+02:00", "end": "2026-07-12T18:00:00+02:00", "provenance": "confirmed" }
   ],
 
 
@@ -726,7 +735,8 @@
         { "id": "la-nebuleuse", "name": "La Nébuleuse", "url": "https://lanebuleuse.ch/", "logo": null },
         { "id": "white-horse-pub", "name": "White Horse Pub", "url": "https://www.whitehorse.ch/", "logo": null },
         { "id": "anae", "name": "anae — atelier nature architecture environnement", "url": "https://www.anae.archi/", "logo": null },
-        { "id": "fishermans-friend", "name": "Fisherman's Friend", "url": "https://www.fishermansfriend.ch/", "logo": null }
+        { "id": "fishermans-friend", "name": "Fisherman's Friend", "url": "https://www.fishermansfriend.ch/", "logo": null },
+        { "id": "loterie-romande", "name": "Loterie Romande", "url": "https://loro.ch/", "logo": null }
       ]
     },
     {
@@ -784,7 +794,12 @@
         { "id": "cash-solutions", "name": "Cash Solutions", "url": "https://cash-solutions.ch/", "logo": null },
         { "id": "frisco", "name": "Nestlé Frisco", "url": "https://www.frisco.ch/", "logo": null },
         { "id": "lfm", "name": "LFM", "url": "https://www.lfm.ch/", "logo": null },
-        { "id": "sherlock-events", "name": "Sherlock Events", "url": "https://www.sherlock-events.ch/", "logo": null }
+        { "id": "sherlock-events", "name": "Sherlock Events", "url": "https://www.sherlock-events.ch/", "logo": null },
+        { "id": "vivi-kola", "name": "Vivi Kola", "url": "https://www.vivikola.ch/", "logo": null },
+        { "id": "kosmos", "name": "Kosmos Drinks", "url": "https://kosmosdrinks.ch/", "logo": null },
+        { "id": "supernaturalclub", "name": "SuperNaturalClub", "url": null, "logo": null },
+        { "id": "swan", "name": "Swan", "url": null, "logo": null },
+        { "id": "wineatypic", "name": "Wineatypic", "url": null, "logo": null }
       ]
     },
     {
