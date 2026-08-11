@@ -109,29 +109,54 @@ right-aligned. If it belongs to the pizza instead, then the pizza is 4.50 and th
 price. The four tartelette prices are solid — a second photo shows the same figures on the
 individual labels.
 
-### Le Totem and the restauration colour
+### The restauration colour
 
 Stands use `category: "restauration"`, a sixth category beside the five that drive the palette.
 Stands never appear on the Programme, so this does not need a sixth measured palette colour —
 the brand primary `#14618F` is the natural choice for a stand fiche. **Worth confirming** before
 the fiche template is built.
 
-## 3. Le Totem
+## ✅ Resolved — the two children's spaces
 
-Recorded as a venue: a climbing wall for children. `/activites` separately describes the `Coin
-enfant` as including "un mur de grimpe miniature".
+Le Totem and the Coin enfants are **separate activities**, both free, and both now have hours.
+Le Totem is the name of a bouldering gym, Totem Escalade, which is also a festival partner.
 
-**The ask:** are these the same structure? Is Le Totem a programmed Activity with its own hours,
-or simply part of the Coin enfant? Nothing is scheduled there today, so it is currently a place
-on the map and nothing more.
+| | Vendredi | Samedi | Dimanche | |
+|---|---|---|---|---|
+| Le mur de grimpe | 16:00–20:00 | 10:00–18:00 | 10:00–18:00 | gratuit jusqu'à 16 ans |
+| Le coin enfants | 16:00–18:30 | 12:00–18:00 | 12:00–18:00 | 4 à 12 ans, 2 h maximum |
 
-## 4. Partner names
+The Coin enfants is supervised by volunteers and children can be left there, which is why it
+carries an age range and a maximum duration where nothing else does. Both are `enfants`.
 
-Tiers are confirmed and in the JSON (`Sponsors généraux`, `cygnes d'or`, `cygnes d'argent`,
-`cygnes de bronze`, `Partenaires`), but every `members: []` is empty: on `/partenaires` the
-partners exist **only as logo images** with no text.
+## 4. Partners — 5 websites of 33 still missing
 
-Needed: the name of each partner, its tier, ideally a URL. Logos can stay images.
+All 33 partners are in, across six tiers (a `soutien-public` tier was added for the two public
+bodies). **28 have a verified website**; the logos on `/partenaires` carry no hyperlinks at all,
+so each was found and confirmed by loading the site and reading its title.
+
+**Not found — likely no website:**
+
+| Partner | Tier | Note |
+|---|---|---|
+| AP Consulting André Prahin SA | cygnes d'or | Lausanne, Place Saint-François 2. Only directory listings. |
+| Edifice | cygnes d'or | No match. `EDIFEA SA` exists in Vaud — a different name, not assumed. |
+| Cham Properties | cygnes de bronze | `champroperties.ch` is **Cham Swiss Properties AG**, a listed CHF 1.7 bn firm in Zug. Bronze-tier sponsorship of a Préverenges beach festival by that company is a stretch, so it was **not** linked. Confirm before using. |
+| GladiaSUP | partenaires | Runs the SUP course at the festival; no independent site found. |
+| Clash Solutions | partenaires | No match in Suisse romande. |
+
+**One name correction:** the list read *Garno Maté*; the company is **Grano Maté**, a Vevey maté
+brewer — `granomate.ch`. Recorded under the correct name.
+
+**Three partners are also festival content**, worth knowing before the fiche and partner screens
+are built, since they should probably cross-link:
+
+- **Surfshop Préverenges** is at *Avenue de la Plage 1* — the festival's own address. The
+  partner and the `Surf Shop` food stand are the same business.
+- **Totem Escalade** runs the mur de grimpe.
+- **Sherlock Events** is a mobile escape-game company in Morges, almost certainly the provider of
+  the Mini Escape Game and Le trésor de Black Sam. **Summit Video** rents giant screens — the
+  Diffusion de match. Neither is stated; both are worth confirming.
 
 > The page renders all three cygne tiers as "800€", which is almost certainly a copy-paste error
 > rather than three tiers at one price. Worth confirming before it is reproduced in the app.
@@ -183,11 +208,23 @@ whatever credit the photographer requires.
 | Activity | Missing |
 |---|---|
 | Chasse au trésor | Runs "vendredi à dimanche" with no hours at all — three slots with `start: null` |
-| Coin enfant | No hours on any day — three slots with `start: null` |
 | Diffusion de match | Start times only (Fri 21:00, Sat 23:00), no end time |
 
 Open-ended slots are legitimate in the model, but a slot with neither start nor end cannot be
 placed on the Programme at all.
+
+## 8b. Does the site really open at 12:00 on Saturday and Sunday?
+
+This is worth a second look. **Four slots now start at 10:00 on days the published opening is
+12:00** — acro-yoga (sam), yoga (dim), and the mur de grimpe on *both* days.
+
+One activity before the gates is easy to believe on a public beach. Three, on a wall that needs
+staffing by Totem Escalade, is a pattern rather than a coincidence. Either the published
+"horaires d'ouverture du site" means something narrower than it sounds — the bars and food, say —
+or the site genuinely opens at 10:00 and the 12:00 is wrong.
+
+All four carry `"beforeOpening": true` and the data is internally consistent either way. But the
+answer changes what the Horaires screen tells someone planning their Saturday morning.
 
 ## 9. Transport, payment, accessibility
 

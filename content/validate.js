@@ -169,6 +169,24 @@ const crossers = ed.slots
   .filter(s => s.start && s.end && s.start.slice(0, 10) !== s.end.slice(0, 10))
   .map(s => s.id);
 
+// Partners: unique ids, and any URL present must be canonical https.
+const partnerIds = new Set();
+for (const tier of ed.partners) {
+  if (!PROVENANCE.has(tier.provenance)) errors.push(`partner tier ${tier.id}: bad provenance`);
+  if (!tier.members || tier.members.length === 0) warns.push(`partner tier ${tier.id}: no members`);
+  for (const m of tier.members || []) {
+    if (partnerIds.has(m.id)) errors.push(`partner ${m.id}: duplicate id across tiers`);
+    partnerIds.add(m.id);
+    if (!m.name) errors.push(`partner ${m.id}: no name`);
+    if (m.url === undefined) errors.push(`partner ${m.id}: url must be present, use null if unknown`);
+    if (m.url !== null) {
+      if (!/^https:\/\//.test(m.url)) errors.push(`partner ${m.id}: url is not https - ${m.url}`);
+      for (const [re, what] of DIRTY_URL)
+        if (re.test(m.url)) errors.push(`partner ${m.id}: url carries a ${what}`);
+    } else warns.push(`partner ${m.id}: no website found`);
+  }
+}
+
 if (!idx.editions.some(e => e.id === ed.id)) errors.push(`index.json does not list edition ${ed.id}`);
 for (const e of idx.editions)
   if (!fs.existsSync(path.join(root, e.path))) errors.push(`index.json: path ${e.path} does not exist`);
