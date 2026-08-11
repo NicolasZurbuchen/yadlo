@@ -311,7 +311,16 @@ content/
     2026/images/
 ```
 
-- Static HTTPS from a versioned repo. No CMS, no Firebase.
+- Static HTTPS from a versioned repo. No CMS, no Firebase. **Live at
+  `https://nicolaszurbuchen.github.io/yadlo/`** — GitHub Pages, deployed from `content/` by CI on
+  every push to `main`, with `validate.js` gating the deploy so content that does not validate is
+  never published. That gate matters more than it sounds: the app fetches this at launch, and a
+  malformed edition file is indistinguishable from being offline, so it would reach a user as a
+  festival with no programme rather than as an error anyone could act on.
+- Verified against the live site: `ETag` is served and `If-None-Match` returns **304 with zero
+  bytes**, which is what makes re-checking one 44 KB edition file at every launch affordable.
+  `Cache-Control` is `max-age=600` and Pages does not allow changing it — a correction takes up
+  to ten minutes to propagate, which is fine except during the festival itself.
 - **Instagram is the association's source of truth, not the website.** Established while
   authoring the 2026 bundle: `/artistes` was missing three of six Friday acts and had Diggin' on
   the wrong day, while every Instagram post was current and more detailed. The website is

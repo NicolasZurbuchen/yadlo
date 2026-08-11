@@ -5,6 +5,30 @@ The festival's data. Everything the app shows comes from here; nothing here is c
 Run `node content/validate.js` after any edit. It fails on anything structurally wrong and warns
 on anything merely missing.
 
+## Published at
+
+This directory is served as the site root, so no `/content/` appears in any URL:
+
+| | |
+|---|---|
+| Base | `https://nicolaszurbuchen.github.io/yadlo/` |
+| Live truth | [`festival.json`](https://nicolaszurbuchen.github.io/yadlo/festival.json) |
+| Edition list | [`editions.json`](https://nicolaszurbuchen.github.io/yadlo/editions.json) |
+| 2026 | [`editions/2026/edition.json`](https://nicolaszurbuchen.github.io/yadlo/editions/2026/edition.json) |
+
+`.github/workflows/content.yml` deploys on every push to `main` that touches `content/`, and
+**`validate.js` gates the deploy** — content that does not validate is never published.
+
+Two things the app depends on, both verified against the live site:
+
+- **`ETag` is served and conditional requests work.** `If-None-Match` returns `304` with zero
+  bytes, which is what makes "one file per edition" affordable to re-check at every launch.
+- **`Content-Type: application/json; charset=utf-8`**, so accents survive — `CÆSURE` and
+  `Préverenges` come back intact rather than mojibake.
+
+`Cache-Control` is `max-age=600`, set by Pages and not configurable. A correction therefore takes
+up to ten minutes to reach people. Fine in April, worth knowing at 22:00 on the Saturday.
+
 ## Layout
 
 ```

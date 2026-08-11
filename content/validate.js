@@ -63,13 +63,11 @@ function checkUrl(url, where) {
 // fetched from - exactly like a relative href in a web page. There is no imageBaseUrl: the app
 // already knows the address it fetched the edition from, so declaring it again in the content
 // would be the same fact written twice, free to drift.
-// Once hosting is settled, set this to the published base URL, e.g.
-// 'https://nicolaszurbuchen.github.io/yadlo/content/'. The validator then maps every absolute
-// src back to a file on disk, which is what makes the two picture-bank checks possible: a
-// reference to an image that is not there, and an image nothing references. Neither can be done
-// while a src is an opaque URL. It lives here rather than in the content because changing hosts
-// should be a tooling edit, not a content migration.
-const PUBLISHED_BASE = null;
+// Where this directory is published. The validator maps every absolute src back to a file on
+// disk, which is what makes the two picture-bank checks possible: a reference to an image that
+// is not there, and an image nothing references. It lives here rather than in the content
+// because changing hosts should be a tooling edit, not a content migration.
+const PUBLISHED_BASE = 'https://nicolaszurbuchen.github.io/yadlo/';
 const referenced = new Set();
 
 function checkSrc(src, where) {
