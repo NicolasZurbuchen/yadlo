@@ -69,18 +69,25 @@
   ],
 
   "transports": {
-    "sections": [],
+    "modes": [
+      { "id": "pied", "name": "À pied", "body": null, "links": [] },
+      { "id": "velo", "name": "À vélo", "body": null, "links": [] },
+      { "id": "bus", "name": "En bus", "body": null, "links": [] },
+      { "id": "bus-nuit", "name": "Bus de nuit", "body": null, "links": [] },
+      { "id": "voiture", "name": "En voiture", "body": null, "links": [] },
+      { "id": "bateau", "name": "Par le lac", "body": null, "links": [] }
+    ],
     "provenance": "unverified"
   },
 
   "paiement": {
-    "body": null,
+    "methods": [],
+    "notes": [],
     "provenance": "unverified"
   },
 
   "accessibilite": {
-    "confirmed": [],
-    "toConfirm": [],
+    "items": [],
     "contactEmailId": "hello",
     "provenance": "unverified"
   },

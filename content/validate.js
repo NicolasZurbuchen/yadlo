@@ -9,9 +9,9 @@ function load(p) {
   catch (e) { errors.push(`${p}: does not parse -> ${e.message}`); return null; }
 }
 
-const ed = load('editions/2026.json');
+const ed = load('editions/2026/edition.json');
 const fest = load('festival.json');
-const idx = load('editions/index.json');
+const idx = load('editions.json');
 if (!ed || !fest || !idx) { console.log(errors.join('\n')); process.exit(1); }
 
 const days = Object.fromEntries(ed.days.map(d => [d.id, d]));
@@ -252,6 +252,36 @@ for (const [p, v] of [
 
 if (fest.currentEditionId !== ed.id)
   warns.push(`festival.json currentEditionId=${fest.currentEditionId} but only edition ${ed.id} authored`);
+
+// Transport modes vary too much to share one shape beyond this: a name, some prose, and any
+// number of links. Walking is prose alone; the bus needs a timetable link; a night shuttle laid
+// on for one edition would be an Edition-level addition, not a mode here.
+for (const m of fest.transports.modes || []) {
+  if (!m.id || !m.name) errors.push(`transport ${m.id}: needs an id and a name`);
+  if (m.body === null) warns.push(`transport ${m.id}: no text yet`);
+  for (const l of m.links || []) {
+    if (!l.label) errors.push(`transport ${m.id}: link without a label`);
+    checkUrl(l.url, `transport ${m.id}/link`);
+  }
+}
+
+// accepted is a boolean, never "unknown": a payment method whose status nobody knows is left
+// out entirely rather than rendered as a shrug. TWINT in particular is the question a Swiss
+// visitor actually asks, so a wrong or vague answer is worse than the FAQ saying it is being
+// checked.
+for (const m of fest.paiement.methods || []) {
+  if (!m.id || !m.name) errors.push(`paiement ${m.id}: needs an id and a name`);
+  if (typeof m.accepted !== 'boolean') errors.push(`paiement ${m.id}: accepted must be true or false`);
+}
+if (!(fest.paiement.methods || []).length) warns.push('festival.json: paiement has no methods');
+
+// Accessibility records what is NOT available as deliberately as what is - "no accessible
+// toilets" is information someone needs before travelling, and silence is not.
+for (const i of fest.accessibilite.items || []) {
+  if (!i.id || !i.name) errors.push(`accessibilite ${i.id}: needs an id and a name`);
+  if (typeof i.available !== 'boolean') errors.push(`accessibilite ${i.id}: available must be true or false`);
+}
+if (!(fest.accessibilite.items || []).length) warns.push('festival.json: accessibilite has no items');
 
 // Counted rather than listed: one line per missing image would drown every other finding.
 const noImage = ed.happenings.filter(h => !(h.images || []).length);

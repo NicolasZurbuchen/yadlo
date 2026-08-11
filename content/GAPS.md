@@ -329,18 +329,51 @@ The validator keeps warning on those four Slots. That is deliberate: the note ex
 situation to a visitor, but whoever edits this file should still be told when a Slot falls
 outside the hours, because next year one of them may be a mistake.
 
-## 9. Transport, payment, accessibility
+## 9. Transport, payment, accessibility — shapes decided, content empty
 
-All three sit in `festival.json` as empty structures with `provenance: "unverified"`, because
-there is no page for any of them.
+All three now have a shape, so filling them in is answering questions rather than inventing
+structure. None has any content.
 
-- **Transports** — which bus lines serve the beach, from Lausanne and from Morges, the last bus
-  or night bus, where to park, where to leave a bike, whether you can arrive by water.
-- **Paiement** — cash, cards, or a festival token? An ATM nearby? A deposit on cups, and how
-  much?
-- **Accessibilité** — step-free access, accessible toilets, and who to write to in advance.
-  Splitting this into "confirmed" and "to confirm" beats silence; an empty accessibility page
-  tells a wheelchair user nothing.
+### Transports — six modes waiting for text
+
+An array *is* right, but not of uniform things: each mode is a **name, some prose, and any number
+of links**. Walking needs prose alone; the bus needs a timetable link. The six modes are seeded
+with `body: null` and the validator lists each one until it has text.
+
+| Mode | What is needed |
+|---|---|
+| À pied | From which station, and how long a walk |
+| À vélo | Where to leave a bike, and whether there is any parking for them |
+| En bus | Which MBC lines serve the beach, from Lausanne and from Morges, and a timetable link |
+| Bus de nuit | Is there one at all? Last departure Friday and Saturday |
+| En voiture | Where to park, whether it costs anything, and whether it fills up |
+| Par le lac | Can you actually arrive by boat or by paddle, and tie up where? |
+
+> A shuttle laid on **for one edition** does not belong here — that would go on the Edition,
+> which is the only thing that changes year to year. Everything above is stable enough to be live
+> truth.
+
+### Paiement — a list of methods, each accepted or not
+
+`{ id, name, accepted }` where **`accepted` is a boolean, never "unknown"**. A method nobody has
+confirmed is left out entirely rather than rendered as a shrug — "TWINT: ?" helps no one, and the
+FAQ can say it is being checked.
+
+Needed: espèces, carte, **TWINT** (the question a Swiss visitor actually asks), and whether the
+festival uses tokens. Plus free-text `notes` for the things that are not a yes/no: is there a
+bancomat nearby, is there a deposit on cups and how much.
+
+### Accessibilité — a list of facilities, each available or not
+
+Same shape: `{ id, name, available, note }`. **Recording what is *not* available matters as much
+as what is** — "no accessible toilets" is something a person needs before deciding to travel, and
+silence tells them nothing.
+
+Candidates to confirm or deny: step-free access to the site, accessible toilets, a PMR parking
+space, what the ground is actually like (sand, grass, gravel — this is a beach), free entry for a
+companion, and whether the stage area has a viewing spot. The screen also keeps a direct contact
+line so someone can ask ahead rather than guess; `contactEmailId` points at `hello@yadlo.ch`
+until a better address exists.
 
 ## ✅ Resolved — the match screening is 2026, not leftover
 
@@ -350,6 +383,16 @@ match are current content, not the stale 2025 line they were suspected of being.
 
 ## 11. Past editions
 
-`editions/index.json` lists only 2026. The festival has run since **2015**, and browsing past
-line-ups is a stated goal. Any archive material — line-ups, posters, photos, figures per year —
-can be back-filled one file at a time without touching the app.
+`editions.json` is exactly what you assumed: **the list behind the archive entry in Plus**, so
+the app can show which years exist without fetching all of them. It is the only file the app
+reads on demand rather than at launch, and the only feature that does not work offline unless
+previously opened.
+
+It lists only 2026. The festival has run since **2015**, and browsing past line-ups is a stated
+goal. Back-filling is additive and safe: drop an `editions/2019/` folder next to `2026/`, add a
+line to `editions.json`, and nothing else changes. No app release needed.
+
+Worth knowing before back-filling: a past edition does **not** need to be complete to be worth
+having. A line-up and a poster is already more than exists anywhere today. `provenance:
+"archived"` is there precisely for this — data taken from a past edition's record rather than
+confirmed fresh.
