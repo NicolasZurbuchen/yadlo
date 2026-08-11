@@ -11,42 +11,49 @@ on anything merely missing.
 content/
 ├── festival.json                 live truth — true regardless of which edition you are viewing
 ├── editions.json                 which editions exist; read only by the archive screen
+├── shared/                       the picture bank — spans every edition
+│   ├── images/
+│   │   ├── artists/
+│   │   ├── activities/
+│   │   └── stands/
+│   └── logos/                    partners and suppliers
 ├── editions/
 │   └── 2026/
 │       ├── edition.json          the frozen record of one edition
-│       └── images/
-│           ├── artists/          one photo per artist
-│           ├── activities/
-│           └── stands/
-├── shared/
-│   └── logos/                    partner logos, reused year after year
+│       └── images/               only what depicts *this edition* — the affiche, photos taken
 ├── GAPS.md                       what is still missing, and who to ask
 └── validate.js
 ```
 
-**An edition is a folder, not a file.** Everything belonging to 2026 — its data and its photos —
-lives under `editions/2026/`, so an edition can be added or archived as one unit and its image
-paths never collide with another year's.
+**The split is about what a picture depicts, not about when it was taken.**
 
-**`shared/` holds assets that outlive an edition.** A partner logo is the same file every year,
-and so is a photo of the GladiaSUP course — 25 of the 38 happenings in 2026 are activities and
-stands that mostly recur. Keeping those under `editions/2026/` would mean copying them into 2027
-and 2028.
+- **`shared/`** — a picture *of a thing*. Dubside, the floating trampoline, De l'Or Bokit,
+  Rivella's logo. The thing exists independently of any one year, so its picture is filed once
+  and referenced by whichever editions need it. 25 of the 38 happenings in 2026 are activities
+  and stands that mostly recur; artists come back too.
+- **`editions/{year}/images/`** — a picture *of that edition*. The affiche, photographs taken
+  over the weekend, a hero image made for that year's campaign. These depict an event, not a
+  subject, and belong to it.
+
+That line is easier to apply than "does this change year to year", because it asks what is in the
+frame rather than requiring a prediction.
 
 **Where a file sits is a filing convention, not a modelling decision.** Each edition declares its
-own `images` array, so any edition may point at any path — `shared/`, its own folder, even
-another year's. Nothing in the model constrains it. That means getting the folders wrong costs a
-file move and a find-and-replace, never a schema change.
+own `images` array, so any edition may point at any path. Nothing in the model constrains it, and
+getting the folders wrong costs a file move and a find-and-replace — never a schema change.
 
-Given that, one rule and one default:
+### The one rule the picture bank depends on: `shared/` is append-only
 
-- **`shared/`** — the subject does not change year to year. Partner logos; a photo of the
-  floating trampoline; a stand's own branding.
-- **`editions/{year}/images/`** — the asset belongs to that year. Artist press photos, which the
-  artist supplies fresh and which date badly; anything shot at that edition.
-- **When in doubt, put it in the edition.** The two mistakes are not symmetrical: a file wrongly
-  shared makes 2027 silently show a 2026 photo, which nobody notices and everybody is misled by.
-  A file wrongly duplicated wastes 200 KB.
+**Never overwrite a file in `shared/`.** If Dubside sends a new press photo for 2027, add
+`dubside-2027.webp` and point 2027 at it. Leave `dubside.webp` alone.
+
+This is the whole safety of the arrangement. Overwriting in place would silently rewrite every
+past edition that referenced the file — the 2026 archive would quietly start showing a 2027
+photograph, and nothing would flag it because every reference is still valid. An archive that
+changes underneath you is worse than a missing image.
+
+Nothing enforces this. It is one sentence of discipline holding up the entire structure, which is
+why it is stated this plainly.
 
 ## The split between the two JSON files
 

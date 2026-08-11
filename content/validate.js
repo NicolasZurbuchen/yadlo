@@ -63,6 +63,15 @@ function checkUrl(url, where) {
 // fetched from - exactly like a relative href in a web page. There is no imageBaseUrl: the app
 // already knows the address it fetched the edition from, so declaring it again in the content
 // would be the same fact written twice, free to drift.
+// Once hosting is settled, set this to the published base URL, e.g.
+// 'https://nicolaszurbuchen.github.io/yadlo/content/'. The validator then maps every absolute
+// src back to a file on disk, which is what makes the two picture-bank checks possible: a
+// reference to an image that is not there, and an image nothing references. Neither can be done
+// while a src is an opaque URL. It lives here rather than in the content because changing hosts
+// should be a tooling edit, not a content migration.
+const PUBLISHED_BASE = null;
+const referenced = new Set();
+
 function checkSrc(src, where) {
   if (typeof src !== 'string' || !src) return errors.push(`${where}: src must be a non-empty string`);
   if (/^http:\/\//.test(src)) return errors.push(`${where}: src must be https - ${src}`);
@@ -70,6 +79,7 @@ function checkSrc(src, where) {
     errors.push(`${where}: a relative src must not start with "/" - ${src}`);
   for (const [re, what] of DIRTY_URL)
     if (re.test(src)) errors.push(`${where}: src carries a ${what}`);
+  referenced.add(PUBLISHED_BASE && src.startsWith(PUBLISHED_BASE) ? src.slice(PUBLISHED_BASE.length) : src);
 }
 
 // Nothing anywhere may still be a {fr, en} object - content is French-only.
@@ -288,6 +298,23 @@ const noImage = ed.happenings.filter(h => !(h.images || []).length);
 const noLogo = allMembers.filter(m => !m.logo);
 if (noImage.length) warns.push(`${noImage.length}/${ed.happenings.length} happenings have no image`);
 if (noLogo.length) warns.push(`${noLogo.length}/${allMembers.length} partners have no logo`);
+
+// Picture-bank integrity. shared/ is append-only by convention, and these two checks are what
+// notice when it is not: a reference with no file behind it, and a file nothing points at.
+if (PUBLISHED_BASE) {
+  for (const rel of referenced)
+    if (!/^https?:\/\//.test(rel) && !fs.existsSync(path.join(root, rel)))
+      errors.push(`image reference has no file: ${rel}`);
+
+  const walk = dir => fs.existsSync(path.join(root, dir))
+    ? fs.readdirSync(path.join(root, dir), { withFileTypes: true })
+        .flatMap(e => e.isDirectory() ? walk(`${dir}/${e.name}`) : (e.name === '.gitkeep' ? [] : [`${dir}/${e.name}`]))
+    : [];
+  for (const f of walk('shared'))
+    if (!referenced.has(f)) warns.push(`unreferenced file in the picture bank: ${f}`);
+} else if (referenced.size) {
+  warns.push(`${referenced.size} image references cannot be checked - set PUBLISHED_BASE in validate.js`);
+}
 
 console.log(`slots=${ed.slots.length}  happenings=${ed.happenings.length}  days=${ed.days.length}  categories=${ed.categories.length}  partners=${allMembers.length}`);
 console.log(`midnight-crossing slots: ${JSON.stringify(crossers)}`);
