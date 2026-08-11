@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="tab_home">Accueil</string>
+    <string name="tab_programme">Programme</string>
+    <string name="tab_mon_yadlo">Mon Yadlo</string>
+    <string name="tab_plus">Plus</string>
+
+    <string name="programme_placeholder_open_happening">Ouvrir une fiche</string>
+    <string name="happening_placeholder_title">Fiche</string>
+    <string name="happening_placeholder_back">Retour</string>
+
     <string name="pokemon_main_fab_description">Find a random Pokémon</string>
     <string name="pokemon_main_history_title">History</string>
     <string name="pokemon_main_clear_list">Clear list</string>

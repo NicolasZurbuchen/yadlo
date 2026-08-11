@@ -2,17 +2,35 @@ package io.nicolaszurbuchen.yadlo.app.navigation
 
 import androidx.navigation3.runtime.NavKey
 import androidx.savedstate.serialization.SavedStateConfiguration
+import io.nicolaszurbuchen.yadlo.feature.happening.presentation.navigation.HappeningDestination
+import io.nicolaszurbuchen.yadlo.feature.home.presentation.navigation.HomeDestination
+import io.nicolaszurbuchen.yadlo.feature.monyadlo.presentation.navigation.MonYadloDestination
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.PlusDestination
 import io.nicolaszurbuchen.yadlo.feature.pokemonexplorer.presentation.navigation.DetailDestination
 import io.nicolaszurbuchen.yadlo.feature.pokemonexplorer.presentation.navigation.MainDestination
+import io.nicolaszurbuchen.yadlo.feature.programme.presentation.navigation.ProgrammeDestination
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
 
+/**
+ * Every destination that can sit on a back stack has to be registered here, or it cannot be
+ * written to saved state and the stack it is on comes back empty after process death. Each tab
+ * keeps its own stack, so a missing entry loses that tab's depth rather than the whole app's.
+ */
 val navConfig =
     SavedStateConfiguration {
         serializersModule =
             SerializersModule {
                 polymorphic(NavKey::class) {
+                    subclass(HomeDestination::class)
+                    subclass(ProgrammeDestination::class)
+                    subclass(MonYadloDestination::class)
+                    subclass(PlusDestination::class)
+                    subclass(HappeningDestination::class)
+
+                    // Template example feature, unreachable from the tab shell. Registered only
+                    // so its screens still restore while it is kept as a working reference.
                     subclass(MainDestination::class)
                     subclass(DetailDestination::class)
                 }

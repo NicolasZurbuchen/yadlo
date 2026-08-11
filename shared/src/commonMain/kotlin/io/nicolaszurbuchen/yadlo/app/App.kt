@@ -7,7 +7,7 @@ import coil3.SingletonImageLoader
 import coil3.network.ktor3.KtorNetworkFetcherFactory
 import io.ktor.client.HttpClient
 import io.nicolaszurbuchen.yadlo.app.design.theme.YadloTheme
-import io.nicolaszurbuchen.yadlo.infra.navigation.NavGraph
+import io.nicolaszurbuchen.yadlo.app.navigation.MainScaffold
 import org.koin.compose.koinInject
 
 @Composable
@@ -22,6 +22,6 @@ fun App() {
     }
 
     YadloTheme {
-        NavGraph()
+        MainScaffold()
     }
 }

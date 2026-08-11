@@ -1,45 +1,31 @@
 package io.nicolaszurbuchen.yadlo.infra.navigation
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.systemBarsPadding
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
+import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
-import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
-import io.nicolaszurbuchen.yadlo.app.navigation.navConfig
 import org.koin.compose.getKoin
-import org.koin.compose.koinInject
-import org.koin.core.qualifier.named
 
+/**
+ * Renders one back stack. It does not own one, and it knows nothing about tabs — the caller
+ * decides which stack is visible, which is what lets four tabs each keep their own depth while
+ * sharing a single set of registered entries.
+ */
 @Composable
-fun NavGraph(modifier: Modifier = Modifier) {
-    val navigator = koinInject<AppNavigator>()
-    val initialRoute = koinInject<NavKey>(named("initialRoute"))
+fun NavGraph(
+    backStack: NavBackStack<NavKey>,
+    onBack: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     val handlers = getKoin().getAll<NavKeyHandler>()
-
-    val backStack =
-        rememberNavBackStack(
-            navConfig,
-            initialRoute,
-        )
-
-    LaunchedEffect(backStack) {
-        navigator.attach(backStack)
-    }
 
     NavDisplay(
         backStack = backStack,
-        modifier =
-            modifier
-                .background(color = MaterialTheme.colorScheme.background)
-                .systemBarsPadding(),
-        onBack = { backStack.removeLastOrNull() },
+        onBack = { onBack() },
         entryDecorators =
             listOf(
                 rememberSaveableStateHolderNavEntryDecorator(),
@@ -51,5 +37,6 @@ fun NavGraph(modifier: Modifier = Modifier) {
                     with(handler) { registerEntries() }
                 }
             },
+        modifier = modifier,
     )
 }
