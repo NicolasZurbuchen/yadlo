@@ -21,6 +21,20 @@ const haps = Object.fromEntries(ed.happenings.map(h => [h.id, h]));
 // French in Kotlin. Colour stays in the app, keyed by id, because colour is design.
 const CATEGORIES = new Set(ed.categories.map(c => c.id));
 
+// kind and category answer different questions - kind is which payload the object carries,
+// category is which chip and colour it gets - but they are not independent, and nothing stops
+// a typo pairing kind:"stand" with category:"musique". This is the guard rail.
+//
+// The lists are deliberately narrow: exactly what exists today, nothing speculative. Widening
+// one should be a decision someone makes on purpose. The first realistic case is a musique
+// ACTIVITY - an initiation au mix, a workshop - which is also the reason the two fields cannot
+// simply be merged.
+const KIND_CATEGORIES = {
+  artist: ['musique'],
+  activity: ['silent', 'eau', 'terre', 'enfants'],
+  stand: ['restauration', 'createurs'],
+};
+
 const PROVENANCE = new Set(['confirmed', 'archived', 'unverified']);
 const MARKS = new Set(['végé', 'végan', 'sans gluten', 'sans lactose', 'piquant', 'bio']);
 const LINK_TYPES = new Set(['spotify', 'instagram', 'website', 'soundcloud', 'bandcamp',
@@ -88,8 +102,12 @@ for (const c of ed.categories) {
 for (const [hid, h] of Object.entries(haps)) {
   if (!CATEGORIES.has(h.category)) errors.push(`happening ${hid}: category "${h.category}" is not declared in categories[]`);
   if (!PROVENANCE.has(h.provenance)) errors.push(`happening ${hid}: bad provenance ${h.provenance}`);
-  if (!['artist', 'activity', 'stand'].includes(h.kind)) errors.push(`happening ${hid}: bad kind ${h.kind}`);
-  else if (!(h.kind in h)) errors.push(`happening ${hid}: kind=${h.kind} but no '${h.kind}' payload`);
+  if (!(h.kind in KIND_CATEGORIES)) errors.push(`happening ${hid}: bad kind ${h.kind}`);
+  else {
+    if (!(h.kind in h)) errors.push(`happening ${hid}: kind=${h.kind} but no '${h.kind}' payload`);
+    if (CATEGORIES.has(h.category) && !KIND_CATEGORIES[h.kind].includes(h.category))
+      errors.push(`happening ${hid}: kind "${h.kind}" cannot carry category "${h.category}" - allowed: ${KIND_CATEGORIES[h.kind].join(', ')}`);
+  }
   if (typeof h.name !== 'string' || !h.name) errors.push(`happening ${hid}: name must be a non-empty string`);
   if ('description' in h && typeof h.description !== 'string')
     errors.push(`happening ${hid}: description must be a string`);

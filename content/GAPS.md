@@ -69,6 +69,22 @@ them are only lightly sourced and worth a glance before they ship:
 Two artists have no readable bio anywhere and their descriptions come only from confirmed facts:
 **AMC** (SoundCloud blocks fetching; the text is the website's) and **Thalassothérapie** (same).
 
+## 2b. The bar does not exist as a stand
+
+The drinks suppliers — Vivi Kola, Kosmos, SuperNaturalClub, Grano Maté, BroCello, Swan,
+Wineatypic — are recorded as **partners**, which is how the association presented them and
+presumably reflects that they supplied stock for free.
+
+But the post describing them reads like a drinks list, not a sponsor list: each entry says what
+it tastes like and when to drink it, split into *côté softs* and *côté apéros & cocktails*. As
+partner logos that content dies. As a **bar menu** it answers "what can I drink", which is the
+second question anyone asks after "what can I eat".
+
+**There is no `bar` stand yet**, and the festival plainly has one — 3 200 litres of beer in the
+closing figures, `fnb@yadlo.ch` in the contacts, and free bar drinks among the Hot'Staff perks.
+These suppliers should end up in both places. Needed: the bar's name, where it stands, its hours,
+and what it pours at what price.
+
 ## 2. Restauration — six stands in, four without a menu
 
 The festival does have a restauration page; it is simply not findable, which is why it was missed
