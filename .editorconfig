@@ -9,7 +9,7 @@ ktlint_function_naming_ignore_when_annotated_with = Composable
 ktlint_standard_chain-method-continuation = disabled
 
 # Compose — theme and design system
-compose_allowed_composition_locals = LocalYadloColors,LocalSpacing
+compose_allowed_composition_locals = LocalAppColors,LocalCategoryColors,LocalSpacing
 
 # Compose — enforce M3 only
 compose_disallow_material2 = true
