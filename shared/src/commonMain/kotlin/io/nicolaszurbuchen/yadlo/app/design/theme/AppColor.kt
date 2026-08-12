@@ -54,10 +54,17 @@ data class AppColors(
     val accentSubtle: Color,
     val onAccentSubtle: Color,
     /**
-     * The veil that closes over a fiche's hero photograph so the title stays readable on top of an
-     * image nobody has vetted. Alpha is baked in: the value is only correct as a whole.
+     * The veil that closes over a photograph so text stays readable on top of an image nobody has
+     * vetted — a fiche's hero, the splash. Alpha is baked in: the value is only correct as a whole.
      */
     val scrim: Color,
+    /**
+     * The ink [scrim] exists to make legible, and the same in both themes for the same reason the
+     * scrim is: what it sits on is a photograph, not one of the app's grounds, so the device theme
+     * says nothing about it. AppColorTest asserts this pairing over the worst case a photo can
+     * present.
+     */
+    val onScrim: Color,
     /**
      * Not a colour — the discriminator, for the decisions that are not about colour at all: which
      * status-bar icon style to ask for, which variant of a bundled asset to load. Without it every
@@ -98,6 +105,7 @@ val LightAppColors =
         accentSubtle = RosePalette.rose100,
         onAccentSubtle = RosePalette.rose900,
         scrim = SCRIM,
+        onScrim = Color.White,
     )
 
 val DarkAppColors =
@@ -128,6 +136,7 @@ val DarkAppColors =
         accentSubtle = RosePalette.rose900,
         onAccentSubtle = RosePalette.rose200,
         scrim = SCRIM,
+        onScrim = Color.White,
     )
 
 internal val LocalAppColors = staticCompositionLocalOf { LightAppColors }
