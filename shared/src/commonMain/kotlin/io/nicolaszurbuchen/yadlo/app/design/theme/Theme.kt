@@ -7,36 +7,43 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 
+// Material's scheme is derived from the same palette rather than being a second source of colour.
+// Anything Material draws for us — a NavigationBar, a Button, a ripple — has to land on the
+// identity without every call site overriding it.
 private val LightMaterialColorScheme =
     lightColorScheme(
-        primary = CobaltPalette.cobalt600,
-        onPrimary = SlatePalette.slate50,
-        primaryContainer = CobaltPalette.cobalt100,
-        onPrimaryContainer = CobaltPalette.cobalt900,
-        background = SlatePalette.slate50,
-        onBackground = SlatePalette.slate900,
-        surface = SlatePalette.slate50,
-        onSurface = SlatePalette.slate900,
-        surfaceVariant = SlatePalette.slate100,
-        onSurfaceVariant = SlatePalette.slate500,
-        outline = SlatePalette.slate200,
-        outlineVariant = SlatePalette.slate100,
+        primary = YadloPalette.primaryLight,
+        onPrimary = YadloPalette.backgroundLight,
+        primaryContainer = YadloPalette.brandLight,
+        onPrimaryContainer = YadloPalette.onBrandLight,
+        secondary = YadloPalette.accent,
+        onSecondary = YadloPalette.inkLight,
+        background = YadloPalette.backgroundLight,
+        onBackground = YadloPalette.inkLight,
+        surface = YadloPalette.backgroundLight,
+        onSurface = YadloPalette.inkLight,
+        surfaceVariant = YadloPalette.surfaceLight,
+        onSurfaceVariant = YadloPalette.inkMutedLight,
+        outline = YadloPalette.inkSoftLight,
+        outlineVariant = YadloPalette.lineLight,
     )
 
 private val DarkMaterialColorScheme =
     darkColorScheme(
-        primary = CobaltPalette.cobalt300,
-        onPrimary = SlatePalette.slate950,
-        primaryContainer = CobaltPalette.cobalt900,
-        onPrimaryContainer = CobaltPalette.cobalt200,
-        background = SlatePalette.slate950,
-        onBackground = SlatePalette.slate50,
-        surface = SlatePalette.slate800,
-        onSurface = SlatePalette.slate50,
-        surfaceVariant = SlatePalette.slate700,
-        onSurfaceVariant = SlatePalette.slate300,
-        outline = SlatePalette.slate600,
-        outlineVariant = SlatePalette.slate700,
+        primary = YadloPalette.primaryDark,
+        onPrimary = YadloPalette.inkLight,
+        primaryContainer = YadloPalette.brandDark,
+        onPrimaryContainer = YadloPalette.onBrandDark,
+        secondary = YadloPalette.accent,
+        onSecondary = YadloPalette.inkLight,
+        background = YadloPalette.backgroundDark,
+        onBackground = YadloPalette.inkDark,
+        surface = YadloPalette.backgroundDark,
+        onSurface = YadloPalette.inkDark,
+        surfaceVariant = YadloPalette.surfaceDark,
+        onSurfaceVariant = YadloPalette.inkMutedDark,
+        outline = YadloPalette.inkSoftDark,
+        outlineVariant = YadloPalette.lineDark,
     )
 
 /** Root theme composable. Wire any additional domain color layer here alongside LocalAppColors. */
