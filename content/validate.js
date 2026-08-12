@@ -131,7 +131,11 @@ else {
     annIds.add(a.id);
     if (!a.title) errors.push(`annonce ${a.id}: needs a title`);
     if (!('body' in a)) errors.push(`annonce ${a.id}: body must be present, null when the title says it all`);
-    if (!ts(a.publishedAt)) errors.push(`annonce ${a.id}: publishedAt must be an instant with an offset`);
+    // Number.isNaN rather than a truthiness check: new Date("nonsense") is an Invalid Date, which
+    // is an object, which is truthy. A bad instant would have sailed straight through.
+    const at = ts(a.publishedAt);
+    if (!at || Number.isNaN(at.getTime()))
+      errors.push(`annonce ${a.id}: publishedAt must be an instant with an offset`);
     // Scoped to an edition, or null for something true of the festival itself. An annonce naming
     // an edition the app has not fetched is not an error here - the app drops it.
     if (!('editionId' in a)) errors.push(`annonce ${a.id}: editionId must be present, null when festival-wide`);
