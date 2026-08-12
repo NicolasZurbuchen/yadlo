@@ -52,7 +52,18 @@ the data now; whether the UI ever surfaces it ("prix 2026, à confirmer") is def
 the association confirms a price, that is a field flip rather than a re-authoring.
 
 **Images.** Remote, loaded with Coil3 and disk-cached; only app chrome and category icons
-are bundled. The real payload is ~10 artist photos and ~20 partner logos per edition —
+are bundled.
+
+**The splash screen is the exception, and it is absolute.** Its background photograph, the Yadlo
+wordmark and the two `soutien-public` logos are all bundled in the app. A splash draws before any
+fetch completes — that is its entire job — so a remote image there means either waiting on the
+network or rendering incomplete on a first launch, which is the one launch that has no cache to fall
+back on. Using the platform splash APIs later would make it not merely slow but impossible: those
+drawables are resolved before the `Application` class runs.
+
+This duplicates two logos that also exist in the content, and the duplication is the point. Changing
+a public backer needs an app release, which is fine at a timescale of years; the Partners screen
+keeps reading the live list. The real payload is ~10 artist photos and ~20 partner logos per edition —
 activity and stand photos are decorative and can wait.
 
 **Editions.** Content is scoped by Edition from day one; the v1 UI shows a single Edition

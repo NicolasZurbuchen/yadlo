@@ -388,7 +388,8 @@ starts meaning something at the first release.
 - Fetch on launch → cache to disk → bundled snapshot as fallback. Offline-first at all times.
 - Archives are the **only** feature reading a third file, fetched on demand, and the only one
   that does not work offline unless previously opened.
-- Images remote and disk-cached; only app chrome and category icons bundled.
+- Images remote and disk-cached; only app chrome, category icons and **every image on the splash
+  screen** are bundled. The splash is the one absolute exception — see § Screens.
 - **Image references are relative by default.** Every Happening carries `images: [{src, credit}]`
   and every partner a `logo`; a `src` is either an absolute `https://` URL or a path resolved
   against the edition's `imageBaseUrl`. Relative is the intended form — it moves the whole image
@@ -450,9 +451,20 @@ address that 404s — so silence on tap would be the common case, not the edge o
 does nothing reads as a bug.
 
 **Splash** — one background photograph of the beach under a tint, the Yadlo wordmark, the logo and
-the motto, and beneath them the two **soutien public** logos, Morges and Préverenges. Those two are
-already a partner tier in the content with exactly two members, so the splash reads them from the
-bundle rather than hardcoding them. **Blocked on assets**: no partner has a logo file yet.
+the motto, and beneath them the two **soutien public** logos, Morges and Préverenges.
+
+**Every image on this screen is bundled in the app, not fetched** — the one place in the app where
+that rule is absolute. The splash draws before any fetch has completed; that is what it is for.
+Reading the backer logos from the content bundle would mean either a splash that waits on the
+network, or one that draws incomplete on a first launch — which is exactly the case story 68 is
+about, someone opening the app on-site with no signal. If the platform splash APIs are ever used
+(Android 12+ `SplashScreen`, iOS launch screen), remote images stop being merely slow and become
+impossible: the system resolves those drawables before the `Application` class runs.
+
+The cost is real and worth stating: **changing a backer needs an app release.** That is acceptable
+because the `soutien-public` tier moves on a timescale of years — a commune and a regional tourism
+board — not per edition. The Partners screen still reads the full list from the content, so the
+authoritative list stays live; only these two images are duplicated into the app, on purpose.
 
 **A FAQ belongs in *Sur place*, and it was missed in the prototypes.** It surfaced from the
 plainest possible question — *is entry free?* — which no screen answered and no mock had a place
