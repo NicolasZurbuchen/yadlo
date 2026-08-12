@@ -7,14 +7,17 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.rememberNavBackStack
 import io.nicolaszurbuchen.yadlo.infra.navigation.AppNavigator
 import io.nicolaszurbuchen.yadlo.infra.navigation.NavGraph
+import io.nicolaszurbuchen.yadlo.infra.navigation.rememberNavEntries
 import io.nicolaszurbuchen.yadlo.infra.platform.BackHandler
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
@@ -33,12 +36,18 @@ fun MainScaffold(modifier: Modifier = Modifier) {
     val tabNavigator = koinInject<TabNavigator>()
     val selectedTab by tabNavigator.selectedTab.collectAsStateWithLifecycle()
 
-    // Declared one by one rather than built in a loop: rememberNavBackStack is a composable, and
-    // the call order has to be identical on every recomposition.
+    // Declared one by one rather than built in a loop: these are composables, and the call order
+    // has to be identical on every recomposition. Each rememberNavEntries call is also its own
+    // composition slot, which is what gives each tab decorator state of its own.
     val homeStack = rememberNavBackStack(navConfig, Tab.HOME.root)
     val programmeStack = rememberNavBackStack(navConfig, Tab.PROGRAMME.root)
     val monYadloStack = rememberNavBackStack(navConfig, Tab.MON_YADLO.root)
     val plusStack = rememberNavBackStack(navConfig, Tab.PLUS.root)
+
+    val homeEntries = rememberNavEntries(homeStack)
+    val programmeEntries = rememberNavEntries(programmeStack)
+    val monYadloEntries = rememberNavEntries(monYadloStack)
+    val plusEntries = rememberNavEntries(plusStack)
 
     val stacks =
         remember(homeStack, programmeStack, monYadloStack, plusStack) {
@@ -51,11 +60,20 @@ fun MainScaffold(modifier: Modifier = Modifier) {
         }
 
     val currentStack = stacks.getValue(selectedTab)
+    val currentEntries =
+        when (selectedTab) {
+            Tab.HOME -> homeEntries
+            Tab.PROGRAMME -> programmeEntries
+            Tab.MON_YADLO -> monYadloEntries
+            Tab.PLUS -> plusEntries
+        }
     val isAtTabRoot = currentStack.size <= 1
 
-    // The navigator always points at the stack the user is looking at, so a feature calling
-    // navigateTo lands in the right tab without ever naming one.
-    LaunchedEffect(currentStack) {
+    // SideEffect, not LaunchedEffect: this has to be true before the frame the user can touch.
+    // LaunchedEffect publishes on a coroutine after composition, which leaves a window where the
+    // bar has already switched tabs but the navigator still points at the tab being left, so a
+    // tap landing in that window pushes onto the wrong stack.
+    SideEffect {
         appNavigator.attach(currentStack)
     }
 
@@ -76,9 +94,7 @@ fun MainScaffold(modifier: Modifier = Modifier) {
                         if (tab == selectedTab) {
                             // Re-tapping the active tab returns to its root. The standard way out
                             // of a deep stack without hunting for the back gesture.
-                            while (stacks.getValue(tab).size > 1) {
-                                stacks.getValue(tab).removeLastOrNull()
-                            }
+                            stacks.getValue(tab).popToRoot()
                         } else {
                             tabNavigator.select(tab)
                         }
@@ -89,11 +105,22 @@ fun MainScaffold(modifier: Modifier = Modifier) {
         modifier = modifier,
     ) { contentPadding ->
         NavGraph(
-            backStack = currentStack,
-            onBack = { currentStack.removeLastOrNull() },
+            entries = currentEntries,
+            onBack = { currentStack.popOne() },
             modifier = Modifier.padding(contentPadding),
         )
     }
+}
+
+// A tab's root is not poppable. NavDisplay throws the moment it is handed an empty list, and it
+// renders in the same frame the list is mutated, so an unguarded pop turns a double-tap into a
+// crash rather than a no-op.
+private fun NavBackStack<NavKey>.popOne() {
+    if (size > 1) removeAt(size - 1)
+}
+
+private fun NavBackStack<NavKey>.popToRoot() {
+    while (size > 1) removeAt(size - 1)
 }
 
 @Composable
