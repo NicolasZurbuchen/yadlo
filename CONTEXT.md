@@ -133,6 +133,23 @@ _Avoid_: Location, place, site
 > Individual places within the site — the lake, the beach, the village — were dropped with them:
 > the site is small enough to see in one turn, and no screen ever displayed them.
 
+### What the festival is saying right now
+
+**Annonce**:
+A dated message from the association, shown on Accueil. The only block that appears in **all five
+Phases**, and the reason to open the app on the 361 days when nothing is happening — the line-up
+dropping, a stage time moving, a thank-you after the weekend. Carries a title, a body, a
+`publishedAt`, an optional `expiresAt`, and exactly one typed action.
+
+Lives in the **live truth** file, never on an Edition: an Annonce is about *now*, not part of an
+edition's frozen record.
+
+An Annonce's action is **typed, never a free URL** — `none`, `programme(day?)`, `happening(id)`,
+`plus(entry)` or `url(external)` — so it can never send the user somewhere the app cannot render.
+An action whose target does not resolve renders the Annonce **without its button**, which is also
+how an Annonce pointing at last year's Happening ages out on its own.
+_Avoid_: News, post, message, notification, banner
+
 ### The user's own festival
 
 **Plan**:

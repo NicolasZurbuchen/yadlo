@@ -258,6 +258,9 @@ Built unofficially, with the explicit aim of becoming the association's official
     and `Platform`; there is no notification code, no `expect`/`actual` seam, and no
     `POST_NOTIFICATIONS` permission in the manifest. The `Notifier` interface is not a
     formality wrapping an existing capability — it is the whole feature, on two platforms.
+    **Deferred past v1.** The blast radius is exactly one user story — 16, the reminder before a
+    saved item — plus the end-of-slot warnings below. Everything else that looks time-driven
+    (Phase, live pills, countdowns, Mon Yadlo) reads the injected clock and needs no notification.
   - *Disk-cached remote images* — **not configured.** Coil3 is wired to the shared Ktor client
     in `App.kt`, but the `ImageLoader` is built with no `diskCache { }` block, so the app is
     relying on whatever Coil defaults to. For a festival app whose images must survive a field
@@ -309,14 +312,18 @@ archive need its own copy?".
 
 ```
 content/
-  festival.json        live:   histoire, contact, réseaux, transports,
-                               paiement, Hot'Staff, devenir partenaire
+  festival.json          live:   annonces, histoire, faq, contact, réseaux,
+                                 transports, paiement, accessibilité,
+                                 en cas de besoin, s'impliquer
+  editions.json          list of available editions (archives only)
   editions/
-    index.json         list of available editions (archives only)
-    2026.json          frozen: programme, activités, stands, menus, prix,
-                               horaires, partenaires, chiffres
-    2027.json
-    2026/images/
+    2026/
+      edition.json       frozen: programme, activités, stands, menus, prix,
+                                 horaires, partenaires, chiffres
+      images/            only what depicts *this* edition — the affiche
+  shared/                the picture bank, spanning every edition
+    images/{artists,activities,stands}/
+    logos/
 ```
 
 - Static HTTPS from a versioned repo. No CMS, no Firebase. **Live at
@@ -338,7 +345,23 @@ content/
   source. That is also the strongest argument for the app becoming official: the JSON would stop
   being a copy of their communication and start being what their communication is generated from.
 - **One file per edition** (60–150 KB): one fetch, one ETag, atomic consistency.
-- Fetch on launch → cache to disk → bundled snapshot as fallback. Offline-first at all times.
+- **Fetch on launch → cache to disk → error with retry.** No bundled snapshot in v1: an app
+  cannot be installed without connectivity, so a bundle only serves someone who installed, never
+  opened the app, then went offline. The **cache** is what makes the app work on the beach. See
+  DECISIONS.md § Settled — it returns behind the same interface if that call proves wrong.
+- **The cached edition is stored as the document it is**, not shredded into tables. One ~44 KB
+  file, always read whole, 38 Happenings and 48 Slots: raw JSON plus its ETag in a single row,
+  parsed once into memory. This keeps the atomicity of "one fetch, one ETag" literal — a document
+  cannot be half-applied — and costs no migration when the content schema grows. SQLDelight is
+  used relationally for the thing that is actually relational and mutable: the user's Plan and
+  Wishlist.
+- **A content refresh never touches saved data.** If a Slot disappears from the file, the save
+  does not vanish — it becomes *no longer in the programme*. Edition-qualified ids make that
+  detectable, and silently deleting someone's plan because the association fixed a typo would be
+  the worst bug this app could ship.
+- **`schemaVersion` is the only "update the app" trigger.** The client parses with
+  `ignoreUnknownKeys`, so additive content changes need no bump; a version the app does not
+  understand shows a message pointing at the store rather than dropping half the programme.
 - Archives are the **only** feature reading a third file, fetched on demand, and the only one
   that does not work offline unless previously opened.
 - Images remote and disk-cached; only app chrome and category icons bundled.

@@ -1,10 +1,35 @@
 # Content gaps — 2026 edition
 
-Everything below is missing from `festival.json` or `editions/2026.json`. This file is the list
-to put in front of the association; it is not read by the app.
+Everything below is missing from `festival.json` or `editions/2026/edition.json`. This file is the
+list to put in front of the association; it is not read by the app.
 
 Anything marked **`provenance: "unverified"`** in the JSON is derived or guessed and should be
 replaced by a real answer. Run `node content/validate.js` after any edit.
+
+---
+
+## Annonces — the field exists, nothing is written
+
+`festival.json` now carries an `annonces` array and it is **empty**. This is the only block that
+appears in all five Phases of Accueil, and the only reason to open the app on the 361 days when
+nothing is happening — so an empty array means Accueil has nothing to say for most of the year.
+
+Unlike the other gaps here, this one is not waiting on the association for facts. It is waiting on
+someone deciding to write a sentence when something happens: the line-up dropping, a stage time
+moving, a thank-you after the weekend. Each one needs a title, a body, a `publishedAt`, an
+optional `expiresAt` and one typed action:
+
+```json
+{ "id": "2026-lineup", "title": "La programmation est là",
+  "body": "Les treize artistes de l'édition 2026 sont en ligne.",
+  "publishedAt": "2026-04-12T10:00:00+02:00", "expiresAt": null,
+  "action": { "type": "programme" } }
+```
+
+Actions are `none`, `programme` (with an optional `dayId`), `happening` (with a `happeningId`),
+`plus` (with an `entry`) or `url` (with an `https` URL). An action pointing at something the
+loaded edition does not contain is legal — the annonce just renders without its button, which is
+how last year's annonces age out on their own.
 
 ---
 

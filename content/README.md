@@ -83,9 +83,10 @@ why it is stated this plainly.
 
 The test is: **would a past-edition archive need its own copy?**
 
-- **`festival.json`** — history, contact, social links, Hot'Staff, transport, payment,
+- **`festival.json`** — annonces, history, contact, social links, Hot'Staff, transport, payment,
   accessibility, FAQ. Someone reading the 2018 archive wants *today's* contact address, not
-  2018's.
+  2018's. Annonces sit here for the same reason: an annonce is about *now*, not part of an
+  edition's record.
 - **`edition.json`** — programme, activities, stands, menus, prices, opening hours, partners,
   closing figures, and whether entry was free. If the festival moves or starts charging, the 2026
   record must still say Préverenges and still say free.

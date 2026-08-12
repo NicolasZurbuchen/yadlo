@@ -103,6 +103,43 @@ if (!ed.entry || typeof ed.entry.free !== 'boolean') errors.push('edition: entry
 else if (!PROVENANCE.has(ed.entry.provenance)) errors.push('edition: entry has bad provenance');
 if ('openingNote' in ed && typeof ed.openingNote !== 'string') errors.push('edition: openingNote must be a string');
 
+// --- annonces -------------------------------------------------------------------------------
+// The one block that appears in all five Phases, and the only reason to open the app on the 361
+// days when nothing is happening. Lives here rather than on the Edition because an annonce is
+// about *now*, not part of an edition's frozen record.
+//
+// Actions are typed rather than free URLs so an annonce can never navigate somewhere the app
+// cannot render. A target that does not resolve - a happening id from a past edition, say -
+// renders the annonce without its button, so the cross-edition case needs no extra field.
+const ACTION_TYPES = new Set(['none', 'programme', 'happening', 'plus', 'url']);
+const annonceIds = new Set();
+for (const a of fest.annonces || []) {
+  if (annonceIds.has(a.id)) errors.push(`annonce ${a.id}: duplicate id`);
+  annonceIds.add(a.id);
+  if (!a.title) errors.push(`annonce ${a.id}: needs a title`);
+  if (!a.publishedAt) errors.push(`annonce ${a.id}: needs a publishedAt`);
+  if (a.publishedAt && !ts(a.publishedAt)) errors.push(`annonce ${a.id}: publishedAt is not a valid instant`);
+  if (a.expiresAt) {
+    if (!ts(a.expiresAt)) errors.push(`annonce ${a.id}: expiresAt is not a valid instant`);
+    else if (ts(a.expiresAt) <= ts(a.publishedAt)) errors.push(`annonce ${a.id}: expires at or before it is published`);
+  }
+
+  const action = a.action;
+  if (!action || !ACTION_TYPES.has(action.type)) {
+    errors.push(`annonce ${a.id}: action.type must be one of ${[...ACTION_TYPES].join(', ')}`);
+    continue;
+  }
+  // Only the shape is checked here, never whether the target exists. An annonce may point at a
+  // day or a happening of an edition this file does not carry, and that is legal by design.
+  if (action.type === 'url' && !/^https:\/\//.test(action.url || ''))
+    errors.push(`annonce ${a.id}: a url action needs an https url`);
+  if (action.type === 'happening' && !action.happeningId)
+    errors.push(`annonce ${a.id}: a happening action needs a happeningId`);
+  if (action.type === 'plus' && !action.entry)
+    errors.push(`annonce ${a.id}: a plus action needs an entry`);
+}
+if (!(fest.annonces || []).length) warns.push('festival.json: no annonces - Accueil has nothing to show in any Phase');
+
 // --- faq ------------------------------------------------------------------------------------
 const faqIds = new Set();
 for (const f of fest.faq || []) {

@@ -490,6 +490,43 @@ confirmed, the hours are inferred. Leaving them `confirmed` would have asserted 
 organisers published times they did not. `validate.js` rejects a null `start` or `end`, so the
 invariant lives in the content pipeline and the app never has to defend against it.
 
+**No bundled content snapshot in v1. The chain is cache → error with retry.**
+
+The earlier plan shipped `festival.json` and `edition.json` inside the app so a first launch with
+no connectivity still showed the festival. The argument that killed it is that **an app cannot be
+installed without connectivity**. Whoever just pulled it from the store had a working connection
+moments earlier, and the app fetches at launch — so the bundle only ever serves someone who
+installed at home, never opened the app, travelled, and opened it first on the field with no
+signal. That case is real but narrow, and it is not the festival-offline case: anyone who opened
+the app once before arriving is served by the **cache**, which is what actually makes the app work
+on the beach. Conflating the two oversold the bundle.
+
+Against that margin sits a permanent release chore whose omission is silent — refresh the bundled
+copy every release or ship stale content and never find out — and the problem of an app left
+un-updated for a year presenting last year's programme as current.
+
+The decisive point is that the failure screen exists either way. A bundle can be expired, absent
+or unparseable, so "we could not reach the content" has to be designed regardless; the bundle was
+never avoiding a screen, only optimising past one.
+
+It can return without any architectural change — it is a third source behind the same interface.
+If it does, the stale-year problem has a cheap fix: expire the bundle past its edition's last day,
+against the injected clock, so a 2026 snapshot stops being offered as current on 13 July 2026.
+
+**A breaking content change is announced by `schemaVersion`, not by a kill switch.** The client
+parses with `ignoreUnknownKeys`, so *additive* content changes are already safe for old apps and
+need no version bump. Only a genuinely breaking change bumps it, and an app meeting a version it
+does not understand says so and points at the store — rather than crashing, or silently dropping
+half the programme, which is what a lenient parser would do.
+
+**Annonces live in `festival.json`, not on the Edition.** They are the only block present in all
+five Phases, and the only reason to open the app on the 361 days when nothing is happening — so
+they are live truth, not part of an edition's frozen record. Their actions are typed
+(`none | programme(day?) | happening(id) | plus(entry) | url`) rather than free URLs, so an
+annonce can never navigate somewhere the app cannot render. The cross-edition case needs no extra
+field: an action whose target does not resolve renders the annonce **without its button**, so an
+annonce pointing at a 2026 Happening simply loses its button once 2027 is loaded.
+
 ## Open
 
 **The accent colour.** `#14618F` is the primary, not an accent — the terminology in earlier
