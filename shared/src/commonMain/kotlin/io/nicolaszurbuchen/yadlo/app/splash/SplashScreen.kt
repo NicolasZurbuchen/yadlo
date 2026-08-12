@@ -24,13 +24,11 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import io.nicolaszurbuchen.yadlo.app.design.theme.YadloTheme
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
 import kotlinx.coroutines.delay
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.img_bg_splash
 import yadlo.shared.generated.resources.img_logo_morges
@@ -151,17 +149,6 @@ private fun SupportedBy(modifier: Modifier = Modifier) {
  * the splash stays until the bundle is ready and this becomes the floor rather than the duration.
  */
 private const val MINIMUM_DISPLAY_MILLIS = 1_200L
-
-@Preview
-@Composable
-private fun SplashScreenPreview() {
-    // Wrapped in YadloTheme because the screen reads the scrim and its ink from it. Without the
-    // theme the preview would render against the composition-local defaults and quietly stop
-    // telling the truth about the one thing worth previewing here — whether the logos are legible.
-    YadloTheme {
-        SplashScreen(onFinish = {})
-    }
-}
 
 /** Sized to the wordmark rather than the screen, so it does not balloon on a tablet. */
 private val WORDMARK_WIDTH = 260.dp

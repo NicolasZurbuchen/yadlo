@@ -46,12 +46,9 @@ compose-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.re
 compose-foundation = { module = "org.jetbrains.compose.foundation:foundation", version.ref = "composeMultiplatform" }
 compose-ui = { module = "org.jetbrains.compose.ui:ui", version.ref = "composeMultiplatform" }
 compose-uiTooling = { module = "org.jetbrains.compose.ui:ui-tooling", version.ref = "composeMultiplatform" }
-# Android-only, for androidApp. A @Preview in shared/commonMain needs the components- artifact below.
+# Previews live in androidApp, not in shared: see androidApp .../preview/SplashScreenPreview.kt.
 compose-uiToolingPreview = { module = "org.jetbrains.compose.ui:ui-tooling-preview", version.ref = "composeMultiplatform" }
 compose-components-resources = { module = "org.jetbrains.compose.components:components-resources", version.ref = "composeMultiplatform" }
-# The components- artifact, not org.jetbrains.compose.ui:ui-tooling-preview. Only this one publishes
-# common metadata, so it is the one a @Preview in commonMain can resolve.
-compose-components-uiToolingPreview = { module = "org.jetbrains.compose.components:components-ui-tooling-preview", version.ref = "composeMultiplatform" }
 compose-material3 = { module = "org.jetbrains.compose.material3:material3", version.ref = "material3" }
 compose-material-icons-extended = { module = "org.jetbrains.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
 
@@ -127,7 +124,7 @@ compose-common = [
     "compose-foundation",
     "compose-ui",
     "compose-material3",
-    "compose-components-uiToolingPreview"
+    "compose-uiToolingPreview"
 ]
 mvikotlin-common = [
     "mvikotlin",
