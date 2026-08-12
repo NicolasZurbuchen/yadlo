@@ -1,9 +1,8 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "name": "Yadlo",
   "tagline": "Mouille ton corps, arrose ton esprit",
   "currentEditionId": "2026",
-
   "histoire": {
     "foundedYear": 2015,
     "body": "Yadlo est né en 2015 d'un petit groupe d'amis passionnés de windsurf, de surf et de sports nautiques à Préverenges. Ce qui n'était alors qu'une esquisse a peu à peu attiré des personnes motivées de toute la région. Le festival vit aujourd'hui grâce à ses bénévoles, ses partenaires et les amoureux de la plage et du Léman.",
@@ -14,7 +13,6 @@
     },
     "provenance": "confirmed"
   },
-
   "faq": [
     {
       "id": "entree",
@@ -23,7 +21,6 @@
       "provenance": "confirmed"
     }
   ],
-
   "responsable": {
     "charters": [
       {
@@ -35,74 +32,260 @@
       }
     ]
   },
-
   "contact": {
     "address": {
-      "lines": ["Avenue de la Plage 1", "1028 Préverenges", "Suisse"],
+      "lines": [
+        "Avenue de la Plage 1",
+        "1028 Préverenges",
+        "Suisse"
+      ],
       "provenance": "confirmed"
     },
     "phone": null,
     "emails": [
-      { "id": "hello", "address": "hello@yadlo.ch", "label": "Informations générales" },
-      { "id": "communication", "address": "communication@yadlo.ch", "label": "Communication" },
-      { "id": "animations", "address": "animations@yadlo.ch", "label": "Animations" },
-      { "id": "foodtrucks", "address": "foodtrucks@yadlo.ch", "label": "Food trucks" },
-      { "id": "lac", "address": "lac@yadlo.ch", "label": "Lac" },
-      { "id": "musique", "address": "musique@yadlo.ch", "label": "Programmation musicale" },
-      { "id": "fnb", "address": "fnb@yadlo.ch", "label": "Restauration et boissons" },
-      { "id": "staff", "address": "staff@yadlo.ch", "label": "Staff" },
-      { "id": "silentparty", "address": "silentparty@yadlo.ch", "label": "Silent Party" }
+      {
+        "id": "hello",
+        "address": "hello@yadlo.ch",
+        "label": "Informations générales"
+      },
+      {
+        "id": "communication",
+        "address": "communication@yadlo.ch",
+        "label": "Communication"
+      },
+      {
+        "id": "animations",
+        "address": "animations@yadlo.ch",
+        "label": "Animations"
+      },
+      {
+        "id": "foodtrucks",
+        "address": "foodtrucks@yadlo.ch",
+        "label": "Food trucks"
+      },
+      {
+        "id": "lac",
+        "address": "lac@yadlo.ch",
+        "label": "Lac"
+      },
+      {
+        "id": "musique",
+        "address": "musique@yadlo.ch",
+        "label": "Programmation musicale"
+      },
+      {
+        "id": "fnb",
+        "address": "fnb@yadlo.ch",
+        "label": "Restauration et boissons"
+      },
+      {
+        "id": "staff",
+        "address": "staff@yadlo.ch",
+        "label": "Staff"
+      },
+      {
+        "id": "silentparty",
+        "address": "silentparty@yadlo.ch",
+        "label": "Silent Party"
+      }
     ],
     "provenance": "confirmed"
   },
-
   "social": [
-    { "id": "instagram", "name": "Instagram", "url": "https://www.instagram.com/yadlo_ch/" },
-    { "id": "facebook", "name": "Facebook", "url": "https://www.facebook.com/yadlosuisse" },
-    { "id": "youtube", "name": "YouTube", "url": "https://www.youtube.com/@yadloCH" },
-    { "id": "tiktok", "name": "TikTok", "url": "https://www.tiktok.com/@yadlo_festival" }
+    {
+      "id": "instagram",
+      "name": "Instagram",
+      "url": "https://www.instagram.com/yadlo_ch/"
+    },
+    {
+      "id": "facebook",
+      "name": "Facebook",
+      "url": "https://www.facebook.com/yadlosuisse"
+    },
+    {
+      "id": "youtube",
+      "name": "YouTube",
+      "url": "https://www.youtube.com/@yadloCH"
+    },
+    {
+      "id": "tiktok",
+      "name": "TikTok",
+      "url": "https://www.tiktok.com/@yadlo_festival"
+    }
   ],
-
   "links": [
-    { "id": "newsletter", "label": "Newsletter", "url": "http://eepurl.com/dPUvrX" },
-    { "id": "don", "label": "Faire un don", "url": "https://www.paypal.com/donate?hosted_button_id=J93D3JZ2SXNR8" }
+    {
+      "id": "newsletter",
+      "label": "Newsletter",
+      "url": "http://eepurl.com/dPUvrX"
+    },
+    {
+      "id": "don",
+      "label": "Faire un don",
+      "url": "https://www.paypal.com/donate?hosted_button_id=J93D3JZ2SXNR8"
+    }
   ],
-
   "transports": {
     "modes": [
-      { "id": "pied", "name": "À pied", "body": null, "links": [] },
-      { "id": "velo", "name": "À vélo", "body": null, "links": [] },
-      { "id": "bus", "name": "En bus", "body": null, "links": [] },
-      { "id": "bus-nuit", "name": "Bus de nuit", "body": null, "links": [] },
-      { "id": "voiture", "name": "En voiture", "body": null, "links": [] },
-      { "id": "bateau", "name": "Par le lac", "body": null, "links": [] }
+      {
+        "id": "pied",
+        "name": "À pied",
+        "body": "Depuis la gare de Morges, 35 minutes le long du lac. Depuis l'arrêt Préverenges, Village, cinq minutes jusqu’à la plage.",
+        "links": [],
+        "departures": null
+      },
+      {
+        "id": "velo",
+        "name": "À vélo",
+        "body": "Parking vélo à l'entrée du site.",
+        "links": [],
+        "departures": null
+      },
+      {
+        "id": "bus",
+        "name": "En bus",
+        "body": "Lignes 701 et 705, arrêt Préverenges, Village. Cinq minutes à pied jusqu’à la plage. Les deux lignes sont à plancher surbaissé.",
+        "links": [],
+        "departures": null
+      },
+      {
+        "id": "bus-nuit",
+        "name": "Bus de nuit",
+        "body": "Les bus pyjama desservent Morges, gare, avec correspondance pour Lausanne. Offerts par les MBC.",
+        "links": [],
+        "departures": [
+          {
+            "id": "vendredi",
+            "night": "Vendredi",
+            "times": [
+              {
+                "time": "01:30",
+                "note": null
+              },
+              {
+                "time": "02:00",
+                "note": null
+              }
+            ]
+          },
+          {
+            "id": "samedi",
+            "night": "Samedi",
+            "times": [
+              {
+                "time": "00:59",
+                "note": null
+              },
+              {
+                "time": "01:30",
+                "note": null
+              },
+              {
+                "time": "02:00",
+                "note": null
+              },
+              {
+                "time": "02:30",
+                "note": null
+              },
+              {
+                "time": "03:00",
+                "note": "Pas de correspondance pour Lausanne."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "voiture",
+        "name": "En voiture",
+        "body": "Les places sont limitées et la distance jusqu’au site varie beaucoup, donc venez tôt ou autrement. Deux places sont réservées près de l’entrée.",
+        "links": [],
+        "departures": null
+      },
+      {
+        "id": "bateau",
+        "name": "Par le lac",
+        "body": "C'est un festival de plage : on peut arriver par l'eau, à la nage ou à la rame. Prévoyez de quoi payer votre bière une fois sec — le site est sans espèces.",
+        "links": [],
+        "departures": null
+      }
     ],
-    "provenance": "unverified"
+    "provenance": "confirmed"
   },
-
   "paiement": {
-    "methods": [],
-    "notes": [],
-    "provenance": "unverified"
+    "methods": [
+      {
+        "id": "carte",
+        "name": "Cartes Visa, Mastercard et Maestro",
+        "accepted": true
+      },
+      {
+        "id": "twint",
+        "name": "TWINT",
+        "accepted": true
+      },
+      {
+        "id": "especes",
+        "name": "Espèces",
+        "accepted": false
+      }
+    ],
+    "notes": [
+      {
+        "id": "sans-especes",
+        "body": "Aucun stand n'accepte les espèces, bar compris. Prévoyez une carte ou TWINT avant de venir."
+      },
+      {
+        "id": "sans-contact",
+        "body": "Les paiements sans contact passent partout, y compris depuis un téléphone ou une montre, partout où la carte correspondante est acceptée."
+      },
+      {
+        "id": "pas-de-twint",
+        "body": "L'application TWINT dépend de votre banque : certaines ont la leur, d'autres passent par TWINT Prepaid. La page officielle vous oriente vers la bonne."
+      }
+    ],
+    "provenance": "confirmed",
+    "links": [
+      {
+        "id": "twint",
+        "label": "twint.ch",
+        "sublabel": "Site officiel",
+        "url": "https://www.twint.ch/"
+      }
+    ]
   },
-
   "accessibilite": {
     "items": [],
     "contactEmailId": "hello",
     "provenance": "unverified"
   },
-
   "besoin": {
     "emergencyNumbers": [
-      { "id": "urgences", "label": "Urgences (numéro européen)", "number": "112" },
-      { "id": "ambulance", "label": "Ambulance", "number": "144" },
-      { "id": "police", "label": "Police", "number": "117" },
-      { "id": "pompiers", "label": "Pompiers", "number": "118" }
+      {
+        "id": "urgences",
+        "label": "Urgences (numéro européen)",
+        "number": "112"
+      },
+      {
+        "id": "ambulance",
+        "label": "Ambulance",
+        "number": "144"
+      },
+      {
+        "id": "police",
+        "label": "Police",
+        "number": "117"
+      },
+      {
+        "id": "pompiers",
+        "label": "Pompiers",
+        "number": "118"
+      }
     ],
     "lostPropertyEmailId": "hello",
     "provenance": "unverified"
   },
-
   "simpliquer": {
     "hotstaff": {
       "name": "Hot'Staff",
