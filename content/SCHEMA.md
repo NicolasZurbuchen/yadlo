@@ -1,0 +1,381 @@
+# Content schema
+
+What every field in these files means, what may be null, and which values are legal.
+`validate.js` enforces everything written here — if the two disagree, the validator is right and
+this file is stale.
+
+Vocabulary is [CONTEXT.md](../CONTEXT.md). Why the content is shaped this way at all is
+[DECISIONS.md](../DECISIONS.md).
+
+> **`schemaVersion` is 1 in every file and stays there until the app ships.** These shapes have
+> already changed several times, but nothing reads them yet, so there is no older client to break
+> and nothing to migrate. The number starts meaning something at the first release; bumping it
+> before then would only record churn nobody experienced.
+
+## The files
+
+| File | Holds | Fetched |
+|---|---|---|
+| `festival.json` | Live truth — history, contact, transport, payment, accessibility, FAQ, volunteering | At launch |
+| `editions/<year>/edition.json` | One frozen Edition — programme, activities, stands, menus, partners, figures | At launch |
+| `announcements.json` | Dated annonces from the organisers | At launch, and polled during LIVE |
+| `editions.json` | The list of editions that exist | On demand, archives only |
+
+The test for which of the first two a field belongs in is **not** "does it change every year" but
+**would a past-edition archive need its own copy?** Browsing 2026 shows 2026's lineup and 2026's
+statistics, but *today's* contact address.
+
+## Conventions that hold everywhere
+
+- **Every human-readable string is plain French.** No `{fr, en}` objects. The validator fails the
+  build if a localized object reappears. UI strings are a separate concern and stay translatable.
+- **Optional means present-and-null, never absent.** A field that can be empty is written `null` or
+  `[]` rather than omitted. Absent and null meant the same thing and forced every reader to handle
+  both to learn nothing.
+- **Ids are lowercase kebab-case** and unique within their collection.
+- **Slot ids are Edition-qualified** — `2026:dubside-sat` — so a reused id cannot resurrect last
+  year's saved plan.
+- **Instants are ISO-8601 with a real offset** (`2026-07-10T17:00:00+02:00`), never a bare local
+  time. Comparisons happen in `Europe/Zurich`.
+
+## Enumerations
+
+Every closed value set in the content. Widening one should be a decision, not a typo.
+
+| Set | Values |
+|---|---|
+| `provenance` | `confirmed` · `archived` · `unverified` |
+| `kind` | `artist` · `activity` · `stand` |
+| `category.id` | `musique` · `silent` · `eau` · `terre` · `enfants` · `restauration` · `createurs` |
+| `marks` | `végé` · `végan` · `sans gluten` · `sans lactose` · `piquant` · `bio` |
+| `link.type` | `website` · `instagram` · `facebook` · `youtube` · `tiktok` · `spotify` · `appleMusic` · `soundcloud` · `bandcamp` · `beatport` |
+| `currency` | `CHF` |
+| `price.tiers[].per` | `personne` · `équipe` · `null` |
+
+**`kind` and `category` are not independent.** A kind may only carry certain categories, because
+nothing else stops a typo pairing `kind: "stand"` with `category: "musique"`:
+
+| kind | allowed categories |
+|---|---|
+| `artist` | `musique` |
+| `activity` | `silent` · `eau` · `terre` · `enfants` |
+| `stand` | `restauration` · `createurs` |
+
+The lists are deliberately narrow — exactly what exists today. The first realistic widening is a
+`musique` **activity** (an initiation au mix), which is also why the two fields cannot be merged.
+
+**Category colour is not in the content.** The content declares a category's label and order so the
+Programme's filter chips get their French names from data; the colour lives in the app, keyed by id,
+because colour is a design decision made once against a measured palette.
+
+---
+
+## `edition.json`
+
+```
+schemaVersion  number   1
+id             string   "2026"
+year           number
+name           string
+venue          Venue
+days           FestivalDay[]
+categories     Category[]
+happenings     Happening[]
+slots          Slot[]
+partners       PartnerTier[]
+figures        Figure[]
+```
+
+> `entry` and `openingNote` were **removed**. No screen renders them yet, and content nobody reads is
+> content nobody notices going stale. The FAQ in `festival.json` still answers whether entry is free.
+> Both come back as structured fields the day the Horaires and Sur place screens exist; the validator
+> rejects them until then so they cannot drift back in unnoticed.
+
+### Venue
+
+```
+name, address   string
+latitude        number
+longitude       number
+provenance      Provenance
+```
+
+One per Edition, and part of the frozen record: if the festival moves, the 2026 archive must still
+say Préverenges.
+
+### FestivalDay
+
+```
+id          string      "2026:fri"
+name        string      "Vendredi"
+date        string      "2026-07-10" — display only
+start, end  instant     THE OPENING HOURS for that day
+provenance  Provenance
+```
+
+**`start`/`end` *are* the opening hours.** There is no separate `opening` object — the validator
+errors if one appears. Friday runs 16:00 → 02:00 the next morning, which is why a 01:30 set belongs
+to Friday.
+
+Two consequences:
+
+- **A Slot may legally fall outside the window.** The beach is public, so the morning yoga and the
+  climbing wall run from 10:00 on days the site opens at 12:00. The validator *warns* rather than
+  errors: the case is real, but next year one of them may be a mistake.
+- **Never derive a Slot's day from its instant.** `dayId` is authored. `date` is for display only.
+
+### Category
+
+```
+id     string   from the category enum
+name   string   "Sur l'eau"
+order  number   display order of the filter chips
+```
+
+### Happening
+
+Shared by all three kinds:
+
+```
+id           string
+kind         "artist" | "activity" | "stand"
+name         string
+category     string          must be declared in categories[] and legal for the kind
+description  string | null
+images       Image[]         [] when none
+provenance   Provenance
+<kind>       object          exactly one payload, named after the kind
+```
+
+`Image` is `{ src, credit }`. `credit` is usually null and exists because press photos carry a
+photographer's condition. A `src` is an absolute `https://` URL, or a path resolved against the
+edition's `imageBaseUrl` — while that field is null, only absolute URLs are accepted.
+
+#### `artist` payload
+
+```
+genres  string[]
+links   Link[]     { type, url }
+```
+
+#### `activity` payload
+
+```
+genres             string[]
+price              Price | null
+bookingRequired    boolean
+bookingUrl         string | null
+equipmentProvided  boolean | null
+suitability        string | null    "De 4 à 12 ans, deux heures maximum"
+supervised         boolean | null   whether a child can be left there
+```
+
+**Price is one shape, free or not.** It used to be three mutually exclusive ones — a bare `free`
+flag, a flat `{amount, currency, per}`, and `{tiers, deposit}` — so the app had to sniff which it
+held before it could read a number. That cost landed on every screen showing a price. It now lands
+in the validator, once.
+
+```
+price
+  free        boolean
+  tiers       Tier[]              empty exactly when free is true
+  deposit     Deposit | null
+  provenance  Provenance
+
+Tier
+  label     string | null   null when there is one price for everyone
+  amount    number          as authored: 4.5 means CHF 4.50, not 450 centimes
+  currency  string
+  per       string | null   null when the price is per person
+
+Deposit
+  amount    number
+  currency  string
+  note      string | null
+```
+
+`free` and `tiers` are two views of one fact and are checked against each other: `free: true` with a
+tier, or `free: false` with none, is a content bug that would render as "gratuit — CHF 10".
+
+**A deposit is not part of the price and must never be summed into it.** The Silent Party is CHF 25
+with a CHF 50 headset deposit; showing CHF 75 would be wrong in the direction that stops someone
+coming.
+
+A **missing poster price means free**, not unknown: the association's posters carry a price when
+there is one and nothing when there is not.
+
+#### `stand` payload
+
+```
+offering  string | null    "Cuisine végétale"
+marks     string[]         describe the WHOLE stand
+links     Link[]
+menu      MenuGroup[]      [] when unpublished
+```
+
+```
+MenuGroup
+  id      string
+  name    string          "Plats", "Boissons"
+  source  string | null   where these prices came from, in the author's words
+  items   Item[]          at least one
+
+Item
+  name         string
+  price        { amount, currency } | null
+  description  string | null
+  marks        string[]        [] when none — describe THIS ITEM only
+  provenance   Provenance
+```
+
+**The level of a mark is its meaning.** On the Stand it describes everything sold — Vegan Fabrik is
+`végan` and `bio` because all of it is. On an Item it describes that item alone — De l'Or Bokit
+carries no stand mark, but its `Le Végé` is `végé`. That is the difference between "this stand is
+entirely vegan" and "this stand has a vegan option", which is the actual question someone scanning a
+row of trucks is asking. **A stand-level mark must never be repeated on its items.**
+
+`source` exists because no menu here is confirmed by the festival: one is a vendor's own carte for a
+different location, one was read off a photograph of a handwritten chalkboard. That belongs next to
+the prices, not in a document nobody ships.
+
+### Slot
+
+```
+id           string      Edition-qualified: "2026:dubside-sat"
+happeningId  string      must exist in happenings[]
+dayId        string      must exist in days[] — AUTHORED, never derived
+start, end   instant     never null; end must be after start
+provenance   Provenance
+```
+
+**Every Slot is timed.** There is no all-day Slot: a Happening running the whole festival carries its
+day's opening hours, written out like any other Slot and marked `unverified` because those instants
+were derived rather than published. The validator errors on a null `start` or `end`, so no screen has
+to format an absent time.
+
+### PartnerTier / Partner / Figure
+
+```
+PartnerTier   id, name, order, provenance, members: Partner[]
+Partner       id, name, url: string|null, logo: Image|null
+Figure        id, value: string, label, provenance
+```
+
+`Figure.value` is a string because some are ranges or carry a qualifier, and the screen only ever
+prints it next to `label`.
+
+`Partner.url` is null when no website could be verified. **The app shows a toast rather than a dead
+link** when a logo with no url is tapped.
+
+`logo` and `images` are deliberately different fields. A photo gets cropped into a collapsing toolbar
+behind a scrim; a logo must never be cropped, tinted or bled to an edge. Sharing a field name is what
+leads to a sponsor's logo being rendered like a press shot.
+
+---
+
+## `festival.json`
+
+```
+schemaVersion   number
+name, tagline   string
+currentEditionId string
+histoire        { foundedYear, body, journee: {title, body, provenance}, provenance }
+faq             { id, question, answer, provenance }[]
+responsable     { charters: { id, name, body, url, provenance }[] }
+contact         { address: {lines[], provenance}, phone, emails: {id, address, label}[], provenance }
+social          { id, name, url }[]
+links           { id, label, url }[]
+transports      { modes: Mode[], provenance }
+paiement        { methods: Method[], notes: Note[], links: Link[], provenance }
+accessibilite   { items: Item[], contactEmailId, provenance }
+besoin          { emergencyNumbers: {id, label, number}[], lostPropertyEmailId, provenance }
+simpliquer      { hotstaff: {...}, partenaire: {...} }
+```
+
+### transports
+
+```
+Mode
+  id          "pied" | "velo" | "bus" | "bus-nuit" | "voiture" | "bateau"
+  name        string
+  body        string | null
+  links       { id, label, sublabel, url }[]
+  departures  Departure[] | null      null on every mode but bus-nuit
+
+Departure
+  id     string
+  night  string           "Vendredi"
+  times  { time, note }[] "01:30", note usually null
+```
+
+`departures` is grouped **by night, not by row**: seven departures fit in four lines instead of
+filling the screen, and the one that matters — the last bus with no onward connection to Lausanne —
+carries a note rather than being buried in a list.
+
+### paiement
+
+```
+Method  { id, name, accepted: boolean }
+Note    { id, body }
+```
+
+**`accepted` is a boolean, never "unknown".** A method nobody has confirmed is left out entirely
+rather than rendered as a shrug — "TWINT: ?" helps no one, and a note or the FAQ can say it is being
+checked. This is why Apple Pay and Google Pay are *not* methods: contactless wallets almost certainly
+work wherever the cards do, but "almost certainly" is not what this list claims. It is stated in a
+note instead, which is free text and does not pretend to be an official method list.
+
+### accessibilite
+
+```
+Item  { id, name, available: boolean, note: string | null }
+```
+
+Same rule, and **recording what is *not* available matters as much as what is.** "No accessible
+toilets" is something a person needs before deciding to travel; silence tells them nothing.
+
+---
+
+## `announcements.json`
+
+```
+schemaVersion   number
+announcements   Annonce[]
+
+Annonce
+  id           string
+  publishedAt  instant
+  title        string
+  body         string | null    null when the title says it all
+  editionId    string | null    null when the annonce is about the festival, not one year
+  url          string | null    null when the annonce is not tappable
+  provenance   Provenance
+```
+
+**Its own file, not a section of `festival.json`.** This is the only content that needs to arrive
+*during* the festival, when a correction is being pushed from a phone. Folded into `festival.json`
+it would reupload history, contact and transport on every annonce, and a visitor's cached copy of
+all of it would go stale together. Alone it is a few hundred bytes with its own ETag, which is what
+makes polling it during LIVE affordable.
+
+**`url` is a plain nullable link, not a typed internal action.** An earlier design had
+`action: none | programme(day) | happening(id) | plus(entry) | url(external)` so an annonce could
+deep-link into the app. That is more machinery than the job needs: an annonce is a dated record, and
+the only thing it has to do is open somewhere. `null` simply means the card is not tappable. The
+cost of the simpler form is real and worth naming — an annonce cannot send someone to a specific
+fiche — but a broken deep link into a screen that has been renamed is a worse failure than a link
+that goes to a web page.
+
+**`editionId` scopes an annonce to one year.** An annonce naming an edition the app has not fetched
+is dropped rather than rendered half-resolved; `null` means it is true of the festival itself and
+survives every edition.
+
+## `editions.json`
+
+The list behind the archive entry in Plus, so the app can show which years exist without fetching
+them all. **This is the only file fetched on demand**, and the only feature that does not work
+offline. Nothing from an archive is cached: opening a past edition fetches it every time.
+
+Back-filling is additive and safe — drop an `editions/2019/` folder, add a line here, ship nothing.
+A past edition does **not** need to be complete to be worth having; a lineup and a poster is already
+more than exists anywhere today. That is what `provenance: "archived"` is for.

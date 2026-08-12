@@ -52,7 +52,18 @@ the data now; whether the UI ever surfaces it ("prix 2026, à confirmer") is def
 the association confirms a price, that is a field flip rather than a re-authoring.
 
 **Images.** Remote, loaded with Coil3 and disk-cached; only app chrome and category icons
-are bundled. The real payload is ~10 artist photos and ~20 partner logos per edition —
+are bundled.
+
+**The splash screen is the exception, and it is absolute.** Its background photograph, the Yadlo
+wordmark and the two `soutien-public` logos are all bundled in the app. A splash draws before any
+fetch completes — that is its entire job — so a remote image there means either waiting on the
+network or rendering incomplete on a first launch, which is the one launch that has no cache to fall
+back on. Using the platform splash APIs later would make it not merely slow but impossible: those
+drawables are resolved before the `Application` class runs.
+
+This duplicates two logos that also exist in the content, and the duplication is the point. Changing
+a public backer needs an app release, which is fine at a timescale of years; the Partners screen
+keeps reading the live list. The real payload is ~10 artist photos and ~20 partner logos per edition —
 activity and stand photos are decorative and can wait.
 
 **Editions.** Content is scoped by Edition from day one; the v1 UI shows a single Edition
@@ -185,16 +196,35 @@ the provenance field doing its job.
 as newer ones arrive. A hero is a state — it stays true until the phase changes. "The
 lineup was published" is news; "the lineup is available" is a standing fact. Publish both.
 
-**Annonce actions are typed, never free-form URLs.** Content outlives app versions, so an
-internal link expressed as a string rots into a dead end.
+**An annonce carries a nullable URL, not a typed action.** *Reversed — the earlier decision is
+recorded below because the reasoning still applies to anything that does deep-link.*
+
+The original design was a typed action so an annonce could point inside the app:
 
 ```
 action: none | programme(day?) | happening(id) | plus(entry) | url(external)
 ```
 
-If the target does not resolve, the annonce still renders — without its button, never as a
-broken screen. An annonce referring to a Happening from an edition the app has not fetched
-must degrade to plain text.
+That is more machinery than the job needs. An annonce is a dated record, and the only thing it
+has to do is open somewhere; `url: null` means the card simply is not tappable. The cost is real
+and worth naming — an annonce can no longer send someone to a specific fiche, only to a web page —
+but the failure modes are not symmetric. A dead deep link points at a screen that has been renamed
+or an id that no longer exists, inside an app that has already shipped; a dead external URL is an
+ordinary broken link, and the user knows what happened.
+
+What survives from the original reasoning: **content outlives app versions.** That is exactly why
+the internal targets were dropped rather than kept — an internal link expressed as a string is the
+thing that rots.
+
+**Annonces live in their own file**, not in `festival.json`. They are the only content that has to
+arrive *during* the festival, when a correction is being pushed from a phone. Folded into
+`festival.json`, every annonce would reupload history, contact and transport, and a visitor's
+cached copy of all of it would go stale together. Alone, an annonce is a few hundred bytes with its
+own ETag, which is what makes polling during LIVE affordable at all.
+
+**An annonce is scoped to an edition**, or to none. One naming an edition the app has not fetched
+is dropped rather than rendered half-resolved; `editionId: null` means it is true of the festival
+itself and survives every edition.
 
 **Archives.** `Éditions précédentes` under *Le festival* in Plus, fetched on demand from an
 `editions/index.json`. This is the only feature that reads a third file, and the only one
