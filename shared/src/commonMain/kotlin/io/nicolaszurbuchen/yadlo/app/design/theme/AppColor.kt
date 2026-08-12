@@ -59,6 +59,16 @@ data class AppColors(
      */
     val scrim: Color,
     /**
+     * The splash ground, and the same value in both themes.
+     *
+     * The splash is a brand moment rather than part of the app's surface system: it carries a white
+     * wordmark, so it needs a dark ground whatever the device is set to. It is also what sits behind
+     * the beach photograph once there is one — visible while that decodes, and the whole ground
+     * until it exists.
+     */
+    val brandGround: Color,
+    val onBrandGround: Color,
+    /**
      * Not a colour — the discriminator, for the decisions that are not about colour at all: which
      * status-bar icon style to ask for, which variant of a bundled asset to load. Without it every
      * such call site reaches for `isSystemInDarkTheme()` and stops respecting an overridden theme.
@@ -75,6 +85,12 @@ data class AppColors(
  * the one overexposed beach photo nobody previewed.
  */
 private val SCRIM = SlatePalette.slate950.copy(alpha = 0.6f)
+
+/**
+ * The splash ground. skyBlue950 rather than the near-black slate: the brand moment should read as the
+ * festival blue at its deepest, not as an absence of colour.
+ */
+private val BRAND_GROUND = SkyBluePalette.skyBlue950
 
 val LightAppColors =
     AppColors(
@@ -98,6 +114,8 @@ val LightAppColors =
         accentSubtle = RosePalette.rose100,
         onAccentSubtle = RosePalette.rose900,
         scrim = SCRIM,
+        brandGround = BRAND_GROUND,
+        onBrandGround = Color.White,
     )
 
 val DarkAppColors =
@@ -128,6 +146,8 @@ val DarkAppColors =
         accentSubtle = RosePalette.rose900,
         onAccentSubtle = RosePalette.rose200,
         scrim = SCRIM,
+        brandGround = BRAND_GROUND,
+        onBrandGround = Color.White,
     )
 
 internal val LocalAppColors = staticCompositionLocalOf { LightAppColors }

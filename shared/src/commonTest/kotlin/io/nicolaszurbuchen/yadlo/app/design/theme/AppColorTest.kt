@@ -2,6 +2,7 @@ package io.nicolaszurbuchen.yadlo.app.design.theme
 
 import androidx.compose.ui.graphics.Color
 import kotlin.test.Test
+import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class AppColorTest {
@@ -75,6 +76,16 @@ class AppColorTest {
                 )
             }
         }
+    }
+
+    @Test
+    fun brandGround_carriesItsInk_andIsTheSameInBothThemes() {
+        // The splash is a brand moment, not part of the surface system: it carries a white wordmark,
+        // so it needs a dark ground whatever the device is set to. If someone wires it to the theme
+        // the wordmark disappears in one of the two, and only on a real device.
+        assertMeetsAa(LightAppColors.onBrandGround, LightAppColors.brandGround, "light brandGround")
+        assertMeetsAa(DarkAppColors.onBrandGround, DarkAppColors.brandGround, "dark brandGround")
+        assertEquals(LightAppColors.brandGround, DarkAppColors.brandGround, "brandGround is theme-dependent")
     }
 
     @Test
