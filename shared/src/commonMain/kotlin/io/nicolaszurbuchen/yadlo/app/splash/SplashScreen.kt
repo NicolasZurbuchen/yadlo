@@ -23,7 +23,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import io.nicolaszurbuchen.yadlo.app.design.theme.YadloTheme
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
 import kotlinx.coroutines.delay
@@ -140,6 +142,30 @@ private fun SupportedBy(modifier: Modifier = Modifier) {
                 modifier = Modifier.height(BACKER_LOGO_HEIGHT).clearAndSetSemantics { },
             )
         }
+    }
+}
+
+@Preview
+@Composable
+private fun SplashScreenPreview() {
+    // Wrapped in YadloTheme because the screen reads the scrim and its ink from it. Without the
+    // theme it would render against the composition-local defaults and stop telling the truth about
+    // the one thing worth previewing here — whether the logos are legible on the photograph.
+    YadloTheme {
+        SplashScreen(onFinish = {})
+    }
+}
+
+/**
+ * The splash is deliberately theme-independent: the scrim and its ink sit on a photograph rather
+ * than on one of the app's grounds. This preview exists to make that visible rather than assumed —
+ * the two should render identically, and a difference between them is a bug.
+ */
+@Preview
+@Composable
+private fun SplashScreenDarkThemePreview() {
+    YadloTheme(darkTheme = true) {
+        SplashScreen(onFinish = {})
     }
 }
 
