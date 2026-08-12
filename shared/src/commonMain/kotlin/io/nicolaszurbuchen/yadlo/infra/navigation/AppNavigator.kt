@@ -14,8 +14,19 @@ class AppNavigator {
         backStack?.add(key)
     }
 
+    /**
+     * Pops the top entry, unless it is the only one left.
+     *
+     * A back stack's root is not poppable: NavDisplay throws `NavDisplay backstack cannot be
+     * empty` the moment it is handed nothing to render, and it renders during the same frame the
+     * list is mutated. Two taps on a back button land before the screen is torn down, so without
+     * this guard an ordinary double-tap crashes the app.
+     */
     fun navigateBack() {
-        backStack?.removeLastOrNull()
+        val stack = backStack ?: return
+        if (stack.size > 1) {
+            stack.removeAt(stack.size - 1)
+        }
     }
 
     fun popUpTo(predicate: (NavKey) -> Boolean) {

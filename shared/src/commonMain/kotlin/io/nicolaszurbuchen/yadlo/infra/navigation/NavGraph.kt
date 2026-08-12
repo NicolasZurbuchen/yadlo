@@ -2,41 +2,27 @@ package io.nicolaszurbuchen.yadlo.infra.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
-import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.NavKey
-import androidx.navigation3.runtime.entryProvider
-import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
-import org.koin.compose.getKoin
 
 /**
- * Renders one back stack. It does not own one, and it knows nothing about tabs — the caller
- * decides which stack is visible, which is what lets four tabs each keep their own depth while
- * sharing a single set of registered entries.
+ * Renders already-decorated entries. It owns no stack and knows nothing about tabs — the caller
+ * decides which set of entries is visible, which is what lets four tabs each keep their own
+ * history while sharing one display.
+ *
+ * Entries come in rather than a back stack because a display that is handed a different stack has
+ * no way to swap the decorator state that belongs to it. See [rememberNavEntries].
  */
 @Composable
 fun NavGraph(
-    backStack: NavBackStack<NavKey>,
+    entries: List<NavEntry<NavKey>>,
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val handlers = getKoin().getAll<NavKeyHandler>()
-
     NavDisplay(
-        backStack = backStack,
+        entries = entries,
         onBack = { onBack() },
-        entryDecorators =
-            listOf(
-                rememberSaveableStateHolderNavEntryDecorator(),
-                rememberViewModelStoreNavEntryDecorator(),
-            ),
-        entryProvider =
-            entryProvider {
-                handlers.forEach { handler ->
-                    with(handler) { registerEntries() }
-                }
-            },
         modifier = modifier,
     )
 }

@@ -41,13 +41,37 @@ class AppNavigatorTest {
     }
 
     @Test
-    fun navigateBack_singleEntryStack_leavesStackEmpty() {
+    fun navigateBack_singleEntryStack_keepsTheRoot() {
+        // Emptying the stack crashes NavDisplay with "backstack cannot be empty". This test used
+        // to assert the opposite and so encoded the crash as intended behaviour.
         val backStack = NavBackStack<NavKey>(TestKey.A)
         val navigator = AppNavigator().apply { attach(backStack) }
 
         navigator.navigateBack()
 
-        assertEquals(emptyList(), backStack.toList())
+        assertEquals(listOf(TestKey.A), backStack.toList())
+    }
+
+    @Test
+    fun navigateBack_twiceInOneFrame_neverEmptiesTheStack() {
+        // The real crash: two taps on a back button both land before the screen is torn down.
+        val backStack = NavBackStack<NavKey>(TestKey.A, TestKey.B)
+        val navigator = AppNavigator().apply { attach(backStack) }
+
+        navigator.navigateBack()
+        navigator.navigateBack()
+
+        assertEquals(listOf(TestKey.A), backStack.toList())
+    }
+
+    @Test
+    fun navigateBack_manyRapidTaps_neverEmptiesTheStack() {
+        val backStack = NavBackStack<NavKey>(TestKey.A, TestKey.B, TestKey.C)
+        val navigator = AppNavigator().apply { attach(backStack) }
+
+        repeat(10) { navigator.navigateBack() }
+
+        assertEquals(listOf(TestKey.A), backStack.toList())
     }
 
     @Test
