@@ -146,7 +146,7 @@ Le Totem is the name of a bouldering gym, Totem Escalade, which is also a festiv
 The Coin enfants is supervised by volunteers and children can be left there, which is why it
 carries an age range and a maximum duration where nothing else does. Both are `enfants`.
 
-## 4. Partners — 3 websites of 39 outstanding, 2 closed as unsolvable
+## ✅ Resolved — partners
 
 All 39 partners are in, across six tiers. **34 have a verified website**; the logos on
 `/partenaires` carry no hyperlinks at all, so each was found and confirmed by loading the site
@@ -167,11 +167,13 @@ and *SuperNaturalClub* → **Super Natural Club**, which is how their own site w
 **Super Natural Club** (`supernaturalclub.ch`, a Lausanne kombucha and soft-drink maker) and
 **SwanWine** (`swanwine.ch`, a Swiss winemaker — the entry read *Swan* and is now the full name).
 
-> ⚠ **Wineatypic's URL does not resolve.** `https://www.winatypic.com/` was supplied and is stored,
-> but it returns **404** on both the apex and `www`, so it could not be verified the way the other
-> 34 were. Note also the spelling: the partner list says *Wineatypic*, the domain says *winatypic*.
-> One of the two is wrong and it is worth a look — a partner logo that opens a 404 is worse than one
-> that opens nothing, now that a missing url shows a toast instead.
+**Winatypic** is the third, and its name was the thing that was wrong: the list read *Wineatypic*,
+and the correct spelling is **Winatypic** — id and name both corrected. Its supplied URL returns
+**404** on the apex and on `www`, so **`url` is null**: a logo that opens a 404 is worse than one
+that opens nothing, now that a missing url shows a toast instead. If a working address turns up it
+is a one-line edit.
+
+**All 39 partners are now settled** — 34 with a verified website, 5 deliberately without one.
 
 > **Cham Properties was withheld in error.** It really is Cham Swiss Properties AG, the listed
 > Zug firm — the reasoning that a CHF 1.7 bn company would not sponsor a Préverenges beach
@@ -334,45 +336,34 @@ The validator keeps warning on those four Slots. That is deliberate: the note ex
 situation to a visitor, but whoever edits this file should still be told when a Slot falls
 outside the hours, because next year one of them may be a mistake.
 
-## 9. Transport, payment, accessibility — shapes decided, content empty
+## ✅ Resolved — transports and paiement
 
-All three now have a shape, so filling them in is answering questions rather than inventing
-structure. None has any content.
+Both are filled in, from the text already written against them in the Plus mockup, so the screens
+designed around them still hold.
 
-### Transports — six modes waiting for text
+**Transports.** All six modes carry prose. The night buses carry structure instead of a paragraph:
+`departures` groups them **by night rather than one row per bus**, so seven departures fit in four
+lines, and the 03:00 with no onward connection to Lausanne carries a note rather than being buried
+in a list. Every other mode carries `departures: null`, so there is one shape to read.
 
-An array *is* right, but not of uniform things: each mode is a **name, some prose, and any number
-of links**. Walking needs prose alone; the bus needs a timetable link. The six modes are seeded
-with `body: null` and the validator lists each one until it has text.
+> Two link gaps remain and are guesses nobody should make up: the **MBC timetable PDFs** for lines
+> 701 and 705, and the **parking plan**. Both are stored as empty link arrays rather than invented
+> URLs. A shuttle laid on for one edition would not belong here anyway — that goes on the Edition.
 
-| Mode | What is needed |
-|---|---|
-| À pied | From which station, and how long a walk |
-| À vélo | Where to leave a bike, and whether there is any parking for them |
-| En bus | Which MBC lines serve the beach, from Lausanne and from Morges, and a timetable link |
-| Bus de nuit | Is there one at all? Last departure Friday and Saturday |
-| En voiture | Where to park, whether it costs anything, and whether it fills up |
-| Par le lac | Can you actually arrive by boat or by paddle, and tie up where? |
+**Paiement.** `carte`, `TWINT` and `espèces`, the last as `accepted: false`.
 
-> A shuttle laid on **for one edition** does not belong here — that would go on the Edition,
-> which is the only thing that changes year to year. Everything above is stable enough to be live
-> truth.
+> **Apple Pay and Google Pay are deliberately not methods**, though the mockup listed them.
+> Contactless wallets almost certainly work wherever the cards do, but "almost certainly" is not
+> what a list of accepted methods claims, and the rule here is that an unconfirmed method is left
+> out rather than rendered as a shrug. It is stated in a `note` instead, which is free text and does
+> not pretend otherwise. Still worth asking: is there a **bancomat** nearby, and is there a
+> **deposit on cups** and how much?
 
-### Paiement — a list of methods, each accepted or not
+## 9. Accessibilité — a shape decided, content empty
 
-`{ id, name, accepted }` where **`accepted` is a boolean, never "unknown"**. A method nobody has
-confirmed is left out entirely rather than rendered as a shrug — "TWINT: ?" helps no one, and the
-FAQ can say it is being checked.
-
-Needed: espèces, carte, **TWINT** (the question a Swiss visitor actually asks), and whether the
-festival uses tokens. Plus free-text `notes` for the things that are not a yes/no: is there a
-bancomat nearby, is there a deposit on cups and how much.
-
-### Accessibilité — a list of facilities, each available or not
-
-Same shape: `{ id, name, available, note }`. **Recording what is *not* available matters as much
-as what is** — "no accessible toilets" is something a person needs before deciding to travel, and
-silence tells them nothing.
+The shape is `{ id, name, available, note }` — same rule as paiement, and **recording what is *not*
+available matters as much as what is**: "no accessible toilets" is something a person needs before
+deciding to travel, and silence tells them nothing.
 
 Candidates to confirm or deny: step-free access to the site, accessible toilets, a PMR parking
 space, what the ground is actually like (sand, grass, gravel — this is a beach), free entry for a

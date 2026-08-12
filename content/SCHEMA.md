@@ -1,11 +1,16 @@
 # Content schema
 
-`schemaVersion: 2`. What every field in these files means, what may be null, and which values are
-legal. `validate.js` enforces everything written here — if the two disagree, the validator is right
-and this file is stale.
+What every field in these files means, what may be null, and which values are legal.
+`validate.js` enforces everything written here — if the two disagree, the validator is right and
+this file is stale.
 
 Vocabulary is [CONTEXT.md](../CONTEXT.md). Why the content is shaped this way at all is
 [DECISIONS.md](../DECISIONS.md).
+
+> **`schemaVersion` is 1 in every file and stays there until the app ships.** These shapes have
+> already changed several times, but nothing reads them yet, so there is no older client to break
+> and nothing to migrate. The number starts meaning something at the first release; bumping it
+> before then would only record churn nobody experienced.
 
 ## The files
 
@@ -13,6 +18,7 @@ Vocabulary is [CONTEXT.md](../CONTEXT.md). Why the content is shaped this way at
 |---|---|---|
 | `festival.json` | Live truth — history, contact, transport, payment, accessibility, FAQ, volunteering | At launch |
 | `editions/<year>/edition.json` | One frozen Edition — programme, activities, stands, menus, partners, figures | At launch |
+| `announcements.json` | Dated annonces from the organisers | At launch, and polled during LIVE |
 | `editions.json` | The list of editions that exist | On demand, archives only |
 
 The test for which of the first two a field belongs in is **not** "does it change every year" but
@@ -67,7 +73,7 @@ because colour is a design decision made once against a measured palette.
 ## `edition.json`
 
 ```
-schemaVersion  number   always 2
+schemaVersion  number   1
 id             string   "2026"
 year           number
 name           string
@@ -329,6 +335,40 @@ Same rule, and **recording what is *not* available matters as much as what is.**
 toilets" is something a person needs before deciding to travel; silence tells them nothing.
 
 ---
+
+## `announcements.json`
+
+```
+schemaVersion   number
+announcements   Annonce[]
+
+Annonce
+  id           string
+  publishedAt  instant
+  title        string
+  body         string | null    null when the title says it all
+  editionId    string | null    null when the annonce is about the festival, not one year
+  url          string | null    null when the annonce is not tappable
+  provenance   Provenance
+```
+
+**Its own file, not a section of `festival.json`.** This is the only content that needs to arrive
+*during* the festival, when a correction is being pushed from a phone. Folded into `festival.json`
+it would reupload history, contact and transport on every annonce, and a visitor's cached copy of
+all of it would go stale together. Alone it is a few hundred bytes with its own ETag, which is what
+makes polling it during LIVE affordable.
+
+**`url` is a plain nullable link, not a typed internal action.** An earlier design had
+`action: none | programme(day) | happening(id) | plus(entry) | url(external)` so an annonce could
+deep-link into the app. That is more machinery than the job needs: an annonce is a dated record, and
+the only thing it has to do is open somewhere. `null` simply means the card is not tappable. The
+cost of the simpler form is real and worth naming — an annonce cannot send someone to a specific
+fiche — but a broken deep link into a screen that has been renamed is a worse failure than a link
+that goes to a web page.
+
+**`editionId` scopes an annonce to one year.** An annonce naming an edition the app has not fetched
+is dropped rather than rendered half-resolved; `null` means it is true of the festival itself and
+survives every edition.
 
 ## `editions.json`
 

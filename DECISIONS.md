@@ -185,16 +185,35 @@ the provenance field doing its job.
 as newer ones arrive. A hero is a state — it stays true until the phase changes. "The
 lineup was published" is news; "the lineup is available" is a standing fact. Publish both.
 
-**Annonce actions are typed, never free-form URLs.** Content outlives app versions, so an
-internal link expressed as a string rots into a dead end.
+**An annonce carries a nullable URL, not a typed action.** *Reversed — the earlier decision is
+recorded below because the reasoning still applies to anything that does deep-link.*
+
+The original design was a typed action so an annonce could point inside the app:
 
 ```
 action: none | programme(day?) | happening(id) | plus(entry) | url(external)
 ```
 
-If the target does not resolve, the annonce still renders — without its button, never as a
-broken screen. An annonce referring to a Happening from an edition the app has not fetched
-must degrade to plain text.
+That is more machinery than the job needs. An annonce is a dated record, and the only thing it
+has to do is open somewhere; `url: null` means the card simply is not tappable. The cost is real
+and worth naming — an annonce can no longer send someone to a specific fiche, only to a web page —
+but the failure modes are not symmetric. A dead deep link points at a screen that has been renamed
+or an id that no longer exists, inside an app that has already shipped; a dead external URL is an
+ordinary broken link, and the user knows what happened.
+
+What survives from the original reasoning: **content outlives app versions.** That is exactly why
+the internal targets were dropped rather than kept — an internal link expressed as a string is the
+thing that rots.
+
+**Annonces live in their own file**, not in `festival.json`. They are the only content that has to
+arrive *during* the festival, when a correction is being pushed from a phone. Folded into
+`festival.json`, every annonce would reupload history, contact and transport, and a visitor's
+cached copy of all of it would go stale together. Alone, an annonce is a few hundred bytes with its
+own ETag, which is what makes polling during LIVE affordable at all.
+
+**An annonce is scoped to an edition**, or to none. One naming an edition the app has not fetched
+is dropped rather than rendered half-resolved; `editionId: null` means it is true of the festival
+itself and survives every edition.
 
 **Archives.** `Éditions précédentes` under *Le festival* in Plus, fetched on demand from an
 `editions/index.json`. This is the only feature that reads a third file, and the only one

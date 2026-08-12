@@ -242,6 +242,19 @@ Built unofficially, with the explicit aim of becoming the association's official
 80. As a committee member who downloads this, I want to see who made it and how to reach
     them, so that I can start a conversation.
 
+**Arriving and orienting**
+
+81. As a visitor opening the app for the first time, I want a splash screen that looks like the
+    festival rather than a blank frame, so that I know I opened the right thing.
+82. As the association, I want our public backers shown on the splash screen, because that
+    visibility is part of what they are owed.
+83. As a visitor on the partners screen, I want to tap a logo and reach that company's site, so
+    that I can find out who they are.
+84. As a visitor, I want a partner with no website to tell me so when I tap it, rather than
+    doing nothing and leaving me wondering whether the tap registered.
+85. As a follower, I want an announcement to open the page it is about when there is one, and to
+    be plainly untappable when there is not.
+
 ## Implementation Decisions
 
 ### Platform and shape
@@ -295,29 +308,63 @@ Terms are defined in CONTEXT.md and must be used in code.
   come from data. `Lane`, `Section` and per-place `Venue` were removed: they described rows of
   the Paléo grid, which is out of scope, and nothing in the app ever grouped or displayed by
   them. The one-stage constraint is now asserted directly — no two `musique` Slots may overlap.
-- `Menu` → `Group{name, items}` → `Item{name, price, description?, marks?}`. Only name and
-  price required.
+- `Menu` → `Group{name, source, items}` → `Item{name, price, description, marks, provenance}`.
+  Only name and price carry information; `description` and `marks` are always present and may be
+  null or empty. A mark's **level is its meaning** — on the Stand it describes everything sold, on
+  an Item only that item, which is the difference between "this stand is entirely vegan" and "this
+  stand has a vegan option".
+- **`Price` is one shape for every Activity, free or not**: `{free, tiers[], deposit, provenance}`,
+  where `tiers` is empty exactly when `free` is true. The content previously carried three mutually
+  exclusive shapes — a bare `free` flag, a flat `{amount, currency, per}`, and `{tiers, deposit}` —
+  which meant every screen showing a price had to determine which one it held before reading a
+  number. **A deposit is never summed into the price**: the Silent Party is CHF 25 with a CHF 50
+  headset deposit, and CHF 75 is wrong in the direction that stops someone coming.
 - `Provenance` on curated content — confirmed | archived | unverified.
 - **`Attendance` was removed from the model.** Every Slot behaves identically. Its last job
   was clash detection, and clash warnings were dropped.
 - **Five activity kinds**, not six: `musique`, `eau`, `terre`, `enfants`, `silent`.
+- **The content model lives in `common/content/`, not in a feature.** It knows about zero features
+  and is domain vocabulary all five share. Konsist had already settled this: `PackageHierarchyTest`
+  treats `common` and `feature` identically, allowing `data`/`domain`/`presentation`/`di` under a
+  named slice, and `DiLayerTest` expects `common/**/di`.
+- **`Phase` derivation is a UseCase** because it touches a port — the injected clock. Two
+  derivations are easy to get wrong: the morning-after boundary is computed from the last day's
+  **start**, never its end, since Friday ends at 02:00 on Saturday and an end-based derivation
+  lands a day early; and every boundary is an instant in `Europe/Zurich`, so a phone in another
+  timezone derives the same phase.
+- **APPROACHING requires published slots, as ANNOUNCED does.** It exists to point at Mon Yadlo and
+  say *ton programme t'attend*, which is as hollow as the ANNOUNCED hero with nothing to plan. An
+  edition published early with dates and an empty programme stays OFF_SEASON, which already shows a
+  countdown. LIVE and ENDED stay clock-only — the festival happens whether or not anyone published.
 
 ### Content architecture
 
-Two bundles, split by *frozen record* vs *live truth* — the test being "would a past-edition
-archive need its own copy?".
+Split by *frozen record* vs *live truth* — the test being "would a past-edition archive need its
+own copy?" — plus one file that exists purely because of how often it changes.
 
 ```
 content/
   festival.json        live:   histoire, contact, réseaux, transports,
-                               paiement, Hot'Staff, devenir partenaire
+                               paiement, accessibilité, FAQ, Hot'Staff
+  announcements.json   live:   dated annonces, polled during LIVE
+  editions.json        list of available editions (archives only)
   editions/
-    index.json         list of available editions (archives only)
-    2026.json          frozen: programme, activités, stands, menus, prix,
+    2026/edition.json  frozen: programme, activités, stands, menus, prix,
                                horaires, partenaires, chiffres
-    2027.json
     2026/images/
+  SCHEMA.md            every field, its nullability, and every closed value set
+  GAPS.md              what is still missing, to put in front of the association
+  validate.js          gates the deploy
 ```
+
+**[`content/SCHEMA.md`](content/SCHEMA.md) is the contract** and the place to look before writing
+any DTO. It documents each field's nullability and writes out every closed value set — provenance,
+kind, category, marks, link types, currency, price units — including the fact that `kind` and
+`category` are not independent (a `stand` may not be `musique`).
+
+**`schemaVersion` is 1 everywhere and stays there until the app ships.** The shapes have already
+changed several times; nothing reads them yet, so there is no older client to break. The number
+starts meaning something at the first release.
 
 - Static HTTPS from a versioned repo. No CMS, no Firebase. **Live at
   `https://nicolaszurbuchen.github.io/yadlo/`** — GitHub Pages, deployed from `content/` by CI on
@@ -396,14 +443,30 @@ actions in the bar. Silent Party = same template + booking row.
 emergency numbers merge into a single **"En cas de besoin"** screen — justified by a shared
 user situation, not by tidiness. Most remaining entries share one text-page template.
 
+**Partenaires** — logos grouped by tier. **Tapping a logo opens that partner's site in the
+browser; a partner with no URL shows a toast saying it has none.** Five of the 39 have no website —
+two genuinely have none, one is an activity of the festival rather than a company, and one has an
+address that 404s — so silence on tap would be the common case, not the edge one, and a tap that
+does nothing reads as a bug.
+
+**Splash** — one background photograph of the beach under a tint, the Yadlo wordmark, the logo and
+the motto, and beneath them the two **soutien public** logos, Morges and Préverenges. Those two are
+already a partner tier in the content with exactly two members, so the splash reads them from the
+bundle rather than hardcoding them. **Blocked on assets**: no partner has a logo file yet.
+
 **A FAQ belongs in *Sur place*, and it was missed in the prototypes.** It surfaced from the
 plainest possible question — *is entry free?* — which no screen answered and no mock had a place
 for. That is the shape of the whole problem: the association's information is scattered across a
 stale site and a live Instagram, so the questions a first-time visitor actually asks have no
-single home. `festival.json` carries a `faq` list of question/answer pairs; the entry answer also
-exists as structured `entry.free` on the Edition, because a past-edition archive has to be able
-to state it even if a later edition starts charging. **Those two must not drift** — prefer the
-structured field wherever a screen can use it.
+single home. `festival.json` carries a `faq` list of question/answer pairs, and that is currently
+the only place the answer lives.
+
+> **`entry` and `openingNote` were removed from the Edition.** An earlier draft carried
+> `entry.free` as a structured field so a past-edition archive could state what it cost even if a
+> later edition started charging. That reasoning still holds, but no screen renders either field,
+> and content nobody reads is content nobody notices going stale. Both come back the day the
+> Horaires and Sur place screens exist; `validate.js` **errors** if either reappears before then,
+> so the decision cannot quietly reverse itself.
 
 ### Interaction rules
 
@@ -414,9 +477,13 @@ structured field wherever a screen can use it.
   grouped Plus entries use cards. Measured: cards cost +32% vertical space in Programme.
 - **Facts must not look tappable.** Card-with-chevron is reserved for navigation; `↗` marks
   an external link, `›` internal, `✉` opens mail.
-- **Annonce actions are typed**, never free-form URLs:
-  `none | programme(day?) | happening(id) | plus(entry) | url(external)`. An unresolvable
-  target renders the annonce **without its button**, never as a broken screen.
+- **An annonce carries a nullable URL, not a typed action.** Reversed from the earlier
+  `none | programme(day?) | happening(id) | plus(entry) | url(external)` design, which was more
+  machinery than the job needs. An annonce is a dated record whose only job is to open somewhere;
+  `null` means the card is not tappable. The cost is real — it can no longer point at a specific
+  fiche — but a dead deep link into a renamed screen is a worse failure than an ordinary broken
+  web link, and "content outlives app versions" is precisely why the internal targets went.
+- **A partner logo opens its site; a partner without one says so.** Never a silent tap.
 - **S'impliquer is a router, not a form** — no backend, no stored messages, and the
   association's existing recruitment pipeline keeps receiving its applications.
 
