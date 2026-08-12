@@ -31,13 +31,14 @@ authoritative.** See gap 6 for what that implies about the site.
 ## ✅ Resolved — yoga before opening, and Léman Records
 
 `acro-yoga` (samedi 10:00) and `yoga-plage` (dimanche 10:00) genuinely run before the site opens
-at 12:00, on the public beach. Both slots now carry `"beforeOpening": true`, and the validator
-**errors** on any unflagged slot that starts before opening — so the deliberate case is declared
-in the data and the accidental case still gets caught.
+at 12:00, on the public beach.
 
-> This is why `FestivalDay.start/end` and `FestivalDay.opening` are separate fields. The window
-> stretches to 10:00 to contain the yoga; the opening hours stay at 12:00 because that is what a
-> visitor needs to be told.
+> **Corrected.** An earlier draft of this section described a `beforeOpening` flag on the slot and a
+> separate `FestivalDay.opening` object. **Neither shipped, and neither exists in the JSON.** A
+> FestivalDay's `start`/`end` *are* the opening hours — one pair of instants — and the validator
+> errors if an `opening` key appears. A Slot outside the window is simply legal and merely worth
+> flagging, so the four early slots produce a *warning* rather than needing a flag to silence them.
+> That is deliberate: the case is real, but next year one of them may be a mistake.
 
 `Léman Records` is confirmed as the correct spelling.
 
@@ -158,16 +159,19 @@ and reading its title.
 | Edifice | cygnes d'or | No findable site and the logo matches nothing. `EDIFEA SA` exists in Vaud but is a different company and was not assumed. |
 | GladiaSUP | partenaires | Not a company with a web presence — it is the SUP obstacle course, an activity of the festival that also appears in the partner list. |
 
-> GladiaSUP being both an Activity and a partner is not unique: **Surfshop Préverenges** is a
-> stand and a partner, **Totem Escalade** runs the mur de grimpe, and Sherlock Events and Summit
-> Video almost certainly supply the escape games and the giant screen. Nothing links a partner to
-> its Happening today. If the partner screen ever wants to say "they run this", or a fiche wants
-> to credit its supplier, that is a `happeningId` on the partner and nothing more.
+**Three name corrections:** the list read *Garno Maté* → **Grano Maté**, a Vevey maté brewer;
+*Clash Solutions* → **Cash Solutions** (`cash-solutions.ch`), which is why it could not be found;
+and *SuperNaturalClub* → **Super Natural Club**, which is how their own site writes it.
 
-**Still open — genuinely not yet found:** SuperNaturalClub, Swan, Wineatypic.
+**The last three URLs were supplied and are now in.** Two were verified by loading the site:
+**Super Natural Club** (`supernaturalclub.ch`, a Lausanne kombucha and soft-drink maker) and
+**SwanWine** (`swanwine.ch`, a Swiss winemaker — the entry read *Swan* and is now the full name).
 
-**Two name corrections:** the list read *Garno Maté* → **Grano Maté**, a Vevey maté brewer; and
-*Clash Solutions* → **Cash Solutions** (`cash-solutions.ch`), which is why it could not be found.
+> ⚠ **Wineatypic's URL does not resolve.** `https://www.winatypic.com/` was supplied and is stored,
+> but it returns **404** on both the apex and `www`, so it could not be verified the way the other
+> 34 were. Note also the spelling: the partner list says *Wineatypic*, the domain says *winatypic*.
+> One of the two is wrong and it is worth a look — a partner logo that opens a 404 is worse than one
+> that opens nothing, now that a missing url shows a toast instead.
 
 > **Cham Properties was withheld in error.** It really is Cham Swiss Properties AG, the listed
 > Zug firm — the reasoning that a CHF 1.7 bn company would not sponsor a Préverenges beach
@@ -175,18 +179,15 @@ and reading its title.
 > rather than the `/en` path it was supplied as, on the same rule that strips Spotify's
 > `/intl-ja/`: a locale in a stored URL is the collector's browser setting, not the address.
 
-**Three partners are also festival content**, worth knowing before the fiche and partner screens
-are built, since they should probably cross-link:
+> **The "800" on the cygne tiers is not a price and not an error.** It refers to Préverenges'
+> 800th anniversary. Nothing to reproduce, nothing to confirm — the earlier note read it as a
+> copy-pasted sponsorship amount and was simply wrong.
 
-- **Surfshop Préverenges** is at *Avenue de la Plage 1* — the festival's own address. The
-  partner and the `Surf Shop` food stand are the same business.
-- **Totem Escalade** runs the mur de grimpe.
-- **Sherlock Events** is a mobile escape-game company in Morges, almost certainly the provider of
-  the Mini Escape Game and Le trésor de Black Sam. **Summit Video** rents giant screens — the
-  Diffusion de match. Neither is stated; both are worth confirming.
-
-> The page renders all three cygne tiers as "800€", which is almost certainly a copy-paste error
-> rather than three tiers at one price. Worth confirming before it is reproduced in the app.
+**Partners are not cross-linked to Happenings, by decision.** Several partners are also festival
+content — Surfshop Préverenges is both a stand and a partner, Totem Escalade runs the mur de grimpe,
+GladiaSUP is an activity. An earlier note proposed a `happeningId` on the partner so a fiche could
+credit its supplier. That is not wanted: it adds a relationship to maintain for a line of text
+nobody asked for. **This section is closed.**
 
 ## ✅ Resolved — activity prices
 
@@ -203,8 +204,12 @@ société, Chasse au trésor, Tournoi de UNO, Salsa et bachata, Slackline.
 | CHF 10 / équipe | Mini Escape Game · Trésor de Black Sam |
 | CHF 25 / 15 | Silent Party, plus a CHF 50 headset deposit |
 
-**One left:** `Diffusion de match` is marked free with `provenance: "unverified"` — it has no
-poster of its own, so the rule above cannot be applied to it.
+**Closed.** `Diffusion de match` had no poster of its own, so the missing-price rule could not be
+applied to it and it sat at `unverified`. It is confirmed free directly, and now reads `confirmed`
+like the rest. **Every activity price in the edition is now confirmed.**
+
+> The shape of every price also changed — one structure for all seventeen, free or not. See
+> [SCHEMA.md](SCHEMA.md) § activity payload.
 
 ## ✅ Resolved — entry is free, and it exposed a missing screen
 
@@ -381,12 +386,17 @@ The screenings are **Coupe du monde 2026** fixtures. The Friday quarter-final an
 match are current content, not the stale 2025 line they were suspected of being. Both slots are
 `confirmed`.
 
-## 11. Past editions
+## ✅ Resolved — past editions
 
-`editions.json` is exactly what you assumed: **the list behind the archive entry in Plus**, so
-the app can show which years exist without fetching all of them. It is the only file the app
-reads on demand rather than at launch, and the only feature that does not work offline unless
-previously opened.
+`editions.json` is **the list behind the archive entry in Plus**, so the app can show which years
+exist without fetching all of them. It is the only file the app reads on demand rather than at
+launch, and the only feature that does not work offline.
+
+**Nothing from an archive is stored.** No caching, no images kept, no rows written — opening a past
+edition fetches it every time, and closing the app leaves nothing behind. That is a deliberate
+asymmetry with the current edition, which is cached hard precisely because it has to work in a field
+with no signal. Browsing 2019 is a November sofa activity: the network is there, and paying disk for
+it would mean an archive that silently goes stale with no way to notice.
 
 It lists only 2026. The festival has run since **2015**, and browsing past line-ups is a stated
 goal. Back-filling is additive and safe: drop an `editions/2019/` folder next to `2026/`, add a
