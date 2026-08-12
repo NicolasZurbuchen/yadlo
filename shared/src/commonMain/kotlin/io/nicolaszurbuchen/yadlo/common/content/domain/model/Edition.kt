@@ -8,15 +8,16 @@ package io.nicolaszurbuchen.yadlo.common.content.domain.model
  * belongs to is not "does it change every year" but **would a past-edition archive need its own
  * copy?** Browsing 2026 should show 2026's lineup and 2026's statistics, but today's contact address.
  *
- * [entry] is structured rather than only answered in the FAQ prose, because a past edition has to be
- * able to state what it cost even if a later one starts charging.
+ * `entry` and `openingNote` were deliberately removed from the content rather than modelled here:
+ * no screen renders them yet, and a field nobody reads is a field nobody notices going stale. The
+ * FAQ still answers whether entry is free. Both return as structured fields the day the Horaires
+ * and Sur place screens exist, and the content validator rejects them until then so they cannot
+ * quietly reappear.
  */
 data class Edition(
     val id: String,
     val year: Int,
     val name: String,
-    val entry: Entry,
-    val openingNote: String?,
     val venue: Venue,
     val days: List<FestivalDay>,
     val categories: List<Category>,
@@ -24,9 +25,4 @@ data class Edition(
     val slots: List<Slot>,
     val partners: List<PartnerTier>,
     val figures: List<Figure>,
-) {
-    data class Entry(
-        val free: Boolean,
-        val provenance: Provenance,
-    )
-}
+)

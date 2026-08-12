@@ -1,10 +1,8 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "id": "2026",
   "year": 2026,
   "name": "Yadlo 2026",
-  "entry": { "free": true, "provenance": "confirmed" },
-  "openingNote": "L'entrée est libre et la plage de Préverenges est publique : on peut s'y trouver à toute heure. Les horaires ci-dessus sont ceux du festival — quand les stands, les bars et les animations tournent. Quelques activités commencent avant, comme le yoga du matin et le mur de grimpe.",
   "venue": {
     "name": "Plage de Préverenges",
     "address": "Avenue de la Plage 1, 1028 Préverenges, Suisse",
@@ -12,7 +10,6 @@
     "longitude": 6.5347,
     "provenance": "unverified"
   },
-
   "days": [
     {
       "id": "2026:fri",
@@ -39,17 +36,43 @@
       "provenance": "confirmed"
     }
   ],
-
   "categories": [
-    { "id": "musique", "name": "Musique", "order": 1 },
-    { "id": "silent", "name": "Silent Party", "order": 2 },
-    { "id": "eau", "name": "Sur l'eau", "order": 3 },
-    { "id": "terre", "name": "Sur terre", "order": 4 },
-    { "id": "enfants", "name": "Enfants", "order": 5 },
-    { "id": "restauration", "name": "Restauration", "order": 6 },
-    { "id": "createurs", "name": "Créateurs", "order": 7 }
+    {
+      "id": "musique",
+      "name": "Musique",
+      "order": 1
+    },
+    {
+      "id": "silent",
+      "name": "Silent Party",
+      "order": 2
+    },
+    {
+      "id": "eau",
+      "name": "Sur l'eau",
+      "order": 3
+    },
+    {
+      "id": "terre",
+      "name": "Sur terre",
+      "order": 4
+    },
+    {
+      "id": "enfants",
+      "name": "Enfants",
+      "order": 5
+    },
+    {
+      "id": "restauration",
+      "name": "Restauration",
+      "order": 6
+    },
+    {
+      "id": "createurs",
+      "name": "Créateurs",
+      "order": 7
+    }
   ],
-
   "happenings": [
     {
       "id": "dj-alf",
@@ -60,13 +83,32 @@
       "description": "Elliot Guyot, étudiant à HEC Lausanne devenu une figure des nuits vaudoises. Résident hebdomadaire du MAD Club et du D! Club, il a joué au Montreux Jazz, au Venoge et à Caribana, ainsi qu'au Flow à Paris. Un répertoire volontairement large — house, reggaeton, afrobeat et throwbacks des années 2010 — résumé par sa devise : « Bangers Only ».",
       "provenance": "confirmed",
       "artist": {
-        "genres": ["Commercial", "Afro house", "House'n'disco"],
+        "genres": [
+          "Commercial",
+          "Afro house",
+          "House'n'disco"
+        ],
         "links": [
-          { "type": "website", "url": "https://djalf.ch/" },
-          { "type": "instagram", "url": "https://www.instagram.com/elliot_guyot/" },
-          { "type": "soundcloud", "url": "https://soundcloud.com/djalf_music" },
-          { "type": "tiktok", "url": "https://www.tiktok.com/@dj.alf_" },
-          { "type": "facebook", "url": "https://www.facebook.com/elliot.guyot" }
+          {
+            "type": "website",
+            "url": "https://djalf.ch/"
+          },
+          {
+            "type": "instagram",
+            "url": "https://www.instagram.com/elliot_guyot/"
+          },
+          {
+            "type": "soundcloud",
+            "url": "https://soundcloud.com/djalf_music"
+          },
+          {
+            "type": "tiktok",
+            "url": "https://www.tiktok.com/@dj.alf_"
+          },
+          {
+            "type": "facebook",
+            "url": "https://www.facebook.com/elliot.guyot"
+          }
         ]
       }
     },
@@ -79,11 +121,23 @@
       "description": "Guitare acoustique et production électro. Son premier EP, « J'essaie », est sorti le 10 juillet 2026 : six titres, dont « Souvenir » et « Rêve de star » en collaboration avec Andy Wheelr.",
       "provenance": "confirmed",
       "artist": {
-        "genres": ["Guitare acoustique", "Prod électro"],
+        "genres": [
+          "Guitare acoustique",
+          "Prod électro"
+        ],
         "links": [
-          { "type": "spotify", "url": "https://open.spotify.com/artist/7MtGXTDmWG8SXdkV3H20Ra" },
-          { "type": "instagram", "url": "https://www.instagram.com/ceasure.music/" },
-          { "type": "appleMusic", "url": "https://music.apple.com/us/artist/c%C3%A6sure/6788565297" }
+          {
+            "type": "spotify",
+            "url": "https://open.spotify.com/artist/7MtGXTDmWG8SXdkV3H20Ra"
+          },
+          {
+            "type": "instagram",
+            "url": "https://www.instagram.com/ceasure.music/"
+          },
+          {
+            "type": "appleMusic",
+            "url": "https://music.apple.com/us/artist/c%C3%A6sure/6788565297"
+          }
         ]
       }
     },
@@ -96,12 +150,26 @@
       "description": "Groupe d'indie-soul né à Lausanne en 2020, porté par Dany Cerone à la guitare et Julien Portenguen au chant, en collectif évolutif de quatre à six musiciens — avec notamment Gabriel Scheder à la batterie et Simon Palluel à la basse. Influencé par Nick Hakim, Skinshape et Yellow Days, le groupe mêle influences rétro et modernité lo-fi. Après une série d'EP en 2023 et 2024, le premier album « New, Again » marque un tournant en 2025 : artiste Radar RTS, deux années consécutives au Cully Jazz et au Montreux Jazz. Le deuxième album « Viewpoints » vient de sortir, accompagné d'une tournée 2026.",
       "provenance": "confirmed",
       "artist": {
-        "genres": ["Indie-soul"],
+        "genres": [
+          "Indie-soul"
+        ],
         "links": [
-          { "type": "spotify", "url": "https://open.spotify.com/artist/5t2dGRWkWoQ3z5NA2T4kDw" },
-          { "type": "instagram", "url": "https://www.instagram.com/digginthesoul/" },
-          { "type": "website", "url": "https://digging.ch/" },
-          { "type": "facebook", "url": "https://www.facebook.com/digginlausanne" }
+          {
+            "type": "spotify",
+            "url": "https://open.spotify.com/artist/5t2dGRWkWoQ3z5NA2T4kDw"
+          },
+          {
+            "type": "instagram",
+            "url": "https://www.instagram.com/digginthesoul/"
+          },
+          {
+            "type": "website",
+            "url": "https://digging.ch/"
+          },
+          {
+            "type": "facebook",
+            "url": "https://www.facebook.com/digginlausanne"
+          }
         ]
       }
     },
@@ -114,10 +182,18 @@
       "description": "Son style a rapidement capté l'attention de la scène, avec le soutien d'artistes reconnus comme Mau P ou Cloonee. En 2024, il sort son premier titre sur le label Nervous Records, étape majeure de son ascension dans la musique électronique.",
       "provenance": "confirmed",
       "artist": {
-        "genres": ["Electro"],
+        "genres": [
+          "Electro"
+        ],
         "links": [
-          { "type": "soundcloud", "url": "https://soundcloud.com/thisisamc" },
-          { "type": "beatport", "url": "https://www.beatport.com/artist/amc-ch/1294638" }
+          {
+            "type": "soundcloud",
+            "url": "https://soundcloud.com/thisisamc"
+          },
+          {
+            "type": "beatport",
+            "url": "https://www.beatport.com/artist/amc-ch/1294638"
+          }
         ]
       }
     },
@@ -130,8 +206,15 @@
       "description": "DJ house vaudois, lié au Collectif 52 et aux scènes de Morges et de Lausanne.",
       "provenance": "confirmed",
       "artist": {
-        "genres": ["House"],
-        "links": [{ "type": "instagram", "url": "https://www.instagram.com/jayjay.musik/" }]
+        "genres": [
+          "House"
+        ],
+        "links": [
+          {
+            "type": "instagram",
+            "url": "https://www.instagram.com/jayjay.musik/"
+          }
+        ]
       }
     },
     {
@@ -143,11 +226,23 @@
       "description": "Il a joué ses premiers sets à l'époque où seuls les vinyles tournaient. Sa collection s'est étoffée en même temps que son métier, jusqu'à devenir DJ professionnel. Il se produit aujourd'hui dans le monde entier avec des sets 100 % vinyles et une maîtrise absolue des platines.",
       "provenance": "confirmed",
       "artist": {
-        "genres": ["House", "Disco"],
+        "genres": [
+          "House",
+          "Disco"
+        ],
         "links": [
-          { "type": "instagram", "url": "https://www.instagram.com/dj_carlos_willengton/" },
-          { "type": "tiktok", "url": "https://www.tiktok.com/@dj_carlos_willengton" },
-          { "type": "youtube", "url": "https://www.youtube.com/@carloswillengton4127" }
+          {
+            "type": "instagram",
+            "url": "https://www.instagram.com/dj_carlos_willengton/"
+          },
+          {
+            "type": "tiktok",
+            "url": "https://www.tiktok.com/@dj_carlos_willengton"
+          },
+          {
+            "type": "youtube",
+            "url": "https://www.youtube.com/@carloswillengton4127"
+          }
         ]
       }
     },
@@ -160,8 +255,15 @@
       "description": "Une odyssée musicale qui traverse les décennies et les frontières, entre reprises inattendues et trésors cachés venus des quatre coins du globe. Parfois doux et relaxant, parfois un peu fou : un mix éclectique qui surprend à chaque instant.",
       "provenance": "confirmed",
       "artist": {
-        "genres": ["Tropical chill"],
-        "links": [{ "type": "soundcloud", "url": "https://soundcloud.com/thalassotherapie" }]
+        "genres": [
+          "Tropical chill"
+        ],
+        "links": [
+          {
+            "type": "soundcloud",
+            "url": "https://soundcloud.com/thalassotherapie"
+          }
+        ]
       }
     },
     {
@@ -173,10 +275,18 @@
       "description": "Collectif de trois amis d'enfance originaires de Préverenges et Denges. Portés depuis toujours par une passion commune pour la musique électronique et sa culture, ils ont construit au fil des années une identité sonore forte et authentique, en mixant à deux ou à trois derrière les platines, chacun son tour — une approche rare qui les distingue des formats B2B classiques.",
       "provenance": "confirmed",
       "artist": {
-        "genres": ["Techno-house"],
+        "genres": [
+          "Techno-house"
+        ],
         "links": [
-          { "type": "instagram", "url": "https://www.instagram.com/dubside_collectif/" },
-          { "type": "facebook", "url": "https://www.facebook.com/dubsidedj/" }
+          {
+            "type": "instagram",
+            "url": "https://www.instagram.com/dubside_collectif/"
+          },
+          {
+            "type": "facebook",
+            "url": "https://www.facebook.com/dubsidedj/"
+          }
         ]
       }
     },
@@ -189,8 +299,15 @@
       "description": "DJ et producteur, membre du Collectif 52.",
       "provenance": "confirmed",
       "artist": {
-        "genres": ["Années 2000"],
-        "links": [{ "type": "instagram", "url": "https://www.instagram.com/gauthier_quenis/" }]
+        "genres": [
+          "Années 2000"
+        ],
+        "links": [
+          {
+            "type": "instagram",
+            "url": "https://www.instagram.com/gauthier_quenis/"
+          }
+        ]
       }
     },
     {
@@ -202,10 +319,19 @@
       "description": "Indie pop et alt rock. Après les albums « Enough » (2024) et « September » (2025), le groupe a sorti l'EP « Polaroids » en 2026.",
       "provenance": "confirmed",
       "artist": {
-        "genres": ["Indie pop", "Alt rock"],
+        "genres": [
+          "Indie pop",
+          "Alt rock"
+        ],
         "links": [
-          { "type": "spotify", "url": "https://open.spotify.com/artist/15rQgRhMKhO2WdsDct95bm" },
-          { "type": "instagram", "url": "https://www.instagram.com/refairelemondeofficial/" }
+          {
+            "type": "spotify",
+            "url": "https://open.spotify.com/artist/15rQgRhMKhO2WdsDct95bm"
+          },
+          {
+            "type": "instagram",
+            "url": "https://www.instagram.com/refairelemondeofficial/"
+          }
         ]
       }
     },
@@ -218,10 +344,19 @@
       "description": "Après avoir performé en solo, puis en trio pendant des années, il propose désormais une formation à quatre : batterie, guitares électrique et acoustique, basse et synthés. Entre dérision et mise à nu, Albert Chinet ne choisit pas — il offre un spectacle total, humain et profondément vibrant.",
       "provenance": "confirmed",
       "artist": {
-        "genres": ["Chanson française", "Pop moderne"],
+        "genres": [
+          "Chanson française",
+          "Pop moderne"
+        ],
         "links": [
-          { "type": "spotify", "url": "https://open.spotify.com/artist/0VW4h2yrbFtLUQl96TcLCm" },
-          { "type": "instagram", "url": "https://www.instagram.com/albert.chinet/" }
+          {
+            "type": "spotify",
+            "url": "https://open.spotify.com/artist/0VW4h2yrbFtLUQl96TcLCm"
+          },
+          {
+            "type": "instagram",
+            "url": "https://www.instagram.com/albert.chinet/"
+          }
         ]
       }
     },
@@ -234,12 +369,26 @@
       "description": "Label lancé en 2023 par l'ancien collectif Limited Brothers, actif depuis plus de dix ans. Avant tout des amis de longue date réunis par le même goût des grooves rares et des disques poussiéreux. Leurs résidences ont accueilli des sélectionneurs acclamés — Mark Grusane, Volcov, Alexander Nut, Fredfades, Alton Miller — et leur sélection de joyaux soulful et de sons plus profonds apporte des vibrations lumineuses sur le dancefloor.",
       "provenance": "confirmed",
       "artist": {
-        "genres": ["Electro"],
+        "genres": [
+          "Electro"
+        ],
         "links": [
-          { "type": "instagram", "url": "https://www.instagram.com/leman.records/" },
-          { "type": "soundcloud", "url": "https://soundcloud.com/lemanrecords" },
-          { "type": "bandcamp", "url": "https://lmanrecords.bandcamp.com/" },
-          { "type": "facebook", "url": "https://www.facebook.com/lemanrecords/" }
+          {
+            "type": "instagram",
+            "url": "https://www.instagram.com/leman.records/"
+          },
+          {
+            "type": "soundcloud",
+            "url": "https://soundcloud.com/lemanrecords"
+          },
+          {
+            "type": "bandcamp",
+            "url": "https://lmanrecords.bandcamp.com/"
+          },
+          {
+            "type": "facebook",
+            "url": "https://www.facebook.com/lemanrecords/"
+          }
         ]
       }
     },
@@ -252,11 +401,18 @@
       "description": "Collectif musical vaudois — « Tree House Music Collective » — que l'on retrouve en club comme en festival.",
       "provenance": "confirmed",
       "artist": {
-        "genres": ["House", "Disco"],
-        "links": [{ "type": "instagram", "url": "https://www.instagram.com/tree.house.music/" }]
+        "genres": [
+          "House",
+          "Disco"
+        ],
+        "links": [
+          {
+            "type": "instagram",
+            "url": "https://www.instagram.com/tree.house.music/"
+          }
+        ]
       }
     },
-
     {
       "id": "silent-party",
       "kind": "activity",
@@ -266,13 +422,30 @@
       "description": "Trois ambiances, un seul dancefloor et des centaines de casques illuminés. Choisissez votre musique, changez de canal — vert, bleu ou rouge — au gré de vos envies. L'expérience immersive du samedi soir à Yadlo.",
       "provenance": "confirmed",
       "activity": {
-        "genres": ["All style"],
+        "genres": [
+          "All style"
+        ],
         "price": {
+          "free": false,
           "tiers": [
-            { "label": "Adulte", "amount": 25, "currency": "CHF" },
-            { "label": "Moins de 16 ans", "amount": 15, "currency": "CHF" }
+            {
+              "label": "Adulte",
+              "amount": 25,
+              "currency": "CHF",
+              "per": null
+            },
+            {
+              "label": "Moins de 16 ans",
+              "amount": 15,
+              "currency": "CHF",
+              "per": null
+            }
           ],
-          "deposit": { "amount": 50, "currency": "CHF", "note": "Caution casque, préautorisée à la réservation et débitée à la remise du casque." },
+          "deposit": {
+            "amount": 50,
+            "currency": "CHF",
+            "note": "Caution casque, préautorisée à la réservation et débitée à la remise du casque."
+          },
           "provenance": "confirmed"
         },
         "bookingRequired": true,
@@ -289,7 +462,12 @@
       "description": "Un espace encadré par des bénévoles, dédié au jeu, au dessin, au bricolage et au maquillage. Vous pouvez y déposer vos enfants pour deux heures au maximum, le temps de souffler ou de faire un tour du festival.",
       "provenance": "confirmed",
       "activity": {
-        "price": { "free": true, "provenance": "confirmed" },
+        "price": {
+          "free": true,
+          "tiers": [],
+          "deposit": null,
+          "provenance": "confirmed"
+        },
         "bookingRequired": false,
         "equipmentProvided": true,
         "suitability": "De 4 à 12 ans, deux heures maximum",
@@ -305,7 +483,12 @@
       "description": "Envie de prendre de la hauteur ? Un mur de grimpe encadré par Totem Escalade, pour découvrir l'escalade en toute sécurité.",
       "provenance": "confirmed",
       "activity": {
-        "price": { "free": true, "provenance": "confirmed" },
+        "price": {
+          "free": true,
+          "tiers": [],
+          "deposit": null,
+          "provenance": "confirmed"
+        },
         "bookingRequired": false,
         "equipmentProvided": true,
         "suitability": "Gratuit jusqu'à 16 ans",
@@ -320,7 +503,16 @@
       "images": [],
       "description": "Ch'piil met à disposition une sélection de jeux de société et accompagne les joueurs, en expliquant les règles et en animant les parties. Joueur confirmé ou simple curieux, une place vous attend autour de la table.",
       "provenance": "confirmed",
-      "activity": { "price": { "free": true, "provenance": "confirmed" }, "bookingRequired": false, "equipmentProvided": true }
+      "activity": {
+        "price": {
+          "free": true,
+          "tiers": [],
+          "deposit": null,
+          "provenance": "confirmed"
+        },
+        "bookingRequired": false,
+        "equipmentProvided": true
+      }
     },
     {
       "id": "chasse-au-tresor",
@@ -330,7 +522,16 @@
       "images": [],
       "description": "Partez à l'aventure en famille ou entre amis. Suivez les pistes disséminées à travers le festival, relevez les défis qui vous attendent et tentez de percer le mystère avant la fin du parcours.",
       "provenance": "confirmed",
-      "activity": { "price": { "free": true, "provenance": "confirmed" }, "bookingRequired": false, "suitability": "Familles et groupes" }
+      "activity": {
+        "price": {
+          "free": true,
+          "tiers": [],
+          "deposit": null,
+          "provenance": "confirmed"
+        },
+        "bookingRequired": false,
+        "suitability": "Familles et groupes"
+      }
     },
     {
       "id": "mini-escape-game",
@@ -341,7 +542,19 @@
       "description": "Quatre escape games différents, en équipe.",
       "provenance": "confirmed",
       "activity": {
-        "price": { "amount": 10, "currency": "CHF", "per": "équipe", "provenance": "confirmed" },
+        "price": {
+          "free": false,
+          "tiers": [
+            {
+              "label": null,
+              "amount": 10,
+              "currency": "CHF",
+              "per": "équipe"
+            }
+          ],
+          "deposit": null,
+          "provenance": "confirmed"
+        },
         "equipmentProvided": true
       }
     },
@@ -353,7 +566,16 @@
       "images": [],
       "description": "Une carte peut tout changer. Tentez de vous hisser jusqu'à la victoire malgré les +4, les changements de sens et les coups bas de vos adversaires. Fous rires, suspense et revanche garantis.",
       "provenance": "confirmed",
-      "activity": { "price": { "free": true, "provenance": "confirmed" }, "bookingRequired": false, "equipmentProvided": true }
+      "activity": {
+        "price": {
+          "free": true,
+          "tiers": [],
+          "deposit": null,
+          "provenance": "confirmed"
+        },
+        "bookingRequired": false,
+        "equipmentProvided": true
+      }
     },
     {
       "id": "diffusion-match",
@@ -363,7 +585,15 @@
       "images": [],
       "description": "Les matchs de la Coupe du monde 2026 diffusés sur grand écran, sans le son.",
       "provenance": "confirmed",
-      "activity": { "price": { "free": true, "provenance": "confirmed" }, "bookingRequired": false }
+      "activity": {
+        "price": {
+          "free": true,
+          "tiers": [],
+          "deposit": null,
+          "provenance": "confirmed"
+        },
+        "bookingRequired": false
+      }
     },
     {
       "id": "salsa-bachata",
@@ -373,7 +603,16 @@
       "images": [],
       "description": "Découvrez les bases de la salsa et de la bachata lors d'une initiation animée par des professionnels de l'école AliaSalsa. Après une heure d'apprentissage, place à la danse libre — juste avant de rejoindre la Silent Party.",
       "provenance": "confirmed",
-      "activity": { "price": { "free": true, "provenance": "confirmed" }, "bookingRequired": false, "equipmentProvided": false }
+      "activity": {
+        "price": {
+          "free": true,
+          "tiers": [],
+          "deposit": null,
+          "provenance": "confirmed"
+        },
+        "bookingRequired": false,
+        "equipmentProvided": false
+      }
     },
     {
       "id": "slackline",
@@ -383,7 +622,16 @@
       "images": [],
       "description": "Saurez-vous garder l'équilibre ? Une série de défis ludiques qui mettront à l'épreuve votre concentration, votre coordination et votre persévérance. Ouvert à toutes et tous, du simple curieux au véritable funambule.",
       "provenance": "confirmed",
-      "activity": { "price": { "free": true, "provenance": "confirmed" }, "bookingRequired": false, "equipmentProvided": true }
+      "activity": {
+        "price": {
+          "free": true,
+          "tiers": [],
+          "deposit": null,
+          "provenance": "confirmed"
+        },
+        "bookingRequired": false,
+        "equipmentProvided": true
+      }
     },
     {
       "id": "tresor-black-sam",
@@ -394,7 +642,19 @@
       "description": "Aventure de pirates en équipe : résoudre les énigmes pour ouvrir le coffre.",
       "provenance": "confirmed",
       "activity": {
-        "price": { "amount": 10, "currency": "CHF", "per": "équipe", "provenance": "confirmed" },
+        "price": {
+          "free": false,
+          "tiers": [
+            {
+              "label": null,
+              "amount": 10,
+              "currency": "CHF",
+              "per": "équipe"
+            }
+          ],
+          "deposit": null,
+          "provenance": "confirmed"
+        },
         "equipmentProvided": true
       }
     },
@@ -407,7 +667,19 @@
       "description": "Parcours d'obstacles sur stand-up paddle, matériel inclus. Venez défier vos amis ou le chronomètre pour tenter de remporter le gros lot.",
       "provenance": "confirmed",
       "activity": {
-        "price": { "amount": 5, "currency": "CHF", "per": "personne", "provenance": "confirmed" },
+        "price": {
+          "free": false,
+          "tiers": [
+            {
+              "label": null,
+              "amount": 5,
+              "currency": "CHF",
+              "per": "personne"
+            }
+          ],
+          "deposit": null,
+          "provenance": "confirmed"
+        },
         "bookingRequired": false,
         "equipmentProvided": true
       }
@@ -421,7 +693,19 @@
       "description": "Du yoga sur un stand-up paddle ? C'est possible. Un cours d'une heure sous la supervision d'un coach, tout le matériel inclus. Trois séances par jour, à 14h, 16h et 18h.",
       "provenance": "confirmed",
       "activity": {
-        "price": { "amount": 10, "currency": "CHF", "per": "personne", "provenance": "confirmed" },
+        "price": {
+          "free": false,
+          "tiers": [
+            {
+              "label": null,
+              "amount": 10,
+              "currency": "CHF",
+              "per": "personne"
+            }
+          ],
+          "deposit": null,
+          "provenance": "confirmed"
+        },
         "equipmentProvided": true,
         "suitability": "Aisance sur SUP préférable avant de se lancer."
       }
@@ -434,7 +718,16 @@
       "images": [],
       "description": "Une piste de gymnastique rebondissante de six mètres de long, à disposition gratuitement sur la plage. Venez montrer vos plus belles figures.",
       "provenance": "confirmed",
-      "activity": { "price": { "free": true, "provenance": "confirmed" }, "bookingRequired": false, "equipmentProvided": true }
+      "activity": {
+        "price": {
+          "free": true,
+          "tiers": [],
+          "deposit": null,
+          "provenance": "confirmed"
+        },
+        "bookingRequired": false,
+        "equipmentProvided": true
+      }
     },
     {
       "id": "trampoline-flottant",
@@ -445,7 +738,19 @@
       "description": "Un trampoline de quatre mètres de diamètre qui flotte sur le lac. Jusqu'à trois personnes à la fois peuvent aller sauter à la surface de l'eau. Il se transforme volontiers en plateforme de jeux par équipes au fil de la journée.",
       "provenance": "confirmed",
       "activity": {
-        "price": { "amount": 5, "currency": "CHF", "per": "personne", "provenance": "confirmed" },
+        "price": {
+          "free": false,
+          "tiers": [
+            {
+              "label": null,
+              "amount": 5,
+              "currency": "CHF",
+              "per": "personne"
+            }
+          ],
+          "deposit": null,
+          "provenance": "confirmed"
+        },
         "bookingRequired": false,
         "equipmentProvided": true
       }
@@ -458,7 +763,17 @@
       "images": [],
       "description": "Cours de yoga matinal sur la plage, sans inscription, tous niveaux bienvenus. Venez avec votre tapis — s'il vous reste de l'énergie après la Silent Party.",
       "provenance": "confirmed",
-      "activity": { "price": { "free": true, "provenance": "confirmed" }, "bookingRequired": false, "equipmentProvided": false, "suitability": "Apportez votre tapis." }
+      "activity": {
+        "price": {
+          "free": true,
+          "tiers": [],
+          "deposit": null,
+          "provenance": "confirmed"
+        },
+        "bookingRequired": false,
+        "equipmentProvided": false,
+        "suitability": "Apportez votre tapis."
+      }
     },
     {
       "id": "acro-yoga",
@@ -468,9 +783,18 @@
       "images": [],
       "description": "Cours d'acro-yoga matinal sur la plage, sans inscription. Pas besoin de partenaire et tous les niveaux sont les bienvenus. Amenez un tapis et c'est parti.",
       "provenance": "confirmed",
-      "activity": { "price": { "free": true, "provenance": "confirmed" }, "bookingRequired": false, "equipmentProvided": false, "suitability": "Apportez votre tapis." }
+      "activity": {
+        "price": {
+          "free": true,
+          "tiers": [],
+          "deposit": null,
+          "provenance": "confirmed"
+        },
+        "bookingRequired": false,
+        "equipmentProvided": false,
+        "suitability": "Apportez votre tapis."
+      }
     },
-
     {
       "id": "vegan-fabrik",
       "kind": "stand",
@@ -481,11 +805,23 @@
       "provenance": "confirmed",
       "stand": {
         "offering": "Cuisine végétale",
-        "marks": ["végan", "bio"],
+        "marks": [
+          "végan",
+          "bio"
+        ],
         "links": [
-          { "type": "website", "url": "https://vegan-fabrik.ch/" },
-          { "type": "instagram", "url": "https://www.instagram.com/vegan.fabrik/" },
-          { "type": "facebook", "url": "https://www.facebook.com/vegan.fabrik" }
+          {
+            "type": "website",
+            "url": "https://vegan-fabrik.ch/"
+          },
+          {
+            "type": "instagram",
+            "url": "https://www.instagram.com/vegan.fabrik/"
+          },
+          {
+            "type": "facebook",
+            "url": "https://www.facebook.com/vegan.fabrik"
+          }
         ],
         "menu": [
           {
@@ -493,10 +829,46 @@
             "name": "Plats",
             "source": "Liste transmise, non publiée par le festival",
             "items": [
-              { "name": "Assiette de mezzés", "price": { "amount": 15, "currency": "CHF" }, "provenance": "unverified" },
-              { "name": "Seitan à la cantonaise", "price": { "amount": 18, "currency": "CHF" }, "provenance": "unverified" },
-              { "name": "Ragoût de tofu", "price": { "amount": 19, "currency": "CHF" }, "provenance": "unverified" },
-              { "name": "Mini pizza", "price": { "amount": 5, "currency": "CHF" }, "provenance": "unverified" }
+              {
+                "name": "Assiette de mezzés",
+                "price": {
+                  "amount": 15,
+                  "currency": "CHF"
+                },
+                "provenance": "unverified",
+                "marks": [],
+                "description": null
+              },
+              {
+                "name": "Seitan à la cantonaise",
+                "price": {
+                  "amount": 18,
+                  "currency": "CHF"
+                },
+                "provenance": "unverified",
+                "marks": [],
+                "description": null
+              },
+              {
+                "name": "Ragoût de tofu",
+                "price": {
+                  "amount": 19,
+                  "currency": "CHF"
+                },
+                "provenance": "unverified",
+                "marks": [],
+                "description": null
+              },
+              {
+                "name": "Mini pizza",
+                "price": {
+                  "amount": 5,
+                  "currency": "CHF"
+                },
+                "provenance": "unverified",
+                "marks": [],
+                "description": null
+              }
             ]
           },
           {
@@ -504,10 +876,46 @@
             "name": "Tartelettes",
             "source": "Photo du tableau du stand, date inconnue",
             "items": [
-              { "name": "Myrtilles", "price": { "amount": 5.5, "currency": "CHF" }, "provenance": "unverified" },
-              { "name": "Pommes", "price": { "amount": 4.5, "currency": "CHF" }, "provenance": "unverified" },
-              { "name": "Abricots", "price": { "amount": 4.5, "currency": "CHF" }, "provenance": "unverified" },
-              { "name": "Citron", "price": { "amount": 4.5, "currency": "CHF" }, "provenance": "unverified" }
+              {
+                "name": "Myrtilles",
+                "price": {
+                  "amount": 5.5,
+                  "currency": "CHF"
+                },
+                "provenance": "unverified",
+                "marks": [],
+                "description": null
+              },
+              {
+                "name": "Pommes",
+                "price": {
+                  "amount": 4.5,
+                  "currency": "CHF"
+                },
+                "provenance": "unverified",
+                "marks": [],
+                "description": null
+              },
+              {
+                "name": "Abricots",
+                "price": {
+                  "amount": 4.5,
+                  "currency": "CHF"
+                },
+                "provenance": "unverified",
+                "marks": [],
+                "description": null
+              },
+              {
+                "name": "Citron",
+                "price": {
+                  "amount": 4.5,
+                  "currency": "CHF"
+                },
+                "provenance": "unverified",
+                "marks": [],
+                "description": null
+              }
             ]
           },
           {
@@ -515,8 +923,26 @@
             "name": "À grignoter",
             "source": "Photo du tableau du stand, date inconnue",
             "items": [
-              { "name": "Salade de fruits", "price": { "amount": 4.5, "currency": "CHF" }, "provenance": "unverified" },
-              { "name": "Chips, le paquet", "price": { "amount": 5, "currency": "CHF" }, "provenance": "unverified" }
+              {
+                "name": "Salade de fruits",
+                "price": {
+                  "amount": 4.5,
+                  "currency": "CHF"
+                },
+                "provenance": "unverified",
+                "marks": [],
+                "description": null
+              },
+              {
+                "name": "Chips, le paquet",
+                "price": {
+                  "amount": 5,
+                  "currency": "CHF"
+                },
+                "provenance": "unverified",
+                "marks": [],
+                "description": null
+              }
             ]
           },
           {
@@ -524,7 +950,16 @@
             "name": "Boissons",
             "source": "Photo du tableau du stand, date inconnue",
             "items": [
-              { "name": "Lassi", "price": { "amount": 4.5, "currency": "CHF" }, "provenance": "unverified" }
+              {
+                "name": "Lassi",
+                "price": {
+                  "amount": 4.5,
+                  "currency": "CHF"
+                },
+                "provenance": "unverified",
+                "marks": [],
+                "description": null
+              }
             ]
           }
         ]
@@ -538,7 +973,12 @@
       "images": [],
       "description": "Embarquez pour un voyage en Géorgie avec des spécialités traditionnelles préparées dans le respect des recettes authentiques. Une cuisine généreuse, parfumée et pleine de caractère.",
       "provenance": "confirmed",
-      "stand": { "offering": "Cuisine géorgienne", "marks": [], "links": [], "menu": [] }
+      "stand": {
+        "offering": "Cuisine géorgienne",
+        "marks": [],
+        "links": [],
+        "menu": []
+      }
     },
     {
       "id": "manouchy",
@@ -552,9 +992,18 @@
         "offering": "Cuisine libanaise",
         "marks": [],
         "links": [
-          { "type": "website", "url": "https://manouchy.ch/" },
-          { "type": "instagram", "url": "https://www.instagram.com/manouchy.ch/" },
-          { "type": "facebook", "url": "https://www.facebook.com/manouchy1" }
+          {
+            "type": "website",
+            "url": "https://manouchy.ch/"
+          },
+          {
+            "type": "instagram",
+            "url": "https://www.instagram.com/manouchy.ch/"
+          },
+          {
+            "type": "facebook",
+            "url": "https://www.facebook.com/manouchy1"
+          }
         ],
         "menu": []
       }
@@ -571,9 +1020,18 @@
         "offering": "Cuisine guadeloupéenne",
         "marks": [],
         "links": [
-          { "type": "website", "url": "https://delorbokit.ch/" },
-          { "type": "instagram", "url": "https://www.instagram.com/delorbokit_lausanne/" },
-          { "type": "facebook", "url": "https://www.facebook.com/delorbokit/" }
+          {
+            "type": "website",
+            "url": "https://delorbokit.ch/"
+          },
+          {
+            "type": "instagram",
+            "url": "https://www.instagram.com/delorbokit_lausanne/"
+          },
+          {
+            "type": "facebook",
+            "url": "https://www.facebook.com/delorbokit/"
+          }
         ],
         "menu": [
           {
@@ -582,10 +1040,48 @@
             "description": "Sandwich frit guadeloupéen",
             "source": "Carte publiée sur delorbokit.ch",
             "items": [
-              { "name": "Quelle Histwa", "description": "Poulet (CH) mariné au sel Caraïbes, pikliz", "price": { "amount": 17, "currency": "CHF" }, "provenance": "unverified" },
-              { "name": "Le Gosier", "description": "Bœuf (CH) mariné au sel Caraïbes, pikliz", "price": { "amount": 18, "currency": "CHF" }, "provenance": "unverified" },
-              { "name": "Le Gwada", "description": "Chiquetaille de morue (MSC), pikliz", "price": { "amount": 18, "currency": "CHF" }, "provenance": "unverified" },
-              { "name": "Le Végé", "description": "Feta, concombre, pikliz", "price": { "amount": 15, "currency": "CHF" }, "marks": ["végé"], "provenance": "unverified" }
+              {
+                "name": "Quelle Histwa",
+                "description": "Poulet (CH) mariné au sel Caraïbes, pikliz",
+                "price": {
+                  "amount": 17,
+                  "currency": "CHF"
+                },
+                "provenance": "unverified",
+                "marks": []
+              },
+              {
+                "name": "Le Gosier",
+                "description": "Bœuf (CH) mariné au sel Caraïbes, pikliz",
+                "price": {
+                  "amount": 18,
+                  "currency": "CHF"
+                },
+                "provenance": "unverified",
+                "marks": []
+              },
+              {
+                "name": "Le Gwada",
+                "description": "Chiquetaille de morue (MSC), pikliz",
+                "price": {
+                  "amount": 18,
+                  "currency": "CHF"
+                },
+                "provenance": "unverified",
+                "marks": []
+              },
+              {
+                "name": "Le Végé",
+                "description": "Feta, concombre, pikliz",
+                "price": {
+                  "amount": 15,
+                  "currency": "CHF"
+                },
+                "marks": [
+                  "végé"
+                ],
+                "provenance": "unverified"
+              }
             ]
           },
           {
@@ -593,9 +1089,28 @@
             "name": "Sauces maison",
             "source": "Carte publiée sur delorbokit.ch",
             "items": [
-              { "name": "Créole", "description": "Oignon, ail, piment, huile, épices", "marks": ["piquant"], "provenance": "unverified" },
-              { "name": "Chien", "description": "Tomates, oignon, ail, cives, ciboulette, persil, citron, huile, épices", "provenance": "unverified" },
-              { "name": "Pikliz", "description": "Carotte, oignon rouge, chou blanc, poivron, citron, épices", "marks": ["piquant"], "provenance": "unverified" }
+              {
+                "name": "Créole",
+                "description": "Oignon, ail, piment, huile, épices",
+                "marks": [
+                  "piquant"
+                ],
+                "provenance": "unverified"
+              },
+              {
+                "name": "Chien",
+                "description": "Tomates, oignon, ail, cives, ciboulette, persil, citron, huile, épices",
+                "provenance": "unverified",
+                "marks": []
+              },
+              {
+                "name": "Pikliz",
+                "description": "Carotte, oignon rouge, chou blanc, poivron, citron, épices",
+                "marks": [
+                  "piquant"
+                ],
+                "provenance": "unverified"
+              }
             ]
           }
         ]
@@ -609,7 +1124,12 @@
       "images": [],
       "description": "Deux incontournables de la cuisine méditerranéenne réunis sur un même stand. Entre gyros grecs généreux et focaccias italiennes garnies de produits de qualité, il y a de quoi satisfaire toutes les envies.",
       "provenance": "confirmed",
-      "stand": { "offering": "Cuisine méditerranéenne", "marks": [], "links": [], "menu": [] }
+      "stand": {
+        "offering": "Cuisine méditerranéenne",
+        "marks": [],
+        "links": [],
+        "menu": []
+      }
     },
     {
       "id": "surf-shop",
@@ -619,7 +1139,12 @@
       "images": [],
       "description": "Pour une pause gourmande à toute heure de la journée, le Surf Shop propose un choix de crêpes, gaufres et glaces. L'idéal pour une douceur entre deux concerts ou pour terminer la soirée sur une note sucrée.",
       "provenance": "confirmed",
-      "stand": { "offering": "Crêpes, gaufres et glaces", "marks": [], "links": [], "menu": [] }
+      "stand": {
+        "offering": "Crêpes, gaufres et glaces",
+        "marks": [],
+        "links": [],
+        "menu": []
+      }
     },
     {
       "id": "la-fanfrelucherie",
@@ -629,7 +1154,12 @@
       "images": [],
       "description": "Des costumes excentriques de seconde main à dénicher pour le week-end.",
       "provenance": "confirmed",
-      "stand": { "offering": "Costumes de seconde main", "marks": [], "links": [], "menu": [] }
+      "stand": {
+        "offering": "Costumes de seconde main",
+        "marks": [],
+        "links": [],
+        "menu": []
+      }
     },
     {
       "id": "les-secrets-de-houna",
@@ -642,70 +1172,402 @@
       "stand": {
         "offering": "Huiles précieuses et soins naturels",
         "marks": [],
-        "links": [{ "type": "website", "url": "https://lessecretsdehouna.ch/" }],
+        "links": [
+          {
+            "type": "website",
+            "url": "https://lessecretsdehouna.ch/"
+          }
+        ],
         "menu": []
       }
     }
   ],
-
   "slots": [
-    { "id": "2026:dj-alf-fri", "happeningId": "dj-alf", "dayId": "2026:fri", "start": "2026-07-10T17:00:00+02:00", "end": "2026-07-10T18:30:00+02:00", "provenance": "confirmed" },
-    { "id": "2026:caesure-fri", "happeningId": "caesure", "dayId": "2026:fri", "start": "2026-07-10T18:30:00+02:00", "end": "2026-07-10T19:30:00+02:00", "provenance": "confirmed" },
-    { "id": "2026:diggin-fri", "happeningId": "diggin", "dayId": "2026:fri", "start": "2026-07-10T20:00:00+02:00", "end": "2026-07-10T21:00:00+02:00", "provenance": "confirmed" },
-    { "id": "2026:amc-fri", "happeningId": "amc", "dayId": "2026:fri", "start": "2026-07-10T21:30:00+02:00", "end": "2026-07-10T22:30:00+02:00", "provenance": "confirmed" },
-    { "id": "2026:jayjay-fri", "happeningId": "jayjay", "dayId": "2026:fri", "start": "2026-07-10T22:30:00+02:00", "end": "2026-07-10T23:30:00+02:00", "provenance": "confirmed" },
-    { "id": "2026:carlos-willengton-fri", "happeningId": "carlos-willengton", "dayId": "2026:fri", "start": "2026-07-10T23:30:00+02:00", "end": "2026-07-11T01:30:00+02:00", "provenance": "confirmed" },
-
-    { "id": "2026:thalassotherapie-sat", "happeningId": "thalassotherapie", "dayId": "2026:sat", "start": "2026-07-11T14:00:00+02:00", "end": "2026-07-11T16:00:00+02:00", "provenance": "confirmed" },
-    { "id": "2026:dubside-sat", "happeningId": "dubside", "dayId": "2026:sat", "start": "2026-07-11T16:00:00+02:00", "end": "2026-07-11T18:00:00+02:00", "provenance": "confirmed" },
-    { "id": "2026:silent-party-sat", "happeningId": "silent-party", "dayId": "2026:sat", "start": "2026-07-11T20:00:00+02:00", "end": "2026-07-12T02:00:00+02:00", "provenance": "confirmed" },
-
-    { "id": "2026:gauthier-quenis-sun", "happeningId": "gauthier-quenis", "dayId": "2026:sun", "start": "2026-07-12T12:00:00+02:00", "end": "2026-07-12T15:00:00+02:00", "provenance": "confirmed" },
-    { "id": "2026:refaire-le-monde-sun", "happeningId": "refaire-le-monde", "dayId": "2026:sun", "start": "2026-07-12T15:30:00+02:00", "end": "2026-07-12T16:30:00+02:00", "provenance": "confirmed" },
-    { "id": "2026:albert-chinet-sun", "happeningId": "albert-chinet", "dayId": "2026:sun", "start": "2026-07-12T17:00:00+02:00", "end": "2026-07-12T18:00:00+02:00", "provenance": "confirmed" },
-    { "id": "2026:leman-records-sun", "happeningId": "leman-records", "dayId": "2026:sun", "start": "2026-07-12T18:00:00+02:00", "end": "2026-07-12T19:30:00+02:00", "provenance": "confirmed" },
-    { "id": "2026:treehouse-sun", "happeningId": "treehouse", "dayId": "2026:sun", "start": "2026-07-12T19:30:00+02:00", "end": "2026-07-12T21:00:00+02:00", "provenance": "confirmed" },
-
-    { "id": "2026:jeux-de-societe-fri", "happeningId": "jeux-de-societe", "dayId": "2026:fri", "start": "2026-07-10T19:00:00+02:00", "end": "2026-07-10T23:00:00+02:00", "provenance": "confirmed" },
-    { "id": "2026:mini-escape-game-fri", "happeningId": "mini-escape-game", "dayId": "2026:fri", "start": "2026-07-10T16:00:00+02:00", "end": "2026-07-10T19:00:00+02:00", "provenance": "confirmed" },
-    { "id": "2026:mini-escape-game-sat", "happeningId": "mini-escape-game", "dayId": "2026:sat", "start": "2026-07-11T12:00:00+02:00", "end": "2026-07-11T19:00:00+02:00", "provenance": "confirmed" },
-    { "id": "2026:tournoi-uno-sat", "happeningId": "tournoi-uno", "dayId": "2026:sat", "start": "2026-07-11T14:00:00+02:00", "end": "2026-07-11T16:00:00+02:00", "provenance": "confirmed" },
-    { "id": "2026:diffusion-match-fri", "happeningId": "diffusion-match", "dayId": "2026:fri", "start": "2026-07-10T21:00:00+02:00", "end": "2026-07-10T23:00:00+02:00", "provenance": "confirmed" },
-    { "id": "2026:diffusion-match-sat", "happeningId": "diffusion-match", "dayId": "2026:sat", "start": "2026-07-11T23:00:00+02:00", "end": "2026-07-12T01:00:00+02:00", "provenance": "confirmed" },
-    { "id": "2026:salsa-bachata-sat", "happeningId": "salsa-bachata", "dayId": "2026:sat", "start": "2026-07-11T18:00:00+02:00", "end": "2026-07-11T20:00:00+02:00", "provenance": "confirmed" },
-    { "id": "2026:slackline-sun", "happeningId": "slackline", "dayId": "2026:sun", "start": "2026-07-12T14:00:00+02:00", "end": "2026-07-12T18:00:00+02:00", "provenance": "confirmed" },
-    { "id": "2026:tresor-black-sam-sun", "happeningId": "tresor-black-sam", "dayId": "2026:sun", "start": "2026-07-12T12:00:00+02:00", "end": "2026-07-12T19:00:00+02:00", "provenance": "confirmed" },
-
-    { "id": "2026:gladiasup-sat", "happeningId": "gladiasup", "dayId": "2026:sat", "start": "2026-07-11T12:00:00+02:00", "end": "2026-07-11T19:00:00+02:00", "provenance": "confirmed" },
-    { "id": "2026:gladiasup-sun", "happeningId": "gladiasup", "dayId": "2026:sun", "start": "2026-07-12T12:00:00+02:00", "end": "2026-07-12T19:00:00+02:00", "provenance": "confirmed" },
-    { "id": "2026:sup-yoga-sat-14", "happeningId": "sup-yoga", "dayId": "2026:sat", "start": "2026-07-11T14:00:00+02:00", "end": "2026-07-11T15:00:00+02:00", "provenance": "confirmed" },
-    { "id": "2026:sup-yoga-sat-16", "happeningId": "sup-yoga", "dayId": "2026:sat", "start": "2026-07-11T16:00:00+02:00", "end": "2026-07-11T17:00:00+02:00", "provenance": "confirmed" },
-    { "id": "2026:sup-yoga-sat-18", "happeningId": "sup-yoga", "dayId": "2026:sat", "start": "2026-07-11T18:00:00+02:00", "end": "2026-07-11T19:00:00+02:00", "provenance": "confirmed" },
-    { "id": "2026:sup-yoga-sun-14", "happeningId": "sup-yoga", "dayId": "2026:sun", "start": "2026-07-12T14:00:00+02:00", "end": "2026-07-12T15:00:00+02:00", "provenance": "confirmed" },
-    { "id": "2026:sup-yoga-sun-16", "happeningId": "sup-yoga", "dayId": "2026:sun", "start": "2026-07-12T16:00:00+02:00", "end": "2026-07-12T17:00:00+02:00", "provenance": "confirmed" },
-    { "id": "2026:sup-yoga-sun-18", "happeningId": "sup-yoga", "dayId": "2026:sun", "start": "2026-07-12T18:00:00+02:00", "end": "2026-07-12T19:00:00+02:00", "provenance": "confirmed" },
-    { "id": "2026:airtrack-fri", "happeningId": "airtrack", "dayId": "2026:fri", "start": "2026-07-10T16:00:00+02:00", "end": "2026-07-10T19:00:00+02:00", "provenance": "confirmed" },
-    { "id": "2026:airtrack-sat", "happeningId": "airtrack", "dayId": "2026:sat", "start": "2026-07-11T12:00:00+02:00", "end": "2026-07-11T19:00:00+02:00", "provenance": "confirmed" },
-    { "id": "2026:airtrack-sun", "happeningId": "airtrack", "dayId": "2026:sun", "start": "2026-07-12T12:00:00+02:00", "end": "2026-07-12T19:00:00+02:00", "provenance": "confirmed" },
-    { "id": "2026:trampoline-flottant-fri", "happeningId": "trampoline-flottant", "dayId": "2026:fri", "start": "2026-07-10T16:00:00+02:00", "end": "2026-07-10T19:00:00+02:00", "provenance": "confirmed" },
-    { "id": "2026:trampoline-flottant-sat", "happeningId": "trampoline-flottant", "dayId": "2026:sat", "start": "2026-07-11T12:00:00+02:00", "end": "2026-07-11T19:00:00+02:00", "provenance": "confirmed" },
-    { "id": "2026:trampoline-flottant-sun", "happeningId": "trampoline-flottant", "dayId": "2026:sun", "start": "2026-07-12T12:00:00+02:00", "end": "2026-07-12T19:00:00+02:00", "provenance": "confirmed" },
-    { "id": "2026:acro-yoga-sat", "happeningId": "acro-yoga", "dayId": "2026:sat", "start": "2026-07-11T10:00:00+02:00", "end": "2026-07-11T11:00:00+02:00", "provenance": "confirmed" },
-    { "id": "2026:yoga-plage-sun", "happeningId": "yoga-plage", "dayId": "2026:sun", "start": "2026-07-12T10:00:00+02:00", "end": "2026-07-12T11:00:00+02:00", "provenance": "confirmed" },
-
-    { "id": "2026:chasse-au-tresor-fri", "happeningId": "chasse-au-tresor", "dayId": "2026:fri", "start": "2026-07-10T16:00:00+02:00", "end": "2026-07-11T02:00:00+02:00", "provenance": "unverified" },
-    { "id": "2026:chasse-au-tresor-sat", "happeningId": "chasse-au-tresor", "dayId": "2026:sat", "start": "2026-07-11T12:00:00+02:00", "end": "2026-07-12T03:00:00+02:00", "provenance": "unverified" },
-    { "id": "2026:chasse-au-tresor-sun", "happeningId": "chasse-au-tresor", "dayId": "2026:sun", "start": "2026-07-12T12:00:00+02:00", "end": "2026-07-12T22:00:00+02:00", "provenance": "unverified" },
-    { "id": "2026:coin-enfant-fri", "happeningId": "coin-enfant", "dayId": "2026:fri", "start": "2026-07-10T16:00:00+02:00", "end": "2026-07-10T18:30:00+02:00", "provenance": "confirmed" },
-    { "id": "2026:coin-enfant-sat", "happeningId": "coin-enfant", "dayId": "2026:sat", "start": "2026-07-11T12:00:00+02:00", "end": "2026-07-11T18:00:00+02:00", "provenance": "confirmed" },
-    { "id": "2026:coin-enfant-sun", "happeningId": "coin-enfant", "dayId": "2026:sun", "start": "2026-07-12T12:00:00+02:00", "end": "2026-07-12T18:00:00+02:00", "provenance": "confirmed" },
-
-    { "id": "2026:mur-de-grimpe-fri", "happeningId": "mur-de-grimpe", "dayId": "2026:fri", "start": "2026-07-10T16:00:00+02:00", "end": "2026-07-10T20:00:00+02:00", "provenance": "confirmed" },
-    { "id": "2026:mur-de-grimpe-sat", "happeningId": "mur-de-grimpe", "dayId": "2026:sat", "start": "2026-07-11T10:00:00+02:00", "end": "2026-07-11T18:00:00+02:00", "provenance": "confirmed" },
-    { "id": "2026:mur-de-grimpe-sun", "happeningId": "mur-de-grimpe", "dayId": "2026:sun", "start": "2026-07-12T10:00:00+02:00", "end": "2026-07-12T18:00:00+02:00", "provenance": "confirmed" }
+    {
+      "id": "2026:dj-alf-fri",
+      "happeningId": "dj-alf",
+      "dayId": "2026:fri",
+      "start": "2026-07-10T17:00:00+02:00",
+      "end": "2026-07-10T18:30:00+02:00",
+      "provenance": "confirmed"
+    },
+    {
+      "id": "2026:caesure-fri",
+      "happeningId": "caesure",
+      "dayId": "2026:fri",
+      "start": "2026-07-10T18:30:00+02:00",
+      "end": "2026-07-10T19:30:00+02:00",
+      "provenance": "confirmed"
+    },
+    {
+      "id": "2026:diggin-fri",
+      "happeningId": "diggin",
+      "dayId": "2026:fri",
+      "start": "2026-07-10T20:00:00+02:00",
+      "end": "2026-07-10T21:00:00+02:00",
+      "provenance": "confirmed"
+    },
+    {
+      "id": "2026:amc-fri",
+      "happeningId": "amc",
+      "dayId": "2026:fri",
+      "start": "2026-07-10T21:30:00+02:00",
+      "end": "2026-07-10T22:30:00+02:00",
+      "provenance": "confirmed"
+    },
+    {
+      "id": "2026:jayjay-fri",
+      "happeningId": "jayjay",
+      "dayId": "2026:fri",
+      "start": "2026-07-10T22:30:00+02:00",
+      "end": "2026-07-10T23:30:00+02:00",
+      "provenance": "confirmed"
+    },
+    {
+      "id": "2026:carlos-willengton-fri",
+      "happeningId": "carlos-willengton",
+      "dayId": "2026:fri",
+      "start": "2026-07-10T23:30:00+02:00",
+      "end": "2026-07-11T01:30:00+02:00",
+      "provenance": "confirmed"
+    },
+    {
+      "id": "2026:thalassotherapie-sat",
+      "happeningId": "thalassotherapie",
+      "dayId": "2026:sat",
+      "start": "2026-07-11T14:00:00+02:00",
+      "end": "2026-07-11T16:00:00+02:00",
+      "provenance": "confirmed"
+    },
+    {
+      "id": "2026:dubside-sat",
+      "happeningId": "dubside",
+      "dayId": "2026:sat",
+      "start": "2026-07-11T16:00:00+02:00",
+      "end": "2026-07-11T18:00:00+02:00",
+      "provenance": "confirmed"
+    },
+    {
+      "id": "2026:silent-party-sat",
+      "happeningId": "silent-party",
+      "dayId": "2026:sat",
+      "start": "2026-07-11T20:00:00+02:00",
+      "end": "2026-07-12T02:00:00+02:00",
+      "provenance": "confirmed"
+    },
+    {
+      "id": "2026:gauthier-quenis-sun",
+      "happeningId": "gauthier-quenis",
+      "dayId": "2026:sun",
+      "start": "2026-07-12T12:00:00+02:00",
+      "end": "2026-07-12T15:00:00+02:00",
+      "provenance": "confirmed"
+    },
+    {
+      "id": "2026:refaire-le-monde-sun",
+      "happeningId": "refaire-le-monde",
+      "dayId": "2026:sun",
+      "start": "2026-07-12T15:30:00+02:00",
+      "end": "2026-07-12T16:30:00+02:00",
+      "provenance": "confirmed"
+    },
+    {
+      "id": "2026:albert-chinet-sun",
+      "happeningId": "albert-chinet",
+      "dayId": "2026:sun",
+      "start": "2026-07-12T17:00:00+02:00",
+      "end": "2026-07-12T18:00:00+02:00",
+      "provenance": "confirmed"
+    },
+    {
+      "id": "2026:leman-records-sun",
+      "happeningId": "leman-records",
+      "dayId": "2026:sun",
+      "start": "2026-07-12T18:00:00+02:00",
+      "end": "2026-07-12T19:30:00+02:00",
+      "provenance": "confirmed"
+    },
+    {
+      "id": "2026:treehouse-sun",
+      "happeningId": "treehouse",
+      "dayId": "2026:sun",
+      "start": "2026-07-12T19:30:00+02:00",
+      "end": "2026-07-12T21:00:00+02:00",
+      "provenance": "confirmed"
+    },
+    {
+      "id": "2026:jeux-de-societe-fri",
+      "happeningId": "jeux-de-societe",
+      "dayId": "2026:fri",
+      "start": "2026-07-10T19:00:00+02:00",
+      "end": "2026-07-10T23:00:00+02:00",
+      "provenance": "confirmed"
+    },
+    {
+      "id": "2026:mini-escape-game-fri",
+      "happeningId": "mini-escape-game",
+      "dayId": "2026:fri",
+      "start": "2026-07-10T16:00:00+02:00",
+      "end": "2026-07-10T19:00:00+02:00",
+      "provenance": "confirmed"
+    },
+    {
+      "id": "2026:mini-escape-game-sat",
+      "happeningId": "mini-escape-game",
+      "dayId": "2026:sat",
+      "start": "2026-07-11T12:00:00+02:00",
+      "end": "2026-07-11T19:00:00+02:00",
+      "provenance": "confirmed"
+    },
+    {
+      "id": "2026:tournoi-uno-sat",
+      "happeningId": "tournoi-uno",
+      "dayId": "2026:sat",
+      "start": "2026-07-11T14:00:00+02:00",
+      "end": "2026-07-11T16:00:00+02:00",
+      "provenance": "confirmed"
+    },
+    {
+      "id": "2026:diffusion-match-fri",
+      "happeningId": "diffusion-match",
+      "dayId": "2026:fri",
+      "start": "2026-07-10T21:00:00+02:00",
+      "end": "2026-07-10T23:00:00+02:00",
+      "provenance": "confirmed"
+    },
+    {
+      "id": "2026:diffusion-match-sat",
+      "happeningId": "diffusion-match",
+      "dayId": "2026:sat",
+      "start": "2026-07-11T23:00:00+02:00",
+      "end": "2026-07-12T01:00:00+02:00",
+      "provenance": "confirmed"
+    },
+    {
+      "id": "2026:salsa-bachata-sat",
+      "happeningId": "salsa-bachata",
+      "dayId": "2026:sat",
+      "start": "2026-07-11T18:00:00+02:00",
+      "end": "2026-07-11T20:00:00+02:00",
+      "provenance": "confirmed"
+    },
+    {
+      "id": "2026:slackline-sun",
+      "happeningId": "slackline",
+      "dayId": "2026:sun",
+      "start": "2026-07-12T14:00:00+02:00",
+      "end": "2026-07-12T18:00:00+02:00",
+      "provenance": "confirmed"
+    },
+    {
+      "id": "2026:tresor-black-sam-sun",
+      "happeningId": "tresor-black-sam",
+      "dayId": "2026:sun",
+      "start": "2026-07-12T12:00:00+02:00",
+      "end": "2026-07-12T19:00:00+02:00",
+      "provenance": "confirmed"
+    },
+    {
+      "id": "2026:gladiasup-sat",
+      "happeningId": "gladiasup",
+      "dayId": "2026:sat",
+      "start": "2026-07-11T12:00:00+02:00",
+      "end": "2026-07-11T19:00:00+02:00",
+      "provenance": "confirmed"
+    },
+    {
+      "id": "2026:gladiasup-sun",
+      "happeningId": "gladiasup",
+      "dayId": "2026:sun",
+      "start": "2026-07-12T12:00:00+02:00",
+      "end": "2026-07-12T19:00:00+02:00",
+      "provenance": "confirmed"
+    },
+    {
+      "id": "2026:sup-yoga-sat-14",
+      "happeningId": "sup-yoga",
+      "dayId": "2026:sat",
+      "start": "2026-07-11T14:00:00+02:00",
+      "end": "2026-07-11T15:00:00+02:00",
+      "provenance": "confirmed"
+    },
+    {
+      "id": "2026:sup-yoga-sat-16",
+      "happeningId": "sup-yoga",
+      "dayId": "2026:sat",
+      "start": "2026-07-11T16:00:00+02:00",
+      "end": "2026-07-11T17:00:00+02:00",
+      "provenance": "confirmed"
+    },
+    {
+      "id": "2026:sup-yoga-sat-18",
+      "happeningId": "sup-yoga",
+      "dayId": "2026:sat",
+      "start": "2026-07-11T18:00:00+02:00",
+      "end": "2026-07-11T19:00:00+02:00",
+      "provenance": "confirmed"
+    },
+    {
+      "id": "2026:sup-yoga-sun-14",
+      "happeningId": "sup-yoga",
+      "dayId": "2026:sun",
+      "start": "2026-07-12T14:00:00+02:00",
+      "end": "2026-07-12T15:00:00+02:00",
+      "provenance": "confirmed"
+    },
+    {
+      "id": "2026:sup-yoga-sun-16",
+      "happeningId": "sup-yoga",
+      "dayId": "2026:sun",
+      "start": "2026-07-12T16:00:00+02:00",
+      "end": "2026-07-12T17:00:00+02:00",
+      "provenance": "confirmed"
+    },
+    {
+      "id": "2026:sup-yoga-sun-18",
+      "happeningId": "sup-yoga",
+      "dayId": "2026:sun",
+      "start": "2026-07-12T18:00:00+02:00",
+      "end": "2026-07-12T19:00:00+02:00",
+      "provenance": "confirmed"
+    },
+    {
+      "id": "2026:airtrack-fri",
+      "happeningId": "airtrack",
+      "dayId": "2026:fri",
+      "start": "2026-07-10T16:00:00+02:00",
+      "end": "2026-07-10T19:00:00+02:00",
+      "provenance": "confirmed"
+    },
+    {
+      "id": "2026:airtrack-sat",
+      "happeningId": "airtrack",
+      "dayId": "2026:sat",
+      "start": "2026-07-11T12:00:00+02:00",
+      "end": "2026-07-11T19:00:00+02:00",
+      "provenance": "confirmed"
+    },
+    {
+      "id": "2026:airtrack-sun",
+      "happeningId": "airtrack",
+      "dayId": "2026:sun",
+      "start": "2026-07-12T12:00:00+02:00",
+      "end": "2026-07-12T19:00:00+02:00",
+      "provenance": "confirmed"
+    },
+    {
+      "id": "2026:trampoline-flottant-fri",
+      "happeningId": "trampoline-flottant",
+      "dayId": "2026:fri",
+      "start": "2026-07-10T16:00:00+02:00",
+      "end": "2026-07-10T19:00:00+02:00",
+      "provenance": "confirmed"
+    },
+    {
+      "id": "2026:trampoline-flottant-sat",
+      "happeningId": "trampoline-flottant",
+      "dayId": "2026:sat",
+      "start": "2026-07-11T12:00:00+02:00",
+      "end": "2026-07-11T19:00:00+02:00",
+      "provenance": "confirmed"
+    },
+    {
+      "id": "2026:trampoline-flottant-sun",
+      "happeningId": "trampoline-flottant",
+      "dayId": "2026:sun",
+      "start": "2026-07-12T12:00:00+02:00",
+      "end": "2026-07-12T19:00:00+02:00",
+      "provenance": "confirmed"
+    },
+    {
+      "id": "2026:acro-yoga-sat",
+      "happeningId": "acro-yoga",
+      "dayId": "2026:sat",
+      "start": "2026-07-11T10:00:00+02:00",
+      "end": "2026-07-11T11:00:00+02:00",
+      "provenance": "confirmed"
+    },
+    {
+      "id": "2026:yoga-plage-sun",
+      "happeningId": "yoga-plage",
+      "dayId": "2026:sun",
+      "start": "2026-07-12T10:00:00+02:00",
+      "end": "2026-07-12T11:00:00+02:00",
+      "provenance": "confirmed"
+    },
+    {
+      "id": "2026:chasse-au-tresor-fri",
+      "happeningId": "chasse-au-tresor",
+      "dayId": "2026:fri",
+      "start": "2026-07-10T16:00:00+02:00",
+      "end": "2026-07-11T02:00:00+02:00",
+      "provenance": "unverified"
+    },
+    {
+      "id": "2026:chasse-au-tresor-sat",
+      "happeningId": "chasse-au-tresor",
+      "dayId": "2026:sat",
+      "start": "2026-07-11T12:00:00+02:00",
+      "end": "2026-07-12T03:00:00+02:00",
+      "provenance": "unverified"
+    },
+    {
+      "id": "2026:chasse-au-tresor-sun",
+      "happeningId": "chasse-au-tresor",
+      "dayId": "2026:sun",
+      "start": "2026-07-12T12:00:00+02:00",
+      "end": "2026-07-12T22:00:00+02:00",
+      "provenance": "unverified"
+    },
+    {
+      "id": "2026:coin-enfant-fri",
+      "happeningId": "coin-enfant",
+      "dayId": "2026:fri",
+      "start": "2026-07-10T16:00:00+02:00",
+      "end": "2026-07-10T18:30:00+02:00",
+      "provenance": "confirmed"
+    },
+    {
+      "id": "2026:coin-enfant-sat",
+      "happeningId": "coin-enfant",
+      "dayId": "2026:sat",
+      "start": "2026-07-11T12:00:00+02:00",
+      "end": "2026-07-11T18:00:00+02:00",
+      "provenance": "confirmed"
+    },
+    {
+      "id": "2026:coin-enfant-sun",
+      "happeningId": "coin-enfant",
+      "dayId": "2026:sun",
+      "start": "2026-07-12T12:00:00+02:00",
+      "end": "2026-07-12T18:00:00+02:00",
+      "provenance": "confirmed"
+    },
+    {
+      "id": "2026:mur-de-grimpe-fri",
+      "happeningId": "mur-de-grimpe",
+      "dayId": "2026:fri",
+      "start": "2026-07-10T16:00:00+02:00",
+      "end": "2026-07-10T20:00:00+02:00",
+      "provenance": "confirmed"
+    },
+    {
+      "id": "2026:mur-de-grimpe-sat",
+      "happeningId": "mur-de-grimpe",
+      "dayId": "2026:sat",
+      "start": "2026-07-11T10:00:00+02:00",
+      "end": "2026-07-11T18:00:00+02:00",
+      "provenance": "confirmed"
+    },
+    {
+      "id": "2026:mur-de-grimpe-sun",
+      "happeningId": "mur-de-grimpe",
+      "dayId": "2026:sun",
+      "start": "2026-07-12T10:00:00+02:00",
+      "end": "2026-07-12T18:00:00+02:00",
+      "provenance": "confirmed"
+    }
   ],
-
-
   "partners": [
     {
       "id": "sponsors-generaux",
@@ -713,12 +1575,42 @@
       "order": 1,
       "provenance": "confirmed",
       "members": [
-        { "id": "garage-dind", "name": "Garage Dind", "url": "https://www.garagedind.ch/", "logo": null },
-        { "id": "la-nebuleuse", "name": "La Nébuleuse", "url": "https://lanebuleuse.ch/", "logo": null },
-        { "id": "white-horse-pub", "name": "White Horse Pub", "url": "https://www.whitehorse.ch/", "logo": null },
-        { "id": "anae", "name": "anae — atelier nature architecture environnement", "url": "https://www.anae.archi/", "logo": null },
-        { "id": "fishermans-friend", "name": "Fisherman's Friend", "url": "https://www.fishermansfriend.ch/", "logo": null },
-        { "id": "loterie-romande", "name": "Loterie Romande", "url": "https://loro.ch/", "logo": null }
+        {
+          "id": "garage-dind",
+          "name": "Garage Dind",
+          "url": "https://www.garagedind.ch/",
+          "logo": null
+        },
+        {
+          "id": "la-nebuleuse",
+          "name": "La Nébuleuse",
+          "url": "https://lanebuleuse.ch/",
+          "logo": null
+        },
+        {
+          "id": "white-horse-pub",
+          "name": "White Horse Pub",
+          "url": "https://www.whitehorse.ch/",
+          "logo": null
+        },
+        {
+          "id": "anae",
+          "name": "anae — atelier nature architecture environnement",
+          "url": "https://www.anae.archi/",
+          "logo": null
+        },
+        {
+          "id": "fishermans-friend",
+          "name": "Fisherman's Friend",
+          "url": "https://www.fishermansfriend.ch/",
+          "logo": null
+        },
+        {
+          "id": "loterie-romande",
+          "name": "Loterie Romande",
+          "url": "https://loro.ch/",
+          "logo": null
+        }
       ]
     },
     {
@@ -727,10 +1619,30 @@
       "order": 2,
       "provenance": "confirmed",
       "members": [
-        { "id": "ap-consulting", "name": "AP Consulting André Prahin SA", "url": "https://ap-consulting-andre-prahin.digitalone.site/", "logo": null },
-        { "id": "arenaz", "name": "Arenaz Automobiles", "url": "https://www.arenaz.ch/", "logo": null },
-        { "id": "edifice", "name": "Edifice", "url": null, "logo": null },
-        { "id": "mbc", "name": "MBC — Transports de la région Morges-Bière-Cossonay", "url": "https://www.mbc.ch/", "logo": null }
+        {
+          "id": "ap-consulting",
+          "name": "AP Consulting André Prahin SA",
+          "url": "https://ap-consulting-andre-prahin.digitalone.site/",
+          "logo": null
+        },
+        {
+          "id": "arenaz",
+          "name": "Arenaz Automobiles",
+          "url": "https://www.arenaz.ch/",
+          "logo": null
+        },
+        {
+          "id": "edifice",
+          "name": "Edifice",
+          "url": null,
+          "logo": null
+        },
+        {
+          "id": "mbc",
+          "name": "MBC — Transports de la région Morges-Bière-Cossonay",
+          "url": "https://www.mbc.ch/",
+          "logo": null
+        }
       ]
     },
     {
@@ -739,8 +1651,18 @@
       "order": 3,
       "provenance": "confirmed",
       "members": [
-        { "id": "bcv", "name": "BCV — Banque Cantonale Vaudoise", "url": "https://www.bcv.ch/", "logo": null },
-        { "id": "romande-energie", "name": "Romande Energie", "url": "https://www.romande-energie.ch/", "logo": null }
+        {
+          "id": "bcv",
+          "name": "BCV — Banque Cantonale Vaudoise",
+          "url": "https://www.bcv.ch/",
+          "logo": null
+        },
+        {
+          "id": "romande-energie",
+          "name": "Romande Energie",
+          "url": "https://www.romande-energie.ch/",
+          "logo": null
+        }
       ]
     },
     {
@@ -749,11 +1671,36 @@
       "order": 4,
       "provenance": "confirmed",
       "members": [
-        { "id": "cham-properties", "name": "Cham Swiss Properties", "url": "https://www.champroperties.ch/", "logo": null },
-        { "id": "ellgass-plastiline", "name": "Ellgass Plastiline", "url": "https://www.ellgass.ch/", "logo": null },
-        { "id": "retripa", "name": "Retripa", "url": "https://www.retripa.ch/", "logo": null },
-        { "id": "vaudoise", "name": "Vaudoise Assurances", "url": "https://www.vaudoise.ch/", "logo": null },
-        { "id": "von-auw", "name": "Von Auw SA", "url": "https://www.vonauw.ch/", "logo": null }
+        {
+          "id": "cham-properties",
+          "name": "Cham Swiss Properties",
+          "url": "https://www.champroperties.ch/",
+          "logo": null
+        },
+        {
+          "id": "ellgass-plastiline",
+          "name": "Ellgass Plastiline",
+          "url": "https://www.ellgass.ch/",
+          "logo": null
+        },
+        {
+          "id": "retripa",
+          "name": "Retripa",
+          "url": "https://www.retripa.ch/",
+          "logo": null
+        },
+        {
+          "id": "vaudoise",
+          "name": "Vaudoise Assurances",
+          "url": "https://www.vaudoise.ch/",
+          "logo": null
+        },
+        {
+          "id": "von-auw",
+          "name": "Von Auw SA",
+          "url": "https://www.vonauw.ch/",
+          "logo": null
+        }
       ]
     },
     {
@@ -762,26 +1709,126 @@
       "order": 5,
       "provenance": "confirmed",
       "members": [
-        { "id": "totem-climbing", "name": "Totem Escalade", "url": "https://www.totem.ch/", "logo": null },
-        { "id": "bertola", "name": "Bertola Construction SA", "url": "https://www.bertola.ch/", "logo": null },
-        { "id": "dream-garden", "name": "Dream Garden", "url": "https://www.dreamgarden.ch/", "logo": null },
-        { "id": "surf-shop", "name": "Surfshop Préverenges", "url": "https://www.surfshop.ch/", "logo": null },
-        { "id": "volt-a", "name": "Volt-A Solutions Électriques", "url": "https://www.volt-a.ch/", "logo": null },
-        { "id": "vsm-nettoyage", "name": "VSM Nettoyage & Services", "url": "https://www.vsm-nettoyage.ch/", "logo": null },
-        { "id": "summit-video", "name": "Summit Video", "url": "https://www.summitvideo.ch/", "logo": null },
-        { "id": "rivella", "name": "Rivella", "url": "https://www.rivella.ch/", "logo": null },
-        { "id": "gladiasup", "name": "GladiaSUP", "url": null, "logo": null },
-        { "id": "brocello", "name": "BroCello", "url": "https://www.brocello.ch/", "logo": null },
-        { "id": "grano-mate", "name": "Grano Maté", "url": "https://granomate.ch/", "logo": null },
-        { "id": "cash-solutions", "name": "Cash Solutions", "url": "https://cash-solutions.ch/", "logo": null },
-        { "id": "frisco", "name": "Nestlé Frisco", "url": "https://www.frisco.ch/", "logo": null },
-        { "id": "lfm", "name": "LFM", "url": "https://www.lfm.ch/", "logo": null },
-        { "id": "sherlock-events", "name": "Sherlock Events", "url": "https://www.sherlock-events.ch/", "logo": null },
-        { "id": "vivi-kola", "name": "Vivi Kola", "url": "https://www.vivikola.ch/", "logo": null },
-        { "id": "kosmos", "name": "Kosmos Drinks", "url": "https://kosmosdrinks.ch/", "logo": null },
-        { "id": "supernaturalclub", "name": "SuperNaturalClub", "url": null, "logo": null },
-        { "id": "swan", "name": "Swan", "url": null, "logo": null },
-        { "id": "wineatypic", "name": "Wineatypic", "url": null, "logo": null }
+        {
+          "id": "totem-climbing",
+          "name": "Totem Escalade",
+          "url": "https://www.totem.ch/",
+          "logo": null
+        },
+        {
+          "id": "bertola",
+          "name": "Bertola Construction SA",
+          "url": "https://www.bertola.ch/",
+          "logo": null
+        },
+        {
+          "id": "dream-garden",
+          "name": "Dream Garden",
+          "url": "https://www.dreamgarden.ch/",
+          "logo": null
+        },
+        {
+          "id": "surf-shop",
+          "name": "Surfshop Préverenges",
+          "url": "https://www.surfshop.ch/",
+          "logo": null
+        },
+        {
+          "id": "volt-a",
+          "name": "Volt-A Solutions Électriques",
+          "url": "https://www.volt-a.ch/",
+          "logo": null
+        },
+        {
+          "id": "vsm-nettoyage",
+          "name": "VSM Nettoyage & Services",
+          "url": "https://www.vsm-nettoyage.ch/",
+          "logo": null
+        },
+        {
+          "id": "summit-video",
+          "name": "Summit Video",
+          "url": "https://www.summitvideo.ch/",
+          "logo": null
+        },
+        {
+          "id": "rivella",
+          "name": "Rivella",
+          "url": "https://www.rivella.ch/",
+          "logo": null
+        },
+        {
+          "id": "gladiasup",
+          "name": "GladiaSUP",
+          "url": null,
+          "logo": null
+        },
+        {
+          "id": "brocello",
+          "name": "BroCello",
+          "url": "https://www.brocello.ch/",
+          "logo": null
+        },
+        {
+          "id": "grano-mate",
+          "name": "Grano Maté",
+          "url": "https://granomate.ch/",
+          "logo": null
+        },
+        {
+          "id": "cash-solutions",
+          "name": "Cash Solutions",
+          "url": "https://cash-solutions.ch/",
+          "logo": null
+        },
+        {
+          "id": "frisco",
+          "name": "Nestlé Frisco",
+          "url": "https://www.frisco.ch/",
+          "logo": null
+        },
+        {
+          "id": "lfm",
+          "name": "LFM",
+          "url": "https://www.lfm.ch/",
+          "logo": null
+        },
+        {
+          "id": "sherlock-events",
+          "name": "Sherlock Events",
+          "url": "https://www.sherlock-events.ch/",
+          "logo": null
+        },
+        {
+          "id": "vivi-kola",
+          "name": "Vivi Kola",
+          "url": "https://www.vivikola.ch/",
+          "logo": null
+        },
+        {
+          "id": "kosmos",
+          "name": "Kosmos Drinks",
+          "url": "https://kosmosdrinks.ch/",
+          "logo": null
+        },
+        {
+          "id": "supernaturalclub",
+          "name": "Super Natural Club",
+          "url": "https://www.supernaturalclub.ch/",
+          "logo": null
+        },
+        {
+          "id": "swan",
+          "name": "SwanWine",
+          "url": "https://swanwine.ch/",
+          "logo": null
+        },
+        {
+          "id": "wineatypic",
+          "name": "Wineatypic",
+          "url": "https://www.winatypic.com/",
+          "logo": null
+        }
       ]
     },
     {
@@ -790,16 +1837,45 @@
       "order": 6,
       "provenance": "confirmed",
       "members": [
-        { "id": "preverenges", "name": "Commune de Préverenges", "url": "https://www.preverenges.ch/", "logo": null },
-        { "id": "morges-region", "name": "Morges Région Slow Tourisme", "url": "https://www.morges-tourisme.ch/", "logo": null }
+        {
+          "id": "preverenges",
+          "name": "Commune de Préverenges",
+          "url": "https://www.preverenges.ch/",
+          "logo": null
+        },
+        {
+          "id": "morges-region",
+          "name": "Morges Région Slow Tourisme",
+          "url": "https://www.morges-tourisme.ch/",
+          "logo": null
+        }
       ]
     }
   ],
-
   "figures": [
-    { "id": "visiteurs", "value": "6000", "label": "visiteurs", "provenance": "confirmed" },
-    { "id": "heures-musique", "value": "45", "label": "heures de DJ sets et concerts", "provenance": "confirmed" },
-    { "id": "litres-biere", "value": "3200", "label": "litres de bière", "provenance": "confirmed" },
-    { "id": "benevoles", "value": "160", "label": "bénévoles", "provenance": "confirmed" }
+    {
+      "id": "visiteurs",
+      "value": "6000",
+      "label": "visiteurs",
+      "provenance": "confirmed"
+    },
+    {
+      "id": "heures-musique",
+      "value": "45",
+      "label": "heures de DJ sets et concerts",
+      "provenance": "confirmed"
+    },
+    {
+      "id": "litres-biere",
+      "value": "3200",
+      "label": "litres de bière",
+      "provenance": "confirmed"
+    },
+    {
+      "id": "benevoles",
+      "value": "160",
+      "label": "bénévoles",
+      "provenance": "confirmed"
+    }
   ]
 }

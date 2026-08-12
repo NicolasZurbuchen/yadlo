@@ -40,6 +40,12 @@ const MARKS = new Set(['végé', 'végan', 'sans gluten', 'sans lactose', 'piqua
 const LINK_TYPES = new Set(['spotify', 'instagram', 'website', 'soundcloud', 'bandcamp',
   'facebook', 'youtube', 'tiktok', 'beatport', 'appleMusic']);
 
+// Every currency and price unit in use. Narrow on purpose: "par équipe" and "par personne" are the
+// only two units the festival prices anything by, and a third should be a decision rather than a
+// typo that renders as "CHF 10 / equipe" on a fiche.
+const CURRENCIES = new Set(['CHF']);
+const PRICE_UNITS = new Set(['personne', 'équipe']);
+
 // Stored URLs must be canonical: no session ids, no viewer-locale prefixes. A link copied out of
 // a browser carries whichever locale that browser was in - /intl-ja/ and /ja/ are Japanese, and
 // they would follow the user into the app.
@@ -99,9 +105,13 @@ for (const d of ed.days) {
 }
 
 // --- edition-level --------------------------------------------------------------------------
-if (!ed.entry || typeof ed.entry.free !== 'boolean') errors.push('edition: entry.free must be a boolean');
-else if (!PROVENANCE.has(ed.entry.provenance)) errors.push('edition: entry has bad provenance');
-if ('openingNote' in ed && typeof ed.openingNote !== 'string') errors.push('edition: openingNote must be a string');
+if (ed.schemaVersion !== 2) errors.push(`edition: schemaVersion must be 2, found ${ed.schemaVersion}`);
+// entry and openingNote were removed: no screen consumes them yet, and content nobody renders is
+// content nobody notices going stale. The FAQ still answers "is entry free?" in prose. Both come
+// back as structured fields the day the Horaires and Sur place screens exist - guarded here so
+// they do not drift back in unnoticed in the meantime.
+if ('entry' in ed) errors.push('edition: "entry" is gone until a screen renders it - the FAQ carries the answer');
+if ('openingNote' in ed) errors.push('edition: "openingNote" is gone until the Horaires screen exists');
 
 // --- faq ------------------------------------------------------------------------------------
 const faqIds = new Set();
@@ -159,6 +169,39 @@ for (const [hid, h] of Object.entries(haps)) {
   for (const m of payload.marks || [])
     if (!MARKS.has(m)) errors.push(`happening ${hid}: unknown stand mark "${m}"`);
 
+  // Price is ONE shape for every activity, free or not. It used to be three mutually exclusive
+  // ones - {free}, {amount,currency,per} and {tiers,deposit} - which meant the app had to sniff
+  // which it was holding before it could read a number. The cost of that lands on every screen
+  // that shows a price; the cost of this lands here, once.
+  //
+  // free and tiers are two views of one fact, so they are checked against each other rather than
+  // independently: free:true with a tier, or free:false with none, is a content bug that would
+  // otherwise render as "gratuit - CHF 10".
+  if (h.kind === 'activity' && payload.price) {
+    const pr = payload.price;
+    const where = `activity ${hid}/price`;
+    if (typeof pr.free !== 'boolean') errors.push(`${where}: free must be a boolean`);
+    if (!Array.isArray(pr.tiers)) errors.push(`${where}: tiers must be an array, empty when free`);
+    else {
+      if (pr.free === true && pr.tiers.length > 0) errors.push(`${where}: free but carries ${pr.tiers.length} tier(s)`);
+      if (pr.free === false && pr.tiers.length === 0) errors.push(`${where}: not free but carries no tier`);
+      pr.tiers.forEach((t, i) => {
+        if (typeof t.amount !== 'number') errors.push(`${where}/tiers[${i}]: amount must be a number`);
+        if (!CURRENCIES.has(t.currency)) errors.push(`${where}/tiers[${i}]: unknown currency ${t.currency}`);
+        if (!('label' in t)) errors.push(`${where}/tiers[${i}]: label must be present, null when there is one price for everyone`);
+        if (!('per' in t)) errors.push(`${where}/tiers[${i}]: per must be present, null when the price is per person`);
+        if (t.per !== null && !PRICE_UNITS.has(t.per)) errors.push(`${where}/tiers[${i}]: unknown per "${t.per}"`);
+      });
+    }
+    if (!('deposit' in pr)) errors.push(`${where}: deposit must be present, null when there is none`);
+    if (pr.deposit) {
+      if (typeof pr.deposit.amount !== 'number') errors.push(`${where}/deposit: amount must be a number`);
+      if (!CURRENCIES.has(pr.deposit.currency)) errors.push(`${where}/deposit: unknown currency`);
+      if (!('note' in pr.deposit)) errors.push(`${where}/deposit: note must be present, null when there is none`);
+    }
+    if (!PROVENANCE.has(pr.provenance)) errors.push(`${where}: bad provenance`);
+  }
+
   if (h.kind === 'stand') {
     const groupIds = new Set();
     for (const g of payload.menu || []) {
@@ -172,8 +215,14 @@ for (const [hid, h] of Object.entries(haps)) {
         if (it.price && (typeof it.price.amount !== 'number' || !it.price.currency))
           errors.push(`stand ${hid}/${g.id}/${it.name}: price needs a numeric amount and a currency`);
         if (!PROVENANCE.has(it.provenance)) errors.push(`stand ${hid}/${g.id}/${it.name}: bad provenance`);
-        for (const m of it.marks || [])
+        // Always an array, empty when the item has no mark. An absent array and an empty one said
+        // the same thing, which meant every reader had to handle both to learn nothing.
+        if (!Array.isArray(it.marks))
+          errors.push(`stand ${hid}/${g.id}/${it.name}: marks must be an array, empty when there are none`);
+        else for (const m of it.marks)
           if (!MARKS.has(m)) errors.push(`stand ${hid}/${g.id}/${it.name}: unknown mark "${m}"`);
+        if (!('description' in it))
+          errors.push(`stand ${hid}/${g.id}/${it.name}: description must be present, null when there is none`);
       }
     }
     if ((payload.menu || []).length === 0) warns.push(`stand ${hid}: no menu`);

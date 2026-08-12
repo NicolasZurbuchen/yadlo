@@ -50,7 +50,14 @@ sealed class Happening {
         val bookingRequired: Boolean,
         val bookingUrl: String?,
         val equipmentProvided: Boolean?,
-        val minimumAge: Int?,
+        /**
+         * Who the activity is for, in the content's own words — "De 4 à 12 ans, deux heures
+         * maximum". Prose rather than a minimum age, because the one activity that states a limit
+         * states two of them at once and neither is a number the app would do arithmetic on.
+         */
+        val suitability: String?,
+        /** Whether volunteers watch over it, which is what lets a parent leave a child there. */
+        val supervised: Boolean?,
     ) : Happening()
 
     /**

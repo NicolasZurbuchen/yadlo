@@ -128,8 +128,6 @@ class DerivePhaseUseCaseTest {
         id = "2026",
         year = 2026,
         name = "Yadlo 2026",
-        entry = Edition.Entry(free = true, provenance = Provenance.CONFIRMED),
-        openingNote = null,
         venue = venue(),
         days = days,
         categories = emptyList(),
