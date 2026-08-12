@@ -12,7 +12,8 @@ function load(p) {
 const ed = load('editions/2026/edition.json');
 const fest = load('festival.json');
 const idx = load('editions.json');
-if (!ed || !fest || !idx) { console.log(errors.join('\n')); process.exit(1); }
+const ann = load('announcements.json');
+if (!ed || !fest || !idx || !ann) { console.log(errors.join('\n')); process.exit(1); }
 
 const days = Object.fromEntries(ed.days.map(d => [d.id, d]));
 const haps = Object.fromEntries(ed.happenings.map(h => [h.id, h]));
@@ -105,13 +106,45 @@ for (const d of ed.days) {
 }
 
 // --- edition-level --------------------------------------------------------------------------
-if (ed.schemaVersion !== 2) errors.push(`edition: schemaVersion must be 2, found ${ed.schemaVersion}`);
+// Still 1. The shapes below have changed repeatedly, but nothing has shipped and nothing reads
+// these files yet, so there is no older reader to break and no version to bump away from. The
+// first release is what makes this number start meaning something.
+if (ed.schemaVersion !== 1) errors.push(`edition: schemaVersion must be 1, found ${ed.schemaVersion}`);
 // entry and openingNote were removed: no screen consumes them yet, and content nobody renders is
 // content nobody notices going stale. The FAQ still answers "is entry free?" in prose. Both come
 // back as structured fields the day the Horaires and Sur place screens exist - guarded here so
 // they do not drift back in unnoticed in the meantime.
 if ('entry' in ed) errors.push('edition: "entry" is gone until a screen renders it - the FAQ carries the answer');
 if ('openingNote' in ed) errors.push('edition: "openingNote" is gone until the Horaires screen exists');
+
+// --- announcements ----------------------------------------------------------------------------
+// Its own file because it is the only content that needs to arrive DURING the festival, when a
+// correction is being pushed from a phone. Folded into festival.json it would reupload history,
+// contact and transport on every annonce, and a visitor's cached copy of all of it would go stale
+// together. Alone it is a few hundred bytes with its own ETag.
+if (ann.schemaVersion !== 1) errors.push(`announcements: schemaVersion must be 1, found ${ann.schemaVersion}`);
+if (!Array.isArray(ann.announcements)) errors.push('announcements: announcements must be an array');
+else {
+  const annIds = new Set();
+  for (const a of ann.announcements) {
+    if (annIds.has(a.id)) errors.push(`annonce ${a.id}: duplicate id`);
+    annIds.add(a.id);
+    if (!a.title) errors.push(`annonce ${a.id}: needs a title`);
+    if (!('body' in a)) errors.push(`annonce ${a.id}: body must be present, null when the title says it all`);
+    if (!ts(a.publishedAt)) errors.push(`annonce ${a.id}: publishedAt must be an instant with an offset`);
+    // Scoped to an edition, or null for something true of the festival itself. An annonce naming
+    // an edition the app has not fetched is not an error here - the app drops it.
+    if (!('editionId' in a)) errors.push(`annonce ${a.id}: editionId must be present, null when festival-wide`);
+    else if (a.editionId !== null && a.editionId !== ed.id)
+      warns.push(`annonce ${a.id}: editionId ${a.editionId} is not the current edition`);
+    // A plain nullable URL rather than a typed internal action. An annonce is a dated record, and
+    // the one thing it needs to do is open somewhere; null simply means it is not tappable.
+    if (!('url' in a)) errors.push(`annonce ${a.id}: url must be present, null when the annonce is not tappable`);
+    else if (a.url !== null) checkUrl(a.url, `annonce ${a.id}`);
+    if (!PROVENANCE.has(a.provenance)) errors.push(`annonce ${a.id}: bad provenance`);
+  }
+  if (!ann.announcements.length) warns.push('announcements.json: no annonces yet');
+}
 
 // --- faq ------------------------------------------------------------------------------------
 const faqIds = new Set();
