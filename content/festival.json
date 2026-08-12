@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 2,
+  "schemaVersion": 1,
   "name": "Yadlo",
   "tagline": "Mouille ton corps, arrose ton esprit",
   "currentEditionId": "2026",
@@ -27,7 +27,7 @@
         "id": "festiplus",
         "name": "FestiPlus",
         "body": "Yadlo est membre de FestiPlus, une charte vaudoise qui promeut le bien-être en festival et la prévention des risques liés à l'alcool et aux substances psychotropes.",
-        "url": null,
+        "url": "https://festiplus.ch/",
         "provenance": "confirmed"
       }
     ]

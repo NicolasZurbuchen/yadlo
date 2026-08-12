@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 2,
+  "schemaVersion": 1,
   "id": "2026",
   "year": 2026,
   "name": "Yadlo 2026",
@@ -1824,9 +1824,9 @@
           "logo": null
         },
         {
-          "id": "wineatypic",
-          "name": "Wineatypic",
-          "url": "https://www.winatypic.com/",
+          "id": "winatypic",
+          "name": "Winatypic",
+          "url": null,
           "logo": null
         }
       ]
