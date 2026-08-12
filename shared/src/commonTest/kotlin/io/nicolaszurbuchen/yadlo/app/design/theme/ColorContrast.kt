@@ -40,6 +40,19 @@ internal fun perceptualDistance(
     return sqrt((l1 - l2).pow(2) + (a1 - a2).pow(2) + (b1 - b2).pow(2)) * 100
 }
 
+/**
+ * Flattens a translucent colour onto an opaque one, the way the compositor will.
+ *
+ * A scrim's contrast is meaningless until it is composited: the value itself is 60% of a near-black,
+ * which measures as near-black and tells us nothing about what happens over a photograph.
+ */
+internal fun Color.over(background: Color): Color =
+    Color(
+        red = red * alpha + background.red * (1 - alpha),
+        green = green * alpha + background.green * (1 - alpha),
+        blue = blue * alpha + background.blue * (1 - alpha),
+    )
+
 internal fun Double.format(): String = ((this * 100).toInt() / 100.0).toString()
 
 /** WCAG 2.1 relative luminance, sRGB. */
