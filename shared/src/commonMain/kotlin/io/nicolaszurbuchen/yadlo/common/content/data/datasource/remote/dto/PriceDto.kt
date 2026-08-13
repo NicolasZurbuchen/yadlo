@@ -5,12 +5,12 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class PriceDto(
     val free: Boolean,
-    val tiers: List<Tier> = emptyList(),
-    val deposit: Deposit? = null,
+    val tiers: List<TierDto> = emptyList(),
+    val deposit: DepositDto? = null,
     val provenance: String,
 ) {
     @Serializable
-    data class Tier(
+    data class TierDto(
         val label: String? = null,
         val amount: Double,
         val currency: String,
@@ -18,7 +18,7 @@ data class PriceDto(
     )
 
     @Serializable
-    data class Deposit(
+    data class DepositDto(
         val amount: Double,
         val currency: String,
         val note: String? = null,

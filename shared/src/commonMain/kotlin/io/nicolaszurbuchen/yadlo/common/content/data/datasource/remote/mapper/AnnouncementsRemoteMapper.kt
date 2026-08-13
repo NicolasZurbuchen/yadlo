@@ -12,7 +12,7 @@ fun AnnouncementsDto.toDomain(): List<Announcement> =
         .map { it.toDomain() }
         .sortedByDescending { it.publishedAt }
 
-private fun AnnouncementsDto.Announcement.toDomain(): Announcement =
+private fun AnnouncementsDto.AnnouncementDto.toDomain(): Announcement =
     Announcement(
         id = id,
         publishedAt = publishedAt.toInstantValue("announcement[$id].publishedAt"),

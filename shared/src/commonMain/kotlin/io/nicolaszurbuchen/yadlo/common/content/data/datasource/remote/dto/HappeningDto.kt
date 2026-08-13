@@ -16,18 +16,18 @@ data class HappeningDto(
     val description: String? = null,
     val images: List<ImageDto> = emptyList(),
     val provenance: String,
-    val artist: Artist? = null,
-    val activity: Activity? = null,
-    val stand: Stand? = null,
+    val artist: ArtistDto? = null,
+    val activity: ActivityDto? = null,
+    val stand: StandDto? = null,
 ) {
     @Serializable
-    data class Artist(
+    data class ArtistDto(
         val genres: List<String> = emptyList(),
         val links: List<LinkDto> = emptyList(),
     )
 
     @Serializable
-    data class Activity(
+    data class ActivityDto(
         val genres: List<String> = emptyList(),
         val price: PriceDto? = null,
         val bookingRequired: Boolean = false,
@@ -38,7 +38,7 @@ data class HappeningDto(
     )
 
     @Serializable
-    data class Stand(
+    data class StandDto(
         val offering: String? = null,
         val marks: List<String> = emptyList(),
         val links: List<LinkDto> = emptyList(),

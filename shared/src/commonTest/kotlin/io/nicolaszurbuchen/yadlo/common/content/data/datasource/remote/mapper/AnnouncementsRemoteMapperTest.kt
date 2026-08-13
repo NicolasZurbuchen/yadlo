@@ -118,8 +118,8 @@ private fun announcementDto(
     publishedAt: String = "2026-06-02T12:00:00+02:00",
     editionId: String? = "2026",
     url: String? = null,
-): AnnouncementsDto.Announcement =
-    AnnouncementsDto.Announcement(
+): AnnouncementsDto.AnnouncementDto =
+    AnnouncementsDto.AnnouncementDto(
         id = id,
         publishedAt = publishedAt,
         title = "Le programme complet est en ligne",
