@@ -35,6 +35,7 @@ import yadlo.shared.generated.resources.img_logo_preverenges
 import yadlo.shared.generated.resources.img_logo_yadlo
 import yadlo.shared.generated.resources.splash_logo_description
 import yadlo.shared.generated.resources.splash_supported_by
+import kotlin.time.Duration.Companion.milliseconds
 import androidx.compose.foundation.Image as ComposeImage
 
 /**
@@ -51,7 +52,7 @@ fun SplashScreen(
     val currentOnFinish by rememberUpdatedState(onFinish)
 
     LaunchedEffect(Unit) {
-        delay(MINIMUM_DISPLAY_MILLIS)
+        delay(MINIMUM_DISPLAY_MILLIS.milliseconds)
         currentOnFinish()
     }
 
@@ -89,7 +90,7 @@ fun SplashScreen(
                 Modifier
                     .align(Alignment.BottomCenter)
                     .safeDrawingPadding()
-                    .padding(MaterialTheme.spacing.lg),
+                    .padding(vertical = MaterialTheme.spacing.xxxl),
         )
     }
 }
@@ -115,14 +116,14 @@ private fun SupportedBy(modifier: Modifier = Modifier) {
             // The label above already names both backers; describing each logo too would have a
             // screen reader say "avec le soutien de, Morges Région, Morges Région".
             ComposeImage(
-                painter = painterResource(Res.drawable.img_logo_morges),
+                painter = painterResource(Res.drawable.img_logo_preverenges),
                 contentDescription = null,
                 contentScale = ContentScale.Fit,
                 modifier = Modifier.height(BACKER_LOGO_HEIGHT).clearAndSetSemantics { },
             )
 
             ComposeImage(
-                painter = painterResource(Res.drawable.img_logo_preverenges),
+                painter = painterResource(Res.drawable.img_logo_morges),
                 contentDescription = null,
                 contentScale = ContentScale.Fit,
                 modifier = Modifier.height(BACKER_LOGO_HEIGHT).clearAndSetSemantics { },
@@ -136,8 +137,8 @@ private const val MINIMUM_DISPLAY_MILLIS = 1_200L
 
 private val WORDMARK_WIDTH = 260.dp
 
-/** Bias runs -1 top to +1 bottom, so -0.5 lifts the wordmark by a quarter of the screen height. */
-private const val WORDMARK_BIAS = -0.5f
+/** Bias runs -1 top to +1 bottom: negative lifts the wordmark above centre, as a share of height. */
+private const val WORDMARK_BIAS = -0.55f
 
 /** Matched on height because the two logos have very different aspect ratios. */
 private val BACKER_LOGO_HEIGHT = 64.dp
