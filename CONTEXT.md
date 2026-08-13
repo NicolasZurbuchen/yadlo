@@ -133,6 +133,29 @@ _Avoid_: Location, place, site
 > Individual places within the site — the lake, the beach, the village — were dropped with them:
 > the site is small enough to see in one turn, and no screen ever displayed them.
 
+### What the festival is saying right now
+
+**Annonce**:
+A dated message from the association, shown on Accueil. The only block that appears in **all five
+Phases**, and the reason to open the app on the 361 days when nothing is happening — the line-up
+dropping, a stage time moving, a thank-you after the weekend. Carries a title, an optional body, a
+`publishedAt`, and a nullable URL.
+
+Lives in **its own file**, not on an Edition and not in the live-truth file. An Annonce is about
+*now*, so it is the only content that has to arrive during the festival; alone it is a few hundred
+bytes with its own ETag, where folding it into `festival.json` would reupload history, contact and
+transport every time one is published.
+
+It is nonetheless **scoped to an Edition** by a nullable `editionId` — one naming an edition the app
+has not fetched is dropped rather than rendered half-resolved, and `null` means it is true of the
+festival itself and survives every year.
+
+**The URL is plain and nullable, never a typed internal action.** `null` simply means the card is
+not tappable. An earlier design typed it so an Annonce could deep-link inside the app; that was
+dropped because content outlives app versions, and a dead link into a renamed screen is a worse
+failure than an ordinary broken web link.
+_Avoid_: News, post, message, notification, banner
+
 ### The user's own festival
 
 **Plan**:

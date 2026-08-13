@@ -271,6 +271,9 @@ Built unofficially, with the explicit aim of becoming the association's official
     and `Platform`; there is no notification code, no `expect`/`actual` seam, and no
     `POST_NOTIFICATIONS` permission in the manifest. The `Notifier` interface is not a
     formality wrapping an existing capability — it is the whole feature, on two platforms.
+    **Deferred past v1.** The blast radius is exactly one user story — 16, the reminder before a
+    saved item — plus the end-of-slot warnings of story 17. Everything else that looks time-driven
+    (Phase, live pills, countdowns, Mon Yadlo) reads the injected clock and needs no notification.
   - *Disk-cached remote images* — **not configured.** Coil3 is wired to the shared Ktor client
     in `App.kt`, but the `ImageLoader` is built with no `diskCache { }` block, so the app is
     relying on whatever Coil defaults to. For a festival app whose images must survive a field
@@ -576,8 +579,14 @@ figures. Accent `#E27BA6` is still open (see DECISIONS.md).
 
 ### Notifications and i18n
 
-- **Local only** in v1: countdown, per-slot reminders, end-of-slot warnings. Remote push sits
-  behind a `Notifier` interface so FCM can arrive without a rewrite.
+- **Notifications are deferred past v1**, local ones included. There is no notification code on
+  either platform, no `expect`/`actual` seam and no `POST_NOTIFICATIONS` permission, so the
+  `Notifier` interface is the whole feature rather than a wrapper over something that exists.
+  When they land they are **local only** — countdown, per-slot reminders, end-of-slot warnings —
+  with remote push behind the same interface so FCM can arrive without a rewrite.
+- **What deferring them actually costs is two user stories**, 16 and 17. Everything else that looks
+  time-driven — Phase, the live-state pills, the countdowns, Mon Yadlo — reads the injected clock
+  and recomputes on the ticker, so it needs no notification and is unaffected.
 - **Content is French-only.** Revised after authoring the real 2026 bundle: every human-readable
   field in the content files is a plain string, not a `{fr, en}` object. The festival is French,
   its programme is French, and carrying an `en` key that is empty on all 29 happenings bought
@@ -684,8 +693,9 @@ real Yadlo slice has replaced each of those as the reference.
 
 ## Out of Scope
 
-- **Remote push (FCM/APNs)** — the interface exists, the implementation does not. An
-  unofficial app broadcasting operational claims is a content problem, not a technical one.
+- **Notifications of every kind, local included** — deferred past v1. Neither the interface nor the
+  implementation exists today. For remote push specifically there is a second reason on top of the
+  work: an unofficial app broadcasting operational claims is a content problem, not a technical one.
 - **Volunteer group chat** — a second product: identity, roles, moderation, retention, and
   someone on call at 02:00. Requires being official.
 - **Personal transport reminders** — dropped from v1. Timetables stay as static content. The

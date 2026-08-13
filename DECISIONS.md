@@ -11,10 +11,20 @@ around May 2027. Roughly eleven months of runway, with no live event to test aga
 **Status.** Unofficial / portfolio build now, aiming to become the official app for 2027.
 Consequence: no broadcast push and no volunteer features until the association is on board.
 
-**Comms.** Local notifications only (countdown, favourited-slot reminders) plus an in-app
-news feed from `news.json`. Remote push sits behind a `Notifier` interface so FCM can drop
-in later without a rewrite. Volunteer group chat is out of scope — it is a second product
-and requires being official.
+**Comms.** An in-app feed of annonces from `announcements.json`, and **notifications deferred past
+v1 — local ones included.** There is no notification code on either platform, no `expect`/`actual`
+seam and no `POST_NOTIFICATIONS` permission, so the `Notifier` interface is the whole feature
+rather than a wrapper over something that exists.
+
+Deferring it costs exactly two user stories, 16 and 17 — the reminder before a saved Slot and the
+warning as one ends. Everything else that looks time-driven reads the injected clock and recomputes
+on the ticker, so Phase, the live-state pills, the countdowns and Mon Yadlo are all unaffected. That
+is a small enough blast radius to be worth taking, given the feature is two platform
+implementations and a permission prompt.
+
+When it lands it is local only, with remote push behind the same interface so FCM can drop in
+without a rewrite. Volunteer group chat stays out of scope — it is a second product and requires
+being official.
 
 **Content substrate.** Versioned JSON in a repo, served as static HTTPS, fetched on launch and
 cached to disk. No CMS and no Firebase for now. The website's content is largely trapped in images
