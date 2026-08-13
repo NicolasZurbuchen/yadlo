@@ -33,6 +33,8 @@
     <string name="error_database_query_failed_title">Couldn\'t read from storage</string>
     <string name="error_database_generic_subtitle">Something went wrong. Try again.</string>
     <string name="error_database_insert_failed_title">Couldn\'t save to storage</string>
+    <string name="error_content_unreadable_title">Couldn\'t read the festival content</string>
+    <string name="error_content_unreadable_subtitle">The published content couldn\'t be understood by this version of the app.</string>
     <string name="error_pokemon_fetch_failed_title">Couldn\'t fetch a Pokémon</string>
     <string name="error_pokemon_fetch_failed_subtitle">Check your connection and try again.</string>
     <string name="error_unexpected_title">Something went wrong</string>
