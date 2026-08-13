@@ -83,6 +83,25 @@ feature/<name>/
 
 `singleOf(::Impl)` resolves every constructor parameter via reflection, including ones with Kotlin default values — it does not skip them. A class with a defaulted parameter that must *not* come from the DI graph (e.g. an injected clock lambda kept as a default for deterministic testing) needs an explicit binding instead: `single<Interface> { Impl(get(), get()) }`. Omitting the argument lets Kotlin's own default apply, since Koin never touches a parameter it wasn't asked to resolve.
 
+### Known gap — fix this in the base template, not here
+
+**Nothing verifies the Koin graph.** A module can bind a class whose constructor needs something no
+module provides, and no test catches it: `konsistTest/` checks structure, not resolvability, and the
+unit tests construct their subjects directly. The failure surfaces the first time that screen is
+opened on a device.
+
+`koin-test`'s `verify()` closes this — it walks every definition and resolves the constructor
+signatures at build time. It is not a drop-in for two reasons worth knowing before adding it:
+
+1. It is not in the version catalog, so it is a new test dependency.
+2. `verify()` trips on parameterised definitions — `viewModel { (id: Long) -> Foo(get(), id) }` — and
+   the template's own `pokemonExplorerModule` has exactly one. They need `verify(extraTypes = ...)`
+   or an explicit exclusion, which is the fiddly part.
+
+**This belongs upstream in the template**, so every project forked from it starts with a verified
+graph rather than discovering the gap independently. Adding it here would fix one app; adding it
+there fixes the next one too.
+
 ## Error handling
 
 - `AppError` (a single sealed interface) plus `AppException` is the only throw/catch mechanism in the app — no ad-hoc exception types.
