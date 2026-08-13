@@ -1,12 +1,8 @@
 package io.nicolaszurbuchen.yadlo.common.content.domain.model
 
 /**
- * A named section of a Stand's menu — plats, boissons, menus.
- *
- * [source] records where the prices came from in the author's own words, because no menu in the
- * content is confirmed by the festival: one is a vendor's own carte for a different location, one
- * was read off a photograph of a handwritten chalkboard. That distinction belongs next to the
- * prices rather than in a document nobody ships.
+ * [source] records where the prices came from, because no menu here is confirmed by the festival —
+ * one is a vendor's carte for another location, one was read off a photographed chalkboard.
  */
 data class MenuGroup(
     val id: String,
@@ -15,12 +11,9 @@ data class MenuGroup(
     val items: List<Item>,
 ) {
     /**
-     * Only [name] and [price] are required. An item with nothing else is a complete item, which
-     * matters because that is the data most trucks will actually give.
-     *
-     * [marks] here describe this item alone. A Mark on the Stand describes the whole stand, and the
-     * level is the meaning: "this stand is entirely vegan" is a different claim from "this stand has
-     * a vegan option", and that is the actual question someone scanning a row of trucks is asking.
+     * [marks] here describe this item alone; marks on the Stand describe everything it sells. That
+     * is the difference between "entirely vegan" and "has a vegan option", which is the question
+     * someone scanning a row of trucks is actually asking.
      */
     data class Item(
         val name: String,

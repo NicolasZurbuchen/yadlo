@@ -2,37 +2,29 @@ package io.nicolaszurbuchen.yadlo.common.content.domain.usecase
 
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.FestivalDay
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Phase
+import io.nicolaszurbuchen.yadlo.common.time.FESTIVAL_TIME_ZONE
 import kotlinx.datetime.DatePeriod
 import kotlinx.datetime.LocalTime
-import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atStartOfDayIn
 import kotlinx.datetime.atTime
 import kotlinx.datetime.plus
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 import kotlin.time.Clock
-import kotlin.time.Instant
+import kotlin.time.Duration.Companion.days
 
 /**
- * Derives [Phase] from two inputs and no others: the clock, and the content last fetched.
+ * Derives [Phase] from the clock and the content last fetched, and nothing else.
  *
- * Every boundary but one moves on the clock alone. The exception is [Phase.ANNOUNCED], which moves
- * when the programme is *published* — so the trigger is the work itself rather than a step someone
- * has to remember on the one weekend they are not at a laptop.
- *
- * The clock is injected rather than read from the system because the next edition is eleven months
- * away and [Phase.LIVE] is otherwise untestable until then.
+ * The clock is injected because the next edition is eleven months away and [Phase.LIVE] is
+ * otherwise untestable until then.
  */
 class DerivePhaseUseCase(
     private val clock: Clock,
 ) {
     /**
-     * Takes the two things it actually reads rather than an [Edition]. A UseCase that accepts the
-     * whole bundle to look at two fields makes it impossible to tell from the signature what changes
-     * a phase, and forces every test to build a full edition to exercise one boundary.
-     *
-     * [hasPublishedProgramme] rather than the Slot list, because the count never matters — only
-     * whether the programme exists at all.
+     * Takes what it reads rather than an Edition, so the signature says what changes a phase and a
+     * test does not have to build a festival to exercise one boundary.
      */
     operator fun invoke(
         days: List<FestivalDay>,
@@ -41,25 +33,19 @@ class DerivePhaseUseCase(
         if (days.isEmpty()) return Phase.OFF_SEASON
 
         val now = clock.now()
+        val firstDate = days.minBy { it.start }.start.toLocalDateTime(FESTIVAL_TIME_ZONE).date
+        val lastDate = days.maxBy { it.start }.start.toLocalDateTime(FESTIVAL_TIME_ZONE).date
 
-        // The festival's own days, not the device's. A phone in Tokyo must derive the same phase as
-        // a phone in Preverenges, so every boundary below is an instant in Zurich.
-        val firstDate = days.minBy { it.start }.start.toLocalDateTime(ZURICH).date
-        val lastDate = days.maxBy { it.start }.start.toLocalDateTime(ZURICH).date
-
-        val liveStart = firstDate.atStartOfDayIn(ZURICH)
-        // Derived from the last day's *start*, never its end: Friday ends at 02:00 on Saturday, so
-        // an end-based "morning after" lands a day early the moment a day crosses midnight.
-        val liveEnd = lastDate.plus(DatePeriod(days = 1)).atTime(MORNING_AFTER).toInstant(ZURICH)
+        val liveStart = firstDate.atStartOfDayIn(FESTIVAL_TIME_ZONE)
+        // From the last day's start, never its end: Friday ends at 02:00 on Saturday, so an
+        // end-based "morning after" lands a day early the moment any day crosses midnight.
+        val liveEnd =
+            lastDate.plus(DatePeriod(days = 1)).atTime(MORNING_AFTER).toInstant(FESTIVAL_TIME_ZONE)
         val endedEnd = liveEnd.plus(ENDED_DURATION)
 
-        // The order matters: the two clock-only end boundaries are tested before the festival itself,
-        // and publication is only consulted once we know we are before it. Both pre-festival phases
-        // require a published programme. ANNOUNCED triggers a hero claiming the programme is there,
-        // and a date cannot make that claim honestly — a countdown threshold can fire before it is
-        // true, an empty slot list cannot. APPROACHING then points at Mon Yadlo to build a Plan,
-        // which is equally hollow with nothing to plan. So an edition published early with dates and
-        // an empty programme stays OFF_SEASON, which already shows the countdown.
+        // Both pre-festival phases require a published programme: ANNOUNCED triggers a hero
+        // claiming the programme is there, and APPROACHING points at a Plan there is nothing to
+        // build. LIVE and ENDED stay clock-only — the festival happens either way.
         return when {
             now >= endedEnd -> Phase.OFF_SEASON
             now >= liveEnd -> Phase.ENDED
@@ -71,19 +57,9 @@ class DerivePhaseUseCase(
     }
 
     private companion object {
-        val ZURICH = TimeZone.of("Europe/Zurich")
-
-        /**
-         * LIVE ends late the next morning rather than when the last day's window closes, so the
-         * handover to ENDED lands over breakfast instead of at 22:01 while people are still on the
-         * beach finishing a beer.
-         */
+        /** So the handover to ENDED lands over breakfast, not at 22:01 while people are still out. */
         val MORNING_AFTER = LocalTime(hour = 11, minute = 0)
-
-        /** J-7. The week before is the only time anyone realistically builds their Plan. */
-        val APPROACHING_LEAD = kotlin.time.Duration.parse("7d")
-
-        /** Six weeks of thank-you, then the year starts again. */
-        val ENDED_DURATION = kotlin.time.Duration.parse("42d")
+        val APPROACHING_LEAD = 7.days
+        val ENDED_DURATION = 42.days
     }
 }
