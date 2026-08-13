@@ -55,10 +55,11 @@ Two things are deliberately **not** done yet:
    strings in `composeResources/values/strings.xml`, its `.sq` file, its `error_pokemon_*`
    entries, and the `pokemon-explorer` commit scope — once the pattern is internalised. Do not
    ship it.
-2. **Three template capabilities assumed by SPEC.md have not been verified**: offline-first disk
-   caching of a fetched JSON bundle, local notifications on both platforms, and disk-cached
-   remote images via Coil3. Coil3 and SQLDelight are wired; the notification and
-   bundled-fallback paths are not. Verify before designing around them.
+2. **Two template capabilities assumed by SPEC.md have not been verified**: local notifications on
+   both platforms, and disk-cached remote images via Coil3. Coil3 and SQLDelight are wired; the
+   notification path is not, and Coil3's `ImageLoader` is built with no `diskCache { }` block.
+   Verify before designing around them. The bundled-snapshot fallback the earlier draft assumed is
+   no longer wanted — see DECISIONS.md § No bundled snapshot in v1.
 
 ---
 

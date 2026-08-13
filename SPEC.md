@@ -212,8 +212,8 @@ Built unofficially, with the explicit aim of becoming the association's official
 66. As a visitor, I want practical information available offline, so that "what time is the
     last bus" is answerable at 02:00.
 67. As a visitor, I want previously viewed images to stay available offline.
-68. As a first-time user opening the app on site with no signal, I want a usable app from
-    the bundled snapshot rather than a spinner.
+68. As a first-time user opening the app with no signal, I want to be told plainly that one
+    connection is needed to download the programme, rather than a spinner that never resolves.
 
 **Language and accessibility**
 
@@ -264,13 +264,16 @@ Built unofficially, with the explicit aim of becoming the association's official
   (MVIKotlin), Koin, Navigation 3, Ktor, SQLDelight, Coil3, and Konsist enforcing all of it.
 - **The template has now been read, and the three capabilities this spec assumed do not stand
   equally.** Correcting the earlier draft:
-  - *Offline-first disk caching* — **partly there.** SQLDelight is fully wired with an
-    `expect`/`actual` driver factory on both platforms, so persisting a fetched bundle is
-    routine. The **bundled-snapshot fallback does not exist** and is new work.
+  - *Offline-first disk caching* — **there.** SQLDelight is fully wired with an `expect`/`actual`
+    driver factory on both platforms, so persisting a fetched bundle is routine. The bundled
+    snapshot this draft once assumed is no longer wanted, so nothing is missing here.
   - *Local notifications* — **absent entirely.** `infra/platform/` contains only `BackHandler`
     and `Platform`; there is no notification code, no `expect`/`actual` seam, and no
     `POST_NOTIFICATIONS` permission in the manifest. The `Notifier` interface is not a
     formality wrapping an existing capability — it is the whole feature, on two platforms.
+    **Deferred past v1.** The blast radius is exactly one user story — 16, the reminder before a
+    saved item — plus the end-of-slot warnings of story 17. Everything else that looks time-driven
+    (Phase, live pills, countdowns, Mon Yadlo) reads the injected clock and needs no notification.
   - *Disk-cached remote images* — **not configured.** Coil3 is wired to the shared Ktor client
     in `App.kt`, but the `ImageLoader` is built with no `diskCache { }` block, so the app is
     relying on whatever Coil defaults to. For a festival app whose images must survive a field
@@ -339,6 +342,20 @@ Terms are defined in CONTEXT.md and must be used in code.
 - **A UseCase takes what it reads, never the whole Edition.** `DerivePhaseUseCase` takes the days
   and whether a programme exists, so its signature says what changes a phase and its tests do not
   have to build a festival to exercise one boundary.
+- **`Happening` must never carry its Slots.** `Slot` holds a `Happening`, so the reverse reference
+  would make the graph cyclic — and a cyclic `data class` blows the stack on `equals`, `hashCode`
+  and `toString`. The one-way direction is load-bearing rather than stylistic. A fiche, which needs
+  a Happening *and* its Slots, gets a small aggregate assembled by a UseCase instead.
+- **Live state is derived, not stored.** `dans 15 min` / `en cours` / `se termine` / `terminé` comes
+  from the clock and a Slot's window, recomputed on the ticker that also drives Phase. It is a
+  UseCase because it touches a port, and it feeds both Programme and Mon Yadlo.
+- **The heart is a join, not a field.** Saved Slot ids live in local storage, not in the content
+  bundle, so every Programme and Mon Yadlo row combines two repositories. Nothing in the content
+  model knows whether something is saved.
+- **Only the UiModel reaches a Composable**, and that is enforced rather than trusted:
+  `PresentationLayerTest` makes `State` illegal outside the Store/Executor/Reducer/UiMapper
+  boundary. A Programme row's `Slot` carries a whole Artist with genres, links and a biography; the
+  UiMapper drops all of it. That is the layer working, not waste.
 - **`Phase` derivation is a UseCase** because it touches a port — the injected clock. Two
   derivations are easy to get wrong: the morning-after boundary is computed from the last day's
   **start**, never its end, since Friday ends at 02:00 on Saturday and an end-based derivation
@@ -397,9 +414,45 @@ starts meaning something at the first release.
   source. That is also the strongest argument for the app becoming official: the JSON would stop
   being a copy of their communication and start being what their communication is generated from.
 - **One file per edition** (60–150 KB): one fetch, one ETag, atomic consistency.
-- Fetch on launch → cache to disk → bundled snapshot as fallback. Offline-first at all times.
+- **Fetch on launch → cache to disk. No bundled snapshot.** The cache is what makes the app work
+  on the beach; a bundle would only ever serve someone who installed the app, never opened it,
+  travelled, and then lost signal — and the "no content yet" screen has to exist regardless, since
+  a bundle can be absent or stale. It optimises past a screen rather than removing it, at the cost
+  of a second source of truth that goes quietly out of date. It returns behind the same interface
+  if that proves wrong.
+- **Cold start is two fetches, in order**: `festival.json` — small, and it names `currentEditionId`
+  — then that edition. `announcements.json` follows and is polled more often during LIVE.
+- **The cache is stored as a document, not shredded into tables.** Every read wants the whole
+  bundle, and references resolve only after parsing, so a relational schema would buy nothing and
+  cost a migration per schema change. It is parsed and resolved **once** into memory; every UseCase
+  reads that, or each screen re-parses 45 KB for nothing.
+- **A refresh never deletes saved data.** A Slot disappearing from the file means *no longer in the
+  programme*, never a silent removal from someone's Plan.
 - Archives are the **only** feature reading a third file, fetched on demand, and the only one
   that does not work offline unless previously opened.
+
+### Schema changes and forcing an update
+
+The content is served to every installed version at once, so a schema change reaches apps that
+cannot read it. **The app must never hard-block on this.** An unofficial festival app that bricks
+itself on the Saturday afternoon is worse in every way than one showing week-old data. Three
+layers, in order of preference:
+
+1. **Additive-only discipline.** Never remove or retype a field; only add optional ones. The client
+   parses with `ignoreUnknownKeys`, so an older app ignores what it does not know. This covers
+   almost every change and costs nothing.
+2. **`schemaVersion` is the only "update the app" trigger.** If the fetched major is higher than the
+   app supports, it keeps the cached content, does not parse the new file, and surfaces a soft
+   update row in Plus. Additive changes need no bump, which is what keeps this rare.
+   `minSupportedAppVersion` on `festival.json` is the escape hatch — no separate manifest file,
+   because `festival.json` is already fetched first.
+3. **Version the path** (`/v1/…`, `/v2/…`) only when a break is genuinely unavoidable, publishing
+   both through a transition.
+
+**A new edition needs no app update at all.** `currentEditionId` changes, the app fetches the new
+edition, done. The only code it requires is clearing the Plan when that id changes: Slot ids are
+Edition-qualified so stale saves cannot collide, but they would linger as orphans, so plan rows
+whose id does not carry the current edition prefix are dropped explicitly.
 - Images remote and disk-cached; only app chrome, category icons and **every image on the splash
   screen** are bundled. The splash is the one absolute exception — see § Screens.
 - **Image references are relative by default.** Every Happening carries `images: [{src, credit}]`
@@ -526,8 +579,14 @@ figures. Accent `#E27BA6` is still open (see DECISIONS.md).
 
 ### Notifications and i18n
 
-- **Local only** in v1: countdown, per-slot reminders, end-of-slot warnings. Remote push sits
-  behind a `Notifier` interface so FCM can arrive without a rewrite.
+- **Notifications are deferred past v1**, local ones included. There is no notification code on
+  either platform, no `expect`/`actual` seam and no `POST_NOTIFICATIONS` permission, so the
+  `Notifier` interface is the whole feature rather than a wrapper over something that exists.
+  When they land they are **local only** — countdown, per-slot reminders, end-of-slot warnings —
+  with remote push behind the same interface so FCM can arrive without a rewrite.
+- **What deferring them actually costs is two user stories**, 16 and 17. Everything else that looks
+  time-driven — Phase, the live-state pills, the countdowns, Mon Yadlo — reads the injected clock
+  and recomputes on the ticker, so it needs no notification and is unaffected.
 - **Content is French-only.** Revised after authoring the real 2026 bundle: every human-readable
   field in the content files is a plain string, not a `{fr, en}` object. The festival is French,
   its programme is French, and carrying an `en` key that is empty on all 29 happenings bought
@@ -634,8 +693,9 @@ real Yadlo slice has replaced each of those as the reference.
 
 ## Out of Scope
 
-- **Remote push (FCM/APNs)** — the interface exists, the implementation does not. An
-  unofficial app broadcasting operational claims is a content problem, not a technical one.
+- **Notifications of every kind, local included** — deferred past v1. Neither the interface nor the
+  implementation exists today. For remote push specifically there is a second reason on top of the
+  work: an unofficial app broadcasting operational claims is a content problem, not a technical one.
 - **Volunteer group chat** — a second product: identity, roles, moderation, retention, and
   someone on call at 02:00. Requires being official.
 - **Personal transport reminders** — dropped from v1. Timetables stay as static content. The
