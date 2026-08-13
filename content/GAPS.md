@@ -31,13 +31,14 @@ authoritative.** See gap 6 for what that implies about the site.
 ## ✅ Resolved — yoga before opening, and Léman Records
 
 `acro-yoga` (samedi 10:00) and `yoga-plage` (dimanche 10:00) genuinely run before the site opens
-at 12:00, on the public beach. Both slots now carry `"beforeOpening": true`, and the validator
-**errors** on any unflagged slot that starts before opening — so the deliberate case is declared
-in the data and the accidental case still gets caught.
+at 12:00, on the public beach.
 
-> This is why `FestivalDay.start/end` and `FestivalDay.opening` are separate fields. The window
-> stretches to 10:00 to contain the yoga; the opening hours stay at 12:00 because that is what a
-> visitor needs to be told.
+> **Corrected.** An earlier draft of this section described a `beforeOpening` flag on the slot and a
+> separate `FestivalDay.opening` object. **Neither shipped, and neither exists in the JSON.** A
+> FestivalDay's `start`/`end` *are* the opening hours — one pair of instants — and the validator
+> errors if an `opening` key appears. A Slot outside the window is simply legal and merely worth
+> flagging, so the four early slots produce a *warning* rather than needing a flag to silence them.
+> That is deliberate: the case is real, but next year one of them may be a mistake.
 
 `Léman Records` is confirmed as the correct spelling.
 
@@ -145,7 +146,7 @@ Le Totem is the name of a bouldering gym, Totem Escalade, which is also a festiv
 The Coin enfants is supervised by volunteers and children can be left there, which is why it
 carries an age range and a maximum duration where nothing else does. Both are `enfants`.
 
-## 4. Partners — 3 websites of 39 outstanding, 2 closed as unsolvable
+## ✅ Resolved — partners
 
 All 39 partners are in, across six tiers. **34 have a verified website**; the logos on
 `/partenaires` carry no hyperlinks at all, so each was found and confirmed by loading the site
@@ -158,16 +159,21 @@ and reading its title.
 | Edifice | cygnes d'or | No findable site and the logo matches nothing. `EDIFEA SA` exists in Vaud but is a different company and was not assumed. |
 | GladiaSUP | partenaires | Not a company with a web presence — it is the SUP obstacle course, an activity of the festival that also appears in the partner list. |
 
-> GladiaSUP being both an Activity and a partner is not unique: **Surfshop Préverenges** is a
-> stand and a partner, **Totem Escalade** runs the mur de grimpe, and Sherlock Events and Summit
-> Video almost certainly supply the escape games and the giant screen. Nothing links a partner to
-> its Happening today. If the partner screen ever wants to say "they run this", or a fiche wants
-> to credit its supplier, that is a `happeningId` on the partner and nothing more.
+**Three name corrections:** the list read *Garno Maté* → **Grano Maté**, a Vevey maté brewer;
+*Clash Solutions* → **Cash Solutions** (`cash-solutions.ch`), which is why it could not be found;
+and *SuperNaturalClub* → **Super Natural Club**, which is how their own site writes it.
 
-**Still open — genuinely not yet found:** SuperNaturalClub, Swan, Wineatypic.
+**The last three URLs were supplied and are now in.** Two were verified by loading the site:
+**Super Natural Club** (`supernaturalclub.ch`, a Lausanne kombucha and soft-drink maker) and
+**SwanWine** (`swanwine.ch`, a Swiss winemaker — the entry read *Swan* and is now the full name).
 
-**Two name corrections:** the list read *Garno Maté* → **Grano Maté**, a Vevey maté brewer; and
-*Clash Solutions* → **Cash Solutions** (`cash-solutions.ch`), which is why it could not be found.
+**Winatypic** is the third, and its name was the thing that was wrong: the list read *Wineatypic*,
+and the correct spelling is **Winatypic** — id and name both corrected. Its supplied URL returns
+**404** on the apex and on `www`, so **`url` is null**: a logo that opens a 404 is worse than one
+that opens nothing, now that a missing url shows a toast instead. If a working address turns up it
+is a one-line edit.
+
+**All 39 partners are now settled** — 34 with a verified website, 5 deliberately without one.
 
 > **Cham Properties was withheld in error.** It really is Cham Swiss Properties AG, the listed
 > Zug firm — the reasoning that a CHF 1.7 bn company would not sponsor a Préverenges beach
@@ -175,18 +181,15 @@ and reading its title.
 > rather than the `/en` path it was supplied as, on the same rule that strips Spotify's
 > `/intl-ja/`: a locale in a stored URL is the collector's browser setting, not the address.
 
-**Three partners are also festival content**, worth knowing before the fiche and partner screens
-are built, since they should probably cross-link:
+> **The "800" on the cygne tiers is not a price and not an error.** It refers to Préverenges'
+> 800th anniversary. Nothing to reproduce, nothing to confirm — the earlier note read it as a
+> copy-pasted sponsorship amount and was simply wrong.
 
-- **Surfshop Préverenges** is at *Avenue de la Plage 1* — the festival's own address. The
-  partner and the `Surf Shop` food stand are the same business.
-- **Totem Escalade** runs the mur de grimpe.
-- **Sherlock Events** is a mobile escape-game company in Morges, almost certainly the provider of
-  the Mini Escape Game and Le trésor de Black Sam. **Summit Video** rents giant screens — the
-  Diffusion de match. Neither is stated; both are worth confirming.
-
-> The page renders all three cygne tiers as "800€", which is almost certainly a copy-paste error
-> rather than three tiers at one price. Worth confirming before it is reproduced in the app.
+**Partners are not cross-linked to Happenings, by decision.** Several partners are also festival
+content — Surfshop Préverenges is both a stand and a partner, Totem Escalade runs the mur de grimpe,
+GladiaSUP is an activity. An earlier note proposed a `happeningId` on the partner so a fiche could
+credit its supplier. That is not wanted: it adds a relationship to maintain for a line of text
+nobody asked for. **This section is closed.**
 
 ## ✅ Resolved — activity prices
 
@@ -203,8 +206,12 @@ société, Chasse au trésor, Tournoi de UNO, Salsa et bachata, Slackline.
 | CHF 10 / équipe | Mini Escape Game · Trésor de Black Sam |
 | CHF 25 / 15 | Silent Party, plus a CHF 50 headset deposit |
 
-**One left:** `Diffusion de match` is marked free with `provenance: "unverified"` — it has no
-poster of its own, so the rule above cannot be applied to it.
+**Closed.** `Diffusion de match` had no poster of its own, so the missing-price rule could not be
+applied to it and it sat at `unverified`. It is confirmed free directly, and now reads `confirmed`
+like the rest. **Every activity price in the edition is now confirmed.**
+
+> The shape of every price also changed — one structure for all seventeen, free or not. See
+> [SCHEMA.md](SCHEMA.md) § activity payload.
 
 ## ✅ Resolved — entry is free, and it exposed a missing screen
 
@@ -329,45 +336,34 @@ The validator keeps warning on those four Slots. That is deliberate: the note ex
 situation to a visitor, but whoever edits this file should still be told when a Slot falls
 outside the hours, because next year one of them may be a mistake.
 
-## 9. Transport, payment, accessibility — shapes decided, content empty
+## ✅ Resolved — transports and paiement
 
-All three now have a shape, so filling them in is answering questions rather than inventing
-structure. None has any content.
+Both are filled in, from the text already written against them in the Plus mockup, so the screens
+designed around them still hold.
 
-### Transports — six modes waiting for text
+**Transports.** All six modes carry prose. The night buses carry structure instead of a paragraph:
+`departures` groups them **by night rather than one row per bus**, so seven departures fit in four
+lines, and the 03:00 with no onward connection to Lausanne carries a note rather than being buried
+in a list. Every other mode carries `departures: null`, so there is one shape to read.
 
-An array *is* right, but not of uniform things: each mode is a **name, some prose, and any number
-of links**. Walking needs prose alone; the bus needs a timetable link. The six modes are seeded
-with `body: null` and the validator lists each one until it has text.
+> Two link gaps remain and are guesses nobody should make up: the **MBC timetable PDFs** for lines
+> 701 and 705, and the **parking plan**. Both are stored as empty link arrays rather than invented
+> URLs. A shuttle laid on for one edition would not belong here anyway — that goes on the Edition.
 
-| Mode | What is needed |
-|---|---|
-| À pied | From which station, and how long a walk |
-| À vélo | Where to leave a bike, and whether there is any parking for them |
-| En bus | Which MBC lines serve the beach, from Lausanne and from Morges, and a timetable link |
-| Bus de nuit | Is there one at all? Last departure Friday and Saturday |
-| En voiture | Where to park, whether it costs anything, and whether it fills up |
-| Par le lac | Can you actually arrive by boat or by paddle, and tie up where? |
+**Paiement.** `carte`, `TWINT` and `espèces`, the last as `accepted: false`.
 
-> A shuttle laid on **for one edition** does not belong here — that would go on the Edition,
-> which is the only thing that changes year to year. Everything above is stable enough to be live
-> truth.
+> **Apple Pay and Google Pay are deliberately not methods**, though the mockup listed them.
+> Contactless wallets almost certainly work wherever the cards do, but "almost certainly" is not
+> what a list of accepted methods claims, and the rule here is that an unconfirmed method is left
+> out rather than rendered as a shrug. It is stated in a `note` instead, which is free text and does
+> not pretend otherwise. Still worth asking: is there a **bancomat** nearby, and is there a
+> **deposit on cups** and how much?
 
-### Paiement — a list of methods, each accepted or not
+## 9. Accessibilité — a shape decided, content empty
 
-`{ id, name, accepted }` where **`accepted` is a boolean, never "unknown"**. A method nobody has
-confirmed is left out entirely rather than rendered as a shrug — "TWINT: ?" helps no one, and the
-FAQ can say it is being checked.
-
-Needed: espèces, carte, **TWINT** (the question a Swiss visitor actually asks), and whether the
-festival uses tokens. Plus free-text `notes` for the things that are not a yes/no: is there a
-bancomat nearby, is there a deposit on cups and how much.
-
-### Accessibilité — a list of facilities, each available or not
-
-Same shape: `{ id, name, available, note }`. **Recording what is *not* available matters as much
-as what is** — "no accessible toilets" is something a person needs before deciding to travel, and
-silence tells them nothing.
+The shape is `{ id, name, available, note }` — same rule as paiement, and **recording what is *not*
+available matters as much as what is**: "no accessible toilets" is something a person needs before
+deciding to travel, and silence tells them nothing.
 
 Candidates to confirm or deny: step-free access to the site, accessible toilets, a PMR parking
 space, what the ground is actually like (sand, grass, gravel — this is a beach), free entry for a
@@ -381,12 +377,17 @@ The screenings are **Coupe du monde 2026** fixtures. The Friday quarter-final an
 match are current content, not the stale 2025 line they were suspected of being. Both slots are
 `confirmed`.
 
-## 11. Past editions
+## ✅ Resolved — past editions
 
-`editions.json` is exactly what you assumed: **the list behind the archive entry in Plus**, so
-the app can show which years exist without fetching all of them. It is the only file the app
-reads on demand rather than at launch, and the only feature that does not work offline unless
-previously opened.
+`editions.json` is **the list behind the archive entry in Plus**, so the app can show which years
+exist without fetching all of them. It is the only file the app reads on demand rather than at
+launch, and the only feature that does not work offline.
+
+**Nothing from an archive is stored.** No caching, no images kept, no rows written — opening a past
+edition fetches it every time, and closing the app leaves nothing behind. That is a deliberate
+asymmetry with the current edition, which is cached hard precisely because it has to work in a field
+with no signal. Browsing 2019 is a November sofa activity: the network is there, and paying disk for
+it would mean an archive that silently goes stale with no way to notice.
 
 It lists only 2026. The festival has run since **2015**, and browsing past line-ups is a stated
 goal. Back-filling is additive and safe: drop an `editions/2019/` folder next to `2026/`, add a

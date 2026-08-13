@@ -12,7 +12,8 @@ function load(p) {
 const ed = load('editions/2026/edition.json');
 const fest = load('festival.json');
 const idx = load('editions.json');
-if (!ed || !fest || !idx) { console.log(errors.join('\n')); process.exit(1); }
+const ann = load('announcements.json');
+if (!ed || !fest || !idx || !ann) { console.log(errors.join('\n')); process.exit(1); }
 
 const days = Object.fromEntries(ed.days.map(d => [d.id, d]));
 const haps = Object.fromEntries(ed.happenings.map(h => [h.id, h]));
@@ -39,6 +40,12 @@ const PROVENANCE = new Set(['confirmed', 'archived', 'unverified']);
 const MARKS = new Set(['végé', 'végan', 'sans gluten', 'sans lactose', 'piquant', 'bio']);
 const LINK_TYPES = new Set(['spotify', 'instagram', 'website', 'soundcloud', 'bandcamp',
   'facebook', 'youtube', 'tiktok', 'beatport', 'appleMusic']);
+
+// Every currency and price unit in use. Narrow on purpose: "par équipe" and "par personne" are the
+// only two units the festival prices anything by, and a third should be a decision rather than a
+// typo that renders as "CHF 10 / equipe" on a fiche.
+const CURRENCIES = new Set(['CHF']);
+const PRICE_UNITS = new Set(['personne', 'équipe']);
 
 // Stored URLs must be canonical: no session ids, no viewer-locale prefixes. A link copied out of
 // a browser carries whichever locale that browser was in - /intl-ja/ and /ja/ are Japanese, and
@@ -99,9 +106,49 @@ for (const d of ed.days) {
 }
 
 // --- edition-level --------------------------------------------------------------------------
-if (!ed.entry || typeof ed.entry.free !== 'boolean') errors.push('edition: entry.free must be a boolean');
-else if (!PROVENANCE.has(ed.entry.provenance)) errors.push('edition: entry has bad provenance');
-if ('openingNote' in ed && typeof ed.openingNote !== 'string') errors.push('edition: openingNote must be a string');
+// Still 1. The shapes below have changed repeatedly, but nothing has shipped and nothing reads
+// these files yet, so there is no older reader to break and no version to bump away from. The
+// first release is what makes this number start meaning something.
+if (ed.schemaVersion !== 1) errors.push(`edition: schemaVersion must be 1, found ${ed.schemaVersion}`);
+// entry and openingNote were removed: no screen consumes them yet, and content nobody renders is
+// content nobody notices going stale. The FAQ still answers "is entry free?" in prose. Both come
+// back as structured fields the day the Horaires and Sur place screens exist - guarded here so
+// they do not drift back in unnoticed in the meantime.
+if ('entry' in ed) errors.push('edition: "entry" is gone until a screen renders it - the FAQ carries the answer');
+if ('openingNote' in ed) errors.push('edition: "openingNote" is gone until the Horaires screen exists');
+
+// --- announcements ----------------------------------------------------------------------------
+// Its own file because it is the only content that needs to arrive DURING the festival, when a
+// correction is being pushed from a phone. Folded into festival.json it would reupload history,
+// contact and transport on every annonce, and a visitor's cached copy of all of it would go stale
+// together. Alone it is a few hundred bytes with its own ETag.
+if (ann.schemaVersion !== 1) errors.push(`announcements: schemaVersion must be 1, found ${ann.schemaVersion}`);
+if (!Array.isArray(ann.announcements)) errors.push('announcements: announcements must be an array');
+else {
+  const annIds = new Set();
+  for (const a of ann.announcements) {
+    if (annIds.has(a.id)) errors.push(`annonce ${a.id}: duplicate id`);
+    annIds.add(a.id);
+    if (!a.title) errors.push(`annonce ${a.id}: needs a title`);
+    if (!('body' in a)) errors.push(`annonce ${a.id}: body must be present, null when the title says it all`);
+    // Number.isNaN rather than a truthiness check: new Date("nonsense") is an Invalid Date, which
+    // is an object, which is truthy. A bad instant would have sailed straight through.
+    const at = ts(a.publishedAt);
+    if (!at || Number.isNaN(at.getTime()))
+      errors.push(`annonce ${a.id}: publishedAt must be an instant with an offset`);
+    // Scoped to an edition, or null for something true of the festival itself. An annonce naming
+    // an edition the app has not fetched is not an error here - the app drops it.
+    if (!('editionId' in a)) errors.push(`annonce ${a.id}: editionId must be present, null when festival-wide`);
+    else if (a.editionId !== null && a.editionId !== ed.id)
+      warns.push(`annonce ${a.id}: editionId ${a.editionId} is not the current edition`);
+    // A plain nullable URL rather than a typed internal action. An annonce is a dated record, and
+    // the one thing it needs to do is open somewhere; null simply means it is not tappable.
+    if (!('url' in a)) errors.push(`annonce ${a.id}: url must be present, null when the annonce is not tappable`);
+    else if (a.url !== null) checkUrl(a.url, `annonce ${a.id}`);
+    if (!PROVENANCE.has(a.provenance)) errors.push(`annonce ${a.id}: bad provenance`);
+  }
+  if (!ann.announcements.length) warns.push('announcements.json: no annonces yet');
+}
 
 // --- faq ------------------------------------------------------------------------------------
 const faqIds = new Set();
@@ -159,6 +206,39 @@ for (const [hid, h] of Object.entries(haps)) {
   for (const m of payload.marks || [])
     if (!MARKS.has(m)) errors.push(`happening ${hid}: unknown stand mark "${m}"`);
 
+  // Price is ONE shape for every activity, free or not. It used to be three mutually exclusive
+  // ones - {free}, {amount,currency,per} and {tiers,deposit} - which meant the app had to sniff
+  // which it was holding before it could read a number. The cost of that lands on every screen
+  // that shows a price; the cost of this lands here, once.
+  //
+  // free and tiers are two views of one fact, so they are checked against each other rather than
+  // independently: free:true with a tier, or free:false with none, is a content bug that would
+  // otherwise render as "gratuit - CHF 10".
+  if (h.kind === 'activity' && payload.price) {
+    const pr = payload.price;
+    const where = `activity ${hid}/price`;
+    if (typeof pr.free !== 'boolean') errors.push(`${where}: free must be a boolean`);
+    if (!Array.isArray(pr.tiers)) errors.push(`${where}: tiers must be an array, empty when free`);
+    else {
+      if (pr.free === true && pr.tiers.length > 0) errors.push(`${where}: free but carries ${pr.tiers.length} tier(s)`);
+      if (pr.free === false && pr.tiers.length === 0) errors.push(`${where}: not free but carries no tier`);
+      pr.tiers.forEach((t, i) => {
+        if (typeof t.amount !== 'number') errors.push(`${where}/tiers[${i}]: amount must be a number`);
+        if (!CURRENCIES.has(t.currency)) errors.push(`${where}/tiers[${i}]: unknown currency ${t.currency}`);
+        if (!('label' in t)) errors.push(`${where}/tiers[${i}]: label must be present, null when there is one price for everyone`);
+        if (!('per' in t)) errors.push(`${where}/tiers[${i}]: per must be present, null when the price is per person`);
+        if (t.per !== null && !PRICE_UNITS.has(t.per)) errors.push(`${where}/tiers[${i}]: unknown per "${t.per}"`);
+      });
+    }
+    if (!('deposit' in pr)) errors.push(`${where}: deposit must be present, null when there is none`);
+    if (pr.deposit) {
+      if (typeof pr.deposit.amount !== 'number') errors.push(`${where}/deposit: amount must be a number`);
+      if (!CURRENCIES.has(pr.deposit.currency)) errors.push(`${where}/deposit: unknown currency`);
+      if (!('note' in pr.deposit)) errors.push(`${where}/deposit: note must be present, null when there is none`);
+    }
+    if (!PROVENANCE.has(pr.provenance)) errors.push(`${where}: bad provenance`);
+  }
+
   if (h.kind === 'stand') {
     const groupIds = new Set();
     for (const g of payload.menu || []) {
@@ -172,8 +252,14 @@ for (const [hid, h] of Object.entries(haps)) {
         if (it.price && (typeof it.price.amount !== 'number' || !it.price.currency))
           errors.push(`stand ${hid}/${g.id}/${it.name}: price needs a numeric amount and a currency`);
         if (!PROVENANCE.has(it.provenance)) errors.push(`stand ${hid}/${g.id}/${it.name}: bad provenance`);
-        for (const m of it.marks || [])
+        // Always an array, empty when the item has no mark. An absent array and an empty one said
+        // the same thing, which meant every reader had to handle both to learn nothing.
+        if (!Array.isArray(it.marks))
+          errors.push(`stand ${hid}/${g.id}/${it.name}: marks must be an array, empty when there are none`);
+        else for (const m of it.marks)
           if (!MARKS.has(m)) errors.push(`stand ${hid}/${g.id}/${it.name}: unknown mark "${m}"`);
+        if (!('description' in it))
+          errors.push(`stand ${hid}/${g.id}/${it.name}: description must be present, null when there is none`);
       }
     }
     if ((payload.menu || []).length === 0) warns.push(`stand ${hid}: no menu`);

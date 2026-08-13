@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "announcements": [
+    {
+      "id": "programme-2026",
+      "publishedAt": "2026-06-02T12:00:00+02:00",
+      "editionId": "2026",
+      "title": "Le programme complet est en ligne",
+      "body": "Concerts, activités nautiques, coin enfant et jeux.",
+      "url": null,
+      "provenance": "unverified"
+    },
+    {
+      "id": "aftermovie-2026",
+      "publishedAt": "2026-08-01T12:00:00+02:00",
+      "editionId": "2026",
+      "title": "Merci pour cette édition",
+      "body": "L'aftermovie est en ligne.",
+      "url": "https://www.youtube.com/watch?v=v2G5c5046t0",
+      "provenance": "unverified"
+    }
+  ]
+}
