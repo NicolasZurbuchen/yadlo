@@ -7,6 +7,4 @@ package io.nicolaszurbuchen.yadlo.feature.home.presentation.navigation
  */
 interface HomeNavigator {
     fun navigateToProgramme()
-
-    fun navigateToMonYadlo()
 }

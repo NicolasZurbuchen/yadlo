@@ -4,18 +4,19 @@ import io.nicolaszurbuchen.yadlo.feature.home.domain.model.HomeContent
 import kotlin.time.Instant
 
 sealed interface HomeIntent {
-    /** One intent for both heroes: which tab it opens is the Phase's business, not the screen's. */
     data object HeroClicked : HomeIntent
 
     data class AnnouncementClicked(
+        val url: String,
+    ) : HomeIntent
+
+    data class SocialClicked(
         val url: String,
     ) : HomeIntent
 }
 
 sealed interface HomeLabel {
     data object NavigateToProgramme : HomeLabel
-
-    data object NavigateToMonYadlo : HomeLabel
 
     data class OpenUrl(
         val url: String,

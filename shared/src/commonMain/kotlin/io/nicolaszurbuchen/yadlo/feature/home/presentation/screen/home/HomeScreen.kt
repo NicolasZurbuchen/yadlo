@@ -16,17 +16,19 @@ import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.component
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.component.CountdownBlock
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.component.FiguresBlock
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.component.HeroBlock
+import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.component.SocialBlock
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.component.ThankYouBlock
 
 /**
  * Accueil renders the block stack it is handed, in the order it is handed. Which blocks a Phase
- * gets is decided in [toUiModel]; this file only knows how each one looks.
+ * gets is decided in the UiMapper; this file only knows how each one looks.
  */
 @Composable
 fun HomeScreen(
     state: HomeUiModel,
     onHeroClick: () -> Unit,
     onAnnouncementClick: (String) -> Unit,
+    onSocialClick: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     if (state.isLoading) {
@@ -63,6 +65,10 @@ fun HomeScreen(
 
                 is HomeBlockUiModel.Announcements -> {
                     AnnouncementsBlock(block = block, onAnnouncementClick = onAnnouncementClick)
+                }
+
+                is HomeBlockUiModel.Social -> {
+                    SocialBlock(block = block, onSocialClick = onSocialClick)
                 }
             }
         }

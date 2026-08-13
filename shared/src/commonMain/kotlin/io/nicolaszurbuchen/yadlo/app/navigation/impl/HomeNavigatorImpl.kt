@@ -5,7 +5,7 @@ import io.nicolaszurbuchen.yadlo.app.navigation.TabNavigator
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.navigation.HomeNavigator
 
 /**
- * Switches tab rather than pushing anything: both hero destinations are tab roots, and each tab
+ * Switches tab rather than pushing anything: the hero's destination is a tab root, and that tab
  * keeps whatever depth the visitor left it at.
  */
 class HomeNavigatorImpl(
@@ -13,9 +13,5 @@ class HomeNavigatorImpl(
 ) : HomeNavigator {
     override fun navigateToProgramme() {
         tabNavigator.select(Tab.PROGRAMME)
-    }
-
-    override fun navigateToMonYadlo() {
-        tabNavigator.select(Tab.MON_YADLO)
     }
 }

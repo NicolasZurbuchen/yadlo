@@ -8,21 +8,18 @@
     <string name="tab_mon_yadlo">Mon Yadlo</string>
     <string name="tab_plus">Plus</string>
 
-    <string name="home_countdown_title">Prochaine édition</string>
-    <string name="home_countdown_days">jours</string>
-    <string name="home_countdown_hours">heures</string>
-    <string name="home_countdown_minutes">minutes</string>
-    <string name="home_countdown_seconds">secondes</string>
-    <string name="home_hero_announced_title">La programmation est là</string>
-    <string name="home_hero_announced_body">Concerts, activités nautiques, coin enfant et jeux : tout est en ligne.</string>
-    <string name="home_hero_announced_action">Voir le programme</string>
-    <string name="home_hero_approaching_title">Ton programme t\'attend</string>
-    <string name="home_hero_approaching_body">Compose ton week-end depuis ton canapé — tu ne le feras pas debout au soleil.</string>
-    <string name="home_hero_approaching_action">Ouvrir Mon Yadlo</string>
+    <string name="home_countdown_days_remaining">J-%1$s</string>
+    <string name="home_hero_announced_kicker">Nouveau</string>
+    <string name="home_hero_announced_title">La programmation %1$s est là</string>
+    <string name="home_hero_announced_body">%1$s concerts, %2$s activités, %3$s jours au bord du lac</string>
+    <string name="home_hero_approaching_kicker">À faire maintenant</string>
+    <string name="home_hero_approaching_title">Ton programme t'attend</string>
+    <string name="home_hero_approaching_body">Choisis tes concerts et tes activités avant d'arriver — sur place, personne ne le fait</string>
     <string name="home_announcements_title">Annonces</string>
-    <string name="home_thank_you_title">Merci !</string>
-    <string name="home_thank_you_body">%1$s, c\'est fini. À l\'année prochaine, les pieds dans le lac.</string>
+    <string name="home_thank_you_title">Merci.</string>
+    <string name="home_thank_you_body">Trois jours, un lac, et vous. À l'année prochaine.</string>
     <string name="home_figures_title">Yadlo en chiffres</string>
+    <string name="home_figures_caveat">Chiffres d'une édition précédente — les seuls publiés à ce jour</string>
 
     <string name="programme_placeholder_open_happening">Ouvrir une fiche</string>
     <string name="happening_placeholder_title">Fiche</string>

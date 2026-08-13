@@ -41,10 +41,16 @@ class HomeReducerTest {
     private fun homeContent() =
         HomeContent(
             editionName = "Yadlo 2026",
+            editionYear = 2026,
+            venueName = "Plage de Préverenges",
             days = emptyList(),
             hasPublishedProgramme = true,
+            artistCount = 13,
+            activityCount = 17,
             announcements = emptyList(),
             figures = emptyList(),
+            figuresAreConfirmed = true,
+            social = emptyList(),
         )
 
     private companion object {

@@ -13,6 +13,7 @@ import io.nicolaszurbuchen.yadlo.common.content.domain.model.Figure
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Happening
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Provenance
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Slot
+import io.nicolaszurbuchen.yadlo.common.content.domain.model.SocialLink
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Venue
 import io.nicolaszurbuchen.yadlo.common.error.AppError
 import kotlinx.coroutines.test.runTest
@@ -93,6 +94,65 @@ class ObserveHomeContentUseCaseTest {
         }
 
     @Test
+    fun invoke_countsHappeningsRatherThanSlots_soAThreeDayActivityCountsOnce() =
+        runTest {
+            val repository = FakeContentRepository()
+            val useCase = ObserveHomeContentUseCase(repository)
+
+            useCase().test {
+                repository.emitStatus(ContentStatus.Ready(bundle = bundle(), updateRequired = false))
+
+                val content = awaitItem()
+                assertEquals(1, content.artistCount)
+                assertEquals(1, content.activityCount)
+            }
+        }
+
+    @Test
+    fun invoke_aFigureCameFromAPastEdition_reportsTheFiguresAsUnconfirmed() =
+        runTest {
+            val repository = FakeContentRepository()
+            val useCase = ObserveHomeContentUseCase(repository)
+
+            useCase().test {
+                repository.emitStatus(
+                    ContentStatus.Ready(
+                        bundle = bundle(figureProvenance = Provenance.ARCHIVED),
+                        updateRequired = false,
+                    ),
+                )
+
+                assertEquals(false, awaitItem().figuresAreConfirmed)
+            }
+        }
+
+    @Test
+    fun invoke_everyFigureConfirmedForThisEdition_needsNoCaveat() =
+        runTest {
+            val repository = FakeContentRepository()
+            val useCase = ObserveHomeContentUseCase(repository)
+
+            useCase().test {
+                repository.emitStatus(ContentStatus.Ready(bundle = bundle(), updateRequired = false))
+
+                assertEquals(true, awaitItem().figuresAreConfirmed)
+            }
+        }
+
+    @Test
+    fun invoke_carriesTheNetworksFromTheLiveTruthFile() =
+        runTest {
+            val repository = FakeContentRepository()
+            val useCase = ObserveHomeContentUseCase(repository)
+
+            useCase().test {
+                repository.emitStatus(ContentStatus.Ready(bundle = bundle(), updateRequired = false))
+
+                assertEquals(listOf("Instagram"), awaitItem().social.map { it.name })
+            }
+        }
+
+    @Test
     fun invoke_statusIsNotReady_emitsNothing() =
         runTest {
             val repository = FakeContentRepository()
@@ -108,6 +168,7 @@ class ObserveHomeContentUseCaseTest {
     private fun bundle(
         slots: List<Slot> = listOf(slot()),
         announcements: List<Announcement> = emptyList(),
+        figureProvenance: Provenance = Provenance.CONFIRMED,
     ) = ContentBundle(
         festival =
             Festival(
@@ -115,6 +176,7 @@ class ObserveHomeContentUseCaseTest {
                 tagline = "Mouille ton corps, arrose ton esprit",
                 currentEditionId = "2026",
                 minSupportedAppVersion = null,
+                social = listOf(SocialLink(id = "instagram", name = "Instagram", url = "https://example.ch/insta")),
             ),
         edition =
             Edition(
@@ -131,10 +193,10 @@ class ObserveHomeContentUseCaseTest {
                     ),
                 days = listOf(day()),
                 categories = emptyList(),
-                happenings = listOf(happening()),
+                happenings = listOf(happening(), activity()),
                 slots = slots,
                 partners = emptyList(),
-                figures = listOf(Figure(id = "visiteurs", value = "6000", label = "visiteurs", provenance = Provenance.CONFIRMED)),
+                figures = listOf(Figure(id = "visiteurs", value = "6000", label = "visiteurs", provenance = figureProvenance)),
             ),
         announcements = announcements,
     )
@@ -159,6 +221,23 @@ class ObserveHomeContentUseCaseTest {
             provenance = Provenance.CONFIRMED,
             genres = emptyList(),
             links = emptyList(),
+        )
+
+    private fun activity() =
+        Happening.Activity(
+            id = "2026:sup-yoga",
+            name = "SUP yoga",
+            category = Category(id = "eau", name = "Eau", order = 2),
+            description = null,
+            images = emptyList(),
+            provenance = Provenance.CONFIRMED,
+            genres = emptyList(),
+            price = null,
+            bookingRequired = false,
+            bookingUrl = null,
+            equipmentProvided = null,
+            suitability = null,
+            supervised = null,
         )
 
     private fun slot() =

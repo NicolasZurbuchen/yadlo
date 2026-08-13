@@ -1,11 +1,14 @@
 package io.nicolaszurbuchen.yadlo.app.navigation
 
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
@@ -15,10 +18,18 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.rememberNavBackStack
+import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
+import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
+import io.nicolaszurbuchen.yadlo.common.content.domain.model.ContentStatus
+import io.nicolaszurbuchen.yadlo.common.content.domain.model.FestivalDay
+import io.nicolaszurbuchen.yadlo.common.content.domain.repository.ContentRepository
+import io.nicolaszurbuchen.yadlo.common.time.FESTIVAL_TIME_ZONE
 import io.nicolaszurbuchen.yadlo.infra.navigation.AppNavigator
 import io.nicolaszurbuchen.yadlo.infra.navigation.NavGraph
 import io.nicolaszurbuchen.yadlo.infra.navigation.rememberNavEntries
 import io.nicolaszurbuchen.yadlo.infra.platform.BackHandler
+import kotlinx.datetime.number
+import kotlinx.datetime.toLocalDateTime
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 
@@ -34,7 +45,13 @@ import org.koin.compose.koinInject
 fun MainScaffold(modifier: Modifier = Modifier) {
     val appNavigator = koinInject<AppNavigator>()
     val tabNavigator = koinInject<TabNavigator>()
+    val contentRepository = koinInject<ContentRepository>()
     val selectedTab by tabNavigator.selectedTab.collectAsStateWithLifecycle()
+
+    // Read here rather than by each tab's own store: the bar belongs to the shell, and four
+    // screens deriving the same two strings is four places for them to drift apart.
+    val status by contentRepository.observeStatus().collectAsStateWithLifecycle()
+    val ready = status as? ContentStatus.Ready
 
     // Declared one by one rather than built in a loop: these are composables, and the call order
     // has to be identical on every recomposition. Each rememberNavEntries call is also its own
@@ -84,6 +101,16 @@ fun MainScaffold(modifier: Modifier = Modifier) {
     }
 
     Scaffold(
+        topBar = {
+            // Same rule as the bottom bar: it belongs to the tab roots. A fiche is full-screen with
+            // its own collapsing toolbar, and two bars stacked is not a screen anyone designed.
+            if (isAtTabRoot) {
+                MainTopAppBar(
+                    title = ready?.bundle?.festival?.name.orEmpty(),
+                    editionDates = ready?.bundle?.edition?.days?.let(::formatEditionDates).orEmpty(),
+                )
+            }
+        },
         bottomBar = {
             // The bar belongs to the tab roots. A fiche is full-screen, with a back chevron
             // instead — the prototypes show no bar on a detail screen.
@@ -121,6 +148,56 @@ private fun NavBackStack<NavKey>.popOne() {
 
 private fun NavBackStack<NavKey>.popToRoot() {
     while (size > 1) removeAt(size - 1)
+}
+
+/**
+ * Yadlo, and when. On every tab root, so the answer to "which weekend is this?" is never more than
+ * a glance away and no screen has to spend a line of its own saying it.
+ *
+ * The dates are numeric and Swiss-ordered rather than written out, for the same reason the annonce
+ * dates are: a month name is the first thing that needs translating, and the language structure is
+ * not decided yet. Revisit when it is.
+ */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun MainTopAppBar(
+    title: String,
+    editionDates: String,
+    modifier: Modifier = Modifier,
+) {
+    TopAppBar(
+        title = { Text(text = title) },
+        actions = {
+            Text(
+                text = editionDates,
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.appColors.textSecondary,
+                modifier = Modifier.padding(end = MaterialTheme.spacing.md),
+            )
+        },
+        modifier = modifier,
+    )
+}
+
+/**
+ * `10 – 12.07.2026`, collapsing whatever the two ends share. Null when the edition publishes no
+ * days, which is the between-editions case rather than an error.
+ */
+internal fun formatEditionDates(days: List<FestivalDay>): String? {
+    val first = days.minByOrNull { it.start }?.start?.toLocalDateTime(FESTIVAL_TIME_ZONE)?.date ?: return null
+    val last = days.maxByOrNull { it.start }?.start?.toLocalDateTime(FESTIVAL_TIME_ZONE)?.date ?: return null
+
+    val firstDay = first.day.toString().padStart(2, '0')
+    val lastDay = last.day.toString().padStart(2, '0')
+    val firstMonth = first.month.number.toString().padStart(2, '0')
+    val lastMonth = last.month.number.toString().padStart(2, '0')
+
+    return when {
+        first == last -> "$lastDay.$lastMonth.${last.year}"
+        first.year != last.year -> "$firstDay.$firstMonth.${first.year} – $lastDay.$lastMonth.${last.year}"
+        first.month != last.month -> "$firstDay.$firstMonth – $lastDay.$lastMonth.${last.year}"
+        else -> "$firstDay – $lastDay.$lastMonth.${last.year}"
+    }
 }
 
 @Composable

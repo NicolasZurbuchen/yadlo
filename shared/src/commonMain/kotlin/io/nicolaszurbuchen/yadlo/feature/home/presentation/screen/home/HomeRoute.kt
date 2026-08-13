@@ -12,23 +12,20 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun HomeRoute(
     onNavigateToProgramme: () -> Unit,
-    onNavigateToMonYadlo: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = koinViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val onNavigateToProgrammeUpdated by rememberUpdatedState(onNavigateToProgramme)
-    val onNavigateToMonYadloUpdated by rememberUpdatedState(onNavigateToMonYadlo)
 
-    // An annonce URL leaves the app entirely, so it is the platform's business rather than the
-    // navigator's — a link out is not a destination and never joins a back stack.
+    // An annonce or a network leaves the app entirely, so it is the platform's business rather than
+    // the navigator's — a link out is not a destination and never joins a back stack.
     val uriHandler = LocalUriHandler.current
 
     LaunchedEffect(Unit) {
         viewModel.labels.collect { label ->
             when (label) {
                 HomeLabel.NavigateToProgramme -> onNavigateToProgrammeUpdated()
-                HomeLabel.NavigateToMonYadlo -> onNavigateToMonYadloUpdated()
                 is HomeLabel.OpenUrl -> uriHandler.openUri(label.url)
             }
         }
@@ -38,6 +35,7 @@ fun HomeRoute(
         state = state,
         onHeroClick = { viewModel.onIntent(HomeIntent.HeroClicked) },
         onAnnouncementClick = { url -> viewModel.onIntent(HomeIntent.AnnouncementClicked(url)) },
+        onSocialClick = { url -> viewModel.onIntent(HomeIntent.SocialClicked(url)) },
         modifier = modifier,
     )
 }

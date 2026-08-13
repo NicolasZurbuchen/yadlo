@@ -4,14 +4,18 @@ import io.nicolaszurbuchen.yadlo.common.content.domain.model.Announcement
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.FestivalDay
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Figure
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Provenance
+import io.nicolaszurbuchen.yadlo.common.content.domain.model.SocialLink
 import io.nicolaszurbuchen.yadlo.feature.home.domain.model.HomeContent
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import yadlo.shared.generated.resources.Res
-import yadlo.shared.generated.resources.home_hero_announced_action
-import yadlo.shared.generated.resources.home_hero_approaching_action
+import yadlo.shared.generated.resources.home_countdown_days_remaining
+import yadlo.shared.generated.resources.home_hero_announced_kicker
+import yadlo.shared.generated.resources.home_hero_announced_title
+import yadlo.shared.generated.resources.home_hero_approaching_kicker
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
+import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 import kotlin.time.Instant
@@ -21,7 +25,7 @@ class HomeUiMapperTest {
 
     @Test
     fun toUiModel_noContentYet_isLoadingWithNoBlocks() {
-        val state = HomeState(now = WEEK_BEFORE, phase = PhaseUiModel.APPROACHING)
+        val state = HomeState(now = THREE_DAYS_BEFORE, phase = PhaseUiModel.APPROACHING)
 
         val result = state.toUiModel()
 
@@ -34,38 +38,40 @@ class HomeUiMapperTest {
     // region block stack per phase
 
     @Test
-    fun toUiModel_offSeason_stacksCountdownThenAnnonces() {
-        val state = state(phase = PhaseUiModel.OFF_SEASON, now = WEEK_BEFORE)
+    fun toUiModel_offSeason_stacksCountdownThenAnnoncesThenLesReseaux() {
+        val state = state(phase = PhaseUiModel.OFF_SEASON, now = THREE_DAYS_BEFORE)
 
-        assertEquals(listOf("Countdown", "Announcements"), state.toUiModel().blockNames())
+        assertEquals(listOf("Countdown", "Announcements", "Social"), state.toUiModel().blockNames())
     }
 
     @Test
-    fun toUiModel_announced_stacksCountdownThenHeroThenAnnonces() {
-        val state = state(phase = PhaseUiModel.ANNOUNCED, now = WEEK_BEFORE)
+    fun toUiModel_announced_stacksCountdownThenHeroThenAnnoncesThenLesReseaux() {
+        val state = state(phase = PhaseUiModel.ANNOUNCED, now = THREE_DAYS_BEFORE)
+
+        assertEquals(listOf("Countdown", "Hero", "Announcements", "Social"), state.toUiModel().blockNames())
+    }
+
+    @Test
+    fun toUiModel_approaching_endsOnTheAnnoncesRatherThanOfferingAWayOffTheApp() {
+        // The one phase without the networks, and the prototype's call rather than an omission:
+        // three days out is the only moment the screen has something for the reader to do.
+        val state = state(phase = PhaseUiModel.APPROACHING, now = THREE_DAYS_BEFORE)
 
         assertEquals(listOf("Countdown", "Hero", "Announcements"), state.toUiModel().blockNames())
     }
 
     @Test
-    fun toUiModel_approaching_stacksCountdownThenHeroThenAnnonces() {
-        val state = state(phase = PhaseUiModel.APPROACHING, now = WEEK_BEFORE)
-
-        assertEquals(listOf("Countdown", "Hero", "Announcements"), state.toUiModel().blockNames())
-    }
-
-    @Test
-    fun toUiModel_live_isDeliberatelyThinAndCarriesOnlyAnnonces() {
+    fun toUiModel_live_isDeliberatelyThinAndCarriesOnlyAnnoncesAndLesReseaux() {
         val state = state(phase = PhaseUiModel.LIVE, now = DURING)
 
-        assertEquals(listOf("Announcements"), state.toUiModel().blockNames())
+        assertEquals(listOf("Announcements", "Social"), state.toUiModel().blockNames())
     }
 
     @Test
-    fun toUiModel_ended_stacksMerciThenLesChiffresThenAnnonces() {
+    fun toUiModel_ended_stacksMerciThenLesChiffresThenAnnoncesThenLesReseaux() {
         val state = state(phase = PhaseUiModel.ENDED, now = AFTER)
 
-        assertEquals(listOf("ThankYou", "Figures", "Announcements"), state.toUiModel().blockNames())
+        assertEquals(listOf("ThankYou", "Figures", "Announcements", "Social"), state.toUiModel().blockNames())
     }
 
     // endregion
@@ -73,27 +79,48 @@ class HomeUiMapperTest {
     // region countdown
 
     @Test
-    fun toUiModel_countdown_splitsTheRemainingTimeToTheFirstDayIntoPaddedCells() {
-        val state = state(phase = PhaseUiModel.APPROACHING, now = WEEK_BEFORE)
+    fun toUiModel_countdown_countsWholeDaysToTheOpeningDay() {
+        val state = state(phase = PhaseUiModel.APPROACHING, now = THREE_DAYS_BEFORE)
 
         val countdown = state.toUiModel().blocks.filterIsInstance<HomeBlockUiModel.Countdown>().single()
 
-        assertEquals(listOf("6", "04", "12", "30"), countdown.cells.map { it.value })
-        assertEquals("Yadlo 2026", countdown.editionName)
+        assertEquals(UiText.Resource(Res.string.home_countdown_days_remaining, listOf("3")), countdown.daysText)
+    }
+
+    @Test
+    fun toUiModel_lateInTheEvening_readsTheSameDayCountAsThatMorning() {
+        // A calendar count, not a Duration divided by 24 hours: at 23:00 on the same date the
+        // festival is still three sleeps away, and the screen must not quietly say two.
+        val morning = state(phase = PhaseUiModel.APPROACHING, now = THREE_DAYS_BEFORE)
+        val lateEvening = state(phase = PhaseUiModel.APPROACHING, now = THREE_DAYS_BEFORE_LATE)
+
+        assertEquals(
+            morning.toUiModel().blocks.filterIsInstance<HomeBlockUiModel.Countdown>().single().daysText,
+            lateEvening.toUiModel().blocks.filterIsInstance<HomeBlockUiModel.Countdown>().single().daysText,
+        )
+    }
+
+    @Test
+    fun toUiModel_countdown_namesTheEditionAndTheVenueRatherThanRepeatingTheAppBarDates() {
+        val state = state(phase = PhaseUiModel.APPROACHING, now = THREE_DAYS_BEFORE)
+
+        val countdown = state.toUiModel().blocks.filterIsInstance<HomeBlockUiModel.Countdown>().single()
+
+        assertEquals("Yadlo 2026 · Plage de Préverenges", countdown.subtitle)
     }
 
     @Test
     fun toUiModel_theFirstDayHasAlreadyPassed_dropsTheCountdownRatherThanRunningItBackwards() {
         val state = state(phase = PhaseUiModel.OFF_SEASON, now = AFTER)
 
-        assertEquals(listOf("Announcements"), state.toUiModel().blockNames())
+        assertEquals(listOf("Announcements", "Social"), state.toUiModel().blockNames())
     }
 
     @Test
     fun toUiModel_noDaysPublished_dropsTheCountdown() {
-        val state = state(phase = PhaseUiModel.OFF_SEASON, now = WEEK_BEFORE, days = emptyList())
+        val state = state(phase = PhaseUiModel.OFF_SEASON, now = THREE_DAYS_BEFORE, days = emptyList())
 
-        assertEquals(listOf("Announcements"), state.toUiModel().blockNames())
+        assertEquals(listOf("Announcements", "Social"), state.toUiModel().blockNames())
     }
 
     // endregion
@@ -101,21 +128,24 @@ class HomeUiMapperTest {
     // region hero
 
     @Test
-    fun toUiModel_announced_heroPointsAtTheProgramme() {
-        val state = state(phase = PhaseUiModel.ANNOUNCED, now = WEEK_BEFORE)
+    fun toUiModel_announced_heroAnnouncesTheProgrammeAndItsSize() {
+        val state = state(phase = PhaseUiModel.ANNOUNCED, now = THREE_DAYS_BEFORE)
 
         val hero = state.toUiModel().blocks.filterIsInstance<HomeBlockUiModel.Hero>().single()
 
-        assertEquals(UiText.Resource(Res.string.home_hero_announced_action), hero.actionLabel)
+        assertEquals(UiText.Resource(Res.string.home_hero_announced_kicker), hero.kicker)
+        assertEquals(UiText.Resource(Res.string.home_hero_announced_title, listOf("2026")), hero.title)
+        assertIs<UiText.Resource>(hero.body)
+        assertEquals(listOf("13", "17", "1"), (hero.body as UiText.Resource).args)
     }
 
     @Test
-    fun toUiModel_approaching_heroPointsAtMonYadlo() {
-        val state = state(phase = PhaseUiModel.APPROACHING, now = WEEK_BEFORE)
+    fun toUiModel_approaching_heroAsksForThePlanToBeBuilt() {
+        val state = state(phase = PhaseUiModel.APPROACHING, now = THREE_DAYS_BEFORE)
 
         val hero = state.toUiModel().blocks.filterIsInstance<HomeBlockUiModel.Hero>().single()
 
-        assertEquals(UiText.Resource(Res.string.home_hero_approaching_action), hero.actionLabel)
+        assertEquals(UiText.Resource(Res.string.home_hero_approaching_kicker), hero.kicker)
     }
 
     // endregion
@@ -124,7 +154,7 @@ class HomeUiMapperTest {
 
     @Test
     fun toUiModel_annonce_formatsItsDateInTheFestivalTimezone() {
-        val state = state(phase = PhaseUiModel.OFF_SEASON, now = WEEK_BEFORE)
+        val state = state(phase = PhaseUiModel.OFF_SEASON, now = THREE_DAYS_BEFORE)
 
         val announcements = state.toUiModel().blocks.filterIsInstance<HomeBlockUiModel.Announcements>().single()
 
@@ -133,7 +163,7 @@ class HomeUiMapperTest {
 
     @Test
     fun toUiModel_annonceWithNoUrl_staysUntappable() {
-        val state = state(phase = PhaseUiModel.OFF_SEASON, now = WEEK_BEFORE)
+        val state = state(phase = PhaseUiModel.OFF_SEASON, now = THREE_DAYS_BEFORE)
 
         val announcements = state.toUiModel().blocks.filterIsInstance<HomeBlockUiModel.Announcements>().single()
 
@@ -150,10 +180,36 @@ class HomeUiMapperTest {
     }
 
     @Test
-    fun toUiModel_liveWithNothingPublishedToday_dropsTheAnnoncesBlockEntirely() {
-        val state = state(phase = PhaseUiModel.LIVE, now = DURING, announcements = listOf(announcement("vieille", PUBLISHED_EARLY)))
+    fun toUiModel_liveWithNothingPublishedToday_dropsTheAnnoncesBlockAndKeepsTheReseaux() {
+        val state =
+            state(
+                phase = PhaseUiModel.LIVE,
+                now = DURING,
+                announcements = listOf(announcement("vieille", PUBLISHED_EARLY)),
+            )
 
-        assertEquals(emptyList(), state.toUiModel().blocks)
+        assertEquals(listOf("Social"), state.toUiModel().blockNames())
+    }
+
+    // endregion
+
+    // region les réseaux
+
+    @Test
+    fun toUiModel_social_carriesEveryNetworkTheContentPublishes() {
+        val state = state(phase = PhaseUiModel.OFF_SEASON, now = THREE_DAYS_BEFORE)
+
+        val social = state.toUiModel().blocks.filterIsInstance<HomeBlockUiModel.Social>().single()
+
+        assertEquals(listOf("Instagram", "Facebook", "YouTube", "TikTok"), social.items.map { it.name })
+        assertEquals("https://example.com/instagram", social.items.first().url)
+    }
+
+    @Test
+    fun toUiModel_noNetworksPublished_dropsTheBlock() {
+        val state = state(phase = PhaseUiModel.OFF_SEASON, now = THREE_DAYS_BEFORE, social = emptyList())
+
+        assertEquals(listOf("Countdown", "Announcements"), state.toUiModel().blockNames())
     }
 
     // endregion
@@ -161,10 +217,28 @@ class HomeUiMapperTest {
     // region figures
 
     @Test
+    fun toUiModel_figuresFromAPastEdition_carryTheProvenanceCaveat() {
+        val state = state(phase = PhaseUiModel.ENDED, now = AFTER, figuresAreConfirmed = false)
+
+        val figures = state.toUiModel().blocks.filterIsInstance<HomeBlockUiModel.Figures>().single()
+
+        assertNotNull(figures.caveat)
+    }
+
+    @Test
+    fun toUiModel_figuresConfirmedForThisEdition_carryNoCaveat() {
+        val state = state(phase = PhaseUiModel.ENDED, now = AFTER, figuresAreConfirmed = true)
+
+        val figures = state.toUiModel().blocks.filterIsInstance<HomeBlockUiModel.Figures>().single()
+
+        assertNull(figures.caveat)
+    }
+
+    @Test
     fun toUiModel_endedWithNoFiguresPublished_dropsTheFiguresBlock() {
         val state = state(phase = PhaseUiModel.ENDED, now = AFTER, figures = emptyList())
 
-        assertEquals(listOf("ThankYou", "Announcements"), state.toUiModel().blockNames())
+        assertEquals(listOf("ThankYou", "Announcements", "Social"), state.toUiModel().blockNames())
     }
 
     @Test
@@ -181,9 +255,7 @@ class HomeUiMapperTest {
 
     @Test
     fun toUiModel_everyBlockTypeIsDistinctWithinAStack_soTheScreenCanKeyOnIt() {
-        val state = state(phase = PhaseUiModel.ENDED, now = AFTER)
-
-        val names = state.toUiModel().blockNames()
+        val names = state(phase = PhaseUiModel.ENDED, now = AFTER).toUiModel().blockNames()
 
         assertTrue(names.size == names.toSet().size)
     }
@@ -207,17 +279,31 @@ class HomeUiMapperTest {
                 announcement("programme", PUBLISHED_EARLY),
                 announcement("ce-matin", PUBLISHED_DURING, url = "https://example.com"),
             ),
-        figures: List<Figure> = listOf(Figure(id = "visiteurs", value = "6000", label = "visiteurs", provenance = Provenance.CONFIRMED)),
+        figures: List<Figure> = listOf(Figure(id = "visiteurs", value = "6000", label = "visiteurs", provenance = Provenance.ARCHIVED)),
+        figuresAreConfirmed: Boolean = false,
+        social: List<SocialLink> =
+            listOf(
+                SocialLink("instagram", "Instagram", "https://example.com/instagram"),
+                SocialLink("facebook", "Facebook", "https://example.com/facebook"),
+                SocialLink("youtube", "YouTube", "https://example.com/youtube"),
+                SocialLink("tiktok", "TikTok", "https://example.com/tiktok"),
+            ),
     ) = HomeState(
         now = now,
         phase = phase,
         content =
             HomeContent(
                 editionName = "Yadlo 2026",
+                editionYear = 2026,
+                venueName = "Plage de Préverenges",
                 days = days,
                 hasPublishedProgramme = true,
+                artistCount = 13,
+                activityCount = 17,
                 announcements = announcements,
                 figures = figures,
+                figuresAreConfirmed = figuresAreConfirmed,
+                social = social,
             ),
     )
 
@@ -248,8 +334,11 @@ class HomeUiMapperTest {
     private companion object {
         val GATES_OPEN = Instant.parse("2026-07-10T16:00:00+02:00")
 
-        /** Six days, four hours, twelve minutes and thirty seconds before the gates open. */
-        val WEEK_BEFORE = Instant.parse("2026-07-04T11:47:30+02:00")
+        val THREE_DAYS_BEFORE = Instant.parse("2026-07-07T09:00:00+02:00")
+
+        /** The same calendar day as [THREE_DAYS_BEFORE], fourteen hours later. */
+        val THREE_DAYS_BEFORE_LATE = Instant.parse("2026-07-07T23:00:00+02:00")
+
         val DURING = Instant.parse("2026-07-11T14:00:00+02:00")
         val AFTER = Instant.parse("2026-07-20T10:00:00+02:00")
 

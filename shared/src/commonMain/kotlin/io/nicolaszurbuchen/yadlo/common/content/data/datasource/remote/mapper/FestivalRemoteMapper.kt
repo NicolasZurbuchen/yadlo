@@ -2,6 +2,7 @@ package io.nicolaszurbuchen.yadlo.common.content.data.datasource.remote.mapper
 
 import io.nicolaszurbuchen.yadlo.common.content.data.datasource.remote.dto.FestivalDto
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Festival
+import io.nicolaszurbuchen.yadlo.common.content.domain.model.SocialLink
 
 /**
  * No references to resolve and no instants to parse — `festival.json` is flat by the time it
@@ -14,4 +15,5 @@ fun FestivalDto.toDomain(): Festival =
         tagline = tagline,
         currentEditionId = currentEditionId,
         minSupportedAppVersion = minSupportedAppVersion,
+        social = social.map { SocialLink(id = it.id, name = it.name, url = it.url) },
     )

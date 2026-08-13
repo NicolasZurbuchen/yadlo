@@ -12,7 +12,7 @@ import io.nicolaszurbuchen.yadlo.feature.home.domain.usecase.ObserveHomeContentU
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.time.Clock
-import kotlin.time.Duration.Companion.seconds
+import kotlin.time.Duration.Companion.minutes
 
 interface HomeStore : Store<HomeIntent, HomeState, HomeLabel>
 
@@ -51,17 +51,18 @@ class HomeStoreFactory(
         override fun executeIntent(intent: HomeIntent) {
             when (intent) {
                 HomeIntent.HeroClicked -> {
-                    // The hero only renders in these two phases, and its destination is the whole
-                    // difference between them: ANNOUNCED says the programme exists, APPROACHING
-                    // says build your Plan while you still realistically will.
-                    if (state().phase == PhaseUiModel.APPROACHING) {
-                        publish(HomeLabel.NavigateToMonYadlo)
-                    } else {
-                        publish(HomeLabel.NavigateToProgramme)
-                    }
+                    // Both heroes land on Programme. Mon Yadlo was the obvious target for the
+                    // APPROACHING one until you follow it through: a Plan is built by saving rows
+                    // in Programme, so sending someone to their empty Plan is sending them one tab
+                    // short of the thing the hero is asking them to do.
+                    publish(HomeLabel.NavigateToProgramme)
                 }
 
                 is HomeIntent.AnnouncementClicked -> {
+                    publish(HomeLabel.OpenUrl(intent.url))
+                }
+
+                is HomeIntent.SocialClicked -> {
                     publish(HomeLabel.OpenUrl(intent.url))
                 }
             }
@@ -105,8 +106,13 @@ class HomeStoreFactory(
     }
 
     private companion object {
-        /** One second because the countdown shows seconds; every other block is indifferent to it. */
-        val TICK_INTERVAL = 1.seconds
+        /**
+         * One minute. Everything on this screen that moves is measured in days or in phases, and
+         * both turn on a calendar boundary — a per-second tick would redraw the same string sixty
+         * times to catch a midnight it will catch anyway. Programme's live pills will want finer,
+         * and that is Programme's store to decide.
+         */
+        val TICK_INTERVAL = 1.minutes
     }
 }
 

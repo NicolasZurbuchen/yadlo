@@ -208,10 +208,15 @@ s'impliquer · réseaux sociaux. One job: announce the programme and send people
 No history block — the reader has already decided to come. Réservations moved to
 APPROACHING, where they are actually actionable.
 
-*APPROACHING* — recherche · countdown · **hero: ton programme t'attend** → Mon Yadlo ·
+*APPROACHING* — recherche · countdown · **hero: ton programme t'attend** → Programme ·
 préparer sa venue (paiement, comment venir, accessibilité) · réservations · annonces.
-No plan preview: the hero already points at Mon Yadlo, and two routes to the same place
-is the duplication rule again.
+No plan preview: the hero is already the one route to building a Plan, and a second would
+be the duplication rule again.
+
+*The hero pointed at Mon Yadlo until the Accueil implementation, and that was wrong.* A Plan
+is built by saving rows in Programme; Mon Yadlo only recalls what is already saved and has
+no add-flow by design. So the hero that says "choose your weekend" was landing the reader on
+an empty tab, one short of the thing it had just asked them to do.
 
 *LIVE* — recherche · annonces du jour · lien Instagram, plus the quiet-hours block when
 nothing is running. Deliberately thin, because during LIVE **the app opens on Programme,

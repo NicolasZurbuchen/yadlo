@@ -13,6 +13,7 @@ import io.nicolaszurbuchen.yadlo.common.content.domain.model.FestivalDay
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Happening
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Provenance
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Slot
+import io.nicolaszurbuchen.yadlo.common.content.domain.model.SocialLink
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Venue
 import io.nicolaszurbuchen.yadlo.common.content.domain.usecase.DerivePhaseUseCase
 import io.nicolaszurbuchen.yadlo.feature.home.domain.usecase.ObserveHomeContentUseCase
@@ -122,14 +123,15 @@ class HomeExecutorTest {
     // region HeroClicked
 
     @Test
-    fun heroClicked_whileApproaching_sendsTheVisitorToMonYadlo() =
+    fun heroClicked_whileApproaching_sendsTheVisitorToTheProgrammeRatherThanAnEmptyPlan() =
         homeTest(startingAt = SIX_DAYS_BEFORE) { store, repository, _ ->
             repository.emitStatus(ContentStatus.Ready(bundle = bundle(), updateRequired = false))
             testDispatcher.scheduler.runCurrent()
+            assertEquals(PhaseUiModel.APPROACHING, store.state.phase)
 
             store.labels.test {
                 store.accept(HomeIntent.HeroClicked)
-                assertEquals(HomeLabel.NavigateToMonYadlo, awaitItem())
+                assertEquals(HomeLabel.NavigateToProgramme, awaitItem())
             }
         }
 
@@ -158,6 +160,19 @@ class HomeExecutorTest {
             store.labels.test {
                 store.accept(HomeIntent.AnnouncementClicked("https://example.com/aftermovie"))
                 assertEquals(HomeLabel.OpenUrl("https://example.com/aftermovie"), awaitItem())
+            }
+        }
+
+    // region SocialClicked
+
+    @Test
+    fun socialClicked_publishesTheUrlForThePlatformToOpen() =
+        homeTest(startingAt = A_WEEK_AFTER) { store, _, _ ->
+            testDispatcher.scheduler.runCurrent()
+
+            store.labels.test {
+                store.accept(HomeIntent.SocialClicked("https://www.instagram.com/yadlo_ch/"))
+                assertEquals(HomeLabel.OpenUrl("https://www.instagram.com/yadlo_ch/"), awaitItem())
             }
         }
 
@@ -196,6 +211,7 @@ class HomeExecutorTest {
                     tagline = "Mouille ton corps, arrose ton esprit",
                     currentEditionId = "2026",
                     minSupportedAppVersion = null,
+                    social = listOf(SocialLink(id = "instagram", name = "Instagram", url = "https://example.ch/insta")),
                 ),
             edition =
                 Edition(
@@ -260,6 +276,6 @@ class HomeExecutorTest {
         val A_WEEK_AFTER = Instant.parse("2026-07-20T12:00:00+02:00")
 
         /** Two, so the assertion does not depend on which side of a single tick the advance lands. */
-        const val TWO_TICKS_MILLIS = 2_000L
+        const val TWO_TICKS_MILLIS = 120_000L
     }
 }

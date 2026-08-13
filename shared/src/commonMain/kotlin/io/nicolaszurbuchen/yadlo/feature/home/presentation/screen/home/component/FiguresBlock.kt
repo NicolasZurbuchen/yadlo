@@ -71,5 +71,16 @@ fun FiguresBlock(
                 }
             }
         }
+
+        // Shown rather than hidden. The association has published closing figures exactly once, so
+        // a block that waited for confirmed ones would be empty for most of its life — naming where
+        // these came from is what makes showing them honest.
+        block.caveat?.let { caveat ->
+            Text(
+                text = caveat.asString(),
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.appColors.textTertiary,
+            )
+        }
     }
 }

@@ -10,10 +10,7 @@ class HomeNavKeyHandler(
 ) : NavKeyHandler {
     override fun EntryProviderScope<NavKey>.registerEntries() {
         entry<HomeDestination> {
-            HomeRoute(
-                onNavigateToProgramme = { navigator.navigateToProgramme() },
-                onNavigateToMonYadlo = { navigator.navigateToMonYadlo() },
-            )
+            HomeRoute(onNavigateToProgramme = { navigator.navigateToProgramme() })
         }
     }
 }

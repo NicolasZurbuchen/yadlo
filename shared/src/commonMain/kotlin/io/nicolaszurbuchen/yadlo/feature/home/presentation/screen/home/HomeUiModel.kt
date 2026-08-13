@@ -13,16 +13,19 @@ data class HomeUiModel(
 )
 
 sealed interface HomeBlockUiModel {
+    /**
+     * A day count, not a clock. The prototype is unambiguous — one big `J-19` — and it is the right
+     * unit: nobody plans around the seconds until a festival that is nineteen days away.
+     */
     data class Countdown(
-        val title: UiText,
-        val editionName: String,
-        val cells: List<CountdownCellUiModel>,
+        val daysText: UiText,
+        val subtitle: String,
     ) : HomeBlockUiModel
 
     data class Hero(
+        val kicker: UiText,
         val title: UiText,
         val body: UiText,
-        val actionLabel: UiText,
     ) : HomeBlockUiModel
 
     data class ThankYou(
@@ -33,18 +36,19 @@ sealed interface HomeBlockUiModel {
     data class Figures(
         val title: UiText,
         val items: List<FigureUiModel>,
+        /** Null when every figure is confirmed; the caveat Provenance owes the reader otherwise. */
+        val caveat: UiText?,
     ) : HomeBlockUiModel
 
     data class Announcements(
         val title: UiText,
         val items: List<AnnouncementUiModel>,
     ) : HomeBlockUiModel
-}
 
-data class CountdownCellUiModel(
-    val value: String,
-    val label: UiText,
-)
+    data class Social(
+        val items: List<SocialUiModel>,
+    ) : HomeBlockUiModel
+}
 
 data class FigureUiModel(
     val id: String,
@@ -59,6 +63,12 @@ data class AnnouncementUiModel(
     val title: String,
     val body: String?,
     val url: String?,
+)
+
+data class SocialUiModel(
+    val id: String,
+    val name: String,
+    val url: String,
 )
 
 /**

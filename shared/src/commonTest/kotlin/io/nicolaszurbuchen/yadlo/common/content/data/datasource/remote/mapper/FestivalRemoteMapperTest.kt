@@ -2,6 +2,7 @@ package io.nicolaszurbuchen.yadlo.common.content.data.datasource.remote.mapper
 
 import io.nicolaszurbuchen.yadlo.common.content.data.datasource.remote.dto.FestivalDto
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Festival
+import io.nicolaszurbuchen.yadlo.common.content.domain.model.SocialLink
 import kotlinx.serialization.json.Json
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -17,6 +18,10 @@ class FestivalRemoteMapperTest {
                 tagline = "Mouille ton corps, arrose ton esprit",
                 currentEditionId = "2026",
                 minSupportedAppVersion = "1.2.0",
+                social =
+                    listOf(
+                        FestivalDto.SocialDto(id = "instagram", name = "Instagram", url = "https://example.ch/insta"),
+                    ),
             )
 
         val result = dto.toDomain()
@@ -27,9 +32,24 @@ class FestivalRemoteMapperTest {
                 tagline = "Mouille ton corps, arrose ton esprit",
                 currentEditionId = "2026",
                 minSupportedAppVersion = "1.2.0",
+                social = listOf(SocialLink(id = "instagram", name = "Instagram", url = "https://example.ch/insta")),
             ),
             result,
         )
+    }
+
+    @Test
+    fun toDomain_noNetworksPublished_isAnEmptyListRatherThanAnAbsentBlock() {
+        val dto =
+            FestivalDto(
+                schemaVersion = 1,
+                name = "Yadlo",
+                tagline = "Mouille ton corps, arrose ton esprit",
+                currentEditionId = "2026",
+                minSupportedAppVersion = null,
+            )
+
+        assertEquals(emptyList(), dto.toDomain().social)
     }
 
     @Test
@@ -55,6 +75,7 @@ class FestivalRemoteMapperTest {
 
         assertEquals("2026", festival.currentEditionId)
         assertNull(festival.minSupportedAppVersion)
+        assertEquals(listOf("Instagram"), festival.social.map { it.name })
     }
 }
 

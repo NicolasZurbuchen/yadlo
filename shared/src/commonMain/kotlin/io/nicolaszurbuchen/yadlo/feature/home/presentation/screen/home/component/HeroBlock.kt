@@ -1,10 +1,10 @@
 package io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -16,9 +16,10 @@ import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.HomeBlock
 import io.nicolaszurbuchen.yadlo.infra.ui.asString
 
 /**
- * The one block on Accueil with a job other than being read: ANNOUNCED sends the visitor to the
- * programme, APPROACHING sends them to their Plan. Which of the two it is has already been decided
- * by the time it renders — the button carries a label, not a destination.
+ * The one block on Accueil with a job other than being read: it sends the visitor to the programme.
+ *
+ * The whole card is the target rather than a button inside it, which is what the prototype shows
+ * and what the rest of the app does — a row you can read is a row you can tap.
  */
 @Composable
 fun HeroBlock(
@@ -32,12 +33,20 @@ fun HeroBlock(
                 .fillMaxWidth()
                 .clip(MaterialTheme.shapes.medium)
                 .background(MaterialTheme.appColors.accentSubtle)
+                .clickable(onClick = onClick)
                 .padding(MaterialTheme.spacing.md),
     ) {
+        Text(
+            text = block.kicker.asString(),
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.appColors.onAccentSubtle,
+        )
+
         Text(
             text = block.title.asString(),
             style = MaterialTheme.typography.titleLarge,
             color = MaterialTheme.appColors.onAccentSubtle,
+            modifier = Modifier.padding(top = MaterialTheme.spacing.xs),
         )
 
         Text(
@@ -46,12 +55,5 @@ fun HeroBlock(
             color = MaterialTheme.appColors.onAccentSubtle,
             modifier = Modifier.padding(top = MaterialTheme.spacing.xs),
         )
-
-        Button(
-            onClick = onClick,
-            modifier = Modifier.padding(top = MaterialTheme.spacing.md),
-        ) {
-            Text(text = block.actionLabel.asString())
-        }
     }
 }
