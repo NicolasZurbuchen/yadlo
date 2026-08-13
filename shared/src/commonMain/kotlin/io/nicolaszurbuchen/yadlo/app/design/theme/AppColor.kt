@@ -53,34 +53,17 @@ data class AppColors(
     /** The accent as a tinted ground rather than a fill — a highlighted row, a badge. */
     val accentSubtle: Color,
     val onAccentSubtle: Color,
-    /**
-     * The veil that closes over a photograph so text stays readable on top of an image nobody has
-     * vetted — a fiche's hero, the splash. Alpha is baked in: the value is only correct as a whole.
-     */
+    /** Veil over a photograph, so text stays readable on an image nobody vetted. Alpha is baked in. */
     val scrim: Color,
-    /**
-     * The ink [scrim] exists to make legible, and the same in both themes for the same reason the
-     * scrim is: what it sits on is a photograph, not one of the app's grounds, so the device theme
-     * says nothing about it. AppColorTest asserts this pairing over the worst case a photo can
-     * present.
-     */
+    /** The ink [scrim] exists to make legible. */
     val onScrim: Color,
-    /**
-     * Not a colour — the discriminator, for the decisions that are not about colour at all: which
-     * status-bar icon style to ask for, which variant of a bundled asset to load. Without it every
-     * such call site reaches for `isSystemInDarkTheme()` and stops respecting an overridden theme.
-     */
+    /** Not a colour: lets a call site branch without reaching for isSystemInDarkTheme() directly. */
     val isDark: Boolean,
 )
 
-/**
- * One scrim for both themes: it sits over a photograph, not over the app's ground, so the theme says
- * nothing about what is underneath it.
- *
- * 0.6 is the lowest alpha at which white text clears 4.5:1 over a *fully white* photograph, which is
- * the worst case a hero image can present. Lower looks better over the press shots we have and fails
- * the one overexposed beach photo nobody previewed.
- */
+// Derived here, not taken from a prototype: 0.6 is the lowest alpha at which white clears 4.5:1 over
+// a fully white photograph, which is the worst case a hero image can present. Same in both themes
+// because what it covers is a photo, not one of the app grounds. AppColorTest holds it.
 private val SCRIM = SlatePalette.slate950.copy(alpha = 0.6f)
 
 val LightAppColors =

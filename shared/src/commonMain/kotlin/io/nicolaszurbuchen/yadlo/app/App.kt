@@ -26,9 +26,10 @@ fun App() {
         }
     }
 
-    // rememberSaveable rather than remember: a configuration change must not replay the splash. The
-    // gate is a plain flag today and becomes "the content bundle is ready" once loading exists —
-    // which is why SplashScreen owns a *minimum* duration rather than the whole timing decision.
+    // A gate rather than a destination: nothing navigates to the splash and nothing returns to it,
+    // so it sits above MainScaffold's four tab stacks instead of inside them. Putting it on a back
+    // stack would mean a root NavDisplay above the tab shell, and AppNavigator.attach and the root
+    // BackHandler both assume the top level is a tab. Revisit if a second pre-app screen appears.
     var splashShown by rememberSaveable { mutableStateOf(false) }
 
     YadloTheme {
