@@ -6,6 +6,7 @@ import kotlinx.serialization.Serializable
 data class MenuGroupDto(
     val id: String,
     val name: String,
+    val description: String? = null,
     val source: String? = null,
     val items: List<Item> = emptyList(),
 ) {

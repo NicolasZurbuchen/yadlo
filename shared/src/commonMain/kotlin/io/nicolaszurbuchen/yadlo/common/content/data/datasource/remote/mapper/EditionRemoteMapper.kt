@@ -204,6 +204,7 @@ private fun MenuGroupDto.toDomain(happeningId: String): MenuGroup =
     MenuGroup(
         id = id,
         name = name,
+        description = description,
         source = source,
         items =
             items.map { item ->

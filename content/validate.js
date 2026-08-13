@@ -160,6 +160,86 @@ for (const f of fest.faq || []) {
 }
 if (!(fest.faq || []).length) warns.push('festival.json: faq is empty');
 
+// --- shape: optional means present-and-null, never absent -----------------------------------
+// A field that can be empty is written null or [] rather than omitted. Absent and null mean the
+// same thing to a reader, so allowing both forces every reader to handle both to learn nothing -
+// which is exactly what the Kotlin DTO layer walked into. Checked here, once, so the file cannot
+// drift back one hand edit at a time. Unknown keys are errors too: a typo'd field name is
+// otherwise indistinguishable from an omitted one.
+const SHAPES = {
+  edition: ['schemaVersion', 'id', 'year', 'name', 'venue', 'days', 'categories', 'happenings',
+    'slots', 'partners', 'figures'],
+  venue: ['name', 'address', 'latitude', 'longitude', 'provenance'],
+  day: ['id', 'name', 'date', 'start', 'end', 'provenance'],
+  category: ['id', 'name', 'order'],
+  happening: ['id', 'kind', 'name', 'category', 'description', 'images', 'provenance'],
+  artist: ['genres', 'links'],
+  activity: ['genres', 'price', 'bookingRequired', 'bookingUrl', 'equipmentProvided',
+    'suitability', 'supervised'],
+  stand: ['offering', 'marks', 'links', 'menu'],
+  image: ['src', 'credit'],
+  link: ['type', 'url'],
+  price: ['free', 'tiers', 'deposit', 'provenance'],
+  tier: ['label', 'amount', 'currency', 'per'],
+  deposit: ['amount', 'currency', 'note'],
+  menuGroup: ['id', 'name', 'description', 'source', 'items'],
+  menuItem: ['name', 'price', 'description', 'marks', 'provenance'],
+  money: ['amount', 'currency'],
+  slot: ['id', 'happeningId', 'dayId', 'start', 'end', 'provenance'],
+  partnerTier: ['id', 'name', 'order', 'provenance', 'members'],
+  partner: ['id', 'name', 'url', 'logo'],
+  figure: ['id', 'value', 'label', 'provenance'],
+};
+
+function checkShape(obj, kind, where) {
+  if (!obj || typeof obj !== 'object') return errors.push(`${where}: expected an object`);
+  const spec = SHAPES[kind];
+  // A happening also carries exactly one payload named after its kind; that pairing is checked
+  // in the happenings section, so allow all three names here rather than duplicating the rule.
+  const allowed = kind === 'happening' ? spec.concat(['artist', 'activity', 'stand']) : spec;
+  for (const key of spec)
+    if (!(key in obj)) errors.push(`${where}: '${key}' is omitted - optional fields are written null, never left out`);
+  for (const key of Object.keys(obj))
+    if (!allowed.includes(key)) errors.push(`${where}: unknown key '${key}'`);
+}
+
+checkShape(ed, 'edition', 'edition');
+checkShape(ed.venue, 'venue', 'venue');
+ed.days.forEach(d => checkShape(d, 'day', `day ${d.id}`));
+ed.categories.forEach(c => checkShape(c, 'category', `category ${c.id}`));
+ed.slots.forEach(s => checkShape(s, 'slot', `slot ${s.id}`));
+ed.figures.forEach(f => checkShape(f, 'figure', `figure ${f.id}`));
+ed.partners.forEach(t => {
+  checkShape(t, 'partnerTier', `partnerTier ${t.id}`);
+  (t.members || []).forEach(m => {
+    checkShape(m, 'partner', `partner ${m.id}`);
+    if (m.logo) checkShape(m.logo, 'image', `partner ${m.id}/logo`);
+  });
+});
+ed.happenings.forEach(h => {
+  const w = `happening ${h.id}`;
+  checkShape(h, 'happening', w);
+  (h.images || []).forEach((im, i) => checkShape(im, 'image', `${w}/images[${i}]`));
+
+  const payload = h[h.kind];
+  if (!payload || !(h.kind in SHAPES)) return;
+  checkShape(payload, h.kind, `${w}/${h.kind}`);
+  (payload.links || []).forEach((l, i) => checkShape(l, 'link', `${w}/${h.kind}/links[${i}]`));
+
+  if (payload.price) {
+    checkShape(payload.price, 'price', `${w}/price`);
+    (payload.price.tiers || []).forEach((t, i) => checkShape(t, 'tier', `${w}/price/tiers[${i}]`));
+    if (payload.price.deposit) checkShape(payload.price.deposit, 'deposit', `${w}/price/deposit`);
+  }
+  (payload.menu || []).forEach(g => {
+    checkShape(g, 'menuGroup', `${w}/menu ${g.id}`);
+    (g.items || []).forEach((it, i) => {
+      checkShape(it, 'menuItem', `${w}/menu ${g.id}/items[${i}]`);
+      if (it.price) checkShape(it.price, 'money', `${w}/menu ${g.id}/items[${i}]/price`);
+    });
+  });
+});
+
 // --- categories ---------------------------------------------------------------------------
 const catIds = new Set();
 for (const c of ed.categories) {

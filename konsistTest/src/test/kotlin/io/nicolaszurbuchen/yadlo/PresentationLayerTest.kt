@@ -1,6 +1,7 @@
 package io.nicolaszurbuchen.yadlo
 
 import com.lemonappdev.konsist.api.Konsist
+import com.lemonappdev.konsist.api.declaration.KoFileDeclaration
 import com.lemonappdev.konsist.api.ext.list.withNameEndingWith
 import com.lemonappdev.konsist.api.ext.list.withPackage
 import com.lemonappdev.konsist.api.verify.assertEmpty
@@ -22,6 +23,18 @@ class PresentationLayerTest {
                 "UiModel",
                 "ViewModel",
             )
+
+        /**
+         * `app/` is the shell, not a feature: it owns the theme, the navigation host and the
+         * screens that sit outside the four tab stacks. A splash gate is a composable and its
+         * preview — there is no Contract, Store or UiModel to layer, and no domain or data
+         * sibling to justify a `presentation/screen/` package around it.
+         *
+         * Only `Screen` and `Preview` are excused. The four MVI files are not, because each one
+         * implies the whole apparatus: a shell screen that grows a Store needs the screen package
+         * the same way a feature does.
+         */
+        private fun List<KoFileDeclaration>.outsideAppShell(): List<KoFileDeclaration> = filterNot { it.hasPackage("..app..") }
     }
 
     // region Name implies location
@@ -43,6 +56,7 @@ class PresentationLayerTest {
     @Test
     fun `files suffixed with Screen must reside in screen package`() {
         scope.files
+            .outsideAppShell()
             .withNameEndingWith("Screen")
             .assertTrue { it.hasPackage("..presentation.screen..") }
     }
@@ -50,6 +64,7 @@ class PresentationLayerTest {
     @Test
     fun `files suffixed with Preview must reside in screen package`() {
         scope.files
+            .outsideAppShell()
             .withNameEndingWith("Preview")
             .assertTrue { it.hasPackage("..presentation.screen..") }
     }

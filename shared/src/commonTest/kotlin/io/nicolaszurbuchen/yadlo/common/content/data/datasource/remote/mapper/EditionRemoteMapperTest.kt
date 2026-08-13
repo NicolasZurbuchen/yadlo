@@ -216,6 +216,15 @@ class EditionRemoteMapperTest {
     }
 
     @Test
+    fun toDomain_menuGroupKeepsItsDescription() {
+        val dto = editionDto(happenings = listOf(standDto()), slots = emptyList())
+
+        val stand = dto.toDomain().happenings.single() as Happening.Stand
+
+        assertEquals("Cuisine mijotée", stand.menu.single().description)
+    }
+
+    @Test
     fun toDomain_image_renamesSrcToUrl() {
         val dto = editionDto(happenings = listOf(artistDto().copy(images = listOf(ImageDto(src = "a.jpg", credit = "Photo: X")))))
 
@@ -439,6 +448,7 @@ private fun standDto(): HappeningDto =
                         MenuGroupDto(
                             id = "plats",
                             name = "Plats",
+                            description = "Cuisine mijotée",
                             source = "Liste transmise",
                             items =
                                 listOf(
