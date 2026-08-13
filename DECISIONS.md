@@ -16,10 +16,56 @@ news feed from `news.json`. Remote push sits behind a `Notifier` interface so FC
 in later without a rewrite. Volunteer group chat is out of scope — it is a second product
 and requires being official.
 
-**Content substrate.** Versioned JSON in a repo, served as static HTTPS, fetched on launch,
-cached to disk, with a bundled snapshot as fallback. No CMS and no Firebase for now. The
-website's content is largely trapped in images and in a page-builder tree; the app is the
-first place it exists as structured data.
+**Content substrate.** Versioned JSON in a repo, served as static HTTPS, fetched on launch and
+cached to disk. No CMS and no Firebase for now. The website's content is largely trapped in images
+and in a page-builder tree; the app is the first place it exists as structured data.
+
+**No bundled snapshot in v1.** An earlier draft shipped a copy of the content inside the app as a
+cold-start fallback. It is not worth it, and the reasoning is worth keeping so it does not get
+relitigated:
+
+- **An app cannot be installed without connectivity.** A bundle therefore only ever serves someone
+  who installed the app, never opened it, travelled, and *then* lost signal. That is a real person,
+  but a narrow one.
+- **The failure screen has to exist either way.** A bundle can be absent, or stale, or from an
+  edition that has ended. So bundling never removed the "no content yet" screen — it only optimised
+  past it.
+- **The cache is what makes the app work on the beach**, and it is warm for everyone who has opened
+  the app once, which is everyone who is at the festival with it installed.
+
+The cost of bundling is a second source of truth that goes quietly out of date, and the classic
+failure it produces — an app confidently showing last year's programme — is worse than an honest
+empty state. It returns behind the same interface if this proves wrong, and the stale-year problem
+then has a cheap fix: expire the bundle past its edition's last day, against the injected clock.
+
+**First launch, in order.** Splash draws from bundled images, so there is never a spinner on a blank
+screen. Then `festival.json` — small, and it names `currentEditionId` — then that edition, then
+`announcements.json`. Nothing blocks the UI on the network: the fetch publishes into a `StateFlow`
+and the screen updates when it lands. With no signal and no cache, the app says one connection is
+needed rather than spinning.
+
+**The cache is a document, not a schema.** Stored as one blob and parsed once into memory, rather
+than shredded into SQL tables. Every read wants the whole bundle, references only resolve after
+parsing, and a relational schema would buy nothing while costing a migration on every content
+change. Parsing once matters: a UseCase that re-reads and re-resolves per query re-parses 45 KB for
+each screen.
+
+**A refresh never deletes saved data.** A Slot disappearing from the file means *no longer in the
+programme*, never a silent removal from someone's Plan.
+
+**`schemaVersion` is the only "update the app" trigger, and it never hard-blocks.** An unofficial
+festival app that bricks itself on the Saturday afternoon is worse than one showing week-old data.
+Content changes additively — the client parses with `ignoreUnknownKeys`, so an older app ignores
+fields it does not know, and no bump is needed. A major bump means the app keeps its cache, refuses
+to parse the newer file, and shows a soft update row in Plus. `minSupportedAppVersion` on
+`festival.json` is the escape hatch rather than a separate manifest, since that file is fetched
+first anyway. Versioned paths (`/v1/`, `/v2/`) are the last resort for a break that cannot be made
+additive.
+
+**A new edition needs no app release.** `currentEditionId` moves, the app fetches the new edition.
+The one piece of code it requires is clearing the Plan when that id changes — Edition-qualified Slot
+ids stop stale saves colliding, but they would linger as orphans, so rows not carrying the current
+edition prefix are dropped explicitly.
 
 **Two bundles, split by frozen record vs live truth.**
 
@@ -45,6 +91,19 @@ festival's closing statistics ("6000 visiteurs, 160 bénévoles, 3200 litres de 
 fact about one specific edition and belong in the frozen file — which also lets the ENDED
 phase report on the edition that just finished, and lets the numbers become a series as
 archives accumulate.
+
+**The domain model resolves references; the graph stays one-way.** The bundle is atomic and that
+stands, but the mapper's job is to turn it into something usable rather than restate it, so a `Slot`
+carries its `Happening` and its `FestivalDay` and a `Happening` carries its `Category`. The
+direction is not stylistic: `Happening` carrying its Slots back would make the graph cyclic, and a
+cyclic `data class` blows the stack on `equals`, `hashCode` and `toString`. A fiche needs both, and
+gets a small aggregate assembled by a UseCase rather than a back-reference.
+
+**Two things the content model deliberately does not know.** *Live state* — `dans 15 min`,
+`en cours`, `se termine`, `terminé` — is derived from the clock and a Slot's window on the same
+ticker that drives Phase, not stored. And *whether something is saved* lives in local storage, so
+every Programme and Mon Yadlo row is a join across two repositories. Putting either in the bundle
+would mean content that changes without anyone publishing it.
 
 **Provenance on curated content.** Anything reconstructed rather than given carries how
 reliable it is — confirmed, archived, or unverified. Prices above all. The field goes in
