@@ -1,0 +1,22 @@
+-- One row per fetched content file, holding the JSON exactly as served.
+--
+-- The cache is a document, not a schema. Every read wants the whole bundle, references only resolve
+-- after parsing, and a relational shape would buy nothing while costing a migration on every content
+-- change. Keeping the raw text is also what makes the ETag meaningful: what is replayed as
+-- If-None-Match has to correspond to the bytes actually held.
+CREATE TABLE CachedDocument (
+    path TEXT NOT NULL PRIMARY KEY,
+    body TEXT NOT NULL,
+    etag TEXT,
+    fetched_at INTEGER NOT NULL
+);
+
+selectByPath:
+SELECT * FROM CachedDocument WHERE path = ?;
+
+upsert:
+INSERT OR REPLACE INTO CachedDocument(path, body, etag, fetched_at)
+VALUES (?, ?, ?, ?);
+
+deleteAll:
+DELETE FROM CachedDocument;
