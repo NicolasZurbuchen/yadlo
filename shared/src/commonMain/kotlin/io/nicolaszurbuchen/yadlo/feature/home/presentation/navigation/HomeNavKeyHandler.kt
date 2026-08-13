@@ -5,8 +5,15 @@ import androidx.navigation3.runtime.NavKey
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.HomeRoute
 import io.nicolaszurbuchen.yadlo.infra.navigation.NavKeyHandler
 
-class HomeNavKeyHandler : NavKeyHandler {
+class HomeNavKeyHandler(
+    private val navigator: HomeNavigator,
+) : NavKeyHandler {
     override fun EntryProviderScope<NavKey>.registerEntries() {
-        entry<HomeDestination> { HomeRoute() }
+        entry<HomeDestination> {
+            HomeRoute(
+                onNavigateToProgramme = { navigator.navigateToProgramme() },
+                onNavigateToMonYadlo = { navigator.navigateToMonYadlo() },
+            )
+        }
     }
 }

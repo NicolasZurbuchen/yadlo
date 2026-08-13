@@ -1,27 +1,70 @@
 package io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import org.jetbrains.compose.resources.stringResource
-import yadlo.shared.generated.resources.Res
-import yadlo.shared.generated.resources.tab_home
+import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
+import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.component.AnnouncementsBlock
+import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.component.CountdownBlock
+import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.component.FiguresBlock
+import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.component.HeroBlock
+import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.component.ThankYouBlock
 
-// Placeholder. Replaced when the Accueil feature is built; it exists now so the tab shell has a
-// real destination to render and the navigation can be exercised end to end.
+/**
+ * Accueil renders the block stack it is handed, in the order it is handed. Which blocks a Phase
+ * gets is decided in [toUiModel]; this file only knows how each one looks.
+ */
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier) {
-    Box(
-        contentAlignment = Alignment.Center,
+fun HomeScreen(
+    state: HomeUiModel,
+    onHeroClick: () -> Unit,
+    onAnnouncementClick: (String) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    if (state.isLoading) {
+        Box(contentAlignment = Alignment.Center, modifier = modifier.fillMaxSize()) {
+            CircularProgressIndicator()
+        }
+        return
+    }
+
+    LazyColumn(
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.lg),
+        contentPadding = PaddingValues(MaterialTheme.spacing.md),
         modifier = modifier.fillMaxSize(),
     ) {
-        Text(
-            text = stringResource(Res.string.tab_home),
-            style = MaterialTheme.typography.headlineMedium,
-        )
+        // The block type is the identity: a Phase never produces two blocks of the same kind, and
+        // keying on position would re-use a countdown's slot for a thank-you when the Phase turns.
+        items(state.blocks, key = { it::class.simpleName.orEmpty() }) { block ->
+            when (block) {
+                is HomeBlockUiModel.Countdown -> {
+                    CountdownBlock(block = block)
+                }
+
+                is HomeBlockUiModel.Hero -> {
+                    HeroBlock(block = block, onClick = onHeroClick)
+                }
+
+                is HomeBlockUiModel.ThankYou -> {
+                    ThankYouBlock(block = block)
+                }
+
+                is HomeBlockUiModel.Figures -> {
+                    FiguresBlock(block = block)
+                }
+
+                is HomeBlockUiModel.Announcements -> {
+                    AnnouncementsBlock(block = block, onAnnouncementClick = onAnnouncementClick)
+                }
+            }
+        }
     }
 }
