@@ -411,15 +411,15 @@ private fun artistDto(category: String = "musique"): HappeningDto =
         name = "DJ ALF",
         category = category,
         provenance = "confirmed",
-        artist = HappeningDto.Artist(genres = listOf("House"), links = listOf(LinkDto(type = "website", url = "https://djalf.ch/"))),
+        artist = HappeningDto.ArtistDto(genres = listOf("House"), links = listOf(LinkDto(type = "website", url = "https://djalf.ch/"))),
     )
 
 private fun activityDto(
     price: PriceDto =
         PriceDto(
             free = false,
-            tiers = listOf(PriceDto.Tier(label = "Adulte", amount = 25.0, currency = "CHF", per = null)),
-            deposit = PriceDto.Deposit(amount = 50.0, currency = "CHF", note = "Caution casque"),
+            tiers = listOf(PriceDto.TierDto(label = "Adulte", amount = 25.0, currency = "CHF", per = null)),
+            deposit = PriceDto.DepositDto(amount = 50.0, currency = "CHF", note = "Caution casque"),
             provenance = "confirmed",
         ),
 ): HappeningDto =
@@ -429,7 +429,7 @@ private fun activityDto(
         name = "Silent Party",
         category = "musique",
         provenance = "confirmed",
-        activity = HappeningDto.Activity(price = price, bookingRequired = true),
+        activity = HappeningDto.ActivityDto(price = price, bookingRequired = true),
     )
 
 private fun standDto(): HappeningDto =
@@ -440,7 +440,7 @@ private fun standDto(): HappeningDto =
         category = "musique",
         provenance = "confirmed",
         stand =
-            HappeningDto.Stand(
+            HappeningDto.StandDto(
                 offering = "Cuisine végétale",
                 marks = listOf("végan", "bio"),
                 menu =
@@ -452,7 +452,7 @@ private fun standDto(): HappeningDto =
                             source = "Liste transmise",
                             items =
                                 listOf(
-                                    MenuGroupDto.Item(
+                                    MenuGroupDto.ItemDto(
                                         name = "Le Végé",
                                         price = MoneyDto(amount = 15.0, currency = "CHF"),
                                         marks = listOf("végé"),

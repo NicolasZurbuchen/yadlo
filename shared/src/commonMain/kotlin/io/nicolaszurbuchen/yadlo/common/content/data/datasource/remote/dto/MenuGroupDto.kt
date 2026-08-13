@@ -8,10 +8,10 @@ data class MenuGroupDto(
     val name: String,
     val description: String? = null,
     val source: String? = null,
-    val items: List<Item> = emptyList(),
+    val items: List<ItemDto> = emptyList(),
 ) {
     @Serializable
-    data class Item(
+    data class ItemDto(
         val name: String,
         val price: MoneyDto? = null,
         val description: String? = null,

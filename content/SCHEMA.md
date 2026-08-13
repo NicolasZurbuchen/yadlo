@@ -282,6 +282,7 @@ leads to a sponsor's logo being rendered like a press shot.
 schemaVersion   number
 name, tagline   string
 currentEditionId string
+minSupportedAppVersion string | null
 histoire        { foundedYear, body, journee: {title, body, provenance}, provenance }
 faq             { id, question, answer, provenance }[]
 responsable     { charters: { id, name, body, url, provenance }[] }
@@ -294,6 +295,18 @@ accessibilite   { items: Item[], contactEmailId, provenance }
 besoin          { emergencyNumbers: {id, label, number}[], lostPropertyEmailId, provenance }
 simpliquer      { hotstaff: {...}, partenaire: {...} }
 ```
+
+`currentEditionId` is how a new edition ships without an app release: move it, and the app fetches
+the new one.
+
+`minSupportedAppVersion` is the escape hatch for a break that cannot be made additive. Below it the
+app shows a soft update row in Plus and **never anything harder** — an unofficial festival app that
+bricks itself on the Saturday afternoon is worse than one showing week-old data. It lives here
+rather than in a separate manifest because this file is fetched first anyway. `null` means no
+minimum is set, which is the normal state.
+
+Only these five fields are modelled in the app today. The sections below are published and validated
+but not yet read by any screen, and are modelled when the screen that renders them exists.
 
 ### transports
 

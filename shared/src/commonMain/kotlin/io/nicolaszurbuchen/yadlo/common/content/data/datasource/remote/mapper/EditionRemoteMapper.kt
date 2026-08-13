@@ -26,20 +26,14 @@ import io.nicolaszurbuchen.yadlo.common.content.domain.model.Money
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Partner
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.PartnerTier
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Price
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.Provenance
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Slot
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Venue
 import io.nicolaszurbuchen.yadlo.common.error.AppError
 import io.nicolaszurbuchen.yadlo.common.error.AppException
-import kotlin.time.Instant
 
 private const val KIND_ARTIST = "artist"
 private const val KIND_ACTIVITY = "activity"
 private const val KIND_STAND = "stand"
-
-private const val PROVENANCE_CONFIRMED = "confirmed"
-private const val PROVENANCE_ARCHIVED = "archived"
-private const val PROVENANCE_UNVERIFIED = "unverified"
 
 /**
  * Turns the published bundle into the resolved graph the screens read: a Happening carries its
@@ -263,15 +257,3 @@ private fun LinkDto.toDomain(): Link =
         type = type,
         url = url,
     )
-
-private fun String.toProvenanceEnum(field: String): Provenance =
-    when (this) {
-        PROVENANCE_CONFIRMED -> Provenance.CONFIRMED
-        PROVENANCE_ARCHIVED -> Provenance.ARCHIVED
-        PROVENANCE_UNVERIFIED -> Provenance.UNVERIFIED
-        else -> throw AppException(AppError.Content.MalformedField(field, this))
-    }
-
-private fun String.toInstantValue(field: String): Instant =
-    runCatching { Instant.parse(this) }
-        .getOrElse { throw AppException(AppError.Content.MalformedField(field, this)) }
