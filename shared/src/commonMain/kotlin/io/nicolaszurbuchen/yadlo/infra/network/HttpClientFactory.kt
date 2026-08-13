@@ -17,15 +17,21 @@ import kotlinx.serialization.json.Json
  */
 const val CONTENT_BASE_URL = "https://nicolaszurbuchen.github.io/yadlo/"
 
-fun createHttpClient(): HttpClient =
+/**
+ * One parser for the whole app, so the leniency the content contract depends on is stated once.
+ * `ignoreUnknownKeys` is what makes an additive schema change safe for a build already installed:
+ * a field added to the content is skipped rather than failing the file.
+ */
+fun createJson(): Json =
+    Json {
+        ignoreUnknownKeys = true
+        isLenient = true
+    }
+
+fun createHttpClient(jsonFormat: Json): HttpClient =
     HttpClient(httpClientEngine()) {
         install(ContentNegotiation) {
-            json(
-                Json {
-                    ignoreUnknownKeys = true
-                    isLenient = true
-                },
-            )
+            json(jsonFormat)
         }
         install(Logging) {
             level = LogLevel.ALL

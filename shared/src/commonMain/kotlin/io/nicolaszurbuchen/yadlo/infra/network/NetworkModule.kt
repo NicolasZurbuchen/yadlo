@@ -4,5 +4,6 @@ import org.koin.dsl.module
 
 val networkModule =
     module {
-        single { createHttpClient() }
+        single { createJson() }
+        single { createHttpClient(get()) }
     }
