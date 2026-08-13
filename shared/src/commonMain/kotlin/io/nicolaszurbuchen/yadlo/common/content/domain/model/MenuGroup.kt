@@ -7,6 +7,8 @@ package io.nicolaszurbuchen.yadlo.common.content.domain.model
 data class MenuGroup(
     val id: String,
     val name: String,
+    /** What the group is when its name does not say: "Bokits" is a Guadeloupean fried sandwich. */
+    val description: String?,
     val source: String?,
     val items: List<Item>,
 ) {

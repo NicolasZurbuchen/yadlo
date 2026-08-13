@@ -31,7 +31,9 @@ statistics, but *today's* contact address.
   build if a localized object reappears. UI strings are a separate concern and stay translatable.
 - **Optional means present-and-null, never absent.** A field that can be empty is written `null` or
   `[]` rather than omitted. Absent and null meant the same thing and forced every reader to handle
-  both to learn nothing.
+  both to learn nothing — which is what the Kotlin DTO layer walked into. The validator now errors
+  on an omitted key, and on an unknown one: a typo'd field name is otherwise indistinguishable from
+  a field left out.
 - **Ids are lowercase kebab-case** and unique within their collection.
 - **Slot ids are Edition-qualified** — `2026:dubside-sat` — so a reused id cannot resurrect last
   year's saved plan.
@@ -148,8 +150,8 @@ provenance   Provenance
 ```
 
 `Image` is `{ src, credit }`. `credit` is usually null and exists because press photos carry a
-photographer's condition. A `src` is an absolute `https://` URL, or a path resolved against the
-edition's `imageBaseUrl` — while that field is null, only absolute URLs are accepted.
+photographer's condition. A `src` is an absolute `https://` URL, or a path relative to wherever the
+file was fetched from — exactly like a relative `href` in a web page. There is no `imageBaseUrl`.
 
 #### `artist` payload
 
@@ -215,10 +217,11 @@ menu      MenuGroup[]      [] when unpublished
 
 ```
 MenuGroup
-  id      string
-  name    string          "Plats", "Boissons"
-  source  string | null   where these prices came from, in the author's words
-  items   Item[]          at least one
+  id           string
+  name         string          "Plats", "Boissons"
+  description  string | null   what the group is when its name does not say
+  source       string | null   where these prices came from, in the author's words
+  items        Item[]          at least one
 
 Item
   name         string
