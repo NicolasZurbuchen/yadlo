@@ -4,14 +4,18 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.unit.dp
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.HomeBlockUiModel
@@ -39,16 +43,29 @@ fun SocialBlock(
         modifier = modifier.fillMaxWidth(),
     ) {
         block.items.forEach { item ->
-            Text(
-                text = item.name,
-                style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.appColors.textSecondary,
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xs),
+                verticalAlignment = Alignment.CenterVertically,
                 modifier =
                     Modifier
                         .clip(MaterialTheme.shapes.extraSmall)
                         .clickable { onSocialClick(item.url) }
                         .padding(horizontal = MaterialTheme.spacing.sm, vertical = MaterialTheme.spacing.xs),
-            )
+            ) {
+                Icon(
+                    imageVector = item.icon,
+                    contentDescription = null,
+                    tint = MaterialTheme.appColors.textSecondary,
+                    modifier = Modifier.size(SOCIAL_ICON_SIZE),
+                )
+                Text(
+                    text = item.name,
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.appColors.textSecondary,
+                )
+            }
         }
     }
 }
+
+private val SOCIAL_ICON_SIZE = 18.dp

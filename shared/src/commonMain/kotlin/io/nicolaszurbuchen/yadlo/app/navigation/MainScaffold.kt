@@ -1,5 +1,8 @@
 package io.nicolaszurbuchen.yadlo.app.navigation
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -14,6 +17,7 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
@@ -166,14 +170,29 @@ private fun MainTopAppBar(
     modifier: Modifier = Modifier,
 ) {
     TopAppBar(
-        title = { Text(text = title) },
-        actions = {
-            Text(
-                text = editionDates,
-                style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.appColors.textSecondary,
-                modifier = Modifier.padding(end = MaterialTheme.spacing.md),
-            )
+        title = {
+            // The dates sit beside the name on the same baseline rather than across the bar: they
+            // are a subtitle to it, and pinned right they read as an unrelated status field.
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm),
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.titleLarge,
+                    color = MaterialTheme.appColors.textPrimary,
+                    modifier = Modifier.alignByBaseline(),
+                )
+
+                Text(
+                    text = editionDates,
+                    style = MaterialTheme.typography.titleSmall,
+                    color = MaterialTheme.appColors.textSecondary,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.alignByBaseline(),
+                )
+            }
         },
         modifier = modifier,
     )

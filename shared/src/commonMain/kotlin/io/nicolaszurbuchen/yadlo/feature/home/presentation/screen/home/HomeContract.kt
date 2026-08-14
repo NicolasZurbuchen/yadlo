@@ -13,10 +13,14 @@ sealed interface HomeIntent {
     data class SocialClicked(
         val url: String,
     ) : HomeIntent
+
+    data object AllAnnouncementsClicked : HomeIntent
 }
 
 sealed interface HomeLabel {
     data object NavigateToProgramme : HomeLabel
+
+    data object NavigateToAnnouncements : HomeLabel
 
     data class OpenUrl(
         val url: String,

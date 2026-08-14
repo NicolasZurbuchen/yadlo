@@ -11,6 +11,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import io.nicolaszurbuchen.yadlo.app.design.theme.YadloTheme
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
+import io.nicolaszurbuchen.yadlo.feature.home.presentation.uimodel.AnnouncementUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.home_announcements_title
@@ -35,6 +36,9 @@ import yadlo.shared.generated.resources.home_thank_you_title
 private class HomeStackProvider : PreviewParameterProvider<HomeUiModel> {
     override val values =
         sequenceOf(
+            // Before the first bundle reaches the screen. Short-lived in practice, since the
+            // splash holds until the content is ready — but it is a state the screen can render.
+            HomeUiModel(isLoading = true, blocks = emptyList()),
             // OFF_SEASON — dates published, programme not yet.
             stack(countdown("J-239"), announcements(), social()),
             // ANNOUNCED — the programme lands and the hero points at it.
@@ -110,16 +114,17 @@ private class HomeStackProvider : PreviewParameterProvider<HomeUiModel> {
                         url = null,
                     ),
                 ),
+            hasMore = true,
         )
 
     private fun social() =
         HomeBlockUiModel.Social(
             items =
                 listOf(
-                    SocialUiModel("instagram", "Instagram", "https://example.com/i"),
-                    SocialUiModel("facebook", "Facebook", "https://example.com/f"),
-                    SocialUiModel("youtube", "YouTube", "https://example.com/y"),
-                    SocialUiModel("tiktok", "TikTok", "https://example.com/t"),
+                    SocialUiModel("instagram", "Instagram", socialIconFor("instagram"), "https://example.com/i"),
+                    SocialUiModel("facebook", "Facebook", socialIconFor("facebook"), "https://example.com/f"),
+                    SocialUiModel("youtube", "YouTube", socialIconFor("youtube"), "https://example.com/y"),
+                    SocialUiModel("tiktok", "TikTok", socialIconFor("tiktok"), "https://example.com/t"),
                 ),
         )
 }
@@ -142,7 +147,13 @@ private fun HomeScreenLightPreview(
 ) {
     YadloTheme(darkTheme = false) {
         HomePreviewSurface {
-            HomeScreen(state = state, onHeroClick = {}, onAnnouncementClick = {}, onSocialClick = {})
+            HomeScreen(
+                state = state,
+                onHeroClick = {},
+                onAnnouncementClick = {},
+                onSeeAllAnnouncementsClick = {},
+                onSocialClick = {},
+            )
         }
     }
 }
@@ -154,7 +165,13 @@ private fun HomeScreenDarkPreview(
 ) {
     YadloTheme(darkTheme = true) {
         HomePreviewSurface {
-            HomeScreen(state = state, onHeroClick = {}, onAnnouncementClick = {}, onSocialClick = {})
+            HomeScreen(
+                state = state,
+                onHeroClick = {},
+                onAnnouncementClick = {},
+                onSeeAllAnnouncementsClick = {},
+                onSocialClick = {},
+            )
         }
     }
 }

@@ -162,6 +162,45 @@ class HomeUiMapperTest {
     }
 
     @Test
+    fun toUiModel_moreThanTwoAnnonces_showsTwoAndOffersTheRest() {
+        val state =
+            state(
+                phase = PhaseUiModel.OFF_SEASON,
+                now = THREE_DAYS_BEFORE,
+                announcements =
+                    listOf(
+                        announcement("un", PUBLISHED_EARLY),
+                        announcement("deux", PUBLISHED_EARLY),
+                        announcement("trois", PUBLISHED_EARLY),
+                    ),
+            )
+
+        val announcements = state.toUiModel().blocks.filterIsInstance<HomeBlockUiModel.Announcements>().single()
+
+        assertEquals(listOf("un", "deux"), announcements.items.map { it.id })
+        assertEquals(true, announcements.hasMore)
+    }
+
+    @Test
+    fun toUiModel_twoAnnoncesOrFewer_hidesTheActionBecauseThereIsNoRestToSee() {
+        val state = state(phase = PhaseUiModel.OFF_SEASON, now = THREE_DAYS_BEFORE)
+
+        val announcements = state.toUiModel().blocks.filterIsInstance<HomeBlockUiModel.Announcements>().single()
+
+        assertEquals(2, announcements.items.size)
+        assertEquals(false, announcements.hasMore)
+    }
+
+    @Test
+    fun toUiModel_annonceWithNoBody_carriesAnEmptyStringRatherThanNull() {
+        val state = state(phase = PhaseUiModel.OFF_SEASON, now = THREE_DAYS_BEFORE)
+
+        val announcements = state.toUiModel().blocks.filterIsInstance<HomeBlockUiModel.Announcements>().single()
+
+        assertEquals("", announcements.items.first().body)
+    }
+
+    @Test
     fun toUiModel_annonceWithNoUrl_staysUntappable() {
         val state = state(phase = PhaseUiModel.OFF_SEASON, now = THREE_DAYS_BEFORE)
 
@@ -202,6 +241,7 @@ class HomeUiMapperTest {
         val social = state.toUiModel().blocks.filterIsInstance<HomeBlockUiModel.Social>().single()
 
         assertEquals(listOf("Instagram", "Facebook", "YouTube", "TikTok"), social.items.map { it.name })
+        assertEquals(socialIconFor("instagram"), social.items.first().icon)
         assertEquals("https://example.com/instagram", social.items.first().url)
     }
 

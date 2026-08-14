@@ -65,6 +65,10 @@ class HomeStoreFactory(
                 is HomeIntent.SocialClicked -> {
                     publish(HomeLabel.OpenUrl(intent.url))
                 }
+
+                HomeIntent.AllAnnouncementsClicked -> {
+                    publish(HomeLabel.NavigateToAnnouncements)
+                }
             }
         }
 

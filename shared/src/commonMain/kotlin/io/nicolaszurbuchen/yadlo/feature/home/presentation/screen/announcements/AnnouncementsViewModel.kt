@@ -1,4 +1,4 @@
-package io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home
+package io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.announcements
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,20 +11,20 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 
-class HomeViewModel(
-    factory: HomeStoreFactory,
+class AnnouncementsViewModel(
+    factory: AnnouncementsStoreFactory,
 ) : ViewModel() {
     private val store = factory.create()
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    val state: StateFlow<HomeUiModel> =
+    val state: StateFlow<AnnouncementsUiModel> =
         store.stateFlow
             .map { it.toUiModel() }
-            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), store.state.toUiModel())
+            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), AnnouncementsState().toUiModel())
 
-    val labels: Flow<HomeLabel> = store.labels
+    val labels: Flow<AnnouncementsLabel> = store.labels
 
-    fun onIntent(intent: HomeIntent) {
+    fun onIntent(intent: AnnouncementsIntent) {
         store.accept(intent)
     }
 

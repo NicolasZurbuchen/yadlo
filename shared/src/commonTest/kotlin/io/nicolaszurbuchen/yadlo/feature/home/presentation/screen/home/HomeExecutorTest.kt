@@ -163,6 +163,21 @@ class HomeExecutorTest {
             }
         }
 
+    // region AllAnnouncementsClicked
+
+    @Test
+    fun allAnnouncementsClicked_opensTheFullFeedOnAccueilsOwnStack() =
+        homeTest(startingAt = A_WEEK_AFTER) { store, _, _ ->
+            testDispatcher.scheduler.runCurrent()
+
+            store.labels.test {
+                store.accept(HomeIntent.AllAnnouncementsClicked)
+                assertEquals(HomeLabel.NavigateToAnnouncements, awaitItem())
+            }
+        }
+
+    // endregion
+
     // region SocialClicked
 
     @Test

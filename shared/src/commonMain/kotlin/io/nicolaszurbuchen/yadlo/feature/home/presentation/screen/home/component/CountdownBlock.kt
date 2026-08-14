@@ -25,13 +25,13 @@ fun CountdownBlock(
     Column(modifier = modifier.fillMaxWidth()) {
         Text(
             text = block.daysText.asString(),
-            style = MaterialTheme.typography.displaySmall,
+            style = MaterialTheme.typography.displayLarge,
             color = MaterialTheme.appColors.textPrimary,
         )
 
         Text(
             text = block.subtitle,
-            style = MaterialTheme.typography.bodyMedium,
+            style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.appColors.textSecondary,
             maxLines = 2,
             overflow = TextOverflow.Ellipsis,

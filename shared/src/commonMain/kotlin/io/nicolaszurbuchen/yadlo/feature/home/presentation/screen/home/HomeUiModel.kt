@@ -1,5 +1,13 @@
 package io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Facebook
+import androidx.compose.material.icons.outlined.MusicNote
+import androidx.compose.material.icons.outlined.PhotoCamera
+import androidx.compose.material.icons.outlined.Public
+import androidx.compose.material.icons.outlined.SmartDisplay
+import androidx.compose.ui.graphics.vector.ImageVector
+import io.nicolaszurbuchen.yadlo.feature.home.presentation.uimodel.AnnouncementUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 
 /**
@@ -14,8 +22,8 @@ data class HomeUiModel(
 
 sealed interface HomeBlockUiModel {
     /**
-     * A day count, not a clock. The prototype is unambiguous — one big `J-19` — and it is the right
-     * unit: nobody plans around the seconds until a festival that is nineteen days away.
+     * A day count, not a clock. The prototype is unambiguous — one large `J-19` — and it is the
+     * right unit: nobody plans around the seconds until a festival nineteen days away.
      */
     data class Countdown(
         val daysText: UiText,
@@ -40,9 +48,15 @@ sealed interface HomeBlockUiModel {
         val caveat: UiText?,
     ) : HomeBlockUiModel
 
+    /**
+     * [hasMore] is false when the block is already showing every annonce there is — the action that
+     * opens the full list is hidden then, because a button leading to what you are already reading
+     * is the same problem as a button that does nothing.
+     */
     data class Announcements(
         val title: UiText,
         val items: List<AnnouncementUiModel>,
+        val hasMore: Boolean,
     ) : HomeBlockUiModel
 
     data class Social(
@@ -56,32 +70,29 @@ data class FigureUiModel(
     val label: String,
 )
 
-/** [url] null is not an error state: story 85 wants such an annonce plainly untappable. */
-data class AnnouncementUiModel(
-    val id: String,
-    val dateText: String,
-    val title: String,
-    val body: String?,
-    val url: String?,
-)
-
 data class SocialUiModel(
     val id: String,
     val name: String,
+    val icon: ImageVector,
     val url: String,
 )
 
 /**
- * The presentation twin of the domain `Phase`.
+ * Keyed on the content's own id, so a network the app has never heard of renders with the generic
+ * mark rather than failing to appear.
  *
- * It exists because the Store converts on the way out, so the domain enum stops at the Store
- * boundary the way `State` does. That is also what lets the UiMapper decide the block stack without
- * importing the domain layer, which the architecture forbids it.
+ * **Three of these are stand-ins.** Material ships a real Facebook mark and nothing for the others,
+ * so the rest are the nearest honest metaphor. Drop the brand vectors into
+ * `composeResources/drawable` and each becomes a one-line swap.
+ *
+ * It lives beside [SocialUiModel] rather than in the UiMapper because a UiMapper file may hold
+ * nothing but the single State-to-UiModel function.
  */
-enum class PhaseUiModel {
-    OFF_SEASON,
-    ANNOUNCED,
-    APPROACHING,
-    LIVE,
-    ENDED,
-}
+fun socialIconFor(id: String): ImageVector =
+    when (id) {
+        "instagram" -> Icons.Outlined.PhotoCamera
+        "facebook" -> Icons.Filled.Facebook
+        "youtube" -> Icons.Outlined.SmartDisplay
+        "tiktok" -> Icons.Outlined.MusicNote
+        else -> Icons.Outlined.Public
+    }

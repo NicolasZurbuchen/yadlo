@@ -1,9 +1,10 @@
 package io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home
 
 import io.nicolaszurbuchen.yadlo.common.time.FESTIVAL_TIME_ZONE
+import io.nicolaszurbuchen.yadlo.feature.home.presentation.uimodel.AnnouncementUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
+import io.nicolaszurbuchen.yadlo.infra.ui.formatAsShortDate
 import kotlinx.datetime.daysUntil
-import kotlinx.datetime.number
 import kotlinx.datetime.toLocalDateTime
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.home_announcements_title
@@ -113,22 +114,18 @@ fun HomeState.toUiModel(): HomeUiModel {
         } else {
             HomeBlockUiModel.Announcements(
                 title = UiText.Resource(Res.string.home_announcements_title),
+                // Accueil is a summary, not the feed. The rest are one tap away on their own screen.
                 items =
-                    visibleAnnouncements.map { announcement ->
-                        val date = announcement.publishedAt.toLocalDateTime(FESTIVAL_TIME_ZONE).date
-                        val dayOfMonth = date.day.toString().padStart(2, '0')
-                        val month = date.month.number.toString().padStart(2, '0')
-
+                    visibleAnnouncements.take(ANNOUNCEMENTS_ON_ACCUEIL).map { announcement ->
                         AnnouncementUiModel(
                             id = announcement.id,
-                            // Numeric and Swiss-ordered, so no month name has to be translated
-                            // before the app has a second language to translate it into.
-                            dateText = "$dayOfMonth.$month.${date.year}",
+                            dateText = announcement.publishedAt.formatAsShortDate(FESTIVAL_TIME_ZONE),
                             title = announcement.title,
-                            body = announcement.body,
+                            body = announcement.body.orEmpty(),
                             url = announcement.url,
                         )
                     },
+                hasMore = visibleAnnouncements.size > ANNOUNCEMENTS_ON_ACCUEIL,
             )
         }
 
@@ -137,7 +134,10 @@ fun HomeState.toUiModel(): HomeUiModel {
             null
         } else {
             HomeBlockUiModel.Social(
-                items = loaded.social.map { SocialUiModel(id = it.id, name = it.name, url = it.url) },
+                items =
+                    loaded.social.map {
+                        SocialUiModel(id = it.id, name = it.name, icon = socialIconFor(it.id), url = it.url)
+                    },
             )
         }
 
@@ -159,6 +159,12 @@ fun HomeState.toUiModel(): HomeUiModel {
 
     return HomeUiModel(isLoading = false, blocks = blocks)
 }
+
+/**
+ * Two, because Accueil summarises and the full list is one tap away. The prototype shows two even
+ * during LIVE, when the feed is at its busiest.
+ */
+private const val ANNOUNCEMENTS_ON_ACCUEIL = 2
 
 /**
  * Twenty-four hours rather than "since midnight": the festival runs past midnight, so a calendar

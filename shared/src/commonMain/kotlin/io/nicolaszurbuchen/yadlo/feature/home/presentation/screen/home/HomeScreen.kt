@@ -28,6 +28,7 @@ fun HomeScreen(
     state: HomeUiModel,
     onHeroClick: () -> Unit,
     onAnnouncementClick: (String) -> Unit,
+    onSeeAllAnnouncementsClick: () -> Unit,
     onSocialClick: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -64,7 +65,11 @@ fun HomeScreen(
                 }
 
                 is HomeBlockUiModel.Announcements -> {
-                    AnnouncementsBlock(block = block, onAnnouncementClick = onAnnouncementClick)
+                    AnnouncementsBlock(
+                        block = block,
+                        onAnnouncementClick = onAnnouncementClick,
+                        onSeeAllClick = onSeeAllAnnouncementsClick,
+                    )
                 }
 
                 is HomeBlockUiModel.Social -> {
