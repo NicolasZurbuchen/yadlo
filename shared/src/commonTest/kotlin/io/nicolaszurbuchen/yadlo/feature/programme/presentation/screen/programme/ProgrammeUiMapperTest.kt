@@ -247,6 +247,65 @@ class ProgrammeUiMapperTest {
 
     // endregion
 
+    // region the day's axis
+
+    @Test
+    fun toUiModel_scale_readsFromTheFirstThingOnToTheHourTheSiteCloses() {
+        // Saturday's window is 12:00 to 03:00, and GladiaSUP is the earliest Slot at 12:00.
+        val scale = state(selectedDayId = "2026:sat").toUiModel().scale
+
+        assertEquals("12:00", scale?.startText)
+        assertEquals("19:30", scale?.middleText)
+        assertEquals("03:00", scale?.endText)
+    }
+
+    @Test
+    fun toUiModel_slotStartingBeforeTheSiteOpens_widensTheAxisRatherThanFallingOffIt() {
+        // The beach at Préverenges is public, so the morning yoga runs from 10:00 on a day the
+        // site opens at 12:00. Its bar has to start at zero, not at a negative fraction.
+        val model =
+            state(content = content(slots = saturdaySlots() + morningYoga()), selectedDayId = "2026:sat").toUiModel()
+
+        assertEquals("10:00", model.scale?.startText)
+        assertEquals(0f, model.rows.first { it.id == "2026:yoga-sat" }.barStart)
+    }
+
+    @Test
+    fun toUiModel_everyRowCarriesItsPlaceOnTheDay_finishedOnesIncluded() {
+        // The bar is where the shape of the day lives — what overlaps what, how much of the
+        // afternoon something covers. A row that dropped it on ending would take that with it.
+        val rows = state(now = Instant.parse("2026-07-12T02:59:00+02:00"), selectedDayId = "2026:sat").toUiModel().rows
+
+        assertTrue(rows.all { it.state == SlotLiveStateUiModel.Over })
+        assertTrue(rows.all { it.barEnd > it.barStart })
+    }
+
+    @Test
+    fun toUiModel_slotRunningToTheEndOfTheAxis_reachesTheFarSide() {
+        // The Silent Party closes at 02:00 and Saturday's window runs to 03:00, so it stops short.
+        val row = rowAt(QUARTER_TO_FOUR, "2026:silent-sat")
+
+        // 12:00 to 03:00 is a fifteen-hour axis; 20:00 is eight hours in and 02:00 is fourteen.
+        assertEquals(0.533f, row.barStart, ONE_PIXEL_ON_A_PHONE)
+        assertEquals(0.933f, row.barEnd, ONE_PIXEL_ON_A_PHONE)
+    }
+
+    @Test
+    fun toUiModel_filteringDoesNotRescaleTheAxis() {
+        // Two rows compared across a filter change have to sit at the same place on the bar, so
+        // the axis is measured over every Slot of the day rather than the ones left showing.
+        val unfiltered = state(selectedDayId = "2026:sat").toUiModel()
+        val filtered = state(selectedDayId = "2026:sat", selectedCategoryIds = setOf("musique")).toUiModel()
+
+        assertEquals(unfiltered.scale, filtered.scale)
+        assertEquals(
+            unfiltered.rows.single { it.id == "2026:dubside-sat" }.barStart,
+            filtered.rows.single { it.id == "2026:dubside-sat" }.barStart,
+        )
+    }
+
+    // endregion
+
     private fun rowAt(
         now: Instant,
         rowId: String,
@@ -266,7 +325,11 @@ class ProgrammeUiMapperTest {
 
     private fun content(slots: List<ProgrammeSlot> = saturdaySlots() + amc()) =
         ProgrammeContent(
-            days = listOf(day("2026:fri", "Vendredi"), day("2026:sat", "Samedi")),
+            days =
+                listOf(
+                    day("2026:fri", "Vendredi", "2026-07-10T16:00:00+02:00", "2026-07-11T02:00:00+02:00"),
+                    day("2026:sat", "Samedi", "2026-07-11T12:00:00+02:00", "2026-07-12T03:00:00+02:00"),
+                ),
             categories =
                 listOf(
                     Category(id = "musique", name = "Musique", order = 1),
@@ -279,14 +342,34 @@ class ProgrammeUiMapperTest {
     private fun day(
         id: String,
         name: String,
+        start: String,
+        end: String,
     ) = FestivalDay(
         id = id,
         name = name,
-        date = "2026-07-11",
-        start = Instant.parse("2026-07-11T12:00:00+02:00"),
-        end = Instant.parse("2026-07-12T03:00:00+02:00"),
+        date = start.substringBefore('T'),
+        start = Instant.parse(start),
+        end = Instant.parse(end),
         provenance = Provenance.CONFIRMED,
     )
+
+    /**
+     * Outside Saturday's window on purpose: the site opens at 12:00 and the beach is public, so the
+     * yoga is the case the axis has to widen for.
+     */
+    private fun morningYoga() =
+        listOf(
+            slot(
+                id = "2026:yoga-sat",
+                happeningId = "yoga",
+                name = "Acro-yoga",
+                categoryId = "eau",
+                categoryName = "Sur l'eau",
+                start = "2026-07-11T10:00:00+02:00",
+                end = "2026-07-11T11:00:00+02:00",
+                price = null,
+            ),
+        )
 
     /** In the order the UseCase hands them over: by start, then by the shorter of two. */
     private fun saturdaySlots() =
@@ -383,5 +466,8 @@ class ProgrammeUiMapperTest {
     private companion object {
         /** The moment the prototype was argued from: Dubside fifteen minutes out. */
         val QUARTER_TO_FOUR = Instant.parse("2026-07-11T15:45:00+02:00")
+
+        /** Roughly a pixel of a 360dp bar. Tighter than that is asserting the arithmetic twice. */
+        const val ONE_PIXEL_ON_A_PHONE = 0.003f
     }
 }

@@ -17,6 +17,7 @@ import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme.component.CategoryChipRow
 import io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme.component.DayChipRow
 import io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme.component.ProgrammeEmptyMessage
+import io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme.component.ProgrammeScaleRow
 import io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme.component.SlotRow
 
 /**
@@ -52,6 +53,10 @@ fun ProgrammeScreen(
                 onCategoryClick = onCategoryClick,
                 onAllClick = onAllCategoriesClick,
             )
+        }
+
+        if (state.scale != null) {
+            ProgrammeScaleRow(scale = state.scale)
         }
 
         if (state.emptyMessage != null) {

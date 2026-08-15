@@ -14,10 +14,12 @@ import yadlo.shared.generated.resources.programme_state_over
 import yadlo.shared.generated.resources.programme_state_running
 import yadlo.shared.generated.resources.programme_state_starts_in_hours
 import yadlo.shared.generated.resources.programme_state_starts_in_minutes
+import kotlin.time.Duration
 import kotlin.time.Duration.Companion.hours
 
 /**
- * One day's Slots, in order, each carrying its own state against the clock.
+ * One day's Slots, in order, each carrying its own state against the clock and its own place on the
+ * day's span.
  *
  * Everything is built inside this single function: a UiMapper file is required to hold nothing but
  * the State-to-UiModel extension, so a helper here would have to be local, which Konsist reads as
@@ -31,6 +33,7 @@ fun ProgrammeState.toUiModel(): ProgrammeUiModel {
             isLoading = true,
             days = emptyList(),
             categories = emptyList(),
+            scale = null,
             rows = emptyList(),
             emptyMessage = null,
         )
@@ -43,6 +46,7 @@ fun ProgrammeState.toUiModel(): ProgrammeUiModel {
             isLoading = false,
             days = emptyList(),
             categories = emptyList(),
+            scale = null,
             rows = emptyList(),
             emptyMessage = UiText.Resource(Res.string.programme_empty_unpublished),
         )
@@ -55,9 +59,22 @@ fun ProgrammeState.toUiModel(): ProgrammeUiModel {
             CategoryChipUiModel(id = it.id, name = it.name, isSelected = it.id in selectedCategoryIds)
         }
 
+    val daySlots = loaded.slots.filter { it.dayId == selectedDayId }
+    val selectedDay = loaded.days.firstOrNull { it.id == selectedDayId }
+
+    // The axis is the day's opening hours widened to cover anything programmed outside them: the
+    // beach at Préverenges is public, so the morning yoga runs from 10:00 on a day the site opens
+    // at 12:00 and still has to sit on the bar rather than off the left edge of it.
+    //
+    // Measured across every Slot of the day, never the filtered ones — an axis that rescaled when
+    // you tapped a chip would make two rows impossible to compare across a filter change.
+    val axisStart = (listOfNotNull(selectedDay?.start) + daySlots.map { it.start }).minOrNull()
+    val axisEnd = (listOfNotNull(selectedDay?.end) + daySlots.map { it.end }).maxOrNull()
+    val axisSpan = if (axisStart != null && axisEnd != null) axisEnd - axisStart else Duration.ZERO
+    val hasAxis = axisStart != null && axisEnd != null && axisSpan.isPositive()
+
     val rows =
-        loaded.slots
-            .filter { it.dayId == selectedDayId }
+        daySlots
             // An empty selection is *Tout*, not a filter that excludes everything.
             .filter { selectedCategoryIds.isEmpty() || it.categoryId in selectedCategoryIds }
             .map { slot ->
@@ -138,6 +155,18 @@ fun ProgrammeState.toUiModel(): ProgrammeUiModel {
                             }
                         },
                     state = state,
+                    barStart =
+                        if (hasAxis && axisStart != null) {
+                            ((slot.start - axisStart) / axisSpan).toFloat().coerceIn(0f, 1f)
+                        } else {
+                            0f
+                        },
+                    barEnd =
+                        if (hasAxis && axisStart != null) {
+                            ((slot.end - axisStart) / axisSpan).toFloat().coerceIn(0f, 1f)
+                        } else {
+                            1f
+                        },
                 )
             }
 
@@ -145,6 +174,16 @@ fun ProgrammeState.toUiModel(): ProgrammeUiModel {
         isLoading = false,
         days = days,
         categories = categories,
+        scale =
+            if (hasAxis && axisStart != null && axisEnd != null && rows.isNotEmpty()) {
+                ProgrammeScaleUiModel(
+                    startText = axisStart.formatAsTimeOfDay(FESTIVAL_TIME_ZONE),
+                    middleText = (axisStart + axisSpan / 2).formatAsTimeOfDay(FESTIVAL_TIME_ZONE),
+                    endText = axisEnd.formatAsTimeOfDay(FESTIVAL_TIME_ZONE),
+                )
+            } else {
+                null
+            },
         rows = rows,
         emptyMessage = if (rows.isEmpty()) UiText.Resource(Res.string.programme_empty_filter) else null,
     )

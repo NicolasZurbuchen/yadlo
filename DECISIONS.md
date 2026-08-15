@@ -334,13 +334,25 @@ Why B2 over the alternatives:
 What B2 gives up: nothing shows that two later slots will collide — which turned out not to
 be a loss, since clash warnings were dropped entirely.
 
-**The raised bar spans the Slot, not the day.** The prototype positions each row's fill
-proportionally within the day's window, so the bar doubles as a per-row time axis. Built out,
-that reintroduces the one thing B2 exists to avoid: horizontal width spent on position rather
-than on the name. The stated benefit was never the position — it was *"on voit qu'il reste
-vingt minutes de Thalassothérapie sans lire un chiffre"* — and a full-width bar filled to the
-Slot's own progress delivers exactly that. It is also drawn only while something is running,
-which is what the prose already described.
+**The bar spans the day, and it is on every row — finished ones included.** Each row's segment
+sits where its Slot falls on the day's span, so the list carries the shape of the day as well
+as the state of each item: what overlaps what, how much of the afternoon a seven-hour activity
+covers, whether the evening is empty. While a Slot is running the segment lifts off the track
+and fills as it goes, which is where *"on voit qu'il reste vingt minutes de Thalassothérapie
+sans lire un chiffre"* comes from.
+
+This was briefly built the other way — a full-width bar showing only the Slot's own progress,
+drawn only while running — on the reasoning that a per-row time axis is the horizontal width
+B2 exists to give back to the text. That was wrong twice over. The bar costs no width, because
+it is a full-width row of its own under the text rather than a column beside it; and dropping
+it once a Slot ends takes the shape of the day with it, exactly when most of the list is past
+and reading the day is the whole job. The day's span is written once above the list as three
+readings, never per row — that repetition *is* the right-hand time column, and it is still out.
+
+The span is the FestivalDay's opening hours widened to cover anything programmed outside them:
+the beach at Préverenges is public, so the morning yoga runs from 10:00 on a day the site opens
+at 12:00 and still has to sit on the axis. It is measured over every Slot of the day rather
+than the filtered ones, so tapping a chip never rescales what two rows are being compared on.
 
 **The live-state pills use one amber ramp, not the prototype's amber-then-coral.** Green
 fills `en cours`, amber outlines `dans 15 min` and fills `se termine`, and `terminé` is plain
@@ -451,6 +463,22 @@ best food query there is and it returns the day that data exists.
 **One live state for every Slot.** `dans 2h` → `en cours` → `se termine · 30 min` →
 `terminé`, written in words, never expressed as layout. A seven-hour open activity and a
 two-hour DJ set read identically, and both warn the same way as they end.
+
+**A debug-only time-travel clock, from the first screen that needs one.** The injected clock
+makes the app testable; it does not make it *checkable* on a device, and almost everything on
+screen is a function of an instant nobody can reach by waiting — the Phase and its whole
+Accueil block stack, which day the Programme opens on, every live pill and progress bar, the
+24-hour annonces window during LIVE. A panel that sets the clock turns eleven months of waiting
+into a tap, and the day any of it is wrong is the one weekend nobody can fix it.
+
+Two independent guards, not one: the panel does not draw unless the binary is a debug build,
+and the clock refuses to move regardless. What survives into release is a null check per
+reading, which is cheaper than keeping two clocks in step.
+
+It also forced a small honest change. The tickers run at one minute, which is right for a
+festival and useless for a control you are watching — so the clock carries a `jumps` signal
+that a store collects alongside its ticker. A jump is not time passing. Nothing emits on it in
+release, so the collectors are subscriptions that never fire.
 
 **Countdowns only inside a four-hour window.** Beyond that the day header and the start time
 already say everything; "dans 26h" is noise. The published prototype counts down from thirty

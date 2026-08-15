@@ -38,6 +38,7 @@ private class ProgrammeStateProvider : PreviewParameterProvider<ProgrammeUiModel
                 isLoading = true,
                 days = emptyList(),
                 categories = emptyList(),
+                scale = null,
                 rows = emptyList(),
                 emptyMessage = null,
             ),
@@ -45,6 +46,7 @@ private class ProgrammeStateProvider : PreviewParameterProvider<ProgrammeUiModel
                 isLoading = false,
                 days = days(),
                 categories = categories(),
+                scale = ProgrammeScaleUiModel(startText = "10:00", middleText = "18:00", endText = "03:00"),
                 rows = saturdayAtQuarterToFour(),
                 emptyMessage = null,
             ),
@@ -53,6 +55,7 @@ private class ProgrammeStateProvider : PreviewParameterProvider<ProgrammeUiModel
                 isLoading = false,
                 days = days(),
                 categories = categories(selectedId = "silent"),
+                scale = null,
                 rows = emptyList(),
                 emptyMessage = UiText.Resource(Res.string.programme_empty_filter),
             ),
@@ -62,6 +65,7 @@ private class ProgrammeStateProvider : PreviewParameterProvider<ProgrammeUiModel
                 isLoading = false,
                 days = emptyList(),
                 categories = emptyList(),
+                scale = null,
                 rows = emptyList(),
                 emptyMessage = UiText.Resource(Res.string.programme_empty_unpublished),
             ),
@@ -83,6 +87,7 @@ private class ProgrammeStateProvider : PreviewParameterProvider<ProgrammeUiModel
             CategoryChipUiModel(id = "enfants", name = "Enfants", isSelected = selectedId == "enfants"),
         )
 
+    /** Bar fractions are measured against the Saturday axis in the scale above: 10:00 to 03:00. */
     private fun saturdayAtQuarterToFour() =
         listOf(
             row(
@@ -94,6 +99,8 @@ private class ProgrammeStateProvider : PreviewParameterProvider<ProgrammeUiModel
                 priceText = UiText.Resource(Res.string.programme_price_free),
                 stateLabel = UiText.Resource(Res.string.programme_state_over),
                 state = SlotLiveStateUiModel.Over,
+                barStart = 0f,
+                barEnd = 0.059f,
             ),
             row(
                 id = "2026:thalasso-sat",
@@ -104,6 +111,8 @@ private class ProgrammeStateProvider : PreviewParameterProvider<ProgrammeUiModel
                 priceText = null,
                 stateLabel = UiText.Resource(Res.string.programme_state_ending, listOf("15")),
                 state = SlotLiveStateUiModel.Ending(endsIn = 15.minutes, progress = 0.875f),
+                barStart = 0.235f,
+                barEnd = 0.353f,
             ),
             row(
                 id = "2026:gladiasup-sat",
@@ -114,6 +123,8 @@ private class ProgrammeStateProvider : PreviewParameterProvider<ProgrammeUiModel
                 priceText = UiText.Raw("CHF 5"),
                 stateLabel = UiText.Resource(Res.string.programme_state_running),
                 state = SlotLiveStateUiModel.Running(progress = 0.53f),
+                barStart = 0.118f,
+                barEnd = 0.529f,
             ),
             row(
                 id = "2026:dubside-sat",
@@ -124,6 +135,8 @@ private class ProgrammeStateProvider : PreviewParameterProvider<ProgrammeUiModel
                 priceText = null,
                 stateLabel = UiText.Resource(Res.string.programme_state_starts_in_minutes, listOf("15")),
                 state = SlotLiveStateUiModel.StartingSoon(startsIn = 15.minutes),
+                barStart = 0.353f,
+                barEnd = 0.471f,
             ),
             row(
                 id = "2026:silent-party-sat",
@@ -136,6 +149,8 @@ private class ProgrammeStateProvider : PreviewParameterProvider<ProgrammeUiModel
                 priceText = UiText.Resource(Res.string.programme_price_from, listOf("CHF 15")),
                 stateLabel = null,
                 state = SlotLiveStateUiModel.Upcoming,
+                barStart = 0.588f,
+                barEnd = 0.941f,
             ),
             row(
                 id = "2026:coin-enfant-sat",
@@ -146,6 +161,8 @@ private class ProgrammeStateProvider : PreviewParameterProvider<ProgrammeUiModel
                 priceText = UiText.Resource(Res.string.programme_price_free),
                 stateLabel = UiText.Resource(Res.string.programme_state_running),
                 state = SlotLiveStateUiModel.Running(progress = 0.53f),
+                barStart = 0.118f,
+                barEnd = 0.529f,
             ),
         )
 
@@ -158,6 +175,8 @@ private class ProgrammeStateProvider : PreviewParameterProvider<ProgrammeUiModel
         priceText: UiText?,
         stateLabel: UiText?,
         state: SlotLiveStateUiModel,
+        barStart: Float,
+        barEnd: Float,
     ) = SlotRowUiModel(
         id = id,
         happeningId = id.substringAfter(':').substringBeforeLast('-'),
@@ -168,6 +187,8 @@ private class ProgrammeStateProvider : PreviewParameterProvider<ProgrammeUiModel
         priceText = priceText,
         stateLabel = stateLabel,
         state = state,
+        barStart = barStart,
+        barEnd = barEnd,
     )
 }
 

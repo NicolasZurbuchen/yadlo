@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
@@ -34,8 +33,8 @@ import io.nicolaszurbuchen.yadlo.infra.ui.asString
  * shared left edge and as little furniture between neighbours as possible. Cards were measured at
  * +32% vertical space on the Saturday and separate exactly what this screen is for comparing.
  *
- * Past rows dim and stay. By 21:00 on the Saturday that is most of the list, and that is accepted:
- * reading what has already happened is part of reading the day you are standing in.
+ * Past rows dim and stay — bar included. By 21:00 on the Saturday that is most of the list, and
+ * that is accepted: reading what has already happened is part of reading the day you are in.
  */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -112,36 +111,12 @@ fun SlotRow(
             }
         }
 
-        // Only while it is on. The bar spans the Slot itself rather than the day, which is the
-        // difference between B2 and the option it replaced: it answers "how much of this is left",
-        // not "where in the afternoon does this sit" — the second is a time axis, and a time axis
-        // is the horizontal width B2 exists to give back to the text.
-        val progress =
-            when (val state = row.state) {
-                is SlotLiveStateUiModel.Running -> state.progress
-                is SlotLiveStateUiModel.Ending -> state.progress
-                else -> null
-            }
-
-        progress?.let {
-            Box(
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .height(PROGRESS_HEIGHT)
-                        .clip(MaterialTheme.shapes.extraSmall)
-                        .background(MaterialTheme.appColors.surfaceRaised),
-            ) {
-                Box(
-                    modifier =
-                        Modifier
-                            .fillMaxWidth(it)
-                            .height(PROGRESS_HEIGHT)
-                            .clip(MaterialTheme.shapes.extraSmall)
-                            .background(category.fill),
-                )
-            }
-        }
+        SlotTimeBar(
+            barStart = row.barStart,
+            barEnd = row.barEnd,
+            categoryFill = category.fill,
+            state = row.state,
+        )
     }
 }
 
