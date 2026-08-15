@@ -26,13 +26,15 @@
     <string name="announcements_back">Retour</string>
     <string name="announcements_empty">Aucune annonce pour le moment.</string>
 
+    <!-- A Slot's live state and its price read the same on every screen that shows one. -->
+    <string name="slot_state_starts_in_hours">dans %1$sh</string>
+    <string name="slot_state_starts_in_minutes">dans %1$s min</string>
+    <string name="slot_state_running">en cours</string>
+    <string name="slot_state_ending">se termine · %1$s min</string>
+    <string name="slot_state_over">terminé</string>
+    <string name="price_free">Gratuit</string>
+
     <string name="programme_categories_all">Tout</string>
-    <string name="programme_state_starts_in_hours">dans %1$sh</string>
-    <string name="programme_state_starts_in_minutes">dans %1$s min</string>
-    <string name="programme_state_running">en cours</string>
-    <string name="programme_state_ending">se termine · %1$s min</string>
-    <string name="programme_state_over">terminé</string>
-    <string name="programme_price_free">Gratuit</string>
     <string name="programme_price_from">dès %1$s</string>
     <string name="programme_empty_filter">Aucune activité ne correspond à ce filtre.</string>
     <string name="programme_empty_unpublished">Le programme n\'est pas encore publié.</string>

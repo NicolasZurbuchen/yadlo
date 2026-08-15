@@ -11,16 +11,17 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import io.nicolaszurbuchen.yadlo.app.design.theme.YadloTheme
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
+import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotLiveStateUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import yadlo.shared.generated.resources.Res
+import yadlo.shared.generated.resources.price_free
 import yadlo.shared.generated.resources.programme_empty_filter
 import yadlo.shared.generated.resources.programme_empty_unpublished
-import yadlo.shared.generated.resources.programme_price_free
 import yadlo.shared.generated.resources.programme_price_from
-import yadlo.shared.generated.resources.programme_state_ending
-import yadlo.shared.generated.resources.programme_state_over
-import yadlo.shared.generated.resources.programme_state_running
-import yadlo.shared.generated.resources.programme_state_starts_in_minutes
+import yadlo.shared.generated.resources.slot_state_ending
+import yadlo.shared.generated.resources.slot_state_over
+import yadlo.shared.generated.resources.slot_state_running
+import yadlo.shared.generated.resources.slot_state_starts_in_minutes
 import kotlin.time.Duration.Companion.minutes
 
 /**
@@ -96,8 +97,8 @@ private class ProgrammeStateProvider : PreviewParameterProvider<ProgrammeUiModel
                 categoryId = "terre",
                 categoryName = "Sur terre",
                 timeText = "10:00 – 11:00",
-                priceText = UiText.Resource(Res.string.programme_price_free),
-                stateLabel = UiText.Resource(Res.string.programme_state_over),
+                priceText = UiText.Resource(Res.string.price_free),
+                stateLabel = UiText.Resource(Res.string.slot_state_over),
                 state = SlotLiveStateUiModel.Over,
                 barStart = 0f,
                 barEnd = 0.059f,
@@ -109,7 +110,7 @@ private class ProgrammeStateProvider : PreviewParameterProvider<ProgrammeUiModel
                 categoryName = "Musique",
                 timeText = "14:00 – 16:00",
                 priceText = null,
-                stateLabel = UiText.Resource(Res.string.programme_state_ending, listOf("15")),
+                stateLabel = UiText.Resource(Res.string.slot_state_ending, listOf("15")),
                 state = SlotLiveStateUiModel.Ending(endsIn = 15.minutes, progress = 0.875f),
                 barStart = 0.235f,
                 barEnd = 0.353f,
@@ -121,7 +122,7 @@ private class ProgrammeStateProvider : PreviewParameterProvider<ProgrammeUiModel
                 categoryName = "Sur l'eau",
                 timeText = "12:00 – 19:00",
                 priceText = UiText.Raw("CHF 5"),
-                stateLabel = UiText.Resource(Res.string.programme_state_running),
+                stateLabel = UiText.Resource(Res.string.slot_state_running),
                 state = SlotLiveStateUiModel.Running(progress = 0.53f),
                 barStart = 0.118f,
                 barEnd = 0.529f,
@@ -133,7 +134,7 @@ private class ProgrammeStateProvider : PreviewParameterProvider<ProgrammeUiModel
                 categoryName = "Musique",
                 timeText = "16:00 – 18:00",
                 priceText = null,
-                stateLabel = UiText.Resource(Res.string.programme_state_starts_in_minutes, listOf("15")),
+                stateLabel = UiText.Resource(Res.string.slot_state_starts_in_minutes, listOf("15")),
                 state = SlotLiveStateUiModel.StartingSoon(startsIn = 15.minutes),
                 barStart = 0.353f,
                 barEnd = 0.471f,
@@ -158,8 +159,8 @@ private class ProgrammeStateProvider : PreviewParameterProvider<ProgrammeUiModel
                 categoryId = "enfants",
                 categoryName = "Enfants",
                 timeText = "12:00 – 19:00",
-                priceText = UiText.Resource(Res.string.programme_price_free),
-                stateLabel = UiText.Resource(Res.string.programme_state_running),
+                priceText = UiText.Resource(Res.string.price_free),
+                stateLabel = UiText.Resource(Res.string.slot_state_running),
                 state = SlotLiveStateUiModel.Running(progress = 0.53f),
                 barStart = 0.118f,
                 barEnd = 0.529f,

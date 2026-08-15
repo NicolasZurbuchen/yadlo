@@ -1,4 +1,4 @@
-package io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme
+package io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel
 
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.hours
@@ -17,8 +17,10 @@ import kotlin.time.Instant
  * State. A UseCase here would buy a domain type the presentation layer is not allowed to import,
  * and therefore a conversion whose only job is to undo itself.
  *
- * It lives in its own file because Mon Yadlo uses the same vocabulary on the same kind of row. It
- * moves up a layer the day that screen exists — not before, per CLAUDE.md on premature sharing.
+ * It sits in `common/content` because the Programme's rows and a fiche's date rows ask the same
+ * question of the same Slot, and a visitor who taps `en cours` on the list must not land on a screen
+ * that has gone quiet about it. It moved up here when the fiche arrived — the second caller, not the
+ * anticipated one. Mon Yadlo will be the third.
  */
 sealed interface SlotLiveStateUiModel {
     /** Far enough out that the start time already says everything a countdown would. */

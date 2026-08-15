@@ -22,7 +22,8 @@ import androidx.compose.ui.unit.dp
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.app.design.theme.categoryColors
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
-import io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme.SlotLiveStateUiModel
+import io.nicolaszurbuchen.yadlo.common.content.presentation.component.SlotStatePill
+import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotLiveStateUiModel
 import io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme.SlotRowUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.asString
 
@@ -127,8 +128,6 @@ private val CATEGORY_MARK_SIZE = 10.dp
  * of the name rather than floating at the top edge of one that wraps to two.
  */
 private val MARK_TOP_OFFSET = 7.dp
-
-private val PROGRESS_HEIGHT = 6.dp
 
 /** The prototype's 0.42, rounded. Low enough to recede, high enough to still be read. */
 private const val PAST_ALPHA = 0.45f

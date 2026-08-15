@@ -1,4 +1,4 @@
-package io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme.component
+package io.nicolaszurbuchen.yadlo.common.content.presentation.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -12,7 +12,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
-import io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme.SlotLiveStateUiModel
+import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotLiveStateUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import io.nicolaszurbuchen.yadlo.infra.ui.asString
 
