@@ -1,5 +1,6 @@
 package io.nicolaszurbuchen.yadlo.infra.time
 
+import io.nicolaszurbuchen.yadlo.infra.platform.BuildFlags
 import org.koin.dsl.module
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
@@ -12,9 +13,15 @@ import kotlin.time.ExperimentalTime
  * Phase a saved Slot is in, whether a live pill reads *en cours*. None of that is testable
  * against a real clock outside of one weekend in July. Injecting it means a test can sit at
  * 23:45 on the Friday and assert what the user would see.
+ *
+ * The three bindings are one object under three names. Whoever only reads the time asks for
+ * [Clock]; the stores that recompute on a ticker ask for [AppClock] so a debug-time jump wakes
+ * them; the debug panel asks for [TimeTravelClock] because it is the only thing allowed to move it.
  */
 @OptIn(ExperimentalTime::class)
 val timeModule =
     module {
-        single<Clock> { Clock.System }
+        single { TimeTravelClock(source = Clock.System, enabled = get<BuildFlags>().isDebug) }
+        single<AppClock> { get<TimeTravelClock>() }
+        single<Clock> { get<AppClock>() }
     }

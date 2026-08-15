@@ -22,3 +22,21 @@ fun Instant.formatAsShortDate(zone: TimeZone): String {
 
     return "$day.$month.${date.year}"
 }
+
+/**
+ * `16:00` — 24-hour, zero-padded on both halves.
+ *
+ * Padded rather than `9:30` because these sit in a column of times on the Programme and in Mon
+ * Yadlo, and the display face is set with tabular figures precisely so that column does not jitter;
+ * a missing leading zero undoes that on its own.
+ *
+ * The zone is a parameter for the same reason as [formatAsShortDate]: a 01:30 set reads 01:30 for
+ * everyone on the beach, whatever their phone thinks the zone is.
+ */
+fun Instant.formatAsTimeOfDay(zone: TimeZone): String {
+    val time = toLocalDateTime(zone).time
+    val hour = time.hour.toString().padStart(2, '0')
+    val minute = time.minute.toString().padStart(2, '0')
+
+    return "$hour:$minute"
+}

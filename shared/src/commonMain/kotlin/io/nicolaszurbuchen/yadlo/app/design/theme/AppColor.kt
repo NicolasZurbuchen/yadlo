@@ -53,6 +53,27 @@ data class AppColors(
     /** The accent as a tinted ground rather than a fill — a highlighted row, a badge. */
     val accentSubtle: Color,
     val onAccentSubtle: Color,
+    /**
+     * A Slot running now — the filled `en cours` pill on a Programme or Mon Yadlo row.
+     *
+     * A role of its own rather than [primary] because the two appear on the same row and mean
+     * different things: primary is "the app is emphasising this", live is "this is happening while
+     * you read it".
+     */
+    val live: Color,
+    val onLive: Color,
+    /**
+     * The warning ramp behind both time-pressure pills: `dans 15 min` draws it as text on the page
+     * ground, `se termine` fills with it.
+     *
+     * One amber ramp rather than the prototype's amber-then-coral, because the coral was never part
+     * of the perceptual-separation measurement the five Category hues were chosen by, and a red
+     * pill beside a `musique` magenta dot is the collision DECISIONS.md § Open already flags for the
+     * accent. Outlined against filled separates the two states, and the pill is written out either
+     * way — the colour is never carrying it alone.
+     */
+    val warning: Color,
+    val onWarning: Color,
     /** Veil over a photograph, so text stays readable on an image nobody vetted. Alpha is baked in. */
     val scrim: Color,
     /** The ink [scrim] exists to make legible. */
@@ -87,6 +108,13 @@ val LightAppColors =
         onAccent = SlatePalette.slate900,
         accentSubtle = RosePalette.rose100,
         onAccentSubtle = RosePalette.rose900,
+        // Two steps darker than the `terre` anchor, not the anchor itself: a filled pill has to
+        // carry white, and emerald600 is a category fill chosen to sit beside four other hues
+        // rather than to be written on.
+        live = EmeraldPalette.emerald800,
+        onLive = Color.White,
+        warning = AmberPalette.amber800,
+        onWarning = Color.White,
         scrim = SCRIM,
         onScrim = Color.White,
     )
@@ -118,6 +146,12 @@ val DarkAppColors =
         onAccent = SlatePalette.slate950,
         accentSubtle = RosePalette.rose900,
         onAccentSubtle = RosePalette.rose200,
+        // Both swap ends in dark for the same reason the blue does: the light steps are too deep to
+        // read as anything against a dark ground, whether they are being written on or written in.
+        live = EmeraldPalette.emerald400,
+        onLive = SlatePalette.slate950,
+        warning = AmberPalette.amber400,
+        onWarning = SlatePalette.slate950,
         scrim = SCRIM,
         onScrim = Color.White,
     )

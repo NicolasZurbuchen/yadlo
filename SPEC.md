@@ -751,10 +751,11 @@ Listed in full in DECISIONS.md § Open. The ones that will bite soonest:
 
 1. **The accent colour** `#E27BA6` versus `musique` `#DD3B7A` — a pink accent and a magenta
    kind-dot may read as one signal.
-2. **Whether sorting survives** in Programme (Heure / A–Z / Prix) — time is arguably the only
-   order that makes sense, and the control costs a permanent row of chrome.
-3. **Whether search covers practical information** — nearly free at this corpus size.
-4. **Whether dietary marks stay coloured** in the stand list, where category colour was
+2. **Whether search covers practical information** — nearly free at this corpus size.
+3. **Whether dietary marks stay coloured** in the stand list, where category colour was
    deliberately removed.
-5. Facts to verify with the association: is there an ATM nearby; is there a glass deposit and
+4. Facts to verify with the association: is there an ATM nearby; is there a glass deposit and
    how much; do they issue wristbands for children.
+
+Sorting in Programme (Heure / A–Z / Prix) was on this list and is resolved: dropped for v1,
+see DECISIONS.md § Programme layout.
