@@ -1,14 +1,21 @@
 package io.nicolaszurbuchen.yadlo.app.navigation.impl
 
 import io.nicolaszurbuchen.yadlo.feature.happening.presentation.navigation.HappeningDestination
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.AboutDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.AccessDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.AccessibilityDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.AssistanceDestination
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.ContactDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.FaqDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.HoursDestination
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.PageDestination
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.PartnersDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.PaymentDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.PlusNavigator
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.PrivacyDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.StandsDestination
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.StoryDestination
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.page.PageKind
 import io.nicolaszurbuchen.yadlo.infra.navigation.AppNavigator
 
 class PlusNavigatorImpl(
@@ -40,6 +47,30 @@ class PlusNavigatorImpl(
 
     override fun navigateToFaq() {
         appNavigator.navigateTo(FaqDestination)
+    }
+
+    override fun navigateToStory() {
+        appNavigator.navigateTo(StoryDestination)
+    }
+
+    override fun navigateToPartners() {
+        appNavigator.navigateTo(PartnersDestination)
+    }
+
+    override fun navigateToContact() {
+        appNavigator.navigateTo(ContactDestination)
+    }
+
+    override fun navigateToPage(kind: PageKind) {
+        appNavigator.navigateTo(PageDestination(kind))
+    }
+
+    override fun navigateToAbout() {
+        appNavigator.navigateTo(AboutDestination)
+    }
+
+    override fun navigateToPrivacy() {
+        appNavigator.navigateTo(PrivacyDestination)
     }
 
     /**

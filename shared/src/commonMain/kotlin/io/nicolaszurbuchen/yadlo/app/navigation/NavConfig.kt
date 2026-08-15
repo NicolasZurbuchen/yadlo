@@ -7,14 +7,20 @@ import io.nicolaszurbuchen.yadlo.feature.home.presentation.navigation.Announceme
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.navigation.HomeDestination
 import io.nicolaszurbuchen.yadlo.feature.monyadlo.presentation.navigation.MonYadloDestination
 import io.nicolaszurbuchen.yadlo.feature.monyadlo.presentation.navigation.WishlistDestination
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.AboutDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.AccessDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.AccessibilityDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.AssistanceDestination
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.ContactDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.FaqDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.HoursDestination
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.PageDestination
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.PartnersDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.PaymentDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.PlusDestination
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.PrivacyDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.StandsDestination
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.StoryDestination
 import io.nicolaszurbuchen.yadlo.feature.pokemonexplorer.presentation.navigation.DetailDestination
 import io.nicolaszurbuchen.yadlo.feature.pokemonexplorer.presentation.navigation.MainDestination
 import io.nicolaszurbuchen.yadlo.feature.programme.presentation.navigation.ProgrammeDestination
@@ -45,6 +51,12 @@ val navConfig =
                     subclass(HoursDestination::class)
                     subclass(AssistanceDestination::class)
                     subclass(FaqDestination::class)
+                    subclass(StoryDestination::class)
+                    subclass(PartnersDestination::class)
+                    subclass(ContactDestination::class)
+                    subclass(PageDestination::class)
+                    subclass(AboutDestination::class)
+                    subclass(PrivacyDestination::class)
                     subclass(HappeningDestination::class)
 
                     // Template example feature, unreachable from the tab shell. Registered only

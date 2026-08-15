@@ -522,11 +522,45 @@ actions in the bar. Silent Party = same template + booking row.
 emergency numbers merge into a single **"En cas de besoin"** screen — justified by a shared
 user situation, not by tidiness. Most remaining entries share one text-page template.
 
+> **What shipped, and the three rows that did not.** All four cards, sixteen rows, and fourteen
+> screens behind them. **Every row is derived from the section behind it**, so the tab can never
+> open a screen with nothing on it — which is what let the whole thing ship while half the
+> festival's practical information is unpublished, and what makes a rolled-back publish cost a row
+> rather than a dead end. The four groups and their order live in the screen, not in the content or
+> the domain: that payment is third is a design decision about how the tab is read.
+>
+> Two of the entries are built around content that does not exist, and are better for it.
+> **Horaires** deduces everything from the programme — a FestivalDay's window *is* the opening
+> hours, and its first and last Slot give the rest — so it needed no new content field and follows
+> a set added mid-festival on its own. **Accessibilité** assumes the absence: nothing is published,
+> so the screen says so and offers the only useful thing left, an address to write to before
+> travelling. The open questions stay in content/GAPS.md, addressed to the association, rather than
+> being French prose hardcoded in Kotlin that an app release would have to remove one line at a time.
+>
+> *Festival responsable* and *Réseaux sociaux* share **one parameterised screen** — the gabarit the
+> prototype concluded most of this tab is. *À propos* and *Confidentialité* are static: every word
+> on them is an app string rather than content, which is exactly what makes them the two rows that
+> survive a publish going missing.
+>
+> **Three rows of the prototype are deliberately absent.** *Plan du site* has no content at all —
+> only a parking PDF exists and the booth map has to be drawn. *Langue* would open a picker with one
+> language in it. *Notifications* are a settled deferral past v1. A row that opens nothing is worse
+> than no row. **Two more are outside this pass**: *Éditions précédentes* needs the on-demand third
+> file, the only non-offline feature in the app; *Effacer mes données* needs a repository capability
+> that does not exist yet and is the one row that writes.
+
 **Partenaires** — logos grouped by tier. **Tapping a logo opens that partner's site in the
 browser; a partner with no URL shows a toast saying it has none.** Five of the 39 have no website —
 two genuinely have none, one is an activity of the festival rather than a company, and one has an
 address that 404s — so silence on tap would be the common case, not the edge one, and a tap that
 does nothing reads as a bug.
+
+> **What shipped.** The tiers, sorted by their declared order, as grids of tappable cards — and the
+> cards draw **names rather than logos**, because no partner in the 2026 content has a logo file
+> supplied. The name is what the logo was standing for, and a grid of grey rectangles would read as
+> a broken screen. The "no website" message is keyed on a **counter in the state** rather than
+> published as a one-shot Label, so that a second tap says it a second time and the behaviour is
+> assertable rather than a fire-and-forget.
 
 **Splash** — one background photograph of the beach under a tint, the Yadlo wordmark, the logo and
 the motto, and beneath them the two **soutien public** logos, Morges and Préverenges.

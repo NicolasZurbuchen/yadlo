@@ -8,6 +8,8 @@ import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase.ObservePlusOverviewUseCase
 import kotlinx.coroutines.launch
 
+private const val MAIL_SCHEME = "mailto:"
+
 interface PlusStore : Store<PlusIntent, PlusState, PlusLabel>
 
 class PlusStoreFactory(
@@ -35,6 +37,20 @@ class PlusStoreFactory(
         override fun executeAction(action: PlusAction) {
             when (action) {
                 PlusAction.ObserveOverview -> observeOverview()
+            }
+        }
+
+        override fun executeIntent(intent: PlusIntent) {
+            // Read off the state rather than carried in the intent: only these two rows exist
+            // because the content supplied an address, so the same read decides both.
+            when (intent) {
+                PlusIntent.NewsletterClicked -> {
+                    state().overview?.newsletterUrl?.let { publish(PlusLabel.OpenUrl(it)) }
+                }
+
+                PlusIntent.ReportClicked -> {
+                    state().overview?.reportEmail?.let { publish(PlusLabel.OpenUrl("$MAIL_SCHEME$it")) }
+                }
             }
         }
 

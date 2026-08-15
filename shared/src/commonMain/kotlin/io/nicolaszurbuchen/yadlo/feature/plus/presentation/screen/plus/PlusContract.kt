@@ -2,11 +2,24 @@ package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.plus
 
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.model.PlusOverview
 
-/** Empty: every row on the root navigates, and nothing else on it can be operated. */
-sealed interface PlusIntent
+/**
+ * Two rows of the root leave the app instead of opening a screen.
+ *
+ * Neither carries its URL: the tab is the only thing that knows them, and putting an address on a
+ * row would make the screen responsible for a fact it never draws. The store reads them back off
+ * the overview it is already holding.
+ */
+sealed interface PlusIntent {
+    data object NewsletterClicked : PlusIntent
 
-/** Empty: nothing on the root leaves the app. The rows that will are one screen deeper. */
-sealed interface PlusLabel
+    data object ReportClicked : PlusIntent
+}
+
+sealed interface PlusLabel {
+    data class OpenUrl(
+        val url: String,
+    ) : PlusLabel
+}
 
 sealed interface PlusAction {
     data object ObserveOverview : PlusAction

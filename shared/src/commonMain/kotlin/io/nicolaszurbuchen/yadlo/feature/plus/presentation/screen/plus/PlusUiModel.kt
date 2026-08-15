@@ -3,22 +3,43 @@ package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.plus
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.Accessible
 import androidx.compose.material.icons.automirrored.outlined.HelpOutline
+import androidx.compose.material.icons.automirrored.outlined.Send
 import androidx.compose.material.icons.outlined.CreditCard
 import androidx.compose.material.icons.outlined.DirectionsBus
+import androidx.compose.material.icons.outlined.Flag
+import androidx.compose.material.icons.outlined.Groups
+import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material.icons.outlined.Lock
+import androidx.compose.material.icons.outlined.MailOutline
 import androidx.compose.material.icons.outlined.MedicalServices
+import androidx.compose.material.icons.outlined.Park
 import androidx.compose.material.icons.outlined.Restaurant
+import androidx.compose.material.icons.outlined.Sailing
 import androidx.compose.material.icons.outlined.Schedule
+import androidx.compose.material.icons.outlined.Share
 import androidx.compose.ui.graphics.vector.ImageVector
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import org.jetbrains.compose.resources.StringResource
 import yadlo.shared.generated.resources.Res
+import yadlo.shared.generated.resources.plus_entry_about
 import yadlo.shared.generated.resources.plus_entry_access
 import yadlo.shared.generated.resources.plus_entry_accessibility
 import yadlo.shared.generated.resources.plus_entry_assistance
+import yadlo.shared.generated.resources.plus_entry_contact
 import yadlo.shared.generated.resources.plus_entry_faq
 import yadlo.shared.generated.resources.plus_entry_hours
+import yadlo.shared.generated.resources.plus_entry_newsletter
+import yadlo.shared.generated.resources.plus_entry_partners
 import yadlo.shared.generated.resources.plus_entry_payment
+import yadlo.shared.generated.resources.plus_entry_privacy
+import yadlo.shared.generated.resources.plus_entry_report
+import yadlo.shared.generated.resources.plus_entry_responsible
+import yadlo.shared.generated.resources.plus_entry_social
 import yadlo.shared.generated.resources.plus_entry_stands
+import yadlo.shared.generated.resources.plus_entry_story
+import yadlo.shared.generated.resources.plus_group_app
+import yadlo.shared.generated.resources.plus_group_festival
+import yadlo.shared.generated.resources.plus_group_involvement
 import yadlo.shared.generated.resources.plus_group_on_site
 
 /**
@@ -46,6 +67,9 @@ enum class PlusGroupUiId(
     val title: StringResource,
 ) {
     ON_SITE(Res.string.plus_group_on_site),
+    FESTIVAL(Res.string.plus_group_festival),
+    INVOLVEMENT(Res.string.plus_group_involvement),
+    APP(Res.string.plus_group_app),
 }
 
 /**
@@ -59,6 +83,12 @@ enum class PlusGroupUiId(
 enum class PlusEntry(
     val title: StringResource,
     val icon: ImageVector,
+    /**
+     * Where the tap goes, said on the row itself. `›` stays inside, `↗` leaves for the browser, `✉`
+     * opens mail — SPEC.md § Interaction rules, and the reason a reader on one bar of signal knows
+     * before tapping whether it is about to cost them a page load.
+     */
+    val mark: String = DISCLOSURE,
 ) {
     STANDS(Res.string.plus_entry_stands, Icons.Outlined.Restaurant),
     PAYMENT(Res.string.plus_entry_payment, Icons.Outlined.CreditCard),
@@ -67,7 +97,20 @@ enum class PlusEntry(
     HOURS(Res.string.plus_entry_hours, Icons.Outlined.Schedule),
     ASSISTANCE(Res.string.plus_entry_assistance, Icons.Outlined.MedicalServices),
     FAQ(Res.string.plus_entry_faq, Icons.AutoMirrored.Outlined.HelpOutline),
+    STORY(Res.string.plus_entry_story, Icons.Outlined.Sailing),
+    RESPONSIBLE(Res.string.plus_entry_responsible, Icons.Outlined.Park),
+    PARTNERS(Res.string.plus_entry_partners, Icons.Outlined.Groups),
+    CONTACT(Res.string.plus_entry_contact, Icons.Outlined.MailOutline),
+    NEWSLETTER(Res.string.plus_entry_newsletter, Icons.AutoMirrored.Outlined.Send, EXTERNAL),
+    SOCIAL(Res.string.plus_entry_social, Icons.Outlined.Share),
+    ABOUT(Res.string.plus_entry_about, Icons.Outlined.Info),
+    REPORT(Res.string.plus_entry_report, Icons.Outlined.Flag, MAIL),
+    PRIVACY(Res.string.plus_entry_privacy, Icons.Outlined.Lock),
 }
+
+private const val DISCLOSURE = "›"
+private const val EXTERNAL = "↗"
+private const val MAIL = "✉"
 
 data class PlusGroupUiModel(
     val id: PlusGroupUiId,

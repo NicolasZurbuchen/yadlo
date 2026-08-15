@@ -6,8 +6,11 @@ import io.nicolaszurbuchen.yadlo.common.content.domain.model.ContentStatus
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Edition
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Festival
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.FestivalDay
+import io.nicolaszurbuchen.yadlo.common.content.domain.model.Figure
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Happening
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.MenuGroup
+import io.nicolaszurbuchen.yadlo.common.content.domain.model.Partner
+import io.nicolaszurbuchen.yadlo.common.content.domain.model.PartnerTier
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Provenance
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Slot
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Venue
@@ -25,6 +28,8 @@ internal fun ready(
     happenings: List<Happening> = emptyList(),
     days: List<FestivalDay> = emptyList(),
     slots: List<Slot> = emptyList(),
+    partners: List<PartnerTier> = emptyList(),
+    figures: List<Figure> = emptyList(),
 ) = ContentStatus.Ready(
     bundle =
         ContentBundle(
@@ -46,8 +51,8 @@ internal fun ready(
                     categories = listOf(RESTAURATION, CREATEURS),
                     happenings = happenings,
                     slots = slots,
-                    partners = emptyList(),
-                    figures = emptyList(),
+                    partners = partners,
+                    figures = figures,
                 ),
             announcements = emptyList(),
         ),
@@ -132,6 +137,37 @@ internal fun slot(
     day = day,
     start = Instant.parse(start),
     end = Instant.parse(end),
+    provenance = Provenance.CONFIRMED,
+)
+
+internal fun figure(
+    id: String,
+    value: String,
+    provenance: Provenance = Provenance.CONFIRMED,
+) = Figure(id = id, value = value, label = id, provenance = provenance)
+
+/**
+ * [withoutSite] names the members that have no website — five of the real thirty-nine do, and it is
+ * the case the screen has to say something about rather than swallow.
+ */
+internal fun tier(
+    id: String,
+    order: Int,
+    members: List<String>,
+    withoutSite: Set<String> = emptySet(),
+) = PartnerTier(
+    id = id,
+    name = id,
+    order = order,
+    members =
+        members.map {
+            Partner(
+                id = it,
+                name = it,
+                url = if (it in withoutSite) null else "https://example.ch/$it",
+                logo = null,
+            )
+        },
     provenance = Provenance.CONFIRMED,
 )
 

@@ -24,6 +24,10 @@ class PlusViewModel(
 
     val labels: Flow<PlusLabel> = store.labels
 
+    fun onIntent(intent: PlusIntent) {
+        store.accept(intent)
+    }
+
     override fun onCleared() {
         store.dispose()
         super.onCleared()

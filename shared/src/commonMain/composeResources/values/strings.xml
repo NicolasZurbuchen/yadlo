@@ -63,9 +63,47 @@
     <string name="plus_entry_hours">Horaires d\'ouverture</string>
     <string name="plus_entry_assistance">En cas de besoin</string>
     <string name="plus_entry_faq">Questions fréquentes</string>
+    <string name="plus_group_festival">Le festival</string>
+    <string name="plus_group_involvement">S\'impliquer</string>
+    <string name="plus_group_app">L\'application</string>
+    <string name="plus_entry_story">L\'histoire de Yadlo</string>
+    <string name="plus_entry_responsible">Festival responsable</string>
+    <string name="plus_entry_partners">Partenaires</string>
+    <string name="plus_entry_contact">Nous écrire</string>
+    <string name="plus_entry_newsletter">Newsletter</string>
+    <string name="plus_entry_social">Réseaux sociaux</string>
+    <string name="plus_entry_about">À propos de cette app</string>
+    <string name="plus_entry_report">Signaler une information</string>
+    <string name="plus_entry_privacy">Confidentialité</string>
     <string name="plus_stands_count">%1$s stands</string>
     <string name="plus_payment_no_cash">Pas d\'espèces</string>
     <string name="plus_assistance_subtitle">Urgences et objets trouvés</string>
+    <string name="plus_story_since">Depuis %1$s</string>
+    <string name="plus_partners_count">%1$s partenaires</string>
+    <string name="plus_about_unofficial">Application non officielle</string>
+
+    <string name="story_empty">L\'histoire du festival n\'est pas encore publiée.</string>
+
+    <string name="partners_intro">Si Yadlo existe, c\'est grâce aux partenariats tissés jusqu\'ici. Chaque édition en dépend.</string>
+    <string name="partners_no_website">Ce partenaire n\'a pas de site web.</string>
+    <string name="partners_empty">Les partenaires ne sont pas encore publiés.</string>
+
+    <string name="contact_section_emails">Écrire à la bonne adresse</string>
+    <string name="contact_section_address">L\'association</string>
+    <string name="contact_signup">S\'inscrire</string>
+    <string name="contact_empty">Aucune adresse n\'est encore publiée.</string>
+
+    <string name="page_empty">Rien n\'est encore publié ici.</string>
+
+    <string name="about_body">Yadlo est un festival de plage à Préverenges, au bord du Léman, chaque juillet depuis 2015. Cette application n\'est pas la sienne : elle a été construite par un visiteur, et l\'association n\'en est ni l\'auteure ni la responsable.\n\nTout ce qu\'elle affiche vient de ce que le festival publie — son site et son Instagram — recopié à la main dans des fichiers structurés.</string>
+    <string name="about_section_why">Pourquoi elle existe</string>
+    <string name="about_why">Parce que la programmation, les stands et les informations pratiques n\'existaient nulle part sous forme de données : elles vivaient dans des images et des publications. C\'est ce qui rendait impossible un programme personnel, un rappel ou un accès hors ligne.\n\nSi l\'association veut de cette application, elle est à elle. Écrivez-nous depuis Nous écrire.</string>
+
+    <string name="privacy_body">Cette application ne collecte rien. Elle télécharge les fichiers publics du festival et écrit votre programme sur votre appareil, et c\'est tout.</string>
+    <string name="privacy_section_facts">En clair</string>
+    <string name="privacy_fact_no_account">Aucun compte, aucune inscription</string>
+    <string name="privacy_fact_no_analytics">Aucune mesure d\'audience, aucun traceur</string>
+    <string name="privacy_fact_plan_is_local">Votre programme reste sur votre téléphone et disparaît avec l\'application</string>
 
     <string name="stands_title">Nourriture &amp; boissons</string>
     <string name="stands_filter_all">Tout</string>

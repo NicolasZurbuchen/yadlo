@@ -11,6 +11,16 @@ import kotlinx.coroutines.flow.map
 /** Cash refused is a fact worth writing on the row; the method's own id is how the content says it. */
 private const val CASH_METHOD_ID = "especes"
 
+private const val NEWSLETTER_LINK_ID = "newsletter"
+
+/**
+ * The general address, deliberately, for *signaler une information*. The directory has nine and
+ * several look closer — `communication@` most of all — but choosing between them would be guessing
+ * at the association's internal division of labour, and a correction sent to the wrong desk inside
+ * a small committee still reaches the right one.
+ */
+private const val GENERAL_EMAIL_ID = "hello"
+
 /**
  * What the root of Plus can offer, given what has been published.
  *
@@ -42,6 +52,14 @@ class ObservePlusOverviewUseCase(
                     hasOpeningHours = status.bundle.edition.days.isNotEmpty(),
                     hasAssistance = festival.assistance?.emergencyNumbers.orEmpty().isNotEmpty(),
                     faqCount = festival.faq.size,
+                    foundedYear = festival.story?.foundedYear,
+                    charterNames = festival.charters.map { it.name },
+                    partnerCount = status.bundle.edition.partners.sumOf { it.members.size },
+                    hasContact = festival.contact?.emails.orEmpty().isNotEmpty(),
+                    socialCount = festival.social.size,
+                    newsletterUrl = festival.links.firstOrNull { it.id == NEWSLETTER_LINK_ID }?.url,
+                    reportEmail =
+                        festival.contact?.emails?.firstOrNull { it.id == GENERAL_EMAIL_ID }?.address,
                 )
             }
 }

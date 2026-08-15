@@ -22,4 +22,16 @@ data class PlusOverview(
     val hasOpeningHours: Boolean,
     val hasAssistance: Boolean,
     val faqCount: Int,
+    val foundedYear: Int?,
+    val charterNames: List<String>,
+    val partnerCount: Int,
+    val hasContact: Boolean,
+    val socialCount: Int,
+    /**
+     * The two rows that leave the app from the root rather than opening a screen. Carried as URLs
+     * because the tab is where they are tapped, and a row that cannot say where it goes should not
+     * be drawn at all.
+     */
+    val newsletterUrl: String?,
+    val reportEmail: String?,
 )

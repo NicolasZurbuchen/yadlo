@@ -3,13 +3,20 @@ package io.nicolaszurbuchen.yadlo.app.navigation
 import androidx.navigation3.runtime.NavKey
 import io.nicolaszurbuchen.yadlo.feature.happening.presentation.navigation.HappeningDestination
 import io.nicolaszurbuchen.yadlo.feature.monyadlo.presentation.navigation.WishlistDestination
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.AboutDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.AccessDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.AccessibilityDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.AssistanceDestination
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.ContactDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.FaqDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.HoursDestination
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.PageDestination
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.PartnersDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.PaymentDestination
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.PrivacyDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.StandsDestination
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.StoryDestination
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.page.PageKind
 import kotlin.test.Test
 import kotlin.test.assertNotNull
 
@@ -56,6 +63,14 @@ class NavConfigTest {
             HoursDestination,
             AssistanceDestination,
             FaqDestination,
+            StoryDestination,
+            PartnersDestination,
+            ContactDestination,
+            AboutDestination,
+            PrivacyDestination,
+            // The one that carries a value: a restored stack has to come back on the same page,
+            // not on whichever the enum happens to declare first.
+            PageDestination(PageKind.SOCIAL),
         ).forEach { destination ->
             assertNotNull(
                 navConfig.serializersModule.getPolymorphic(NavKey::class, destination),

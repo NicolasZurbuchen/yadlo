@@ -459,6 +459,59 @@ March rather than sitting unread in July.
 *S'impliquer* — also surfaced on Home by phase
 - Devenir Hot'Staff · Soutenir · Newsletter · Instagram / Facebook / YouTube / TikTok · Contact
 
+**A row exists because its section does.** Every entry on the tab is derived from what the content
+currently carries — no stands, no *Nourriture & boissons*; no `paiement` block, no *Paiement*. That
+is what let the whole tab ship while half the festival's practical information is still unwritten,
+and it means a rolled-back publish costs a row rather than opening a screen with nothing on it. The
+cost is that the tab's shape moves with the content, which is the right direction for it to move in.
+
+**The four groups are a screen decision, not a domain one.** That they follow usage rather than the
+website's menu — what serves you on site, what tells you about the festival, what asks something of
+you, the app itself — is a design judgement made once, so it lives in the UiMapper. The domain only
+answers what the content can support. This is why payment is the third row of the tab: nothing about
+the data says so.
+
+**Facts carry a mark and no colour.** The prototype drew ✓ in green and ✕ in magenta. The magenta is
+`musique`, and a red-pink beside a kind dot is the collision § Open already flags for the accent;
+the green would have had to borrow `live`, which means "this is happening while you read it". So
+polarity is carried by the glyph and by the section header above it — *Accepté partout* against *Non
+accepté* — which is also what story 74 asks for, since colour is then never the only thing saying it.
+
+**Horaires is deduced, never authored.** A FestivalDay's `start`/`end` *are* the opening hours, and
+the first and last Slot of a day give the programme window. So the screen needed no new content
+field, shipped before the association published anything about times, and follows a set added
+mid-festival on its own. It says out loud that some activities start before the site opens rather
+than clamping them: the beach is public, the morning yoga is on it, and correcting the festival
+about its own site would be worse than explaining it.
+
+**Accessibilité assumes the absence.** Nothing is published, so the screen is built around saying so
+and handing over an address — because when the data is missing, somebody to ask is the most useful
+thing a page can offer, and a reassuringly vague page is what gets someone to drive thirty
+kilometres for nothing. The list of open questions stays in content/GAPS.md where it is addressed to
+the association: rendering it would put French prose in Kotlin and need an app release to remove
+each line as it gets answered.
+
+**One dietary filter, matching stand-or-dish.** SCHEMA.md keeps a Stand's marks and its Items' marks
+apart on purpose, and the distinction is real — but both answer "can I eat here", which is the only
+question a chip is asked. De l'Or Bokit carries no stand mark and sells one végé bokit; a filter
+that hid it would be wrong about the thing it was for. The row still shows only the Stand's own
+marks, so nothing claims a whole truck is vegan because one dish is. The chip set is derived from
+the listing rather than declared in Kotlin, so no chip is offered that matches nothing and a mark
+the content adds appears without a release. **One chip at a time**: two read as an intersection to
+whoever wrote them and a union to whoever reads them, and on eight stands the difference is a scroll.
+
+**One gabarit for the text pages.** *Festival responsable* and *Réseaux sociaux* are a title, some
+prose and some links, and so is whatever the association publishes next — so they are one
+parameterised screen rather than a folder of near-identical ones. It is deliberately not a layout
+language: a section is a heading, a paragraph and some links, and an entry needing more has earned
+its own screen. Horaires and Paiement both did.
+
+**Three rows of the prototype are not built, and the reason is the same each time**: a row that
+opens nothing is worse than no row. *Plan du site* has no content at all — only a parking PDF
+exists. *Langue* would open a picker with one language in it. *Notifications* are a settled deferral
+past v1. Two more are outside this pass rather than refused: *Éditions précédentes* needs the
+on-demand third file, and *Effacer mes données* needs a repository capability that does not exist.
+
 *L'application*
 - Langue · Notifications · Effacer mes données
 - À propos de cette app — unofficial, who built it, how to reach them. This is the screen a

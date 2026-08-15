@@ -40,5 +40,12 @@ class PlusReducerTest {
             hasOpeningHours = true,
             hasAssistance = true,
             faqCount = 1,
+            foundedYear = 2015,
+            charterNames = listOf("FestiPlus"),
+            partnerCount = 39,
+            hasContact = true,
+            socialCount = 4,
+            newsletterUrl = null,
+            reportEmail = null,
         )
 }

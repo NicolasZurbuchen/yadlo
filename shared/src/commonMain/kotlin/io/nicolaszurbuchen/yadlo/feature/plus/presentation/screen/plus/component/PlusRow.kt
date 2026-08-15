@@ -69,7 +69,7 @@ fun PlusRow(
         }
 
         Text(
-            text = DISCLOSURE,
+            text = row.entry.mark,
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.appColors.textTertiary,
         )
@@ -79,6 +79,3 @@ fun PlusRow(
 // Matched to the label's line height rather than to Material's 24dp default: at 24 the icon
 // outweighs the word next to it, and this list is read by its words.
 private val ICON_SIZE = 20.dp
-
-/** `›` internal, per SPEC.md § Interaction rules. Nothing on the root leaves the app. */
-private const val DISCLOSURE = "›"
