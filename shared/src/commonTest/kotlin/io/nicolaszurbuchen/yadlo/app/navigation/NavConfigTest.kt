@@ -3,6 +3,13 @@ package io.nicolaszurbuchen.yadlo.app.navigation
 import androidx.navigation3.runtime.NavKey
 import io.nicolaszurbuchen.yadlo.feature.happening.presentation.navigation.HappeningDestination
 import io.nicolaszurbuchen.yadlo.feature.monyadlo.presentation.navigation.WishlistDestination
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.AccessDestination
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.AccessibilityDestination
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.AssistanceDestination
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.FaqDestination
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.HoursDestination
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.PaymentDestination
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.StandsDestination
 import kotlin.test.Test
 import kotlin.test.assertNotNull
 
@@ -34,5 +41,26 @@ class NavConfigTest {
         // Pushed onto Mon Yadlo's own stack, so a missing registration loses the Wishlist and
         // drops the visitor back onto the timeline after a low-memory kill.
         assertNotNull(navConfig.serializersModule.getPolymorphic(NavKey::class, WishlistDestination))
+    }
+
+    @Test
+    fun navConfig_everyPlusDestination_isRegisteredForSavedState() {
+        // Plus is the deepest stack in the app — seven screens hang off one root — so it is also
+        // where a forgotten registration costs the most. Listed rather than looped because there is
+        // no enum of them: the tab's rows are built from the content, not from a fixed set.
+        listOf(
+            StandsDestination,
+            PaymentDestination,
+            AccessDestination,
+            AccessibilityDestination,
+            HoursDestination,
+            AssistanceDestination,
+            FaqDestination,
+        ).forEach { destination ->
+            assertNotNull(
+                navConfig.serializersModule.getPolymorphic(NavKey::class, destination),
+                "$destination is not registered in navConfig",
+            )
+        }
     }
 }

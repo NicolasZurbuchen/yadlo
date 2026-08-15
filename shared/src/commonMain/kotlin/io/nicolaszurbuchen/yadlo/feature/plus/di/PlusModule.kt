@@ -1,0 +1,59 @@
+package io.nicolaszurbuchen.yadlo.feature.plus.di
+
+import io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase.ObserveAccessibilityGuideUseCase
+import io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase.ObserveAssistanceGuideUseCase
+import io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase.ObserveFaqUseCase
+import io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase.ObserveOpeningDaysUseCase
+import io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase.ObservePaymentUseCase
+import io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase.ObservePlusOverviewUseCase
+import io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase.ObserveStandDirectoryUseCase
+import io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase.ObserveTransportUseCase
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.access.AccessStoreFactory
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.access.AccessViewModel
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.accessibility.AccessibilityStoreFactory
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.accessibility.AccessibilityViewModel
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.assistance.AssistanceStoreFactory
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.assistance.AssistanceViewModel
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.faq.FaqStoreFactory
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.faq.FaqViewModel
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.hours.HoursStoreFactory
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.hours.HoursViewModel
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.payment.PaymentStoreFactory
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.payment.PaymentViewModel
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.plus.PlusStoreFactory
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.plus.PlusViewModel
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands.StandsStoreFactory
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands.StandsViewModel
+import org.koin.core.module.dsl.factoryOf
+import org.koin.core.module.dsl.viewModelOf
+import org.koin.dsl.module
+
+val plusModule =
+    module {
+        factoryOf(::ObservePlusOverviewUseCase)
+        factoryOf(::ObserveStandDirectoryUseCase)
+        factoryOf(::ObservePaymentUseCase)
+        factoryOf(::ObserveTransportUseCase)
+        factoryOf(::ObserveAccessibilityGuideUseCase)
+        factoryOf(::ObserveOpeningDaysUseCase)
+        factoryOf(::ObserveAssistanceGuideUseCase)
+        factoryOf(::ObserveFaqUseCase)
+
+        factoryOf(::PlusStoreFactory)
+        factoryOf(::StandsStoreFactory)
+        factoryOf(::PaymentStoreFactory)
+        factoryOf(::AccessStoreFactory)
+        factoryOf(::AccessibilityStoreFactory)
+        factoryOf(::HoursStoreFactory)
+        factoryOf(::AssistanceStoreFactory)
+        factoryOf(::FaqStoreFactory)
+
+        viewModelOf(::PlusViewModel)
+        viewModelOf(::StandsViewModel)
+        viewModelOf(::PaymentViewModel)
+        viewModelOf(::AccessViewModel)
+        viewModelOf(::AccessibilityViewModel)
+        viewModelOf(::HoursViewModel)
+        viewModelOf(::AssistanceViewModel)
+        viewModelOf(::FaqViewModel)
+    }

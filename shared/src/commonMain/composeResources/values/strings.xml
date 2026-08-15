@@ -53,6 +53,63 @@
     <string name="wishlist_back">Retour</string>
     <string name="wishlist_empty">Tu n\'as encore rien gardé. Les stands sont dans Plus › Nourriture &amp; boissons.</string>
 
+    <!-- Plus — the root list. Group names and row titles are fixed; only the subtitles come from content. -->
+    <string name="plus_back">Retour</string>
+    <string name="plus_group_on_site">Sur place</string>
+    <string name="plus_entry_stands">Nourriture &amp; boissons</string>
+    <string name="plus_entry_payment">Paiement</string>
+    <string name="plus_entry_access">Accès &amp; transports</string>
+    <string name="plus_entry_accessibility">Accessibilité</string>
+    <string name="plus_entry_hours">Horaires d\'ouverture</string>
+    <string name="plus_entry_assistance">En cas de besoin</string>
+    <string name="plus_entry_faq">Questions fréquentes</string>
+    <string name="plus_stands_count">%1$s stands</string>
+    <string name="plus_payment_no_cash">Pas d\'espèces</string>
+    <string name="plus_assistance_subtitle">Urgences et objets trouvés</string>
+
+    <string name="stands_title">Nourriture &amp; boissons</string>
+    <string name="stands_filter_all">Tout</string>
+    <string name="stands_no_match">Aucun stand ne porte cette mention.</string>
+    <string name="stands_empty">Les stands ne sont pas encore publiés.</string>
+
+    <string name="payment_title">Paiement</string>
+    <string name="payment_section_accepted">Accepté partout</string>
+    <string name="payment_section_refused">Non accepté</string>
+    <string name="payment_section_notes">Bon à savoir</string>
+    <string name="payment_section_links">Liens</string>
+    <string name="payment_empty">Rien n\'est encore publié sur les moyens de paiement.</string>
+
+    <string name="access_title">Accès</string>
+    <string name="access_departures">Départs</string>
+    <string name="access_empty">Rien n\'est encore publié sur l\'accès au site.</string>
+
+    <string name="accessibility_title">Accessibilité</string>
+    <string name="accessibility_intro">Le site est une plage : du sable, de l\'herbe, peu de surfaces dures. Voici ce que nous savons.</string>
+    <string name="accessibility_section_available">Confirmé</string>
+    <string name="accessibility_section_unavailable">Non disponible</string>
+    <string name="accessibility_section_contact">Écrivez-nous avant de venir</string>
+    <string name="accessibility_contact_body">C\'est la manière la plus sûre d\'organiser votre venue : l\'équipe peut réserver une place, prévoir un accès ou vous accueillir à l\'arrivée.</string>
+    <string name="accessibility_contact_hint">Objet : accessibilité</string>
+    <string name="accessibility_nothing_published">Le festival ne publie encore rien sur l\'accessibilité de son site. Plutôt que de vous rassurer à vide, voici quelqu\'un à qui demander.</string>
+    <string name="accessibility_empty">Rien n\'est encore publié sur l\'accessibilité.</string>
+
+    <string name="hours_title">Horaires</string>
+    <string name="hours_intro">À quelle heure le site ouvre, et jusqu\'à quand on peut manger, boire et se mouiller.</string>
+    <string name="hours_site_open">Site ouvert</string>
+    <string name="hours_programme">Programme</string>
+    <string name="hours_estimated">Horaires déduits, à confirmer par l\'organisation.</string>
+    <string name="hours_before_opening">Certaines activités commencent avant l\'ouverture : la plage de Préverenges est publique.</string>
+    <string name="hours_empty">Les horaires ne sont pas encore publiés.</string>
+
+    <string name="assistance_title">En cas de besoin</string>
+    <string name="assistance_section_emergency">Urgence vitale</string>
+    <string name="assistance_section_lost">Objets trouvés</string>
+    <string name="assistance_lost_body">Pendant le festival, au poste de secours. Après, écrivez-nous.</string>
+    <string name="assistance_empty">Les numéros ne sont pas encore publiés.</string>
+
+    <string name="faq_title">Questions fréquentes</string>
+    <string name="faq_empty">Aucune question n\'a encore été publiée.</string>
+
     <string name="happening_back">Retour</string>
     <string name="happening_missing">Cette fiche n\'est plus disponible.</string>
     <string name="happening_section_when">Quand</string>
