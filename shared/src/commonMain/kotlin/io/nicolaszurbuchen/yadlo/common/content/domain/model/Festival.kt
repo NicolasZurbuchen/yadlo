@@ -19,4 +19,10 @@ data class Festival(
      * data. Null means no minimum has been set.
      */
     val minSupportedAppVersion: String?,
+    /**
+     * Modelled here rather than left to the Plus sections because Accueil shows them in four of the
+     * five phases: on the 361 days when nothing is happening, the networks are where the festival
+     * actually is.
+     */
+    val social: List<SocialLink>,
 )

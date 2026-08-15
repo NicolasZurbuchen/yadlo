@@ -1928,25 +1928,25 @@
       "id": "visiteurs",
       "value": "6000",
       "label": "visiteurs",
-      "provenance": "confirmed"
+      "provenance": "archived"
     },
     {
       "id": "heures-musique",
       "value": "45",
       "label": "heures de DJ sets et concerts",
-      "provenance": "confirmed"
+      "provenance": "archived"
     },
     {
       "id": "litres-biere",
       "value": "3200",
       "label": "litres de bière",
-      "provenance": "confirmed"
+      "provenance": "archived"
     },
     {
       "id": "benevoles",
       "value": "160",
       "label": "bénévoles",
-      "provenance": "confirmed"
+      "provenance": "archived"
     }
   ]
 }

@@ -3,6 +3,7 @@ package io.nicolaszurbuchen.yadlo.app.navigation
 import androidx.navigation3.runtime.NavKey
 import androidx.savedstate.serialization.SavedStateConfiguration
 import io.nicolaszurbuchen.yadlo.feature.happening.presentation.navigation.HappeningDestination
+import io.nicolaszurbuchen.yadlo.feature.home.presentation.navigation.AnnouncementsDestination
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.navigation.HomeDestination
 import io.nicolaszurbuchen.yadlo.feature.monyadlo.presentation.navigation.MonYadloDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.PlusDestination
@@ -24,6 +25,7 @@ val navConfig =
             SerializersModule {
                 polymorphic(NavKey::class) {
                     subclass(HomeDestination::class)
+                    subclass(AnnouncementsDestination::class)
                     subclass(ProgrammeDestination::class)
                     subclass(MonYadloDestination::class)
                     subclass(PlusDestination::class)

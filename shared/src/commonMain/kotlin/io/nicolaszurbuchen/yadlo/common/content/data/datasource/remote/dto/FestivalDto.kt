@@ -14,4 +14,12 @@ data class FestivalDto(
     val tagline: String,
     val currentEditionId: String,
     val minSupportedAppVersion: String? = null,
-)
+    val social: List<SocialDto> = emptyList(),
+) {
+    @Serializable
+    data class SocialDto(
+        val id: String,
+        val name: String,
+        val url: String,
+    )
+}
