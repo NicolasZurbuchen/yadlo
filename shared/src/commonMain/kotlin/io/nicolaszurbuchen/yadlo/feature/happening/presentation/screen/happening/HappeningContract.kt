@@ -8,6 +8,20 @@ sealed interface HappeningIntent {
     data class LinkClicked(
         val url: String,
     ) : HappeningIntent
+
+    /**
+     * A date row — this one Slot on or off the Plan. A three-day activity is three of these, because
+     * saving Friday says nothing about whether you also want the Sunday.
+     */
+    data class SlotHeartClicked(
+        val slotId: String,
+    ) : HappeningIntent
+
+    /**
+     * The heart in the bar, which only a Stand has: it carries no id because a Stand is kept whole
+     * and the fiche is already about exactly one of them.
+     */
+    data object WishlistHeartClicked : HappeningIntent
 }
 
 sealed interface HappeningLabel {

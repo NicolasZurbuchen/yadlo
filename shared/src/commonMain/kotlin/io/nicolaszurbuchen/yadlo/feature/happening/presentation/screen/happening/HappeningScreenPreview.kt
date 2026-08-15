@@ -48,7 +48,13 @@ private fun HappeningScreenPreview(
 ) {
     YadloTheme {
         Box(modifier = Modifier.fillMaxSize().background(MaterialTheme.appColors.background)) {
-            HappeningScreen(state = state, onBackClick = {}, onLinkClick = {})
+            HappeningScreen(
+                state = state,
+                onBackClick = {},
+                onLinkClick = {},
+                onSlotHeartClick = {},
+                onWishlistHeartClick = {},
+            )
         }
     }
 }
@@ -70,6 +76,7 @@ private fun blank(
     facts = emptyList(),
     menu = emptyList(),
     links = emptyList(),
+    wishlisted = null,
 )
 
 private fun artist() =
@@ -89,6 +96,7 @@ private fun artist() =
                     timeText = "17:00 – 18:30",
                     stateLabel = UiText.Resource(Res.string.slot_state_running),
                     state = SlotLiveStateUiModel.Running(progress = 0.4f),
+                    planned = true,
                 ),
             ),
         links =
@@ -114,6 +122,7 @@ private fun activity() =
                     timeText = "21:00 – 02:00",
                     stateLabel = null,
                     state = SlotLiveStateUiModel.Upcoming,
+                    planned = false,
                 ),
             ),
         price =
@@ -166,8 +175,10 @@ private fun stand() =
                 ),
             ),
         // A stand has no Slots of its own on this screen: its hours are the site's, and the
-        // Programme already drops them for the same reason.
+        // Programme already drops them for the same reason. Its heart therefore sits in the bar,
+        // which is what a non-null `wishlisted` says.
         price = null,
+        wishlisted = true,
         links =
             listOf(
                 HappeningLinkUiModel(

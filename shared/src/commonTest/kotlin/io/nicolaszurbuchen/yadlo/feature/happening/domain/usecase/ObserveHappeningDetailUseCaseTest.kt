@@ -16,16 +16,21 @@ import io.nicolaszurbuchen.yadlo.common.content.domain.model.Price
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Provenance
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Slot
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Venue
+import io.nicolaszurbuchen.yadlo.common.plan.domain.fake.FakePlanRepository
+import io.nicolaszurbuchen.yadlo.common.plan.domain.model.SavedItem
+import io.nicolaszurbuchen.yadlo.common.plan.domain.model.SavedKind
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 import kotlin.time.Instant
 
 class ObserveHappeningDetailUseCaseTest {
     private val repository = FakeContentRepository()
-    private val useCase = ObserveHappeningDetailUseCase(repository)
+    private val planRepository = FakePlanRepository()
+    private val useCase = ObserveHappeningDetailUseCase(repository, planRepository)
 
     @Test
     fun invoke_beforeTheBundleIsReady_emitsNothingRatherThanAMissingFiche() =
@@ -170,6 +175,86 @@ class ObserveHappeningDetailUseCaseTest {
                 assertEquals("DJ ALF (b2b)", awaitItem()?.name)
             }
         }
+
+    // region the heart, joined rather than stored
+
+    @Test
+    fun invoke_savedSlotIds_landOnTheMatchingSlotAndOnNoOther() =
+        runTest {
+            planRepository.emitSaved(listOf(savedSlot("2026:silent-party-fri")))
+
+            useCase("silent-party").test {
+                repository.emitStatus(ready())
+
+                val slots = awaitItem()?.slots.orEmpty()
+
+                assertEquals(listOf(true, false), slots.map { it.planned })
+            }
+        }
+
+    @Test
+    fun invoke_aSavedStandId_doesNotPlanASlotThatHappensToShareIt() =
+        runTest {
+            // The two id spaces share one table, so the kind is what keeps them apart. Without it a
+            // saved stand could light up a date row somewhere else in the app.
+            planRepository.emitSaved(listOf(SavedItem("2026:silent-party-fri", SavedKind.STAND, "2026")))
+
+            useCase("silent-party").test {
+                repository.emitStatus(ready())
+
+                assertTrue(awaitItem()?.slots.orEmpty().none { it.planned })
+            }
+        }
+
+    @Test
+    fun invoke_stand_carriesItsOwnHeartRatherThanOnePerSlot() =
+        runTest {
+            planRepository.emitSaved(listOf(SavedItem("vegan-fabrik", SavedKind.STAND, "2026")))
+
+            useCase("vegan-fabrik").test {
+                repository.emitStatus(ready())
+
+                assertEquals(true, awaitItem()?.wishlisted)
+            }
+        }
+
+    @Test
+    fun invoke_unsavedStand_saysSoRatherThanSayingNothing() =
+        runTest {
+            useCase("vegan-fabrik").test {
+                repository.emitStatus(ready())
+
+                // false, not null: the fiche still draws the heart, it is simply empty.
+                assertFalse(awaitItem()?.wishlisted ?: true)
+            }
+        }
+
+    @Test
+    fun invoke_anythingThatIsNotAStand_hasNoSingleHeartAtAll() =
+        runTest {
+            useCase("dj-alf").test {
+                repository.emitStatus(ready())
+
+                assertNull(awaitItem()?.wishlisted)
+            }
+        }
+
+    @Test
+    fun invoke_savingWhileTheFicheIsOpen_reEmitsWithoutTheContentMoving() =
+        runTest {
+            useCase("dj-alf").test {
+                repository.emitStatus(ready())
+                assertTrue(awaitItem()?.slots.orEmpty().none { it.planned })
+
+                planRepository.toggle(savedSlot("2026:dj-alf-fri"))
+
+                assertTrue(awaitItem()?.slots.orEmpty().all { it.planned })
+            }
+        }
+
+    // endregion
+
+    private fun savedSlot(id: String) = SavedItem(id = id, kind = SavedKind.SLOT, editionId = "2026")
 
     private fun ready(artistName: String = "DJ ALF"): ContentStatus.Ready {
         val artist =

@@ -14,6 +14,10 @@ import io.nicolaszurbuchen.yadlo.common.content.domain.model.Happening
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Provenance
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Slot
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Venue
+import io.nicolaszurbuchen.yadlo.common.plan.domain.fake.FakePlanRepository
+import io.nicolaszurbuchen.yadlo.common.plan.domain.model.SavedItem
+import io.nicolaszurbuchen.yadlo.common.plan.domain.model.SavedKind
+import io.nicolaszurbuchen.yadlo.common.plan.domain.usecase.ToggleSavedUseCase
 import io.nicolaszurbuchen.yadlo.feature.happening.domain.usecase.ObserveHappeningDetailUseCase
 import io.nicolaszurbuchen.yadlo.infra.time.AppClock
 import kotlinx.coroutines.Dispatchers
@@ -71,7 +75,7 @@ class HappeningExecutorTest {
 
     @Test
     fun onCreate_beforeAnyBundle_isNeitherLoadedNorMissing() =
-        happeningTest(happeningId = "dubside") { store, _, _ ->
+        happeningTest(happeningId = "dubside") { store, _, _, _ ->
             testDispatcher.scheduler.runCurrent()
 
             assertFalse(store.state.isLoaded)
@@ -80,7 +84,7 @@ class HappeningExecutorTest {
 
     @Test
     fun onCreate_theBundleArrives_narrowsItToThisHappeningAlone() =
-        happeningTest(happeningId = "dubside") { store, repository, _ ->
+        happeningTest(happeningId = "dubside") { store, repository, _, _ ->
             repository.emitStatus(ready())
             testDispatcher.scheduler.runCurrent()
 
@@ -91,7 +95,7 @@ class HappeningExecutorTest {
 
     @Test
     fun onCreate_anIdTheEditionDoesNotDeclare_loadsWithNoFicheRatherThanSpinningForever() =
-        happeningTest(happeningId = "gone-since-last-refresh") { store, repository, _ ->
+        happeningTest(happeningId = "gone-since-last-refresh") { store, repository, _, _ ->
             repository.emitStatus(ready())
             testDispatcher.scheduler.runCurrent()
 
@@ -101,7 +105,7 @@ class HappeningExecutorTest {
 
     @Test
     fun refresh_landsWhileTheFicheIsOpen_followsIt() =
-        happeningTest(happeningId = "dubside") { store, repository, _ ->
+        happeningTest(happeningId = "dubside") { store, repository, _, _ ->
             repository.emitStatus(ready())
             testDispatcher.scheduler.runCurrent()
 
@@ -119,7 +123,7 @@ class HappeningExecutorTest {
 
     @Test
     fun tick_advancesTheInstantTheDateRowsPillsAreMeasuredAgainst() =
-        happeningTest(happeningId = "dubside") { store, _, clock ->
+        happeningTest(happeningId = "dubside") { store, _, clock, _ ->
             testDispatcher.scheduler.runCurrent()
             assertEquals(SATURDAY_AFTERNOON, store.state.now)
 
@@ -132,7 +136,7 @@ class HappeningExecutorTest {
 
     @Test
     fun clockJumps_picksItUpWithoutWaitingOutTheTick() =
-        happeningTest(happeningId = "dubside") { store, _, clock ->
+        happeningTest(happeningId = "dubside") { store, _, clock, _ ->
             testDispatcher.scheduler.runCurrent()
 
             clock.jumpTo(SATURDAY_EVENING)
@@ -147,7 +151,7 @@ class HappeningExecutorTest {
 
     @Test
     fun linkClicked_leavesTheAppRatherThanNavigating() =
-        happeningTest(happeningId = "dubside") { store, _, _ ->
+        happeningTest(happeningId = "dubside") { store, _, _, _ ->
             testDispatcher.scheduler.runCurrent()
 
             store.labels.test {
@@ -161,23 +165,88 @@ class HappeningExecutorTest {
 
     // endregion
 
+    // region the hearts
+
+    @Test
+    fun slotHeartClicked_savesThatSlotAloneAndStampsItWithTheEdition() =
+        happeningTest(happeningId = "dubside") { store, repository, _, plan ->
+            repository.emitStatus(ready())
+            testDispatcher.scheduler.runCurrent()
+
+            store.accept(HappeningIntent.SlotHeartClicked("2026:dubside-sat"))
+            testDispatcher.scheduler.runCurrent()
+
+            assertEquals(
+                listOf(SavedItem(id = "2026:dubside-sat", kind = SavedKind.SLOT, editionId = "2026")),
+                plan.toggled,
+            )
+        }
+
+    @Test
+    fun slotHeartClicked_comesBackThroughTheJoinRatherThanBeingAssumed() =
+        happeningTest(happeningId = "dubside") { store, repository, _, _ ->
+            repository.emitStatus(ready())
+            testDispatcher.scheduler.runCurrent()
+            assertFalse(store.state.detail?.slots.orEmpty().any { it.planned })
+
+            store.accept(HappeningIntent.SlotHeartClicked("2026:dubside-sat"))
+            testDispatcher.scheduler.runCurrent()
+
+            // No Message was dispatched for this: the filled heart is the repository answering.
+            assertTrue(store.state.detail?.slots.orEmpty().all { it.planned })
+        }
+
+    @Test
+    fun slotHeartClicked_twice_leavesTheSlotOffThePlan() =
+        happeningTest(happeningId = "dubside") { store, repository, _, _ ->
+            repository.emitStatus(ready())
+            testDispatcher.scheduler.runCurrent()
+
+            store.accept(HappeningIntent.SlotHeartClicked("2026:dubside-sat"))
+            testDispatcher.scheduler.runCurrent()
+            store.accept(HappeningIntent.SlotHeartClicked("2026:dubside-sat"))
+            testDispatcher.scheduler.runCurrent()
+
+            assertFalse(store.state.detail?.slots.orEmpty().any { it.planned })
+        }
+
+    @Test
+    fun wishlistHeartClicked_savesTheStandItselfRatherThanAnyOfItsHours() =
+        happeningTest(happeningId = "snack") { store, repository, _, plan ->
+            repository.emitStatus(ready())
+            testDispatcher.scheduler.runCurrent()
+
+            store.accept(HappeningIntent.WishlistHeartClicked)
+            testDispatcher.scheduler.runCurrent()
+
+            assertEquals(
+                listOf(SavedItem(id = "snack", kind = SavedKind.STAND, editionId = "2026")),
+                plan.toggled,
+            )
+            assertEquals(true, store.state.detail?.wishlisted)
+        }
+
+    // endregion
+
     /** The ticker never stops on its own, so every store is disposed even when an assertion throws. */
     private fun happeningTest(
         happeningId: String,
-        block: suspend TestScope.(HappeningStore, FakeContentRepository, SettableClock) -> Unit,
+        block: suspend TestScope.(HappeningStore, FakeContentRepository, SettableClock, FakePlanRepository) -> Unit,
     ) = runTest {
         val repository = FakeContentRepository()
+        val planRepository = FakePlanRepository()
         val clock = SettableClock(SATURDAY_AFTERNOON)
         val store =
             HappeningStoreFactory(
                 storeFactory = DefaultStoreFactory(),
-                observeHappeningDetail = ObserveHappeningDetailUseCase(repository),
+                observeHappeningDetail = ObserveHappeningDetailUseCase(repository, planRepository),
+                toggleSaved = ToggleSavedUseCase(planRepository, repository),
                 clock = clock,
                 happeningId = happeningId,
             ).create()
 
         try {
-            block(store, repository, clock)
+            block(store, repository, clock, planRepository)
         } finally {
             store.dispose()
         }
@@ -194,6 +263,20 @@ class HappeningExecutorTest {
                 provenance = Provenance.CONFIRMED,
                 genres = emptyList(),
                 links = emptyList(),
+            )
+
+        val snack =
+            Happening.Stand(
+                id = "snack",
+                name = "Le Snack",
+                category = MUSIQUE,
+                description = null,
+                images = emptyList(),
+                provenance = Provenance.CONFIRMED,
+                offering = "Frites",
+                marks = emptyList(),
+                links = emptyList(),
+                menu = emptyList(),
             )
 
         return ContentStatus.Ready(
@@ -222,7 +305,7 @@ class HappeningExecutorTest {
                                 ),
                             days = listOf(SATURDAY),
                             categories = listOf(MUSIQUE),
-                            happenings = listOf(dubside),
+                            happenings = listOf(dubside, snack),
                             slots =
                                 listOf(
                                     Slot(

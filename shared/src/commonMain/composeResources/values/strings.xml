@@ -34,6 +34,12 @@
     <string name="slot_state_over">terminé</string>
     <string name="price_free">Gratuit</string>
 
+    <!-- One heart, two verbs: a Slot goes on the Plan, a Stand on the Wishlist. -->
+    <string name="plan_add">Ajouter à mon programme</string>
+    <string name="plan_remove">Retirer de mon programme</string>
+    <string name="wishlist_add">Ajouter à ma liste à essayer</string>
+    <string name="wishlist_remove">Retirer de ma liste à essayer</string>
+
     <string name="programme_categories_all">Tout</string>
     <string name="programme_price_from">dès %1$s</string>
     <string name="programme_empty_filter">Aucune activité ne correspond à ce filtre.</string>

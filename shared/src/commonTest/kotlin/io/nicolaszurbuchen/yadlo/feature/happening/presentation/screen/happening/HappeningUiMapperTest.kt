@@ -146,6 +146,52 @@ class HappeningUiMapperTest {
 
     // endregion
 
+    // region hearts
+
+    @Test
+    fun toUiModel_aPlannedSlot_carriesItsOwnFilledHeart() {
+        val model = state(detail(slots = listOf(saturdayFourToSix(planned = true)))).toUiModel()
+
+        assertTrue(model.slots.single().planned)
+    }
+
+    @Test
+    fun toUiModel_aSlotThatIsOver_stillCarriesItsHeart() {
+        val model =
+            state(
+                detail(slots = listOf(saturdayFourToSix(planned = true))),
+                now = Instant.parse("2026-07-11T20:00:00+02:00"),
+            ).toUiModel()
+
+        // The whole row stays tappable after the fact. Saving the Friday of a three-day activity
+        // once it has run is how someone marks what they went to, not a mistake to prevent.
+        assertTrue(model.slots.single().planned)
+    }
+
+    @Test
+    fun toUiModel_aStand_putsItsOneHeartInTheBar() {
+        val model = state(detail(wishlisted = false)).toUiModel()
+
+        assertEquals(false, model.wishlisted)
+    }
+
+    @Test
+    fun toUiModel_anythingThatIsNotAStand_hasNoHeartInTheBarAtAll() {
+        // Null rather than false: the bar draws nothing, rather than drawing an empty heart that
+        // would save a Happening whose Slots are each already savable below it.
+        assertNull(state(detail()).toUiModel().wishlisted)
+    }
+
+    @Test
+    fun toUiModel_whileLoading_hasNoHeartAnywhere() {
+        val model = HappeningState(now = NOW).toUiModel()
+
+        assertNull(model.wishlisted)
+        assertTrue(model.slots.isEmpty())
+    }
+
+    // endregion
+
     // region price
 
     @Test
@@ -365,6 +411,7 @@ class HappeningUiMapperTest {
         supervised: Boolean? = null,
         menu: List<MenuGroup> = emptyList(),
         links: List<Link> = emptyList(),
+        wishlisted: Boolean? = null,
     ) = HappeningDetail(
         id = "dubside",
         name = "Dubside",
@@ -381,14 +428,16 @@ class HappeningUiMapperTest {
         supervised = supervised,
         menu = menu,
         links = links,
+        wishlisted = wishlisted,
     )
 
-    private fun saturdayFourToSix() =
+    private fun saturdayFourToSix(planned: Boolean = false) =
         HappeningSlot(
             id = "2026:dubside-sat",
             dayName = "Samedi",
             start = Instant.parse("2026-07-11T16:00:00+02:00"),
             end = Instant.parse("2026-07-11T18:00:00+02:00"),
+            planned = planned,
         )
 
     private fun free() = Price(free = true, tiers = emptyList(), deposit = null, provenance = Provenance.CONFIRMED)

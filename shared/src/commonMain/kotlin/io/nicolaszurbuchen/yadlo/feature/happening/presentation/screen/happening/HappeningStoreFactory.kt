@@ -5,6 +5,8 @@ import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
+import io.nicolaszurbuchen.yadlo.common.plan.domain.model.SavedKind
+import io.nicolaszurbuchen.yadlo.common.plan.domain.usecase.ToggleSavedUseCase
 import io.nicolaszurbuchen.yadlo.feature.happening.domain.usecase.ObserveHappeningDetailUseCase
 import io.nicolaszurbuchen.yadlo.infra.time.AppClock
 import kotlinx.coroutines.delay
@@ -16,6 +18,7 @@ interface HappeningStore : Store<HappeningIntent, HappeningState, HappeningLabel
 class HappeningStoreFactory(
     private val storeFactory: StoreFactory,
     private val observeHappeningDetail: ObserveHappeningDetailUseCase,
+    private val toggleSaved: ToggleSavedUseCase,
     private val clock: AppClock,
     private val happeningId: String,
 ) {
@@ -46,10 +49,24 @@ class HappeningStoreFactory(
             }
         }
 
+        /**
+         * Neither heart dispatches a Message. The detail flow is a join over the content and the
+         * Plan, so a write to the Plan comes back through the same collector the fiche is already
+         * reading — the filled heart is the repository answering, never the screen assuming it was
+         * obeyed.
+         */
         override fun executeIntent(intent: HappeningIntent) {
             when (intent) {
                 is HappeningIntent.LinkClicked -> {
                     publish(HappeningLabel.OpenUrl(intent.url))
+                }
+
+                is HappeningIntent.SlotHeartClicked -> {
+                    scope.launch { toggleSaved(id = intent.slotId, kind = SavedKind.SLOT) }
+                }
+
+                HappeningIntent.WishlistHeartClicked -> {
+                    scope.launch { toggleSaved(id = happeningId, kind = SavedKind.STAND) }
                 }
             }
         }

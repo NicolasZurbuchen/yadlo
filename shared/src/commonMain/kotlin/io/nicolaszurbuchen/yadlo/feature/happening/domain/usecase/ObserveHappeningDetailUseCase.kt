@@ -4,36 +4,60 @@ import io.nicolaszurbuchen.yadlo.common.content.domain.model.ContentBundle
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.ContentStatus
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Happening
 import io.nicolaszurbuchen.yadlo.common.content.domain.repository.ContentRepository
+import io.nicolaszurbuchen.yadlo.common.plan.domain.model.SavedItem
+import io.nicolaszurbuchen.yadlo.common.plan.domain.model.SavedKind
+import io.nicolaszurbuchen.yadlo.common.plan.domain.repository.PlanRepository
 import io.nicolaszurbuchen.yadlo.feature.happening.domain.model.HappeningDetail
 import io.nicolaszurbuchen.yadlo.feature.happening.domain.model.HappeningSlot
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterIsInstance
-import kotlinx.coroutines.flow.map
 
 /**
- * One Happening's fiche, assembled from the bundle.
+ * One Happening's fiche, assembled from the bundle and from what the visitor has kept.
+ *
+ * The two repositories are combined here rather than stored together — the heart is a join, not a
+ * field (SPEC.md § Domain). Nothing in the content model knows whether something is saved, which is
+ * what lets a refresh replace the whole bundle without touching a Plan.
  *
  * Emits null when the edition holds no Happening with that id. That is reachable without any bug on
  * the app's side: a fiche is pushed onto a tab and survives process death, so someone can restore
  * the app onto a Happening that a content refresh has since dropped.
  */
 class ObserveHappeningDetailUseCase(
-    private val repository: ContentRepository,
+    private val contentRepository: ContentRepository,
+    private val planRepository: PlanRepository,
 ) {
     operator fun invoke(happeningId: String): Flow<HappeningDetail?> =
-        repository
-            .observeStatus()
-            .filterIsInstance<ContentStatus.Ready>()
-            .map { it.bundle.toHappeningDetail(happeningId) }
+        combine(
+            contentRepository.observeStatus().filterIsInstance<ContentStatus.Ready>(),
+            planRepository.observeSaved(),
+        ) { status, saved ->
+            status.bundle.toHappeningDetail(happeningId, saved)
+        }
 
-    private fun ContentBundle.toHappeningDetail(happeningId: String): HappeningDetail? {
+    private fun ContentBundle.toHappeningDetail(
+        happeningId: String,
+        saved: List<SavedItem>,
+    ): HappeningDetail? {
         val happening = edition.happenings.firstOrNull { it.id == happeningId } ?: return null
+
+        val plannedSlotIds = saved.filter { it.kind == SavedKind.SLOT }.mapTo(mutableSetOf()) { it.id }
+        val wishlistedStandIds = saved.filter { it.kind == SavedKind.STAND }.mapTo(mutableSetOf()) { it.id }
 
         val slots =
             edition.slots
                 .filter { it.happening.id == happeningId }
                 .sortedBy { it.start }
-                .map { HappeningSlot(id = it.id, dayName = it.day.name, start = it.start, end = it.end) }
+                .map {
+                    HappeningSlot(
+                        id = it.id,
+                        dayName = it.day.name,
+                        start = it.start,
+                        end = it.end,
+                        planned = it.id in plannedSlotIds,
+                    )
+                }
 
         val activity = happening as? Happening.Activity
         val stand = happening as? Happening.Stand
@@ -74,6 +98,9 @@ class ObserveHappeningDetailUseCase(
                     // than a reference and belongs beside the price it commits you to.
                     is Happening.Activity -> emptyList()
                 },
+            // Null for anything that is not a Stand, so the fiche knows there is no single heart to
+            // draw without being told which of the three kinds it is showing.
+            wishlisted = stand?.let { it.id in wishlistedStandIds },
         )
     }
 }

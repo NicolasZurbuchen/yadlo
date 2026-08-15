@@ -14,6 +14,6 @@ val happeningModule =
         // Parameterised rather than declared with viewModelOf: which Happening the fiche is about
         // arrives from the NavKey, so the id is a construction parameter rather than a dependency.
         viewModel { (happeningId: String) ->
-            HappeningViewModel(HappeningStoreFactory(get(), get(), get(), happeningId))
+            HappeningViewModel(HappeningStoreFactory(get(), get(), get(), get(), happeningId))
         }
     }

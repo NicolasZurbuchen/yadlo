@@ -661,6 +661,33 @@ and removing is the same heart tapped again. This replaces the earlier "hearts t
 navigate" rule: people expect to tap the row, and a fiche's date row has nowhere to navigate
 to anyway.
 
+**One table for both buckets, with the bucket written into the row.** `SavedEntry(id, kind,
+edition_id)` holds a Slot id under `SLOT` and a Happening id under `STAND`. The two id spaces could
+have been told apart on read — a Slot id carries `2026:` and a Happening id does not — and that was
+rejected. The bucket is decided at the moment of the tap, by which control was tapped; re-deriving
+it afterwards by matching strings against whichever content list happens to answer is the clever way
+of losing a fact the app already had. It also means a row whose Happening has disappeared from the
+content still knows what it was.
+
+**`edition_id` is stored, and nothing sweeps on it yet.** Storing it is not optional: a Slot id
+carries its year and a Happening id does not, so a Stand saved without it can never be attributed
+afterwards. Sweeping is a different question, and § Plan lifecycle below is still open on it —
+clearing the previous edition's rows on the first launch after a new one publishes would foreclose
+the `ENDED` recap that entry is leaning towards. Orphans cost nothing while they sit there: every
+screen joins saved ids against the current edition, so a row that matches nothing is invisible.
+
+**Nothing optimistic, anywhere.** A heart tap writes to the Plan and dispatches no Message. The
+screens read a join over the content and the Plan, so the write comes back through the collector
+they are already on, and a filled heart is always the repository answering rather than the UI
+assuming it was obeyed. It costs one flow emission and removes the entire class of bug where the
+screen and the storage disagree about what was kept.
+
+**The heart is filled or outlined, and its colour belongs to whatever it sits on.** On a date row it
+takes the accent when filled; in a Stand's toolbar it takes the bar's own ink, because by the time
+that bar is collapsed it has taken the Category's fill and an accent rose would land on the
+`musique` magenta — the collision § Open already flags for the accent. The two never appear
+together, so this is one control with one meaning rather than two treatments of it.
+
 **A Stand's menu has three levels.** `Menu → Group{name, items} → Item{name, price,
 description?, marks?}`. Only name and price are required, and each item renders as up to
 three independent rows — name with price, description, marks — so nothing shares a line with

@@ -48,6 +48,7 @@ fun HappeningState.toUiModel(): HappeningUiModel {
             facts = emptyList(),
             menu = emptyList(),
             links = emptyList(),
+            wishlisted = null,
         )
 
     val loaded = detail ?: return blank
@@ -110,6 +111,7 @@ fun HappeningState.toUiModel(): HappeningUiModel {
                             }
                         },
                     state = state,
+                    planned = slot.planned,
                 )
             },
         price =
@@ -215,5 +217,6 @@ fun HappeningState.toUiModel(): HappeningUiModel {
                     url = link.url,
                 )
             },
+        wishlisted = loaded.wishlisted,
     )
 }
