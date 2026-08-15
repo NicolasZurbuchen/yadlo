@@ -208,8 +208,16 @@ fun TimeTravelPanel(modifier: Modifier = Modifier) {
                 horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xs),
                 verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xs),
             ) {
+                if (closesAt != null) {
+                    // Forwards, not backwards. ANNOUNCED keys off `slots.any()` rather than a
+                    // countdown threshold, so with a published programme on hand there is no
+                    // pre-festival OFF_SEASON to jump to at all — the only one that exists is the
+                    // far side of the six weeks ENDED lasts. A preset that said OFF_SEASON and
+                    // landed in ANNOUNCED was reporting a phase the app had not entered.
+                    DebugAction(label = "OFF_SEASON") { clock.simulateAt(closesAt + OFF_SEASON_LEAD) }
+                }
+
                 if (opensAt != null) {
-                    DebugAction(label = "OFF_SEASON") { clock.simulateAt(opensAt - OFF_SEASON_LEAD) }
                     DebugAction(label = "ANNOUNCED") { clock.simulateAt(opensAt - ANNOUNCED_LEAD) }
                     DebugAction(label = "APPROACHING") { clock.simulateAt(opensAt - APPROACHING_LEAD) }
                 }
@@ -273,8 +281,11 @@ private val COLLAPSED_BOTTOM_INSET = 96.dp
 private const val DATE_FIELD_WEIGHT = 1.4f
 private const val TIME_FIELD_WEIGHT = 1f
 
-/** Past the six weeks ENDED lasts, so the phase has fallen all the way back to OFF_SEASON. */
-private val OFF_SEASON_LEAD = 200.days
+/**
+ * Past the six weeks ENDED lasts — measured from the last day's close, and with room for the
+ * handover landing at 11:00 the morning after rather than at the gates shutting.
+ */
+private val OFF_SEASON_LEAD = 45.days
 
 /** Comfortably outside the seven days APPROACHING claims, and inside the published programme. */
 private val ANNOUNCED_LEAD = 30.days
