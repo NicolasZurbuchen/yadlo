@@ -17,8 +17,11 @@ import io.nicolaszurbuchen.yadlo.common.content.domain.model.SocialLink
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Venue
 import io.nicolaszurbuchen.yadlo.common.content.domain.usecase.DerivePhaseUseCase
 import io.nicolaszurbuchen.yadlo.feature.home.domain.usecase.ObserveHomeContentUseCase
+import io.nicolaszurbuchen.yadlo.infra.time.AppClock
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.resetMain
@@ -28,14 +31,28 @@ import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.time.Clock
 import kotlin.time.Instant
 
-/** Settable so a test can sit at 23:59 on the eve of the festival and watch the Phase turn. */
+/**
+ * Settable so a test can sit at 23:59 on the eve of the festival and watch the Phase turn.
+ *
+ * Assigning [instant] moves the reading silently, which is what wall time does. [jumpTo] also
+ * signals, which is what the debug time-travel panel does — the two are separate so a test that
+ * means to exercise the ticker cannot be satisfied by the jump instead.
+ */
 private class SettableClock(
     var instant: Instant,
-) : Clock {
+) : AppClock {
+    private val jumpSignal = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
+
+    override val jumps: Flow<Unit> = jumpSignal
+
     override fun now(): Instant = instant
+
+    fun jumpTo(target: Instant) {
+        instant = target
+        jumpSignal.tryEmit(Unit)
+    }
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -116,6 +133,21 @@ class HomeExecutorTest {
             testDispatcher.scheduler.runCurrent()
 
             assertEquals(JUST_BEFORE_MIDNIGHT, store.state.now)
+        }
+
+    @Test
+    fun clockJumps_movesThePhaseWithoutWaitingOutTheTick() =
+        homeTest(startingAt = SIX_DAYS_BEFORE) { store, repository, clock ->
+            repository.emitStatus(ContentStatus.Ready(bundle = bundle(), updateRequired = false))
+            testDispatcher.scheduler.runCurrent()
+            assertEquals(PhaseUiModel.APPROACHING, store.state.phase)
+
+            // What the debug time-travel panel does. The block stack on this screen is the whole
+            // point of being able to jump, so a minute of lag per jump would defeat it.
+            clock.jumpTo(A_WEEK_AFTER)
+            testDispatcher.scheduler.runCurrent()
+
+            assertEquals(PhaseUiModel.ENDED, store.state.phase)
         }
 
     // endregion

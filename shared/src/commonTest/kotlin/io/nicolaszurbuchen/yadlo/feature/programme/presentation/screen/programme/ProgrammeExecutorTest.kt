@@ -15,8 +15,11 @@ import io.nicolaszurbuchen.yadlo.common.content.domain.model.Provenance
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Slot
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Venue
 import io.nicolaszurbuchen.yadlo.feature.programme.domain.usecase.ObserveProgrammeContentUseCase
+import io.nicolaszurbuchen.yadlo.infra.time.AppClock
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.resetMain
@@ -26,14 +29,28 @@ import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.time.Clock
 import kotlin.time.Instant
 
-/** Settable so a test can stand on the Saturday at 01:00 and check which day the screen opens on. */
+/**
+ * Settable so a test can stand on the Saturday at 01:00 and check which day the screen opens on.
+ *
+ * Assigning [instant] moves the reading silently, which is what wall time does. [jumpTo] also
+ * signals, which is what the debug time-travel panel does — the two are separate so a test that
+ * means to exercise the ticker cannot be satisfied by the jump instead.
+ */
 private class SettableClock(
     var instant: Instant,
-) : Clock {
+) : AppClock {
+    private val jumpSignal = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
+
+    override val jumps: Flow<Unit> = jumpSignal
+
     override fun now(): Instant = instant
+
+    fun jumpTo(target: Instant) {
+        instant = target
+        jumpSignal.tryEmit(Unit)
+    }
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -112,6 +129,19 @@ class ProgrammeExecutorTest {
 
             clock.instant = SATURDAY_EVENING
             testDispatcher.scheduler.advanceTimeBy(TWO_TICKS_MILLIS)
+            testDispatcher.scheduler.runCurrent()
+
+            assertEquals(SATURDAY_EVENING, store.state.now)
+        }
+
+    @Test
+    fun clockJumps_picksItUpWithoutWaitingOutTheTick() =
+        programmeTest(startingAt = SATURDAY_AFTERNOON) { store, _, clock ->
+            testDispatcher.scheduler.runCurrent()
+
+            // What the debug time-travel panel does. A minute-long interval would make it useless
+            // for checking a state that only exists for a few minutes.
+            clock.jumpTo(SATURDAY_EVENING)
             testDispatcher.scheduler.runCurrent()
 
             assertEquals(SATURDAY_EVENING, store.state.now)

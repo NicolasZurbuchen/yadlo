@@ -9,9 +9,9 @@ import io.nicolaszurbuchen.yadlo.common.content.domain.model.Phase
 import io.nicolaszurbuchen.yadlo.common.content.domain.usecase.DerivePhaseUseCase
 import io.nicolaszurbuchen.yadlo.feature.home.domain.model.HomeContent
 import io.nicolaszurbuchen.yadlo.feature.home.domain.usecase.ObserveHomeContentUseCase
+import io.nicolaszurbuchen.yadlo.infra.time.AppClock
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlin.time.Clock
 import kotlin.time.Duration.Companion.minutes
 
 interface HomeStore : Store<HomeIntent, HomeState, HomeLabel>
@@ -20,7 +20,7 @@ class HomeStoreFactory(
     private val storeFactory: StoreFactory,
     private val observeHomeContent: ObserveHomeContentUseCase,
     private val derivePhase: DerivePhaseUseCase,
-    private val clock: Clock,
+    private val clock: AppClock,
 ) {
     fun create(): HomeStore =
         object :
@@ -88,6 +88,15 @@ class HomeStoreFactory(
             scope.launch {
                 while (true) {
                     delay(TICK_INTERVAL)
+                    dispatch(HomeMessage.Ticked(now = clock.now(), phase = phaseOf(state().content)))
+                }
+            }
+
+            // A debug time-travel jump is not time passing, so it does not wait out the interval —
+            // and the interval here is a minute, which would make the panel useless for checking
+            // the phase stack. Nothing emits on this in release.
+            scope.launch {
+                clock.jumps.collect {
                     dispatch(HomeMessage.Ticked(now = clock.now(), phase = phaseOf(state().content)))
                 }
             }

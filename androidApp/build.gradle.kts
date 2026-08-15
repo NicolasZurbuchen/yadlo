@@ -35,6 +35,9 @@ android {
     }
     buildFeatures {
         compose = true
+        // For BuildConfig.DEBUG, which is what tells the shared module whether to offer the
+        // time-travel panel. AGP stopped generating BuildConfig by default in 8.0.
+        buildConfig = true
     }
 }
 

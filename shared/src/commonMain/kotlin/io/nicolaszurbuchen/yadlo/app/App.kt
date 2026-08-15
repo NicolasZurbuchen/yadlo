@@ -1,5 +1,7 @@
 package io.nicolaszurbuchen.yadlo.app
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -7,6 +9,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.ImageLoader
@@ -14,6 +17,7 @@ import coil3.SingletonImageLoader
 import coil3.network.ktor3.KtorNetworkFetcherFactory
 import io.ktor.client.HttpClient
 import io.nicolaszurbuchen.yadlo.app.content.ContentUnavailableScreen
+import io.nicolaszurbuchen.yadlo.app.debug.TimeTravelPanel
 import io.nicolaszurbuchen.yadlo.app.design.theme.YadloTheme
 import io.nicolaszurbuchen.yadlo.app.navigation.MainScaffold
 import io.nicolaszurbuchen.yadlo.app.splash.SplashScreen
@@ -24,7 +28,7 @@ import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 
 @Composable
-fun App() {
+fun App(modifier: Modifier = Modifier) {
     val httpClient = koinInject<HttpClient>()
     val contentRepository = koinInject<ContentRepository>()
     remember(Unit) {
@@ -56,24 +60,33 @@ fun App() {
     YadloTheme {
         val currentStatus = status
 
-        when {
-            // The splash is a floor and a cover at once: it holds for its own minimum, then keeps
-            // holding while the first fetch is still out. That is what keeps a spinner off a blank
-            // screen, and it is why the minimum was written as a floor rather than a duration.
-            !minimumSplashElapsed || currentStatus is ContentStatus.Loading -> {
-                SplashScreen(onFinish = { minimumSplashElapsed = true })
+        // An explicit Box, because the debug panel is an overlay rather than a sibling: without a
+        // stacking parent the two children would be laid out by whatever the platform root happens
+        // to do, which is not the same on both of them.
+        Box(modifier = modifier.fillMaxSize()) {
+            when {
+                // The splash is a floor and a cover at once: it holds for its own minimum, then
+                // keeps holding while the first fetch is still out. That is what keeps a spinner
+                // off a blank screen, and why the minimum was written as a floor, not a duration.
+                !minimumSplashElapsed || currentStatus is ContentStatus.Loading -> {
+                    SplashScreen(onFinish = { minimumSplashElapsed = true })
+                }
+
+                currentStatus is ContentStatus.Unavailable -> {
+                    ContentUnavailableScreen(
+                        error = currentStatus.error.toUiModel(),
+                        onRetry = { scope.launch { contentRepository.refresh() } },
+                    )
+                }
+
+                else -> {
+                    MainScaffold()
+                }
             }
 
-            currentStatus is ContentStatus.Unavailable -> {
-                ContentUnavailableScreen(
-                    error = currentStatus.error.toUiModel(),
-                    onRetry = { scope.launch { contentRepository.refresh() } },
-                )
-            }
-
-            else -> {
-                MainScaffold()
-            }
+            // Over everything, splash and unavailable screen included: those are states of the app
+            // as much as any tab is. Draws nothing at all in a release build.
+            TimeTravelPanel()
         }
     }
 }

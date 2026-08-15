@@ -9,6 +9,7 @@ class YadloApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         initKoin(
+            isDebugBuild = BuildConfig.DEBUG,
             additionalModules = listOf(platformModule),
             appDeclaration = {
                 androidContext(this@YadloApplication)

@@ -7,9 +7,9 @@ import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import io.nicolaszurbuchen.yadlo.feature.programme.domain.model.ProgrammeContent
 import io.nicolaszurbuchen.yadlo.feature.programme.domain.usecase.ObserveProgrammeContentUseCase
+import io.nicolaszurbuchen.yadlo.infra.time.AppClock
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlin.time.Clock
 import kotlin.time.Duration.Companion.minutes
 
 interface ProgrammeStore : Store<ProgrammeIntent, ProgrammeState, ProgrammeLabel>
@@ -17,7 +17,7 @@ interface ProgrammeStore : Store<ProgrammeIntent, ProgrammeState, ProgrammeLabel
 class ProgrammeStoreFactory(
     private val storeFactory: StoreFactory,
     private val observeProgrammeContent: ObserveProgrammeContentUseCase,
-    private val clock: Clock,
+    private val clock: AppClock,
 ) {
     fun create(): ProgrammeStore =
         object :
@@ -88,6 +88,10 @@ class ProgrammeStoreFactory(
          * would redraw the same string sixty times to catch a boundary it catches anyway. The cost
          * is that "se termine · 3 min" can be up to a minute stale, which is inside the accuracy
          * anyone reads it with while walking.
+         *
+         * The second collector is what makes a minute-long interval compatible with the debug
+         * time-travel panel: a jump is not time passing, so it does not wait for the tick. Nothing
+         * emits on it in release.
          */
         private fun startTicking() {
             scope.launch {
@@ -95,6 +99,10 @@ class ProgrammeStoreFactory(
                     delay(TICK_INTERVAL)
                     dispatch(ProgrammeMessage.Ticked(clock.now()))
                 }
+            }
+
+            scope.launch {
+                clock.jumps.collect { dispatch(ProgrammeMessage.Ticked(clock.now())) }
             }
         }
 
