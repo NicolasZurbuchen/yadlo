@@ -20,6 +20,11 @@ import io.nicolaszurbuchen.yadlo.common.content.domain.model.Price
  * [tags] are attribute-only, per DECISIONS.md § One fiche template: genres for an Artist, the
  * offering and the marks for a Stand. Never the Category, which is written above the title, and
  * never the price, which cannot survive the shortening a tag imposes.
+ *
+ * [wishlisted] is the last place the variant still shows through, and it has to: a Stand is kept as
+ * a whole and everything else is kept one Slot at a time, so the two carry their heart in different
+ * places. Resolved to a nullable Boolean here for the same reason as everything above — the screen
+ * asks "is there one heart or several", never "is this a Stand".
  */
 data class HappeningDetail(
     val id: String,
@@ -38,4 +43,6 @@ data class HappeningDetail(
     val supervised: Boolean?,
     val menu: List<MenuGroup>,
     val links: List<Link>,
+    /** Null when this fiche has no single heart, which is everything that is not a Stand. */
+    val wishlisted: Boolean?,
 )

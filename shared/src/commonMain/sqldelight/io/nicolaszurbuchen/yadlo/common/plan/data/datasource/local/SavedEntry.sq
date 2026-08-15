@@ -1,0 +1,30 @@
+-- One row per saved thing: an Artist or Activity Slot on the Plan, a Stand on the Wishlist.
+--
+-- One table rather than two, because the heart is one control and the bucket is decided by what was
+-- tapped rather than by where the row was written (DECISIONS.md § Two verbs: Plan and Wishlist).
+-- `kind` is where that decision is recorded. Without it a row's meaning would depend on which
+-- content list its id happened to match, which is the clever way of answering a question the app
+-- already knew the answer to at the moment of the tap.
+--
+-- `edition_id` is stored rather than derived. A Slot id carries its edition (`2026:dubside-sat`) and
+-- a Happening id does not (`vegan-fabrik`), so no prefix test answers it for both. Nothing sweeps on
+-- it yet — DECISIONS.md § Plan lifecycle is still open on whether the previous Plan is shown once as
+-- a recap before being cleared — but a row saved without it can never be attributed afterwards.
+CREATE TABLE SavedEntry (
+    id TEXT NOT NULL PRIMARY KEY,
+    kind TEXT NOT NULL,
+    edition_id TEXT NOT NULL
+);
+
+selectAll:
+SELECT * FROM SavedEntry;
+
+selectById:
+SELECT * FROM SavedEntry WHERE id = ?;
+
+upsert:
+INSERT OR REPLACE INTO SavedEntry(id, kind, edition_id)
+VALUES (?, ?, ?);
+
+deleteById:
+DELETE FROM SavedEntry WHERE id = ?;

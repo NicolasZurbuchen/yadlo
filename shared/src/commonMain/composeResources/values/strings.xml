@@ -34,10 +34,24 @@
     <string name="slot_state_over">terminé</string>
     <string name="price_free">Gratuit</string>
 
+    <!-- One heart, two verbs: a Slot goes on the Plan, a Stand on the Wishlist. -->
+    <string name="plan_add">Ajouter à mon programme</string>
+    <string name="plan_remove">Retirer de mon programme</string>
+    <string name="wishlist_add">Ajouter à ma liste à essayer</string>
+    <string name="wishlist_remove">Retirer de ma liste à essayer</string>
+
     <string name="programme_categories_all">Tout</string>
     <string name="programme_price_from">dès %1$s</string>
     <string name="programme_empty_filter">Aucune activité ne correspond à ce filtre.</string>
     <string name="programme_empty_unpublished">Le programme n\'est pas encore publié.</string>
+
+    <string name="mon_yadlo_empty">Rien dans ton programme pour l\'instant. Ouvre le Programme et garde ce que tu ne veux pas manquer.</string>
+    <string name="mon_yadlo_wishlist_title">À essayer</string>
+    <string name="mon_yadlo_wishlist_empty">Garde les stands qui te font envie depuis leur fiche.</string>
+
+    <string name="wishlist_title">À essayer</string>
+    <string name="wishlist_back">Retour</string>
+    <string name="wishlist_empty">Tu n\'as encore rien gardé. Les stands sont dans Plus › Nourriture &amp; boissons.</string>
 
     <string name="happening_back">Retour</string>
     <string name="happening_missing">Cette fiche n\'est plus disponible.</string>

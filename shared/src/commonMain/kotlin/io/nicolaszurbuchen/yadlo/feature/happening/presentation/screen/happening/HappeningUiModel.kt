@@ -12,6 +12,10 @@ import io.nicolaszurbuchen.yadlo.infra.ui.UiText
  *
  * [isMissing] is not an error state. It is the Happening no longer being in the content, which is
  * reachable by restoring the app onto a fiche a refresh has since dropped.
+ *
+ * [wishlisted] is the one field whose *nullness* is a layout instruction: non-null draws the heart
+ * in the bar, null leaves the hearts on the date rows. That is the Stand / not-a-Stand distinction
+ * arriving as the only question the screen actually has about it.
  */
 data class HappeningUiModel(
     val isLoading: Boolean,
@@ -27,14 +31,17 @@ data class HappeningUiModel(
     val facts: List<UiText>,
     val menu: List<HappeningMenuGroupUiModel>,
     val links: List<HappeningLinkUiModel>,
+    val wishlisted: Boolean?,
 )
 
 /**
  * A date row. Carries the same live state as a Programme row, so a Slot that read `en cours` on the
  * list still reads `en cours` on the screen the list opened.
  *
- * This is the row the heart will attach to — DECISIONS.md § The heart is attached to what you are
- * saving. It has no click action yet because there is nothing to save into.
+ * This is the row the heart is attached to — DECISIONS.md § The heart is attached to what you are
+ * saving — and the whole row is the target, including the ones that are already over. Saving the
+ * Friday of a three-day activity after it has run is not a mistake worth preventing; it is how
+ * someone marks what they went to.
  */
 data class HappeningSlotUiModel(
     val id: String,
@@ -42,6 +49,7 @@ data class HappeningSlotUiModel(
     val timeText: String,
     val stateLabel: UiText?,
     val state: SlotLiveStateUiModel,
+    val planned: Boolean,
 )
 
 /**

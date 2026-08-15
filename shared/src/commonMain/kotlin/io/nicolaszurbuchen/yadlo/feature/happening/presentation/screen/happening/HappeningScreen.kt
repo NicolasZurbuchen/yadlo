@@ -41,6 +41,7 @@ import io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening
 import io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening.component.HappeningSection
 import io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening.component.HappeningSlotRow
 import io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening.component.HappeningTagRow
+import io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening.component.SavedHeart
 import io.nicolaszurbuchen.yadlo.infra.ui.asString
 import org.jetbrains.compose.resources.stringResource
 import yadlo.shared.generated.resources.Res
@@ -51,6 +52,8 @@ import yadlo.shared.generated.resources.happening_section_links
 import yadlo.shared.generated.resources.happening_section_menu
 import yadlo.shared.generated.resources.happening_section_price
 import yadlo.shared.generated.resources.happening_section_when
+import yadlo.shared.generated.resources.wishlist_add
+import yadlo.shared.generated.resources.wishlist_remove
 
 /**
  * One template for an Artist, an Activity and a Stand — DECISIONS.md § One fiche template for
@@ -69,6 +72,8 @@ fun HappeningScreen(
     state: HappeningUiModel,
     onBackClick: () -> Unit,
     onLinkClick: (String) -> Unit,
+    onSlotHeartClick: (String) -> Unit,
+    onWishlistHeartClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val listState = rememberLazyListState()
@@ -105,6 +110,22 @@ fun HappeningScreen(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = stringResource(Res.string.happening_back),
                         )
+                    }
+                },
+                // Only a Stand has one, because only a Stand is kept whole — everything else keeps
+                // its Slots one at a time, on the date rows below.
+                actions = {
+                    state.wishlisted?.let { isSaved ->
+                        IconButton(onClick = onWishlistHeartClick) {
+                            SavedHeart(
+                                isSaved = isSaved,
+                                contentDescription =
+                                    stringResource(
+                                        if (isSaved) Res.string.wishlist_remove else Res.string.wishlist_add,
+                                    ),
+                                tint = barInk,
+                            )
+                        }
                     }
                 },
                 colors =
@@ -189,7 +210,7 @@ fun HappeningScreen(
                                 modifier = Modifier.padding(horizontal = MaterialTheme.spacing.md),
                             ) {
                                 state.slots.forEach { slot ->
-                                    HappeningSlotRow(slot = slot)
+                                    HappeningSlotRow(slot = slot, onClick = onSlotHeartClick)
                                 }
                             }
                         }

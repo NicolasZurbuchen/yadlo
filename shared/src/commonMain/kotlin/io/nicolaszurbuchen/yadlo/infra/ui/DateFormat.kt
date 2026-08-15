@@ -24,6 +24,19 @@ fun Instant.formatAsShortDate(zone: TimeZone): String {
 }
 
 /**
+ * `11.07` — the same numeric ordering as [formatAsShortDate] with the year dropped.
+ *
+ * For Mon Yadlo's rail, where the date is written once per day beside its rows and the year is the
+ * one part of it nobody is reading: a Plan only ever holds the edition on screen, so three rails
+ * repeating `2026` say nothing three times.
+ */
+fun Instant.formatAsDayAndMonth(zone: TimeZone): String {
+    val date = toLocalDateTime(zone).date
+
+    return "${date.day.toString().padStart(2, '0')}.${date.month.number.toString().padStart(2, '0')}"
+}
+
+/**
  * `16:00` — 24-hour, zero-padded on both halves.
  *
  * Padded rather than `9:30` because these sit in a column of times on the Programme and in Mon

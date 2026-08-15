@@ -2,6 +2,7 @@ package io.nicolaszurbuchen.yadlo.app.navigation
 
 import androidx.navigation3.runtime.NavKey
 import io.nicolaszurbuchen.yadlo.feature.happening.presentation.navigation.HappeningDestination
+import io.nicolaszurbuchen.yadlo.feature.monyadlo.presentation.navigation.WishlistDestination
 import kotlin.test.Test
 import kotlin.test.assertNotNull
 
@@ -26,5 +27,12 @@ class NavConfigTest {
         val destination = HappeningDestination(happeningId = "dubside")
 
         assertNotNull(navConfig.serializersModule.getPolymorphic(NavKey::class, destination))
+    }
+
+    @Test
+    fun navConfig_wishlistDestination_isRegisteredForSavedState() {
+        // Pushed onto Mon Yadlo's own stack, so a missing registration loses the Wishlist and
+        // drops the visitor back onto the timeline after a low-memory kill.
+        assertNotNull(navConfig.serializersModule.getPolymorphic(NavKey::class, WishlistDestination))
     }
 }

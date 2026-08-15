@@ -6,6 +6,7 @@ import io.nicolaszurbuchen.yadlo.feature.happening.presentation.navigation.Happe
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.navigation.AnnouncementsDestination
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.navigation.HomeDestination
 import io.nicolaszurbuchen.yadlo.feature.monyadlo.presentation.navigation.MonYadloDestination
+import io.nicolaszurbuchen.yadlo.feature.monyadlo.presentation.navigation.WishlistDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.PlusDestination
 import io.nicolaszurbuchen.yadlo.feature.pokemonexplorer.presentation.navigation.DetailDestination
 import io.nicolaszurbuchen.yadlo.feature.pokemonexplorer.presentation.navigation.MainDestination
@@ -28,6 +29,7 @@ val navConfig =
                     subclass(AnnouncementsDestination::class)
                     subclass(ProgrammeDestination::class)
                     subclass(MonYadloDestination::class)
+                    subclass(WishlistDestination::class)
                     subclass(PlusDestination::class)
                     subclass(HappeningDestination::class)
 

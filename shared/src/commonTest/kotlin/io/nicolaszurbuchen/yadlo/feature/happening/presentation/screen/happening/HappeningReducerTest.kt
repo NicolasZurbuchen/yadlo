@@ -76,6 +76,7 @@ class HappeningReducerTest {
             supervised = null,
             menu = emptyList(),
             links = emptyList(),
+            wishlisted = null,
         )
 
     private companion object {

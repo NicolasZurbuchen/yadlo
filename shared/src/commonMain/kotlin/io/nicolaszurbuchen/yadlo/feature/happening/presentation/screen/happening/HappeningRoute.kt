@@ -32,6 +32,8 @@ fun HappeningRoute(
         state = state,
         onBackClick = onNavigateBack,
         onLinkClick = { url -> viewModel.onIntent(HappeningIntent.LinkClicked(url)) },
+        onSlotHeartClick = { slotId -> viewModel.onIntent(HappeningIntent.SlotHeartClicked(slotId)) },
+        onWishlistHeartClick = { viewModel.onIntent(HappeningIntent.WishlistHeartClicked) },
         modifier = modifier,
     )
 }

@@ -403,6 +403,35 @@ came from testing three shapes: rows with sticky day headers (829px), rail with 
 buys a permanently visible date; the cards cost 16% and bought spacing. The Wishlist screen
 uses rows for the same reason.
 
+**The Wishlist tile sits above the timeline, not below it.** *À essayer* is the half you consult
+standing on the site, hungry, and by the Sunday the half above it would be three days of finished
+rows to scroll past first. Putting it first costs one tile of vertical space on the screen someone
+opens to check what is next, which is the cheaper of the two.
+
+**A day with nothing saved on it is absent, not empty.** Mon Yadlo is a recall of what someone
+chose. Three day headers with one row under them says less about a festival than one header does,
+and an empty Saturday reads as a screen that failed rather than as a Saturday left open.
+
+**Mon Yadlo's rows carry no heart.** They open the fiche, which is where the heart already lives —
+never two hearts for the same thing, and the row is the target on both screens. It costs one tap to
+remove something instead of none, and it buys a screen with exactly one meaning: this is what you
+kept. The two verbs stay symmetrical too, since a Stand has never had a heart anywhere but its own
+fiche.
+
+**The rail writes the date without its year.** `11.07`, under the day name. A Plan only ever holds
+the edition on screen, so three rails repeating `2026` say nothing three times. The day name is
+above it because it is what people think in — *le samedi* — and the numeric date below because that
+is what a poster and a bus timetable are written in.
+
+**The rail's date comes from the FestivalDay, never from the Slot on it.** A FestivalDay is a
+window, so the Saturday's 01:00 set falls on the Sunday by the calendar. Deriving the rail from the
+first Slot would be right on most days and would file that set under a day the festival never
+programmed.
+
+**Both empty states point outward.** No Plan yet points at the Programme; no Wishlist yet points at
+Plus › Nourriture & boissons. Neither offers a `+`, which is § The `+` in the Wishlist resolved in
+the only direction that keeps "one place to browse a thing, one place to see what you kept" true.
+
 **Grid / timetable view.** Not in v1. Possibly worth it on tablet, out of scope for now.
 
 **Plus.** An iOS-style grouped list. Everything lives here permanently; Home borrows
@@ -660,6 +689,33 @@ There is never more than one heart for the same thing on a screen, never a selec
 and removing is the same heart tapped again. This replaces the earlier "hearts toggle, rows
 navigate" rule: people expect to tap the row, and a fiche's date row has nowhere to navigate
 to anyway.
+
+**One table for both buckets, with the bucket written into the row.** `SavedEntry(id, kind,
+edition_id)` holds a Slot id under `SLOT` and a Happening id under `STAND`. The two id spaces could
+have been told apart on read — a Slot id carries `2026:` and a Happening id does not — and that was
+rejected. The bucket is decided at the moment of the tap, by which control was tapped; re-deriving
+it afterwards by matching strings against whichever content list happens to answer is the clever way
+of losing a fact the app already had. It also means a row whose Happening has disappeared from the
+content still knows what it was.
+
+**`edition_id` is stored, and nothing sweeps on it yet.** Storing it is not optional: a Slot id
+carries its year and a Happening id does not, so a Stand saved without it can never be attributed
+afterwards. Sweeping is a different question, and § Plan lifecycle below is still open on it —
+clearing the previous edition's rows on the first launch after a new one publishes would foreclose
+the `ENDED` recap that entry is leaning towards. Orphans cost nothing while they sit there: every
+screen joins saved ids against the current edition, so a row that matches nothing is invisible.
+
+**Nothing optimistic, anywhere.** A heart tap writes to the Plan and dispatches no Message. The
+screens read a join over the content and the Plan, so the write comes back through the collector
+they are already on, and a filled heart is always the repository answering rather than the UI
+assuming it was obeyed. It costs one flow emission and removes the entire class of bug where the
+screen and the storage disagree about what was kept.
+
+**The heart is filled or outlined, and its colour belongs to whatever it sits on.** On a date row it
+takes the accent when filled; in a Stand's toolbar it takes the bar's own ink, because by the time
+that bar is collapsed it has taken the Category's fill and an accent rose would land on the
+`musique` magenta — the collision § Open already flags for the accent. The two never appear
+together, so this is one control with one meaning rather than two treatments of it.
 
 **A Stand's menu has three levels.** `Menu → Group{name, items} → Item{name, price,
 description?, marks?}`. Only name and price are required, and each item renders as up to

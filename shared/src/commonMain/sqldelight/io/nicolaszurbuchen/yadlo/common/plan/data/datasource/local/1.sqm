@@ -1,0 +1,11 @@
+-- Version 1 held only the content cache. SavedEntry arrives with the heart.
+--
+-- A migration rather than a table added to the schema alone: the cache is a document that can be
+-- refetched, so losing it costs a request, but a Plan exists nowhere else. Bumping the schema
+-- without a migration would leave every already-installed app reading a table that was never
+-- created for it.
+CREATE TABLE SavedEntry (
+    id TEXT NOT NULL PRIMARY KEY,
+    kind TEXT NOT NULL,
+    edition_id TEXT NOT NULL
+);
