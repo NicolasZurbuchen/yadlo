@@ -611,6 +611,49 @@ different colour; the children's corner is covered by the same shape.
   card-with-chevron style is reserved for things that navigate; an outward arrow marks a
   link that leaves the app.
 
+**The fiche shipped without its photograph, on purpose.** The template above describes a
+collapsing toolbar over a hero image, and it still does — but not one of the 38 Happenings in the
+2026 content carries an image, and `imageBaseUrl` is `null` because hosting is not settled
+(content/GAPS.md § Images). Building the image layer now would have meant an untested remote path
+drawing nothing on every fiche in the app, against a Coil3 disk cache CLAUDE.md already flags as
+unverified. What shipped is the half that has something to draw: the Category colour as a radial
+blob anchored bottom-right, which was always specified as sitting *over* the photograph rather than
+being derived from it. The photo slides in behind it the day the press images are hosted, and
+nothing else about the head has to move.
+
+**The round icon actions are not built yet either, and for different reasons.** Share needs a
+platform share sheet and map needs a geo intent — two expect/actual pairs that belong with the
+Partenaires screen's link-out work rather than smuggled into the first fiche. The heart needs the
+Plan repository, which does not exist; the date row it will attach to does, and is already the row
+the heart is specified to sit on. Only the back button ships in the bar today.
+
+**The price is a section, not a tag** — a refinement of the tag rule above, which listed price
+alongside age and level for an activity. A tag can hold `CHF 25`; it cannot hold `CHF 25 · CHF 15
+moins de 16 ans · caution CHF 50`, which is what the Silent Party actually costs. Shortening it to
+fit would either drop the concession — pricing a family out of something they can afford — or fold
+in the deposit, which is the CHF 75 error § A deposit is never summed already rejects. Two places
+to read a price is also how the two come to disagree. Age and level were never tags either: the
+model made `suitability` prose, because the one activity that states a limit states two at once,
+and prose belongs in *Bon à savoir*.
+
+**A free activity says `Gratuit` in the Tarifs section rather than showing no section.** The
+question "what does this cost" is asked of a free activity exactly as often as of a paid one, and a
+missing section answers it with silence that reads as missing data.
+
+**An Activity's booking page is not a link row.** Artists and stands get a *Liens* section; an
+Activity's one outward address is its booking page, and that is an action attached to the price it
+commits you to rather than a reference to browse. It renders inside *Tarifs*, directly under the
+tiers. A booking that is required with no page still says so, as a fact with nothing to tap:
+someone who turns up without a ticket has lost the evening, not a tap.
+
+**The live-state vocabulary moved to `common/content/presentation` when the fiche arrived.** It was
+written inside the Programme's screen package with a note saying it would move up a layer for its
+second caller and not before. The fiche is that caller: a visitor who taps `en cours` on the list
+must not land on a screen that has gone quiet about it, so the fiche's date rows carry the same
+pill, measured against the same tick. Mon Yadlo will be the third. The strings moved with it —
+`slot_state_*` and `price_free` are named after what they describe rather than after the first
+screen that happened to need them.
+
 **The heart is attached to what you are saving, and the whole row is the target.** For a
 Slot that is the date row; for a Stand, which has no dates, it is the button in the bar.
 There is never more than one heart for the same thing on a screen, never a selection dialog,

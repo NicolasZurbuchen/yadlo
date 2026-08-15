@@ -504,6 +504,12 @@ as a range, same row vocabulary as Programme. Timeline plus one full-width Wishl
 bar taking the colour), written category label, attribute-only tags, sections. Round icon
 actions in the bar. Silent Party = same template + booking row.
 
+> **What shipped, and what the fiche is still missing.** The template, the head, the date rows with
+> their live-state pills, the tiered price with its deposit, the menu, the facts and the links are
+> built. The photograph is not — no Happening in the 2026 content has one — nor are the share, map
+> and heart actions, nor the status-bar tint. Each is deferred for its own reason, recorded in
+> DECISIONS.md § One fiche template for everything.
+
 **Plus** — iOS-style grouped list, four cards: *Sur place* · *Le festival* · *S'impliquer* ·
 *L'application*. Payment is the third row of the tab. Lost property, first aid, children and
 emergency numbers merge into a single **"En cas de besoin"** screen — justified by a shared

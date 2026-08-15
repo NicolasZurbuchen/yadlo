@@ -39,8 +39,20 @@
     <string name="programme_empty_filter">Aucune activité ne correspond à ce filtre.</string>
     <string name="programme_empty_unpublished">Le programme n\'est pas encore publié.</string>
 
-    <string name="happening_placeholder_title">Fiche</string>
-    <string name="happening_placeholder_back">Retour</string>
+    <string name="happening_back">Retour</string>
+    <string name="happening_missing">Cette fiche n\'est plus disponible.</string>
+    <string name="happening_section_when">Quand</string>
+    <string name="happening_section_price">Tarifs</string>
+    <string name="happening_section_menu">Au menu</string>
+    <string name="happening_section_good_to_know">Bon à savoir</string>
+    <string name="happening_section_links">Liens</string>
+    <string name="happening_price_deposit">Caution %1$s</string>
+    <string name="happening_booking_action">Réserver</string>
+    <string name="happening_booking_required">Réservation obligatoire</string>
+    <string name="happening_fact_equipment_provided">Matériel fourni</string>
+    <string name="happening_fact_equipment_not_provided">Matériel non fourni</string>
+    <string name="happening_fact_supervised">Encadré par des bénévoles</string>
+    <string name="happening_link_website">Site web</string>
 
     <string name="pokemon_main_fab_description">Find a random Pokémon</string>
     <string name="pokemon_main_history_title">History</string>
