@@ -5,19 +5,20 @@ import io.nicolaszurbuchen.yadlo.common.content.domain.model.FestivalDay
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Money
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Price
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Provenance
+import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotLiveStateUiModel
 import io.nicolaszurbuchen.yadlo.feature.programme.domain.model.ProgrammeContent
 import io.nicolaszurbuchen.yadlo.feature.programme.domain.model.ProgrammeSlot
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import yadlo.shared.generated.resources.Res
+import yadlo.shared.generated.resources.price_free
 import yadlo.shared.generated.resources.programme_empty_filter
 import yadlo.shared.generated.resources.programme_empty_unpublished
-import yadlo.shared.generated.resources.programme_price_free
 import yadlo.shared.generated.resources.programme_price_from
-import yadlo.shared.generated.resources.programme_state_ending
-import yadlo.shared.generated.resources.programme_state_over
-import yadlo.shared.generated.resources.programme_state_running
-import yadlo.shared.generated.resources.programme_state_starts_in_hours
-import yadlo.shared.generated.resources.programme_state_starts_in_minutes
+import yadlo.shared.generated.resources.slot_state_ending
+import yadlo.shared.generated.resources.slot_state_over
+import yadlo.shared.generated.resources.slot_state_running
+import yadlo.shared.generated.resources.slot_state_starts_in_hours
+import yadlo.shared.generated.resources.slot_state_starts_in_minutes
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
@@ -166,7 +167,7 @@ class ProgrammeUiMapperTest {
     fun toUiModel_freeActivity_saysSoRatherThanShowingNothing() {
         val row = state(selectedDayId = "2026:fri").toUiModel().rows.single { it.id == "2026:amc-fri" }
 
-        assertEquals(Res.string.programme_price_free, row.priceText.resourceId())
+        assertEquals(Res.string.price_free, row.priceText.resourceId())
     }
 
     // endregion
@@ -186,7 +187,7 @@ class ProgrammeUiMapperTest {
     fun toUiModel_insideTheWindowButHoursOut_countsInWholeHours() {
         val row = rowAt(Instant.parse("2026-07-11T13:30:00+02:00"), "2026:dubside-sat")
 
-        assertEquals(Res.string.programme_state_starts_in_hours, row.stateLabel.resourceId())
+        assertEquals(Res.string.slot_state_starts_in_hours, row.stateLabel.resourceId())
         // Floored: at 2h30 the answer someone wants is "not for a while".
         assertEquals(listOf("2"), (row.stateLabel as UiText.Resource).args)
     }
@@ -195,7 +196,7 @@ class ProgrammeUiMapperTest {
     fun toUiModel_minutesOut_countsInMinutes() {
         val row = rowAt(QUARTER_TO_FOUR, "2026:dubside-sat")
 
-        assertEquals(Res.string.programme_state_starts_in_minutes, row.stateLabel.resourceId())
+        assertEquals(Res.string.slot_state_starts_in_minutes, row.stateLabel.resourceId())
         assertEquals(listOf("15"), (row.stateLabel as UiText.Resource).args)
     }
 
@@ -211,7 +212,7 @@ class ProgrammeUiMapperTest {
     fun toUiModel_running_saysEnCoursAndCarriesHowFarThrough() {
         val row = rowAt(Instant.parse("2026-07-11T17:00:00+02:00"), "2026:dubside-sat")
 
-        assertEquals(Res.string.programme_state_running, row.stateLabel.resourceId())
+        assertEquals(Res.string.slot_state_running, row.stateLabel.resourceId())
         assertEquals(0.5f, assertIs<SlotLiveStateUiModel.Running>(row.state).progress)
     }
 
@@ -219,7 +220,7 @@ class ProgrammeUiMapperTest {
     fun toUiModel_inTheLastTwentyMinutes_warnsAndKeepsTheProgress() {
         val row = rowAt(Instant.parse("2026-07-11T17:45:00+02:00"), "2026:dubside-sat")
 
-        assertEquals(Res.string.programme_state_ending, row.stateLabel.resourceId())
+        assertEquals(Res.string.slot_state_ending, row.stateLabel.resourceId())
         assertEquals(listOf("15"), (row.stateLabel as UiText.Resource).args)
         assertEquals(0.875f, assertIs<SlotLiveStateUiModel.Ending>(row.state).progress)
     }
@@ -229,7 +230,7 @@ class ProgrammeUiMapperTest {
         val row = rowAt(Instant.parse("2026-07-11T18:00:00+02:00"), "2026:dubside-sat")
 
         assertEquals(SlotLiveStateUiModel.Over, row.state)
-        assertEquals(Res.string.programme_state_over, row.stateLabel.resourceId())
+        assertEquals(Res.string.slot_state_over, row.stateLabel.resourceId())
     }
 
     @Test
@@ -241,8 +242,8 @@ class ProgrammeUiMapperTest {
         val activity = rows.single { it.id == "2026:gladiasup-sat" }
         val set = rows.single { it.id == "2026:dubside-sat" }
 
-        assertEquals(Res.string.programme_state_running, activity.stateLabel.resourceId())
-        assertEquals(Res.string.programme_state_running, set.stateLabel.resourceId())
+        assertEquals(Res.string.slot_state_running, activity.stateLabel.resourceId())
+        assertEquals(Res.string.slot_state_running, set.stateLabel.resourceId())
     }
 
     // endregion

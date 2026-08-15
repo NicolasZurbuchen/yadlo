@@ -2,6 +2,7 @@ package io.nicolaszurbuchen.yadlo.app.di
 
 import io.nicolaszurbuchen.yadlo.app.navigation.appNavigationModule
 import io.nicolaszurbuchen.yadlo.common.content.di.contentModule
+import io.nicolaszurbuchen.yadlo.feature.happening.di.happeningModule
 import io.nicolaszurbuchen.yadlo.feature.home.di.homeModule
 import io.nicolaszurbuchen.yadlo.feature.pokemonexplorer.di.pokemonExplorerModule
 import io.nicolaszurbuchen.yadlo.feature.programme.di.programmeModule
@@ -16,6 +17,7 @@ val appModule =
         appNavigationModule,
         contentModule,
         databaseModule,
+        happeningModule,
         homeModule,
         infraNavigationModule,
         networkModule,

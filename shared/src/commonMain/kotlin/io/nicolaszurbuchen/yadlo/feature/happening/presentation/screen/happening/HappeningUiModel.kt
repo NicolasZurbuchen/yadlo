@@ -1,0 +1,99 @@
+package io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening
+
+import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotLiveStateUiModel
+import io.nicolaszurbuchen.yadlo.infra.ui.UiText
+
+/**
+ * One fiche, whichever of the three kinds of Happening it is.
+ *
+ * The template is the same for an Artist, an Activity and a Stand, and the difference between them
+ * is which of these lists is empty — DECISIONS.md § One fiche template for everything. Nothing here
+ * says which kind it is, because no part of the screen needs to know.
+ *
+ * [isMissing] is not an error state. It is the Happening no longer being in the content, which is
+ * reachable by restoring the app onto a fiche a refresh has since dropped.
+ */
+data class HappeningUiModel(
+    val isLoading: Boolean,
+    val isMissing: Boolean,
+    val title: String,
+    val categoryId: String,
+    val categoryLabel: String,
+    val description: String?,
+    val tags: List<String>,
+    val slots: List<HappeningSlotUiModel>,
+    val price: HappeningPriceUiModel?,
+    val booking: HappeningBookingUiModel?,
+    val facts: List<UiText>,
+    val menu: List<HappeningMenuGroupUiModel>,
+    val links: List<HappeningLinkUiModel>,
+)
+
+/**
+ * A date row. Carries the same live state as a Programme row, so a Slot that read `en cours` on the
+ * list still reads `en cours` on the screen the list opened.
+ *
+ * This is the row the heart will attach to — DECISIONS.md § The heart is attached to what you are
+ * saving. It has no click action yet because there is nothing to save into.
+ */
+data class HappeningSlotUiModel(
+    val id: String,
+    val dayName: String,
+    val timeText: String,
+    val stateLabel: UiText?,
+    val state: SlotLiveStateUiModel,
+)
+
+/**
+ * [deposit] is written on its own line and never summed into a tier: the Silent Party is CHF 25 with
+ * a CHF 50 headset deposit, and CHF 75 is wrong in the direction that stops someone coming.
+ */
+data class HappeningPriceUiModel(
+    val tiers: List<HappeningPriceTierUiModel>,
+    val deposit: UiText?,
+    val depositNote: String?,
+)
+
+/**
+ * [label] is null when one price covers everyone, which is most of them. [amount] is a [UiText]
+ * because a free activity is a tier too, and the word it carries is copy rather than a number.
+ */
+data class HappeningPriceTierUiModel(
+    val label: String?,
+    val amount: UiText,
+)
+
+/** [url] is null when the content says a booking is required but does not say where. */
+data class HappeningBookingUiModel(
+    val label: UiText,
+    val url: String?,
+)
+
+/**
+ * [source] is shown because no menu here is confirmed by the festival — one is a vendor's carte for
+ * another location, one was read off a photographed chalkboard. A price presented as fact when it
+ * came off a blackboard is the kind of wrong that costs someone at the counter.
+ */
+data class HappeningMenuGroupUiModel(
+    val id: String,
+    val name: String,
+    val description: String?,
+    val source: String?,
+    val items: List<HappeningMenuItemUiModel>,
+)
+
+/**
+ * Up to three independent rows — name with price, description, marks — so nothing shares a line with
+ * the name and nothing can overflow into the price.
+ */
+data class HappeningMenuItemUiModel(
+    val name: String,
+    val priceText: String?,
+    val description: String?,
+    val marks: String?,
+)
+
+data class HappeningLinkUiModel(
+    val label: UiText,
+    val url: String,
+)

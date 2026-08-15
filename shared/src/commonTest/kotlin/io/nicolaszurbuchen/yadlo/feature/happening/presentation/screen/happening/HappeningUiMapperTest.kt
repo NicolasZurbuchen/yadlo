@@ -1,0 +1,437 @@
+package io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening
+
+import io.nicolaszurbuchen.yadlo.common.content.domain.model.Link
+import io.nicolaszurbuchen.yadlo.common.content.domain.model.MenuGroup
+import io.nicolaszurbuchen.yadlo.common.content.domain.model.Money
+import io.nicolaszurbuchen.yadlo.common.content.domain.model.Price
+import io.nicolaszurbuchen.yadlo.common.content.domain.model.Provenance
+import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotLiveStateUiModel
+import io.nicolaszurbuchen.yadlo.feature.happening.domain.model.HappeningDetail
+import io.nicolaszurbuchen.yadlo.feature.happening.domain.model.HappeningSlot
+import io.nicolaszurbuchen.yadlo.infra.ui.UiText
+import yadlo.shared.generated.resources.Res
+import yadlo.shared.generated.resources.happening_booking_action
+import yadlo.shared.generated.resources.happening_booking_required
+import yadlo.shared.generated.resources.happening_fact_equipment_not_provided
+import yadlo.shared.generated.resources.happening_fact_equipment_provided
+import yadlo.shared.generated.resources.happening_fact_supervised
+import yadlo.shared.generated.resources.happening_link_website
+import yadlo.shared.generated.resources.happening_price_deposit
+import yadlo.shared.generated.resources.price_free
+import yadlo.shared.generated.resources.slot_state_ending
+import yadlo.shared.generated.resources.slot_state_over
+import yadlo.shared.generated.resources.slot_state_running
+import yadlo.shared.generated.resources.slot_state_starts_in_hours
+import yadlo.shared.generated.resources.slot_state_starts_in_minutes
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertNull
+import kotlin.test.assertTrue
+import kotlin.time.Instant
+
+class HappeningUiMapperTest {
+    // region loading and missing
+
+    @Test
+    fun toUiModel_beforeTheFirstEmission_isLoadingAndNotMissing() {
+        val model = HappeningState(now = NOW).toUiModel()
+
+        assertTrue(model.isLoading)
+        assertFalse(model.isMissing)
+    }
+
+    @Test
+    fun toUiModel_loadedWithNoDetail_isMissingRatherThanLoading() {
+        // The Happening has gone from the content, which reads differently from "not yet".
+        val model = HappeningState(now = NOW, detail = null, isLoaded = true).toUiModel()
+
+        assertFalse(model.isLoading)
+        assertTrue(model.isMissing)
+    }
+
+    @Test
+    fun toUiModel_missing_carriesNoSectionsToDraw() {
+        val model = HappeningState(now = NOW, detail = null, isLoaded = true).toUiModel()
+
+        assertEquals("", model.title)
+        assertTrue(model.slots.isEmpty())
+        assertTrue(model.tags.isEmpty())
+        assertNull(model.price)
+    }
+
+    // endregion
+
+    // region head
+
+    @Test
+    fun toUiModel_theCategoryIsWrittenOutAboveTheTitle() {
+        val model = state(detail(categoryName = "Sur l'eau")).toUiModel()
+
+        // Never only coloured: in July sun, on a phone, it is the word that survives.
+        assertEquals("SUR L'EAU", model.categoryLabel)
+    }
+
+    @Test
+    fun toUiModel_theCategoryIdTravelsSoTheScreenCanColourItself() {
+        assertEquals("eau", state(detail(categoryId = "eau")).toUiModel().categoryId)
+    }
+
+    @Test
+    fun toUiModel_tagsAreCarriedAsAuthored() {
+        val model = state(detail(tags = listOf("House", "Disco"))).toUiModel()
+
+        assertEquals(listOf("House", "Disco"), model.tags)
+    }
+
+    // endregion
+
+    // region date rows
+
+    @Test
+    fun toUiModel_slotRow_writesTheDayAndTheTimeOnceAsARange() {
+        val model = state(detail(slots = listOf(saturdayFourToSix()))).toUiModel()
+
+        assertEquals("Samedi", model.slots.single().dayName)
+        assertEquals("16:00 – 18:00", model.slots.single().timeText)
+    }
+
+    @Test
+    fun toUiModel_slotRunningNow_readsTheSameWordAsTheProgrammeRowItWasOpenedFrom() {
+        val model = state(detail(slots = listOf(saturdayFourToSix())), now = Instant.parse("2026-07-11T17:00:00+02:00")).toUiModel()
+
+        assertEquals(UiText.Resource(Res.string.slot_state_running), model.slots.single().stateLabel)
+        assertTrue(model.slots.single().state is SlotLiveStateUiModel.Running)
+    }
+
+    @Test
+    fun toUiModel_slotEnding_countsTheMinutesDown() {
+        val model = state(detail(slots = listOf(saturdayFourToSix())), now = Instant.parse("2026-07-11T17:48:00+02:00")).toUiModel()
+
+        assertEquals(UiText.Resource(Res.string.slot_state_ending, listOf("12")), model.slots.single().stateLabel)
+    }
+
+    @Test
+    fun toUiModel_slotOver_saysSoAndStaysOnTheFiche() {
+        val model = state(detail(slots = listOf(saturdayFourToSix())), now = Instant.parse("2026-07-11T20:00:00+02:00")).toUiModel()
+
+        // A three-day activity whose Friday is over still has a Saturday: dropping the past row
+        // would take the shape of the run with it.
+        assertEquals(1, model.slots.size)
+        assertEquals(UiText.Resource(Res.string.slot_state_over), model.slots.single().stateLabel)
+    }
+
+    @Test
+    fun toUiModel_slotStartingWithinTheHour_countsInMinutes() {
+        val model = state(detail(slots = listOf(saturdayFourToSix())), now = Instant.parse("2026-07-11T15:45:00+02:00")).toUiModel()
+
+        assertEquals(UiText.Resource(Res.string.slot_state_starts_in_minutes, listOf("15")), model.slots.single().stateLabel)
+    }
+
+    @Test
+    fun toUiModel_slotStartingLaterToday_countsInWholeHours() {
+        val model = state(detail(slots = listOf(saturdayFourToSix())), now = Instant.parse("2026-07-11T13:10:00+02:00")).toUiModel()
+
+        assertEquals(UiText.Resource(Res.string.slot_state_starts_in_hours, listOf("2")), model.slots.single().stateLabel)
+    }
+
+    @Test
+    fun toUiModel_slotFurtherOutThanTheCountdownWindow_saysNothingAtAll() {
+        val model = state(detail(slots = listOf(saturdayFourToSix())), now = Instant.parse("2026-07-11T08:00:00+02:00")).toUiModel()
+
+        // The day and the start time already say everything; "dans 8h" is noise.
+        assertNull(model.slots.single().stateLabel)
+        assertEquals(SlotLiveStateUiModel.Upcoming, model.slots.single().state)
+    }
+
+    // endregion
+
+    // region price
+
+    @Test
+    fun toUiModel_freeActivity_saysSoRatherThanShowingNoPriceSection() {
+        val model = state(detail(price = free())).toUiModel()
+
+        assertEquals(listOf(UiText.Resource(Res.string.price_free)), model.price?.tiers?.map { it.amount })
+        assertNull(model.price?.tiers?.single()?.label)
+    }
+
+    @Test
+    fun toUiModel_tieredActivity_keepsEveryTierAndItsLabel() {
+        val model = state(detail(price = silentPartyPrice())).toUiModel()
+
+        assertEquals(listOf("Adulte", "Moins de 16 ans"), model.price?.tiers?.map { it.label })
+        assertEquals(
+            listOf(UiText.Raw("CHF 25"), UiText.Raw("CHF 15")),
+            model.price?.tiers?.map { it.amount },
+        )
+    }
+
+    @Test
+    fun toUiModel_deposit_isItsOwnLineAndIsNeverSummedIntoATier() {
+        val model = state(detail(price = silentPartyPrice())).toUiModel()
+
+        // CHF 25 + CHF 50 = CHF 75 is wrong in the direction that stops someone coming.
+        assertEquals(UiText.Resource(Res.string.happening_price_deposit, listOf("CHF 50")), model.price?.deposit)
+        assertEquals("Caution casque.", model.price?.depositNote)
+        assertFalse(model.price?.tiers.orEmpty().any { it.amount == UiText.Raw("CHF 75") })
+    }
+
+    @Test
+    fun toUiModel_aPerUnitTier_writesTheUnitBesideTheAmount() {
+        val price =
+            Price(
+                free = false,
+                tiers = listOf(Price.Tier(label = null, amount = Money(10.0, "CHF"), per = "personne")),
+                deposit = null,
+                provenance = Provenance.CONFIRMED,
+            )
+
+        assertEquals(UiText.Raw("CHF 10 / personne"), state(detail(price = price)).toUiModel().price?.tiers?.single()?.amount)
+    }
+
+    @Test
+    fun toUiModel_noPrice_drawsNoPriceSection() {
+        assertNull(state(detail()).toUiModel().price)
+    }
+
+    // endregion
+
+    // region booking
+
+    @Test
+    fun toUiModel_bookingWithAPage_isAnActionThatLeavesTheApp() {
+        val model = state(detail(bookingRequired = true, bookingUrl = "https://booking.example/")).toUiModel()
+
+        assertEquals(UiText.Resource(Res.string.happening_booking_action), model.booking?.label)
+        assertEquals("https://booking.example/", model.booking?.url)
+    }
+
+    @Test
+    fun toUiModel_bookingWithoutAPage_stillSaysABookingIsNeeded() {
+        val model = state(detail(bookingRequired = true, bookingUrl = null)).toUiModel()
+
+        // Someone who turns up without a ticket has lost the evening, not a tap.
+        assertEquals(UiText.Resource(Res.string.happening_booking_required), model.booking?.label)
+        assertNull(model.booking?.url)
+    }
+
+    @Test
+    fun toUiModel_noBookingNeeded_drawsNoBookingRow() {
+        assertNull(state(detail(bookingRequired = false)).toUiModel().booking)
+    }
+
+    // endregion
+
+    // region facts
+
+    @Test
+    fun toUiModel_equipmentProvided_isAFact() {
+        val model = state(detail(equipmentProvided = true)).toUiModel()
+
+        assertEquals(listOf(UiText.Resource(Res.string.happening_fact_equipment_provided)), model.facts)
+    }
+
+    @Test
+    fun toUiModel_equipmentNotProvided_isAlsoAFact() {
+        // "Apportez votre tapis" is the difference between a good morning and a wasted trip.
+        val model = state(detail(equipmentProvided = false)).toUiModel()
+
+        assertEquals(listOf(UiText.Resource(Res.string.happening_fact_equipment_not_provided)), model.facts)
+    }
+
+    @Test
+    fun toUiModel_supervisionUnknown_saysNothingRatherThanSayingUnsupervised() {
+        // An absent flag means unknown. "Non encadré" on a slackline is a warning nobody wrote.
+        assertTrue(state(detail(supervised = null)).toUiModel().facts.isEmpty())
+        assertTrue(state(detail(supervised = false)).toUiModel().facts.isEmpty())
+    }
+
+    @Test
+    fun toUiModel_supervised_isAFact() {
+        assertEquals(
+            listOf(UiText.Resource(Res.string.happening_fact_supervised)),
+            state(detail(supervised = true)).toUiModel().facts,
+        )
+    }
+
+    @Test
+    fun toUiModel_suitability_isCarriedAsTheProseItIs() {
+        val model = state(detail(suitability = "De 4 à 12 ans, deux heures maximum")).toUiModel()
+
+        assertEquals(listOf(UiText.Raw("De 4 à 12 ans, deux heures maximum")), model.facts)
+    }
+
+    @Test
+    fun toUiModel_facts_leadWithWhoItSuitsBeforeTheEquipment() {
+        val model = state(detail(suitability = "Familles", equipmentProvided = true, supervised = true)).toUiModel()
+
+        assertEquals(
+            listOf(
+                UiText.Raw("Familles"),
+                UiText.Resource(Res.string.happening_fact_equipment_provided),
+                UiText.Resource(Res.string.happening_fact_supervised),
+            ),
+            model.facts,
+        )
+    }
+
+    // endregion
+
+    // region menu
+
+    @Test
+    fun toUiModel_menuItem_writesItsPriceAsMoney() {
+        val model = state(detail(menu = listOf(plats()))).toUiModel()
+
+        assertEquals("CHF 15", model.menu.single().items.first().priceText)
+    }
+
+    @Test
+    fun toUiModel_menuItemWithNoMarks_carriesNoneRatherThanAnEmptyLine() {
+        val model = state(detail(menu = listOf(plats()))).toUiModel()
+
+        assertNull(model.menu.single().items.first().marks)
+    }
+
+    @Test
+    fun toUiModel_menuItemMarks_areJoinedAsWords() {
+        val model = state(detail(menu = listOf(plats()))).toUiModel()
+
+        // Text, never pictograms: no legend to learn, and no symbol that means "contains" in one
+        // country and "free from" in another.
+        assertEquals("végé · sans gluten", model.menu.single().items[1].marks)
+    }
+
+    @Test
+    fun toUiModel_menuGroupSource_survivesToTheScreen() {
+        val model = state(detail(menu = listOf(plats()))).toUiModel()
+
+        // A price presented as fact when it came off a chalkboard costs someone at the counter.
+        assertEquals("Lu sur une ardoise", model.menu.single().source)
+    }
+
+    // endregion
+
+    // region links
+
+    @Test
+    fun toUiModel_websiteLink_isTheOneLabelThatTranslates() {
+        val model = state(detail(links = listOf(Link(type = "website", url = "https://djalf.ch/")))).toUiModel()
+
+        assertEquals(UiText.Resource(Res.string.happening_link_website), model.links.single().label)
+    }
+
+    @Test
+    fun toUiModel_platformLinks_keepTheirOwnCasing() {
+        val links =
+            listOf(
+                Link(type = "tiktok", url = "https://tiktok.com/"),
+                Link(type = "soundcloud", url = "https://soundcloud.com/"),
+            )
+
+        // Brand names are not copy and do not translate, so they never enter strings.xml.
+        assertEquals(
+            listOf(UiText.Raw("TikTok"), UiText.Raw("SoundCloud")),
+            state(detail(links = links)).toUiModel().links.map { it.label },
+        )
+    }
+
+    @Test
+    fun toUiModel_anUnknownPlatform_fallsBackToWhatTheContentAuthored() {
+        val model = state(detail(links = listOf(Link(type = "bandcamp", url = "https://bandcamp.com/")))).toUiModel()
+
+        // `type` stays a String precisely so a new platform renders rather than failing to parse.
+        assertEquals(UiText.Raw("bandcamp"), model.links.single().label)
+    }
+
+    // endregion
+
+    private fun state(
+        detail: HappeningDetail,
+        now: Instant = NOW,
+    ) = HappeningState(now = now, detail = detail, isLoaded = true)
+
+    private fun detail(
+        categoryId: String = "musique",
+        categoryName: String = "Musique",
+        tags: List<String> = emptyList(),
+        slots: List<HappeningSlot> = emptyList(),
+        price: Price? = null,
+        bookingRequired: Boolean = false,
+        bookingUrl: String? = null,
+        equipmentProvided: Boolean? = null,
+        suitability: String? = null,
+        supervised: Boolean? = null,
+        menu: List<MenuGroup> = emptyList(),
+        links: List<Link> = emptyList(),
+    ) = HappeningDetail(
+        id = "dubside",
+        name = "Dubside",
+        categoryId = categoryId,
+        categoryName = categoryName,
+        description = null,
+        tags = tags,
+        slots = slots,
+        price = price,
+        bookingUrl = bookingUrl,
+        bookingRequired = bookingRequired,
+        equipmentProvided = equipmentProvided,
+        suitability = suitability,
+        supervised = supervised,
+        menu = menu,
+        links = links,
+    )
+
+    private fun saturdayFourToSix() =
+        HappeningSlot(
+            id = "2026:dubside-sat",
+            dayName = "Samedi",
+            start = Instant.parse("2026-07-11T16:00:00+02:00"),
+            end = Instant.parse("2026-07-11T18:00:00+02:00"),
+        )
+
+    private fun free() = Price(free = true, tiers = emptyList(), deposit = null, provenance = Provenance.CONFIRMED)
+
+    private fun silentPartyPrice() =
+        Price(
+            free = false,
+            tiers =
+                listOf(
+                    Price.Tier(label = "Adulte", amount = Money(25.0, "CHF"), per = null),
+                    Price.Tier(label = "Moins de 16 ans", amount = Money(15.0, "CHF"), per = null),
+                ),
+            deposit = Price.Deposit(amount = Money(50.0, "CHF"), note = "Caution casque."),
+            provenance = Provenance.CONFIRMED,
+        )
+
+    private fun plats() =
+        MenuGroup(
+            id = "plats",
+            name = "Plats",
+            description = null,
+            source = "Lu sur une ardoise",
+            items =
+                listOf(
+                    MenuGroup.Item(
+                        name = "Assiette de mezzés",
+                        price = Money(15.0, "CHF"),
+                        description = null,
+                        marks = emptyList(),
+                        provenance = Provenance.UNVERIFIED,
+                    ),
+                    MenuGroup.Item(
+                        name = "Seitan à la cantonaise",
+                        price = Money(18.0, "CHF"),
+                        description = "Riz, légumes croquants",
+                        marks = listOf("végé", "sans gluten"),
+                        provenance = Provenance.UNVERIFIED,
+                    ),
+                ),
+        )
+
+    private companion object {
+        /** The Saturday at 15:45 — the moment the Programme prototype was argued from. */
+        val NOW = Instant.parse("2026-07-11T15:45:00+02:00")
+    }
+}

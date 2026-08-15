@@ -1,19 +1,21 @@
 package io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme
 
+import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotLiveStateUiModel
+import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.slotLiveStateAt
 import io.nicolaszurbuchen.yadlo.common.time.FESTIVAL_TIME_ZONE
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import io.nicolaszurbuchen.yadlo.infra.ui.formatAsTimeOfDay
 import io.nicolaszurbuchen.yadlo.infra.ui.formatMoney
 import yadlo.shared.generated.resources.Res
+import yadlo.shared.generated.resources.price_free
 import yadlo.shared.generated.resources.programme_empty_filter
 import yadlo.shared.generated.resources.programme_empty_unpublished
-import yadlo.shared.generated.resources.programme_price_free
 import yadlo.shared.generated.resources.programme_price_from
-import yadlo.shared.generated.resources.programme_state_ending
-import yadlo.shared.generated.resources.programme_state_over
-import yadlo.shared.generated.resources.programme_state_running
-import yadlo.shared.generated.resources.programme_state_starts_in_hours
-import yadlo.shared.generated.resources.programme_state_starts_in_minutes
+import yadlo.shared.generated.resources.slot_state_ending
+import yadlo.shared.generated.resources.slot_state_over
+import yadlo.shared.generated.resources.slot_state_running
+import yadlo.shared.generated.resources.slot_state_starts_in_hours
+import yadlo.shared.generated.resources.slot_state_starts_in_minutes
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.hours
 
@@ -96,7 +98,7 @@ fun ProgrammeState.toUiModel(): ProgrammeUiModel {
                             val cheapest = price.tiers.minByOrNull { it.amount.amount }
                             when {
                                 price.free || cheapest == null -> {
-                                    UiText.Resource(Res.string.programme_price_free)
+                                    UiText.Resource(Res.string.price_free)
                                 }
 
                                 // "dès CHF 15" rather than the adult price: the Silent Party is
@@ -126,32 +128,32 @@ fun ProgrammeState.toUiModel(): ProgrammeUiModel {
                                     // while", and rounding it up to four crosses back out of the
                                     // window the countdown is only shown inside.
                                     UiText.Resource(
-                                        Res.string.programme_state_starts_in_hours,
+                                        Res.string.slot_state_starts_in_hours,
                                         listOf(state.startsIn.inWholeHours.toString()),
                                     )
                                 } else {
                                     // Never "dans 0 min": under a minute out it still has not
                                     // started, and one is the smallest true thing to say.
                                     UiText.Resource(
-                                        Res.string.programme_state_starts_in_minutes,
+                                        Res.string.slot_state_starts_in_minutes,
                                         listOf(state.startsIn.inWholeMinutes.coerceAtLeast(1).toString()),
                                     )
                                 }
                             }
 
                             is SlotLiveStateUiModel.Running -> {
-                                UiText.Resource(Res.string.programme_state_running)
+                                UiText.Resource(Res.string.slot_state_running)
                             }
 
                             is SlotLiveStateUiModel.Ending -> {
                                 UiText.Resource(
-                                    Res.string.programme_state_ending,
+                                    Res.string.slot_state_ending,
                                     listOf(state.endsIn.inWholeMinutes.coerceAtLeast(1).toString()),
                                 )
                             }
 
                             SlotLiveStateUiModel.Over -> {
-                                UiText.Resource(Res.string.programme_state_over)
+                                UiText.Resource(Res.string.slot_state_over)
                             }
                         },
                     state = state,
