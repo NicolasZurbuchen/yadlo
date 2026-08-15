@@ -27,6 +27,26 @@ class AppColorTest {
             assertMeetsAa(colors.onPrimarySubtle, colors.primarySubtle, "$theme: onPrimarySubtle")
             assertMeetsAa(colors.onAccent, colors.accent, "$theme: onAccent")
             assertMeetsAa(colors.onAccentSubtle, colors.accentSubtle, "$theme: onAccentSubtle")
+            assertMeetsAa(colors.onLive, colors.live, "$theme: onLive")
+            assertMeetsAa(colors.onWarning, colors.warning, "$theme: onWarning")
+        }
+    }
+
+    @Test
+    fun liveStateRoles_stayLegibleOutlinedAsWellAsFilled() {
+        // The pill is drawn both ways — `se termine` fills with warning, `dans 15 min` writes in it
+        // — so each role has to clear the bar as ink on the page grounds too, not only against its
+        // own paired ink. The outlined half is the one that gets forgotten.
+        listOf(LightAppColors to "light", DarkAppColors to "dark").forEach { (colors, theme) ->
+            listOf("live" to colors.live, "warning" to colors.warning).forEach { (roleName, role) ->
+                listOf(
+                    "background" to colors.background,
+                    "surface" to colors.surface,
+                    "surfaceRaised" to colors.surfaceRaised,
+                ).forEach { (groundName, ground) ->
+                    assertMeetsAa(role, ground, "$theme: $roleName on $groundName")
+                }
+            }
         }
     }
 

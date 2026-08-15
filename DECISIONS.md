@@ -334,6 +334,28 @@ Why B2 over the alternatives:
 What B2 gives up: nothing shows that two later slots will collide — which turned out not to
 be a loss, since clash warnings were dropped entirely.
 
+**The raised bar spans the Slot, not the day.** The prototype positions each row's fill
+proportionally within the day's window, so the bar doubles as a per-row time axis. Built out,
+that reintroduces the one thing B2 exists to avoid: horizontal width spent on position rather
+than on the name. The stated benefit was never the position — it was *"on voit qu'il reste
+vingt minutes de Thalassothérapie sans lire un chiffre"* — and a full-width bar filled to the
+Slot's own progress delivers exactly that. It is also drawn only while something is running,
+which is what the prose already described.
+
+**The live-state pills use one amber ramp, not the prototype's amber-then-coral.** Green
+fills `en cours`, amber outlines `dans 15 min` and fills `se termine`, and `terminé` is plain
+tertiary text on a dimmed row — four states over two colour roles plus three treatments, so
+they stay apart for a reader who cannot separate green from amber. The coral the prototype
+reaches for was never part of the perceptual-separation measurement the five Category hues
+were chosen by, and a red pill beside a `musique` magenta dot is the same collision § Open
+already flags for the accent. The words carry the state either way.
+
+**Sorting is dropped from v1.** The prototype offers Heure / A–Z / Prix; § Open below already
+called it a candidate for deletion, and building it would have meant a permanent row of
+chrome plus a price-extraction rule, for two orders that both break the meaning of the bar.
+Time is the only order the screen is for. It comes back if the list is used with real content
+and someone reaches for it.
+
 B2 was re-tested against a card version (option B3) carrying identical data, logic and
 state chips. Cards cost **+32%** vertical space on the Saturday — 1502px against 1139px,
 88px per card against 72px per row — and removing the thumbnail changed that by a single
@@ -431,7 +453,15 @@ best food query there is and it returns the day that data exists.
 two-hour DJ set read identically, and both warn the same way as they end.
 
 **Countdowns only inside a four-hour window.** Beyond that the day header and the start time
-already say everything; "dans 26h" is noise.
+already say everything; "dans 26h" is noise. The published prototype counts down from thirty
+minutes; four hours is the later and wider decision, and the layout it was tested against is
+unchanged by which one wins. Inside the window it is written in whole hours until the last
+one, then in whole minutes, floored — at 3h50 the answer someone wants is "not for a while",
+and rounding it up to four would cross back out of the window itself.
+
+**The `se termine` warning starts at twenty minutes**, from the prototype, and writes out how
+long is left. Long enough to be worth walking for, short enough that it is not the state half
+a one-hour set spends its life in.
 
 **Two verbs: Plan and Wishlist.** Saving something with a moment you could miss puts it on
 the timeline; saving a Stand puts it on a checklist. One heart in the UI — the app decides
@@ -479,6 +509,9 @@ discussion, for when it comes back:
 Bandeau / marque   #74AEE0   the sky blue from yadlo.ch
 Primaire           #14618F   emphasis, pills, active states
 Encre              #12242F   on both white and the blue band
+
+État d'un créneau — deux rôles, trois traitements
+  en cours #00612D     bientôt / se termine #7F5900
 
 Par nature d'activité — cinq, pas six
   musique  #DD3B7A     eau      #1B86C9     terre    #2FA35A
@@ -605,10 +638,8 @@ and a magenta kind-dot may read as the same signal. Either confine the accent to
 never neighbours a kind dot, or move `musique` to the coral and `bien-être` to a teal, which
 would also resolve the magenta/coral crowding that is currently the palette's closest pair.
 
-**Sorting may be dropped.** The Programme currently offers Heure / A–Z / Prix. Sorting by
-time is the only order that makes sense in the end, and the other two break the meaning of
-the time bar. The segmented control also costs a permanent row of chrome. Candidate for
-deletion before v1 — revisit once the list has been used with real content.
+**~~Sorting may be dropped.~~ Resolved: dropped.** See § Programme layout above. Revisit once
+the list has been used with real content.
 
 **Search granularity.** Search runs across the whole programme, not one day, and returns
 Happenings rather than Slots — so an activity running all three days is one result listing
