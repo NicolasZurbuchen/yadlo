@@ -136,7 +136,7 @@ class HomeUiMapperTest {
         assertEquals(UiText.Resource(Res.string.home_hero_announced_kicker), hero.kicker)
         assertEquals(UiText.Resource(Res.string.home_hero_announced_title, listOf("2026")), hero.title)
         assertIs<UiText.Resource>(hero.body)
-        assertEquals(listOf("13", "17", "1"), (hero.body as UiText.Resource).args)
+        assertEquals(listOf("13", "17", "1"), hero.body.args)
     }
 
     @Test

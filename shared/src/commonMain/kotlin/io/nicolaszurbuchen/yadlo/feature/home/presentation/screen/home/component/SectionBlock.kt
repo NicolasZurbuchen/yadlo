@@ -51,14 +51,14 @@ fun SectionBlock(
         ) {
             Text(
                 text = title.asString(),
-                style = MaterialTheme.typography.titleMedium,
+                style = MaterialTheme.typography.headlineMedium,
                 color = MaterialTheme.appColors.textPrimary,
             )
 
             if (actionLabel != null && onActionClick != null) {
                 Text(
                     text = actionLabel.asString(),
-                    style = MaterialTheme.typography.labelLarge,
+                    style = MaterialTheme.typography.titleLarge,
                     color = MaterialTheme.appColors.primary,
                     modifier =
                         Modifier

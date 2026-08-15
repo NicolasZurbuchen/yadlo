@@ -46,7 +46,14 @@ fun AnnouncementsScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(text = stringResource(Res.string.announcements_title)) },
+                title = {
+                    Text(
+                        text = stringResource(Res.string.announcements_title),
+                        // Set explicitly: TopAppBar defaults its title to titleLarge, and in this
+                        // project that slot is the button-label role rather than a heading.
+                        style = MaterialTheme.typography.headlineSmall,
+                    )
+                },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
                         Icon(

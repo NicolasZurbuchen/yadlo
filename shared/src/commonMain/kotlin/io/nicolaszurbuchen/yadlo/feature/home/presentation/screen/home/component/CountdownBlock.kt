@@ -31,7 +31,7 @@ fun CountdownBlock(
 
         Text(
             text = block.subtitle,
-            style = MaterialTheme.typography.titleMedium,
+            style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.appColors.textSecondary,
             maxLines = 2,
             overflow = TextOverflow.Ellipsis,

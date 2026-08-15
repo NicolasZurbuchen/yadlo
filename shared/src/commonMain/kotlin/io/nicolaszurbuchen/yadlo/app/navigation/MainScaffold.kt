@@ -179,14 +179,14 @@ private fun MainTopAppBar(
             ) {
                 Text(
                     text = title,
-                    style = MaterialTheme.typography.titleLarge,
+                    style = MaterialTheme.typography.headlineSmall,
                     color = MaterialTheme.appColors.textPrimary,
                     modifier = Modifier.alignByBaseline(),
                 )
 
                 Text(
                     text = editionDates,
-                    style = MaterialTheme.typography.titleSmall,
+                    style = MaterialTheme.typography.labelLarge,
                     color = MaterialTheme.appColors.textSecondary,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,

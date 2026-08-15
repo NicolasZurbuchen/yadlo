@@ -48,13 +48,13 @@ fun AnnouncementCard(
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = item.dateText,
-                style = MaterialTheme.typography.labelSmall,
+                style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.appColors.textTertiary,
             )
 
             Text(
                 text = item.title,
-                style = MaterialTheme.typography.titleSmall,
+                style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.appColors.textPrimary,
                 modifier = Modifier.padding(top = MaterialTheme.spacing.xs),
             )

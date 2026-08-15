@@ -38,13 +38,13 @@ fun HeroBlock(
     ) {
         Text(
             text = block.kicker.asString(),
-            style = MaterialTheme.typography.labelSmall,
+            style = MaterialTheme.typography.displaySmall,
             color = MaterialTheme.appColors.onAccentSubtle,
         )
 
         Text(
             text = block.title.asString(),
-            style = MaterialTheme.typography.titleLarge,
+            style = MaterialTheme.typography.headlineSmall,
             color = MaterialTheme.appColors.onAccentSubtle,
             modifier = Modifier.padding(top = MaterialTheme.spacing.xs),
         )

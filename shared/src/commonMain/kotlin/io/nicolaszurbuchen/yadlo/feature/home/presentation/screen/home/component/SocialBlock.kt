@@ -60,7 +60,7 @@ fun SocialBlock(
                 )
                 Text(
                     text = item.name,
-                    style = MaterialTheme.typography.labelLarge,
+                    style = MaterialTheme.typography.titleLarge,
                     color = MaterialTheme.appColors.textSecondary,
                 )
             }

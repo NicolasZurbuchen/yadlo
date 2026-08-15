@@ -43,7 +43,7 @@ fun FiguresBlock(
                     ) {
                         Text(
                             text = figure.value,
-                            style = MaterialTheme.typography.headlineMedium,
+                            style = MaterialTheme.typography.displayMedium,
                             color = MaterialTheme.appColors.primary,
                         )
                         Text(
@@ -69,7 +69,7 @@ fun FiguresBlock(
         block.caveat?.let { caveat ->
             Text(
                 text = caveat.asString(),
-                style = MaterialTheme.typography.labelSmall,
+                style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.appColors.textTertiary,
             )
         }
