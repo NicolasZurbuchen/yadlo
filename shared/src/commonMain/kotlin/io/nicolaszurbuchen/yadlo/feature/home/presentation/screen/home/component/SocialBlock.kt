@@ -1,35 +1,31 @@
 package io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.component
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
-import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.HomeBlockUiModel
 
 /**
  * The four networks, quietly, at the foot of the screen.
  *
- * Deliberately not a feed. A real Instagram feed needs a Business account and a Meta app authorised
- * by the association, which is out of reach while the app is unofficial — so the networks are links
- * out, and the names are the ones the content gives rather than icons the app would have to ship
- * for a platform nobody has heard of yet.
+ * Icons only. The names still travel on the model and become each button's `contentDescription`,
+ * so a screen reader announces "Instagram" rather than "button" — dropping the label from the
+ * screen is a visual decision, not a reason to make the row unusable without sight.
  *
- * A [FlowRow] rather than a Row because four names at the largest accessibility text size do not
- * fit on one line, and this is the last thing on the screen — it may wrap, it may not truncate.
+ * Deliberately not a feed. A real Instagram feed needs a Business account and a Meta app authorised
+ * by the association, which is out of reach while the app is unofficial, so these are links out.
+ *
+ * A [FlowRow] rather than a Row so the buttons wrap instead of being clipped when the display scale
+ * is turned up — this is the last thing on the screen and it has the room.
  */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -39,33 +35,22 @@ fun SocialBlock(
     modifier: Modifier = Modifier,
 ) {
     FlowRow(
-        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm, Alignment.CenterHorizontally),
+        horizontalArrangement = Arrangement.Center,
         modifier = modifier.fillMaxWidth(),
     ) {
         block.items.forEach { item ->
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xs),
-                verticalAlignment = Alignment.CenterVertically,
-                modifier =
-                    Modifier
-                        .clip(MaterialTheme.shapes.extraSmall)
-                        .clickable { onSocialClick(item.url) }
-                        .padding(horizontal = MaterialTheme.spacing.sm, vertical = MaterialTheme.spacing.xs),
-            ) {
+            // IconButton rather than a clickable Icon: it brings the 48dp touch target that a bare
+            // 24dp mark would not, and four of them in a row is exactly the case that needs one.
+            IconButton(onClick = { onSocialClick(item.url) }) {
                 Icon(
                     imageVector = item.icon,
-                    contentDescription = null,
+                    contentDescription = item.name,
                     tint = MaterialTheme.appColors.textSecondary,
                     modifier = Modifier.size(SOCIAL_ICON_SIZE),
-                )
-                Text(
-                    text = item.name,
-                    style = MaterialTheme.typography.titleLarge,
-                    color = MaterialTheme.appColors.textSecondary,
                 )
             }
         }
     }
 }
 
-private val SOCIAL_ICON_SIZE = 18.dp
+private val SOCIAL_ICON_SIZE = 24.dp

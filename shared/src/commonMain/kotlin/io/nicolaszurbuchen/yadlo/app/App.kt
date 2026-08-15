@@ -1,13 +1,13 @@
 package io.nicolaszurbuchen.yadlo.app
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.ImageLoader
 import coil3.SingletonImageLoader
@@ -38,7 +38,14 @@ fun App() {
     val status by contentRepository.observeStatus().collectAsStateWithLifecycle()
     val scope = rememberCoroutineScope()
 
-    LaunchedEffect(Unit) { contentRepository.refresh() }
+    // On every resume, not once per process. The app is opened, glanced at and pocketed, so a
+    // refresh tied to launch alone only ever runs on a cold start — an app left in memory over the
+    // weekend would show Friday's annonces on Sunday. The fetch is conditional, so the ordinary
+    // case is one 304 and no body, and the repository publishes the cache before it asks anyway.
+    LifecycleResumeEffect(Unit) {
+        scope.launch { contentRepository.refresh() }
+        onPauseOrDispose { }
+    }
 
     // A gate rather than a destination: nothing navigates to the splash and nothing returns to it,
     // so it sits above MainScaffold's four tab stacks instead of inside them. Putting it on a back

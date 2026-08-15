@@ -20,7 +20,7 @@
     <string name="home_thank_you_title">Merci.</string>
     <string name="home_thank_you_body">Trois jours, un lac, et vous. À l'année prochaine.</string>
     <string name="home_figures_title">Yadlo en chiffres</string>
-    <string name="home_figures_caveat">Chiffres d'une édition précédente — les seuls publiés à ce jour</string>
+    <string name="home_figures_caveat">Chiffres d'une édition précédente</string>
 
     <string name="announcements_title">Annonces</string>
     <string name="announcements_back">Retour</string>
