@@ -499,16 +499,23 @@ collapsed. Countdowns appear only within a four-hour window.
 as a range, same row vocabulary as Programme. Timeline plus one full-width Wishlist tile.
 **Recall-only** — no browsing, no add-flow.
 
+> **What shipped.** Both halves. The tile sits above the timeline and carries a count; it opens
+> *à essayer*, the saved Stands grouped by Category. The timeline shows only the days something is
+> saved on, each with its date on the rail and its rows carrying the Programme's live-state pills.
+> Rows navigate to the fiche and carry no heart of their own — DECISIONS.md § The heart is attached
+> to what you are saving. Nothing here can add: both empty states point outward, at the Programme
+> and at Plus.
+
 **Fiches** — one template for Artist, Activity and Stand: collapsing toolbar over a photo
 (category colour as a radial blob bottom-right, title rising into the bar on scroll, status
 bar taking the colour), written category label, attribute-only tags, sections. Round icon
 actions in the bar. Silent Party = same template + booking row.
 
 > **What shipped, and what the fiche is still missing.** The template, the head, the date rows with
-> their live-state pills, the tiered price with its deposit, the menu, the facts and the links are
-> built. The photograph is not — no Happening in the 2026 content has one — nor are the share, map
-> and heart actions, nor the status-bar tint. Each is deferred for its own reason, recorded in
-> DECISIONS.md § One fiche template for everything.
+> their live-state pills and their hearts, the tiered price with its deposit, the menu, the facts and
+> the links are built, as is the Stand's single heart in the bar. The photograph is not — no
+> Happening in the 2026 content has one — nor are the share and map actions, nor the status-bar tint.
+> Each is deferred for its own reason, recorded in DECISIONS.md § One fiche template for everything.
 
 **Plus** — iOS-style grouped list, four cards: *Sur place* · *Le festival* · *S'impliquer* ·
 *L'application*. Payment is the third row of the tab. Lost property, first aid, children and

@@ -1,4 +1,4 @@
-package io.nicolaszurbuchen.yadlo.feature.monyadlo.presentation.screen.monyadlo
+package io.nicolaszurbuchen.yadlo.feature.monyadlo.presentation.screen.wishlist
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -7,18 +7,18 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun MonYadloRoute(
+fun WishlistRoute(
+    onNavigateBack: () -> Unit,
     onNavigateToHappening: (String) -> Unit,
-    onNavigateToWishlist: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: MonYadloViewModel = koinViewModel(),
+    viewModel: WishlistViewModel = koinViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    MonYadloScreen(
+    WishlistScreen(
         state = state,
-        onSlotClick = onNavigateToHappening,
-        onWishlistClick = onNavigateToWishlist,
+        onBackClick = onNavigateBack,
+        onStandClick = onNavigateToHappening,
         modifier = modifier,
     )
 }

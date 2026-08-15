@@ -403,6 +403,35 @@ came from testing three shapes: rows with sticky day headers (829px), rail with 
 buys a permanently visible date; the cards cost 16% and bought spacing. The Wishlist screen
 uses rows for the same reason.
 
+**The Wishlist tile sits above the timeline, not below it.** *À essayer* is the half you consult
+standing on the site, hungry, and by the Sunday the half above it would be three days of finished
+rows to scroll past first. Putting it first costs one tile of vertical space on the screen someone
+opens to check what is next, which is the cheaper of the two.
+
+**A day with nothing saved on it is absent, not empty.** Mon Yadlo is a recall of what someone
+chose. Three day headers with one row under them says less about a festival than one header does,
+and an empty Saturday reads as a screen that failed rather than as a Saturday left open.
+
+**Mon Yadlo's rows carry no heart.** They open the fiche, which is where the heart already lives —
+never two hearts for the same thing, and the row is the target on both screens. It costs one tap to
+remove something instead of none, and it buys a screen with exactly one meaning: this is what you
+kept. The two verbs stay symmetrical too, since a Stand has never had a heart anywhere but its own
+fiche.
+
+**The rail writes the date without its year.** `11.07`, under the day name. A Plan only ever holds
+the edition on screen, so three rails repeating `2026` say nothing three times. The day name is
+above it because it is what people think in — *le samedi* — and the numeric date below because that
+is what a poster and a bus timetable are written in.
+
+**The rail's date comes from the FestivalDay, never from the Slot on it.** A FestivalDay is a
+window, so the Saturday's 01:00 set falls on the Sunday by the calendar. Deriving the rail from the
+first Slot would be right on most days and would file that set under a day the festival never
+programmed.
+
+**Both empty states point outward.** No Plan yet points at the Programme; no Wishlist yet points at
+Plus › Nourriture & boissons. Neither offers a `+`, which is § The `+` in the Wishlist resolved in
+the only direction that keeps "one place to browse a thing, one place to see what you kept" true.
+
 **Grid / timetable view.** Not in v1. Possibly worth it on tablet, out of scope for now.
 
 **Plus.** An iOS-style grouped list. Everything lives here permanently; Home borrows
