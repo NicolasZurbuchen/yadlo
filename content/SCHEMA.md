@@ -305,8 +305,14 @@ bricks itself on the Saturday afternoon is worse than one showing week-old data.
 rather than in a separate manifest because this file is fetched first anyway. `null` means no
 minimum is set, which is the normal state.
 
-Only these five fields are modelled in the app today. The sections below are published and validated
-but not yet read by any screen, and are modelled when the screen that renders them exists.
+**Every section here is now modelled and read by a screen.** The French key names stay on the wire
+and meet their English model names in exactly one place, the `@SerialName` pairs on `FestivalDto`:
+`histoire` → `story`, `responsable` → `charters`, `transports` → `transport`, `paiement` → `payment`,
+`accessibilite` → `accessibility`, `besoin` → `assistance`, `simpliquer` → `involvement`.
+
+The app reads a missing section as "not published" rather than as a broken file — every one of these
+screens already has that state, because `accessibilite.items` is genuinely empty today. A publish
+that drops the transport block costs the visitor the transport screen, not the festival.
 
 ### transports
 
