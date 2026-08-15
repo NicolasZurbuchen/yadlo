@@ -246,6 +246,23 @@ class HomeUiMapperTest {
     }
 
     @Test
+    fun toUiModel_aNetworkTheAppShipsNoMarkFor_stillRendersUnderItsName() {
+        // The content can add a network before the app ships its icon. Dropping it would lose
+        // published content silently; a null icon is the card's cue to print the name instead.
+        val state =
+            state(
+                phase = PhaseUiModel.OFF_SEASON,
+                now = THREE_DAYS_BEFORE,
+                social = listOf(SocialLink("mastodon", "Mastodon", "https://example.com/mastodon")),
+            )
+
+        val social = state.toUiModel().blocks.filterIsInstance<HomeBlockUiModel.Social>().single()
+
+        assertEquals("Mastodon", social.items.single().name)
+        assertNull(social.items.single().icon)
+    }
+
+    @Test
     fun toUiModel_noNetworksPublished_dropsTheBlock() {
         val state = state(phase = PhaseUiModel.OFF_SEASON, now = THREE_DAYS_BEFORE, social = emptyList())
 

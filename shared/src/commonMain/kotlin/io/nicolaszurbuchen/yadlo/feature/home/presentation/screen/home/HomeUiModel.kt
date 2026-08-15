@@ -1,14 +1,13 @@
 package io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Facebook
-import androidx.compose.material.icons.outlined.MusicNote
-import androidx.compose.material.icons.outlined.PhotoCamera
-import androidx.compose.material.icons.outlined.Public
-import androidx.compose.material.icons.outlined.SmartDisplay
-import androidx.compose.ui.graphics.vector.ImageVector
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.uimodel.AnnouncementUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
+import org.jetbrains.compose.resources.DrawableResource
+import yadlo.shared.generated.resources.Res
+import yadlo.shared.generated.resources.ic_facebook
+import yadlo.shared.generated.resources.ic_instagram
+import yadlo.shared.generated.resources.ic_tiktok
+import yadlo.shared.generated.resources.ic_youtube
 
 /**
  * Accueil is a block stack whose contents change with the Phase, so the screen renders a list it is
@@ -70,29 +69,33 @@ data class FigureUiModel(
     val label: String,
 )
 
+/**
+ * [icon] is null for a network the app ships no mark for. The card falls back to [name] then, which
+ * is why the domain model carries a name at all — a platform nobody has heard of yet still renders.
+ */
 data class SocialUiModel(
     val id: String,
     val name: String,
-    val icon: ImageVector,
+    val icon: DrawableResource?,
     val url: String,
 )
 
 /**
- * Keyed on the content's own id, so a network the app has never heard of renders with the generic
- * mark rather than failing to appear.
+ * Keyed on the content's own id, against the brand marks bundled in `composeResources/drawable`.
+ * They are monochrome single-path vectors, so they tint with the rest of the row.
  *
- * **Three of these are stand-ins.** Material ships a real Facebook mark and nothing for the others,
- * so the rest are the nearest honest metaphor. Drop the brand vectors into
- * `composeResources/drawable` and each becomes a one-line swap.
+ * Null for anything else, and that is the interesting case rather than an oversight: the content
+ * can add a network before the app ships its mark, and when it does the row shows the name instead
+ * of dropping it.
  *
  * It lives beside [SocialUiModel] rather than in the UiMapper because a UiMapper file may hold
  * nothing but the single State-to-UiModel function.
  */
-fun socialIconFor(id: String): ImageVector =
+fun socialIconFor(id: String): DrawableResource? =
     when (id) {
-        "instagram" -> Icons.Outlined.PhotoCamera
-        "facebook" -> Icons.Filled.Facebook
-        "youtube" -> Icons.Outlined.SmartDisplay
-        "tiktok" -> Icons.Outlined.MusicNote
-        else -> Icons.Outlined.Public
+        "instagram" -> Res.drawable.ic_instagram
+        "facebook" -> Res.drawable.ic_facebook
+        "youtube" -> Res.drawable.ic_youtube
+        "tiktok" -> Res.drawable.ic_tiktok
+        else -> null
     }
