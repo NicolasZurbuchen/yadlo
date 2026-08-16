@@ -7,30 +7,20 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import io.nicolaszurbuchen.yadlo.app.design.theme.ShimmerPulse
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
-import org.jetbrains.compose.resources.stringResource
-import yadlo.shared.generated.resources.Res
-import yadlo.shared.generated.resources.plus_back
 
 /**
- * The frame every screen behind a Plus row wears: a title, a way back, and one scrolling column.
+ * [PlusScreenScaffold] plus the one scrolling column most of these screens are.
  *
  * Shared rather than repeated because there are a dozen of these and the frame is the part with no
  * decisions left in it. What each screen still owns is everything inside — a payment screen and a
  * timetable have nothing else in common, which is why this stops at the scroll container rather
- * than trying to be a page template as well.
+ * than trying to be a page template as well. A screen whose body is a long lazy list wears the bar
+ * directly instead.
  *
  * [isLoading] is the same content-arriving state every Plus screen has, since all of them read one
  * bundle that lands once at launch.
@@ -46,7 +36,6 @@ import yadlo.shared.generated.resources.plus_back
  * where the thing it stands in for will, and it is wrapped in one [ShimmerPulse] so every block on
  * the screen breathes off a single animated value.
  */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PlusDetailScaffold(
     title: String,
@@ -56,27 +45,9 @@ fun PlusDetailScaffold(
     skeleton: @Composable ColumnScope.() -> Unit = { PlusPageSkeleton() },
     content: @Composable ColumnScope.() -> Unit,
 ) {
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = title,
-                        // Set explicitly: TopAppBar defaults its title to titleLarge, which in this
-                        // project is the button-label role rather than a heading.
-                        style = MaterialTheme.typography.headlineSmall,
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = onBackClick) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(Res.string.plus_back),
-                        )
-                    }
-                },
-            )
-        },
+    PlusScreenScaffold(
+        title = title,
+        onBackClick = onBackClick,
         modifier = modifier,
     ) { contentPadding ->
         Column(

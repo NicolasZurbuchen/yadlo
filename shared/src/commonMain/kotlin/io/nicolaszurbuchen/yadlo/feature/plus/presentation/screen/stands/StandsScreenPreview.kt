@@ -54,6 +54,22 @@ private fun StandsScreenPreview(
     }
 }
 
+/**
+ * The dark half. The chips are the thing to check here: they sit on the bar's own surface now
+ * rather than on the page, so the selected chip's ink has to clear a ground it did not before.
+ */
+@Preview
+@Composable
+private fun StandsScreenDarkPreview(
+    @PreviewParameter(StandsStateProvider::class) state: StandsUiModel,
+) {
+    YadloTheme(darkTheme = true) {
+        Box(modifier = Modifier.fillMaxSize().background(MaterialTheme.appColors.background)) {
+            StandsScreen(state = state, onBackClick = {}, onMarkClick = {}, onStandClick = {})
+        }
+    }
+}
+
 private fun chips(selected: String?) =
     listOf(
         StandChipUiModel(

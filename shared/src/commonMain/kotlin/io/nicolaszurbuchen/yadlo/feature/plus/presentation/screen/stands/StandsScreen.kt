@@ -1,35 +1,25 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import io.nicolaszurbuchen.yadlo.app.design.theme.ShimmerPulse
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusScreenScaffold
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands.component.StandMarkChips
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands.component.StandRow
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands.component.StandsSkeleton
 import io.nicolaszurbuchen.yadlo.infra.ui.asString
-import org.jetbrains.compose.resources.stringResource
-import yadlo.shared.generated.resources.Res
-import yadlo.shared.generated.resources.plus_back
 
 /**
  * One half of the stands: *Nourriture & boissons*, or *Créateurs*.
@@ -43,11 +33,14 @@ import yadlo.shared.generated.resources.plus_back
  * Wishlist still groups them together — there they are what one person kept, and what they were
  * saved from is the axis that matters.
  *
- * The chips stay above the list rather than scrolling away with it. They are the reason someone
- * with a dietary requirement opened this screen at all, and a filter you have to scroll back up to
- * change is a filter that gets used once. *Créateurs* publishes no marks, so it simply has none.
+ * **The chips are part of the bar, not the first row of the list.** They were an `item` in the
+ * LazyColumn, which meant the reason someone with a dietary requirement opened this screen scrolled
+ * away the moment they started reading — and a filter you have to scroll back up to change is a
+ * filter that gets used once. *Créateurs* publishes no marks, so it simply has none.
+ *
+ * The body is lazy and keyed rather than one scrolling column, which is why this wears
+ * [PlusScreenScaffold] directly instead of [PlusDetailScaffold] like the prose screens.
  */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StandsScreen(
     state: StandsUiModel,
@@ -56,33 +49,35 @@ fun StandsScreen(
     onStandClick: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = state.title.asString(),
-                        style = MaterialTheme.typography.headlineSmall,
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = onBackClick) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(Res.string.plus_back),
-                        )
-                    }
-                },
-            )
-        },
+    PlusScreenScaffold(
+        title = state.title.asString(),
+        onBackClick = onBackClick,
         modifier = modifier,
+        underBar = {
+            // One chip is *Tout* alone, which filters nothing and only takes up the room the first
+            // stand should have. That is the Créateurs case exactly.
+            if (state.chips.size > 1) {
+                StandMarkChips(
+                    chips = state.chips,
+                    onMarkClick = onMarkClick,
+                    modifier =
+                        Modifier.padding(
+                            horizontal = MaterialTheme.spacing.md,
+                            vertical = MaterialTheme.spacing.sm,
+                        ),
+                )
+            }
+        },
     ) { contentPadding ->
         if (state.isLoading) {
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier.fillMaxSize().padding(contentPadding),
-            ) {
-                CircularProgressIndicator()
+            ShimmerPulse {
+                StandsSkeleton(
+                    modifier =
+                        Modifier
+                            .fillMaxSize()
+                            .padding(contentPadding)
+                            .padding(horizontal = MaterialTheme.spacing.md, vertical = MaterialTheme.spacing.sm),
+                )
             }
         } else {
             LazyColumn(
@@ -90,14 +85,6 @@ fun StandsScreen(
                 contentPadding = PaddingValues(vertical = MaterialTheme.spacing.sm, horizontal = MaterialTheme.spacing.md),
                 modifier = Modifier.fillMaxSize().padding(contentPadding),
             ) {
-                if (state.chips.size > 1) {
-                    // One chip is *Tout* alone, which filters nothing and only takes up the room
-                    // the first stand should have. That is the Créateurs case exactly.
-                    item(key = CHIPS_KEY) {
-                        StandMarkChips(chips = state.chips, onMarkClick = onMarkClick)
-                    }
-                }
-
                 state.emptyMessage?.let { message ->
                     item(key = EMPTY_KEY) {
                         Text(
@@ -118,5 +105,4 @@ fun StandsScreen(
     }
 }
 
-private const val CHIPS_KEY = "chips"
 private const val EMPTY_KEY = "empty"
