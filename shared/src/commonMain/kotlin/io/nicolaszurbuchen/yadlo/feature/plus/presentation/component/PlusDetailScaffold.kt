@@ -1,17 +1,14 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.presentation.component
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -20,8 +17,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import io.nicolaszurbuchen.yadlo.app.design.theme.ShimmerPulse
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
 import org.jetbrains.compose.resources.stringResource
 import yadlo.shared.generated.resources.Res
@@ -37,6 +34,17 @@ import yadlo.shared.generated.resources.plus_back
  *
  * [isLoading] is the same content-arriving state every Plus screen has, since all of them read one
  * bundle that lands once at launch.
+ *
+ * **[skeleton] is a slot rather than a spinner**, and that is the one thing about waiting the frame
+ * does *not* decide for the screen. A centred `CircularProgressIndicator` is the same picture on
+ * twelve screens that look nothing alike; what each of them actually knows is its own shape, and
+ * drawing that means the real content arrives into a layout the eye has already settled on. Most
+ * pages are prose under headings and take [PlusPageSkeleton] without saying so; the ones whose
+ * shape is genuinely different pass their own.
+ *
+ * It is drawn inside the same padded scroll column as the content, so the placeholder sits exactly
+ * where the thing it stands in for will, and it is wrapped in one [ShimmerPulse] so every block on
+ * the screen breathes off a single animated value.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -45,6 +53,7 @@ fun PlusDetailScaffold(
     onBackClick: () -> Unit,
     isLoading: Boolean,
     modifier: Modifier = Modifier,
+    skeleton: @Composable ColumnScope.() -> Unit = { PlusPageSkeleton() },
     content: @Composable ColumnScope.() -> Unit,
 ) {
     Scaffold(
@@ -70,29 +79,29 @@ fun PlusDetailScaffold(
         },
         modifier = modifier,
     ) { contentPadding ->
-        if (isLoading) {
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier.fillMaxSize().padding(contentPadding),
-            ) {
-                CircularProgressIndicator()
+        Column(
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.lg),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(contentPadding)
+                    .verticalScroll(rememberScrollState())
+                    .padding(
+                        start = MaterialTheme.spacing.md,
+                        end = MaterialTheme.spacing.md,
+                        top = MaterialTheme.spacing.md,
+                        bottom = MaterialTheme.spacing.xl,
+                    ),
+        ) {
+            if (isLoading) {
+                // The receiver is carried in by hand because ShimmerPulse takes a plain content
+                // lambda: it provides one value to everything beneath it and has no business
+                // knowing it is inside a Column.
+                val columnScope = this
+                ShimmerPulse { columnScope.skeleton() }
+            } else {
+                content()
             }
-        } else {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.lg),
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(contentPadding)
-                        .verticalScroll(rememberScrollState())
-                        .padding(
-                            start = MaterialTheme.spacing.md,
-                            end = MaterialTheme.spacing.md,
-                            top = MaterialTheme.spacing.md,
-                            bottom = MaterialTheme.spacing.xl,
-                        ),
-                content = content,
-            )
         }
     }
 }
