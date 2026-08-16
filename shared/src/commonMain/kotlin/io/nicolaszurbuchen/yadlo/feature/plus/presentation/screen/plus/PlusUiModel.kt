@@ -17,6 +17,7 @@ import androidx.compose.material.icons.outlined.Restaurant
 import androidx.compose.material.icons.outlined.Sailing
 import androidx.compose.material.icons.outlined.Schedule
 import androidx.compose.material.icons.outlined.Share
+import androidx.compose.material.icons.outlined.Storefront
 import androidx.compose.ui.graphics.vector.ImageVector
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import org.jetbrains.compose.resources.StringResource
@@ -35,7 +36,8 @@ import yadlo.shared.generated.resources.plus_entry_privacy
 import yadlo.shared.generated.resources.plus_entry_report
 import yadlo.shared.generated.resources.plus_entry_responsible
 import yadlo.shared.generated.resources.plus_entry_social
-import yadlo.shared.generated.resources.plus_entry_stands
+import yadlo.shared.generated.resources.plus_entry_stands_food
+import yadlo.shared.generated.resources.plus_entry_stands_makers
 import yadlo.shared.generated.resources.plus_entry_story
 import yadlo.shared.generated.resources.plus_group_app
 import yadlo.shared.generated.resources.plus_group_festival
@@ -90,7 +92,8 @@ enum class PlusEntry(
      */
     val mark: String = DISCLOSURE,
 ) {
-    STANDS(Res.string.plus_entry_stands, Icons.Outlined.Restaurant),
+    STANDS_FOOD(Res.string.plus_entry_stands_food, Icons.Outlined.Restaurant),
+    STANDS_MAKERS(Res.string.plus_entry_stands_makers, Icons.Outlined.Storefront),
     PAYMENT(Res.string.plus_entry_payment, Icons.Outlined.CreditCard),
     ACCESS(Res.string.plus_entry_access, Icons.Outlined.DirectionsBus),
     ACCESSIBILITY(Res.string.plus_entry_accessibility, Icons.AutoMirrored.Outlined.Accessible),

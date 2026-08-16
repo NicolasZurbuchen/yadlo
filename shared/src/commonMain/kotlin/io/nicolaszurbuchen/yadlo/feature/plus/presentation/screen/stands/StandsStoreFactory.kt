@@ -5,21 +5,28 @@ import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
+import io.nicolaszurbuchen.yadlo.feature.plus.domain.model.StandKind
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase.ObserveStandDirectoryUseCase
 import kotlinx.coroutines.launch
 
 interface StandsStore : Store<StandsIntent, StandsState, StandsLabel>
 
+/**
+ * [kind] arrives from the NavKey through the ViewModel, the same construction-parameter route the
+ * fiche uses for its Happening id — a Route may only take lambdas, a Modifier or a ViewModel. It
+ * arrives as the presentation mirror because navigation may not name a domain type.
+ */
 class StandsStoreFactory(
     private val storeFactory: StoreFactory,
     private val observeStandDirectory: ObserveStandDirectoryUseCase,
+    private val kind: StandsKind,
 ) {
     fun create(): StandsStore =
         object :
             StandsStore,
             Store<StandsIntent, StandsState, StandsLabel> by storeFactory.create(
                 name = "StandsStore",
-                initialState = StandsState(),
+                initialState = StandsState(kind = kind),
                 bootstrapper = BootstrapperImpl(),
                 executorFactory = { ExecutorImpl() },
                 reducer = ReducerImpl,
@@ -52,12 +59,19 @@ class StandsStoreFactory(
 
         private fun observeDirectory() {
             scope.launch {
-                observeStandDirectory().collect { directory ->
+                observeStandDirectory(kind.toStandKind()).collect { directory ->
                     dispatch(StandsMessage.DirectoryUpdated(directory))
                 }
             }
         }
     }
+
+    /** The one translation between what the back stack carries and what the content is keyed by. */
+    private fun StandsKind.toStandKind(): StandKind =
+        when (this) {
+            StandsKind.FOOD -> StandKind.FOOD
+            StandsKind.MAKERS -> StandKind.MAKERS
+        }
 
     // internal (not private) so StandsReducerTest can exercise it directly
     internal object ReducerImpl : Reducer<StandsState, StandsMessage> {

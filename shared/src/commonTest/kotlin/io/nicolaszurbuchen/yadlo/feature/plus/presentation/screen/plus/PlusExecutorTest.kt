@@ -50,7 +50,7 @@ class PlusExecutorTest {
             repository.emitStatus(ready(happenings = listOf(stand("vegan-fabrik"))))
             testDispatcher.scheduler.runCurrent()
 
-            assertEquals(1, store.state.overview?.standCount)
+            assertEquals(1, store.state.overview?.foodStandCount)
             store.dispose()
         }
 
@@ -61,7 +61,7 @@ class PlusExecutorTest {
             val store = createStore(repository)
             repository.emitStatus(ready())
             testDispatcher.scheduler.runCurrent()
-            assertEquals(0, store.state.overview?.standCount)
+            assertEquals(0, store.state.overview?.foodStandCount)
 
             // The root of Plus is the app's home for everything that is not the programme, so it is
             // the screen most likely to be open when a refresh turns a section from absent into
@@ -69,7 +69,7 @@ class PlusExecutorTest {
             repository.emitStatus(ready(happenings = listOf(stand("vegan-fabrik"), stand("guliko"))))
             testDispatcher.scheduler.runCurrent()
 
-            assertEquals(2, store.state.overview?.standCount)
+            assertEquals(2, store.state.overview?.foodStandCount)
             store.dispose()
         }
 

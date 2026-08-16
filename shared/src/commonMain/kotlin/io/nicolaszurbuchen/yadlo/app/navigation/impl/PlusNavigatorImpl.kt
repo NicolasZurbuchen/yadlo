@@ -16,13 +16,14 @@ import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.PrivacyDes
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.StandsDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.StoryDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.page.PageKind
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands.StandsKind
 import io.nicolaszurbuchen.yadlo.infra.navigation.AppNavigator
 
 class PlusNavigatorImpl(
     private val appNavigator: AppNavigator,
 ) : PlusNavigator {
-    override fun navigateToStands() {
-        appNavigator.navigateTo(StandsDestination)
+    override fun navigateToStands(kind: StandsKind) {
+        appNavigator.navigateTo(StandsDestination(kind))
     }
 
     override fun navigateToPayment() {

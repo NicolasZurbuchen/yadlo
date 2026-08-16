@@ -4,6 +4,7 @@ import app.cash.turbine.test
 import com.arkivanov.mvikotlin.extensions.coroutines.labels
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import io.nicolaszurbuchen.yadlo.common.content.domain.fake.FakeContentRepository
+import io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase.CREATEURS
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase.ObserveStandDirectoryUseCase
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase.ready
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase.stand
@@ -34,25 +35,43 @@ class StandsExecutorTest {
     }
 
     @Test
-    fun onCreate_beforeAnyBundle_hasNoDirectory() =
+    fun onCreate_theKindFromTheDestination_reachesTheState() =
         runTest {
-            val store = createStore(FakeContentRepository())
+            val store = createStore(FakeContentRepository(), StandsKind.MAKERS)
             testDispatcher.scheduler.runCurrent()
 
+            // Translated once at construction so neither the navigation package nor the mapper has
+            // to name a domain type.
+            assertEquals(StandsKind.MAKERS, store.state.kind)
             assertNull(store.state.directory)
             store.dispose()
         }
 
     @Test
-    fun onCreate_theBundleArrives_groupsTheStandsByCategory() =
+    fun onCreate_readsOnlyTheHalfTheDestinationAskedFor() =
         runTest {
             val repository = FakeContentRepository()
-            val store = createStore(repository)
+            val store = createStore(repository, StandsKind.FOOD)
 
-            repository.emitStatus(ready(happenings = listOf(stand("vegan-fabrik"), stand("guliko"))))
+            repository.emitStatus(mixed())
             testDispatcher.scheduler.runCurrent()
 
-            assertEquals(2, store.state.directory?.groups?.single()?.stands?.size)
+            assertEquals(listOf("vegan-fabrik", "guliko"), store.state.directory?.stands?.map { it.id })
+            store.dispose()
+        }
+
+    @Test
+    fun onCreate_theOtherKind_readsTheOtherHalf() =
+        runTest {
+            val repository = FakeContentRepository()
+            val store = createStore(repository, StandsKind.MAKERS)
+
+            repository.emitStatus(mixed())
+            testDispatcher.scheduler.runCurrent()
+
+            // Same store, same content, different destination — which is the whole reason the two
+            // entries share one screen.
+            assertEquals(listOf("la-fanfrelucherie"), store.state.directory?.stands?.map { it.id })
             store.dispose()
         }
 
@@ -60,7 +79,7 @@ class StandsExecutorTest {
     fun markSelected_narrowsTheListWithoutTouchingTheDirectory() =
         runTest {
             val repository = FakeContentRepository()
-            val store = createStore(repository)
+            val store = createStore(repository, StandsKind.FOOD)
             repository.emitStatus(ready(happenings = listOf(stand("vegan-fabrik", marks = listOf("végan")))))
             testDispatcher.scheduler.runCurrent()
 
@@ -70,16 +89,14 @@ class StandsExecutorTest {
             // The filter is state, not a refetch: the directory stays whole and the mapper narrows
             // it, so clearing the chip costs nothing.
             assertEquals("végan", store.state.selectedMark)
-            assertEquals(1, store.state.directory?.groups?.single()?.stands?.size)
+            assertEquals(1, store.state.directory?.stands?.size)
             store.dispose()
         }
 
     @Test
     fun markSelected_null_clearsTheFilter() =
         runTest {
-            val repository = FakeContentRepository()
-            val store = createStore(repository)
-            repository.emitStatus(ready(happenings = listOf(stand("vegan-fabrik"))))
+            val store = createStore(FakeContentRepository(), StandsKind.FOOD)
             testDispatcher.scheduler.runCurrent()
             store.accept(StandsIntent.MarkSelected("végan"))
             testDispatcher.scheduler.runCurrent()
@@ -94,7 +111,7 @@ class StandsExecutorTest {
     @Test
     fun standClicked_opensTheFicheTheProgrammeAlsoOpens() =
         runTest {
-            val store = createStore(FakeContentRepository())
+            val store = createStore(FakeContentRepository(), StandsKind.FOOD)
             testDispatcher.scheduler.runCurrent()
 
             store.labels.test {
@@ -110,20 +127,34 @@ class StandsExecutorTest {
     fun refresh_landsWhileTheListIsOpen_followsIt() =
         runTest {
             val repository = FakeContentRepository()
-            val store = createStore(repository)
+            val store = createStore(repository, StandsKind.FOOD)
             repository.emitStatus(ready(happenings = listOf(stand("vegan-fabrik"))))
             testDispatcher.scheduler.runCurrent()
 
             repository.emitStatus(ready(happenings = listOf(stand("vegan-fabrik"), stand("guliko"))))
             testDispatcher.scheduler.runCurrent()
 
-            assertEquals(2, store.state.directory?.groups?.single()?.stands?.size)
+            assertEquals(2, store.state.directory?.stands?.size)
             store.dispose()
         }
 
-    private fun createStore(repository: FakeContentRepository): StandsStore =
+    private fun createStore(
+        repository: FakeContentRepository,
+        kind: StandsKind,
+    ): StandsStore =
         StandsStoreFactory(
             storeFactory = DefaultStoreFactory(),
             observeStandDirectory = ObserveStandDirectoryUseCase(repository),
+            kind = kind,
         ).create()
+
+    private fun mixed() =
+        ready(
+            happenings =
+                listOf(
+                    stand("vegan-fabrik"),
+                    stand("la-fanfrelucherie", category = CREATEURS),
+                    stand("guliko"),
+                ),
+        )
 }

@@ -33,6 +33,7 @@ import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.payment.Paymen
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.payment.PaymentViewModel
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.plus.PlusStoreFactory
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.plus.PlusViewModel
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands.StandsKind
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands.StandsStoreFactory
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands.StandsViewModel
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.story.StoryStoreFactory
@@ -58,7 +59,6 @@ val plusModule =
         factoryOf(::ObservePlusPageUseCase)
 
         factoryOf(::PlusStoreFactory)
-        factoryOf(::StandsStoreFactory)
         factoryOf(::PaymentStoreFactory)
         factoryOf(::AccessStoreFactory)
         factoryOf(::AccessibilityStoreFactory)
@@ -70,7 +70,6 @@ val plusModule =
         factoryOf(::ContactStoreFactory)
 
         viewModelOf(::PlusViewModel)
-        viewModelOf(::StandsViewModel)
         viewModelOf(::PaymentViewModel)
         viewModelOf(::AccessViewModel)
         viewModelOf(::AccessibilityViewModel)
@@ -81,10 +80,14 @@ val plusModule =
         viewModelOf(::PartnersViewModel)
         viewModelOf(::ContactViewModel)
 
-        // Parameterised rather than declared with viewModelOf: which page is being read arrives
-        // from the NavKey, so the id is a construction parameter rather than a dependency — the
-        // same shape the fiche uses for its Happening id.
+        // Parameterised rather than declared with viewModelOf: which page — and which half of the
+        // stands — is being read arrives from the NavKey, so the kind is a construction parameter
+        // rather than a dependency. The same shape the fiche uses for its Happening id.
         viewModel { (kind: PageKind) ->
             PageViewModel(PageStoreFactory(get(), get(), kind))
+        }
+
+        viewModel { (kind: StandsKind) ->
+            StandsViewModel(StandsStoreFactory(get(), get(), kind))
         }
     }

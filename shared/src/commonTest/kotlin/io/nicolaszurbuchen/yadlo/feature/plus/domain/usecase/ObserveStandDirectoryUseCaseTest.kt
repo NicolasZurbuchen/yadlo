@@ -1,6 +1,7 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase
 
 import io.nicolaszurbuchen.yadlo.common.content.domain.fake.FakeContentRepository
+import io.nicolaszurbuchen.yadlo.feature.plus.domain.model.StandKind
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
@@ -9,16 +10,16 @@ import kotlin.test.assertTrue
 
 class ObserveStandDirectoryUseCaseTest {
     @Test
-    fun invoke_noStandsPublished_isEmptyRatherThanAGroupWithNothingInIt() =
+    fun invoke_noStandsPublished_isEmptyRatherThanAListWithNothingInIt() =
         runTest {
             val directory = directoryFrom(FakeContentRepository().apply { emitStatus(ready()) })
 
-            assertTrue(directory.groups.isEmpty())
+            assertTrue(directory.stands.isEmpty())
             assertTrue(directory.marks.isEmpty())
         }
 
     @Test
-    fun invoke_groupsByCategoryInTheDeclaredOrder() =
+    fun invoke_returnsOnlyTheHalfThatWasAskedFor() =
         runTest {
             val repository =
                 FakeContentRepository().apply {
@@ -26,16 +27,24 @@ class ObserveStandDirectoryUseCaseTest {
                         ready(
                             happenings =
                                 listOf(
-                                    stand("la-fanfrelucherie", category = CREATEURS),
                                     stand("vegan-fabrik"),
+                                    stand("la-fanfrelucherie", category = CREATEURS),
+                                    stand("guliko"),
                                 ),
                         ),
                     )
                 }
 
-            // Restauration is order 6 and Créateurs is 7, so the content's order wins over the one
-            // the happenings happen to be listed in.
-            assertEquals(listOf("restauration", "createurs"), directoryFrom(repository).groups.map { it.categoryId })
+            // Two entries on the tab, so the screen is never handed the other half to filter out:
+            // nobody looking for dinner is also browsing for a second-hand costume.
+            assertEquals(
+                listOf("vegan-fabrik", "guliko"),
+                directoryFrom(repository, StandKind.FOOD).stands.map { it.id },
+            )
+            assertEquals(
+                listOf("la-fanfrelucherie"),
+                directoryFrom(repository, StandKind.MAKERS).stands.map { it.id },
+            )
         }
 
     @Test
@@ -46,10 +55,7 @@ class ObserveStandDirectoryUseCaseTest {
                     emitStatus(ready(happenings = listOf(stand("guliko"), stand("vegan-fabrik"))))
                 }
 
-            assertEquals(
-                listOf("guliko", "vegan-fabrik"),
-                directoryFrom(repository).groups.single().stands.map { it.id },
-            )
+            assertEquals(listOf("guliko", "vegan-fabrik"), directoryFrom(repository).stands.map { it.id })
         }
 
     @Test
@@ -64,7 +70,7 @@ class ObserveStandDirectoryUseCaseTest {
 
             // The row shows this list. Widening it would turn "sells one vegan bokit" into "is
             // vegan", which is the claim SCHEMA.md keeps the two levels apart to prevent.
-            assertTrue(directoryFrom(repository).groups.single().stands.single().marks.isEmpty())
+            assertTrue(directoryFrom(repository).stands.single().marks.isEmpty())
         }
 
     @Test
@@ -79,10 +85,7 @@ class ObserveStandDirectoryUseCaseTest {
 
             // The filter answers "can I eat here", and one végé bokit answers it. A filter that hid
             // this stand would be wrong about the only thing it was asked.
-            assertEquals(
-                setOf("végé", "piquant"),
-                directoryFrom(repository).groups.single().stands.single().dietaryMatches,
-            )
+            assertEquals(setOf("végé", "piquant"), directoryFrom(repository).stands.single().dietaryMatches)
         }
 
     @Test
@@ -93,7 +96,7 @@ class ObserveStandDirectoryUseCaseTest {
                     emitStatus(ready(happenings = listOf(stand("vegan-fabrik", marks = listOf("végan", "bio")))))
                 }
 
-            val listing = directoryFrom(repository).groups.single().stands.single()
+            val listing = directoryFrom(repository).stands.single()
 
             assertEquals(listOf("végan", "bio"), listing.marks)
             assertEquals(setOf("végan", "bio"), listing.dietaryMatches)
@@ -122,6 +125,28 @@ class ObserveStandDirectoryUseCaseTest {
         }
 
     @Test
+    fun invoke_theChipSet_ignoresTheOtherHalfsMarks() =
+        runTest {
+            val repository =
+                FakeContentRepository().apply {
+                    emitStatus(
+                        ready(
+                            happenings =
+                                listOf(
+                                    stand("vegan-fabrik", marks = listOf("végan")),
+                                    stand("la-fanfrelucherie", category = CREATEURS, marks = listOf("bio")),
+                                ),
+                        ),
+                    )
+                }
+
+            // Créateurs publishes no marks today, and the point of deriving them is that its chip
+            // row is then absent rather than offering a food mark that matches nothing here.
+            assertEquals(listOf("végan"), directoryFrom(repository, StandKind.FOOD).marks)
+            assertEquals(listOf("bio"), directoryFrom(repository, StandKind.MAKERS).marks)
+        }
+
+    @Test
     fun invoke_aMarkOnTwoStands_isOfferedOnce() =
         runTest {
             val repository =
@@ -145,8 +170,11 @@ class ObserveStandDirectoryUseCaseTest {
                     emitStatus(ready(happenings = listOf(stand("guliko", offering = "Cuisine géorgienne"))))
                 }
 
-            assertEquals("Cuisine géorgienne", directoryFrom(repository).groups.single().stands.single().offering)
+            assertEquals("Cuisine géorgienne", directoryFrom(repository).stands.single().offering)
         }
 
-    private suspend fun directoryFrom(repository: FakeContentRepository) = ObserveStandDirectoryUseCase(repository)().first()
+    private suspend fun directoryFrom(
+        repository: FakeContentRepository,
+        kind: StandKind = StandKind.FOOD,
+    ) = ObserveStandDirectoryUseCase(repository)(kind).first()
 }

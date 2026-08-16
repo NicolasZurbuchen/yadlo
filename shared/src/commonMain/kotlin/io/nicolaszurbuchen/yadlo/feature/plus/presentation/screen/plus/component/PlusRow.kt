@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
@@ -39,6 +40,7 @@ fun PlusRow(
         modifier =
             modifier
                 .fillMaxWidth()
+                .heightIn(min = ROW_MIN_HEIGHT)
                 .clickable { onClick() }
                 .padding(horizontal = MaterialTheme.spacing.md, vertical = MaterialTheme.spacing.sm),
     ) {
@@ -79,3 +81,9 @@ fun PlusRow(
 // Matched to the label's line height rather than to Material's 24dp default: at 24 the icon
 // outweighs the word next to it, and this list is read by its words.
 private val ICON_SIZE = 20.dp
+
+// The natural height of a row that has a subtitle, applied to every row so a card of sixteen does
+// not comb up and down as the content publishes one line here and two there. A minimum rather than
+// a fixed height: at the largest accessibility text sizes a two-line row has to be allowed to grow,
+// and clipping the subtitle to keep the rhythm would be the wrong trade.
+private val ROW_MIN_HEIGHT = 64.dp

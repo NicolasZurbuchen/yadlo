@@ -17,7 +17,9 @@ import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.payment.Paymen
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.plus.PlusEntry
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.plus.PlusRoute
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.privacy.PrivacyRoute
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands.StandsKind
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands.StandsRoute
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands.StandsViewModel
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.story.StoryRoute
 import io.nicolaszurbuchen.yadlo.infra.navigation.NavKeyHandler
 import org.koin.compose.viewmodel.koinViewModel
@@ -31,11 +33,12 @@ class PlusNavKeyHandler(
         // only take lambdas and the screen has no business naming a NavKey. This `when` is the one
         // place the tab's rows and the app's back stack meet. The two external rows never arrive
         // here — the Route sends those to the store, which publishes a URL for the platform.
-        entry<PlusDestination> {
+        entry<PlusMainDestination> {
             PlusRoute(
                 onNavigateToEntry = { entry ->
                     when (entry) {
-                        PlusEntry.STANDS -> navigator.navigateToStands()
+                        PlusEntry.STANDS_FOOD -> navigator.navigateToStands(StandsKind.FOOD)
+                        PlusEntry.STANDS_MAKERS -> navigator.navigateToStands(StandsKind.MAKERS)
                         PlusEntry.PAYMENT -> navigator.navigateToPayment()
                         PlusEntry.ACCESS -> navigator.navigateToAccess()
                         PlusEntry.ACCESSIBILITY -> navigator.navigateToAccessibility()
@@ -55,10 +58,11 @@ class PlusNavKeyHandler(
             )
         }
 
-        entry<StandsDestination> {
+        entry<StandsDestination> { destination ->
             StandsRoute(
                 onNavigateBack = { navigator.navigateBack() },
                 onNavigateToHappening = { id -> navigator.navigateToHappening(id) },
+                viewModel = koinViewModel<StandsViewModel>(parameters = { parametersOf(destination.kind) }),
             )
         }
 

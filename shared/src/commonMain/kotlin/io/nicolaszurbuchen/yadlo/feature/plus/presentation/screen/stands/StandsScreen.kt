@@ -30,18 +30,22 @@ import io.nicolaszurbuchen.yadlo.infra.ui.asString
 import org.jetbrains.compose.resources.stringResource
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.plus_back
-import yadlo.shared.generated.resources.stands_title
 
 /**
- * *Nourriture & boissons* — every Stand the festival has, grouped by what it sells.
+ * One half of the stands: *Nourriture & boissons*, or *Créateurs*.
  *
  * The browse half of the pair the Wishlist recalls: this is where a stand is discovered, and its
  * fiche is where it is kept. Neither half offers the other's job, which is what keeps "one place to
  * find a thing, one place to see what you kept" true across the app.
  *
+ * **Two entries rather than one list with two headers.** Nobody looking for dinner is also browsing
+ * for a second-hand costume, so the Category is chosen on the tab and never appears again here. The
+ * Wishlist still groups them together — there they are what one person kept, and what they were
+ * saved from is the axis that matters.
+ *
  * The chips stay above the list rather than scrolling away with it. They are the reason someone
  * with a dietary requirement opened this screen at all, and a filter you have to scroll back up to
- * change is a filter that gets used once.
+ * change is a filter that gets used once. *Créateurs* publishes no marks, so it simply has none.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -57,7 +61,7 @@ fun StandsScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = stringResource(Res.string.stands_title),
+                        text = state.title.asString(),
                         style = MaterialTheme.typography.headlineSmall,
                     )
                 },
@@ -73,64 +77,41 @@ fun StandsScreen(
         },
         modifier = modifier,
     ) { contentPadding ->
-        when {
-            state.isLoading -> {
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier.fillMaxSize().padding(contentPadding),
-                ) {
-                    CircularProgressIndicator()
-                }
+        if (state.isLoading) {
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier.fillMaxSize().padding(contentPadding),
+            ) {
+                CircularProgressIndicator()
             }
-
-            else -> {
-                LazyColumn(
-                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm),
-                    contentPadding = PaddingValues(bottom = MaterialTheme.spacing.xl),
-                    modifier = Modifier.fillMaxSize().padding(contentPadding),
-                ) {
-                    if (state.chips.size > 1) {
-                        // One chip is *Tout* alone, which filters nothing and only takes up the room
-                        // the first stand should have.
-                        item(key = CHIPS_KEY) {
-                            StandMarkChips(chips = state.chips, onMarkClick = onMarkClick)
-                        }
+        } else {
+            LazyColumn(
+                verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm),
+                contentPadding = PaddingValues(vertical = MaterialTheme.spacing.sm, horizontal = MaterialTheme.spacing.md),
+                modifier = Modifier.fillMaxSize().padding(contentPadding),
+            ) {
+                if (state.chips.size > 1) {
+                    // One chip is *Tout* alone, which filters nothing and only takes up the room
+                    // the first stand should have. That is the Créateurs case exactly.
+                    item(key = CHIPS_KEY) {
+                        StandMarkChips(chips = state.chips, onMarkClick = onMarkClick)
                     }
+                }
 
-                    state.emptyMessage?.let { message ->
-                        item(key = EMPTY_KEY) {
-                            Text(
-                                text = message.asString(),
-                                style = MaterialTheme.typography.bodyLarge,
-                                color = MaterialTheme.appColors.textSecondary,
-                                textAlign = TextAlign.Center,
-                                modifier = Modifier.fillMaxWidth().padding(MaterialTheme.spacing.xl),
-                            )
-                        }
+                state.emptyMessage?.let { message ->
+                    item(key = EMPTY_KEY) {
+                        Text(
+                            text = message.asString(),
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = MaterialTheme.appColors.textSecondary,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.fillMaxWidth().padding(MaterialTheme.spacing.xl),
+                        )
                     }
+                }
 
-                    state.groups.forEach { group ->
-                        item(key = group.id) {
-                            Text(
-                                text = group.name.uppercase(),
-                                style = MaterialTheme.typography.headlineMedium,
-                                color = MaterialTheme.appColors.textTertiary,
-                                modifier =
-                                    Modifier.padding(
-                                        horizontal = MaterialTheme.spacing.md,
-                                        vertical = MaterialTheme.spacing.sm,
-                                    ),
-                            )
-                        }
-
-                        items(items = group.stands, key = { it.id }) { stand ->
-                            StandRow(
-                                stand = stand,
-                                onClick = onStandClick,
-                                modifier = Modifier.padding(horizontal = MaterialTheme.spacing.md),
-                            )
-                        }
-                    }
+                items(items = state.stands, key = { it.id }) { stand ->
+                    StandRow(stand = stand, onClick = onStandClick)
                 }
             }
         }

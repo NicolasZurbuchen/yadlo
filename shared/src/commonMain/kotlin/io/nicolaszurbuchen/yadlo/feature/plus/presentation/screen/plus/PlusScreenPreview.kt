@@ -53,8 +53,12 @@ private fun published() =
                     rows =
                         listOf(
                             PlusRowUiModel(
-                                entry = PlusEntry.STANDS,
-                                subtitle = UiText.Resource(Res.string.plus_stands_count, listOf(8)),
+                                entry = PlusEntry.STANDS_FOOD,
+                                subtitle = UiText.Resource(Res.string.plus_stands_count, listOf(6)),
+                            ),
+                            PlusRowUiModel(
+                                entry = PlusEntry.STANDS_MAKERS,
+                                subtitle = UiText.Resource(Res.string.plus_stands_count, listOf(2)),
                             ),
                             PlusRowUiModel(
                                 entry = PlusEntry.PAYMENT,
@@ -82,9 +86,12 @@ private fun thinned() =
                     id = PlusGroupUiId.ON_SITE,
                     rows =
                         listOf(
+                            // A row with a subtitle beside one without: the second must not be
+                            // shorter, or a card of sixteen combs up and down as the content
+                            // publishes one line here and two there.
                             PlusRowUiModel(
-                                entry = PlusEntry.STANDS,
-                                subtitle = UiText.Resource(Res.string.plus_stands_count, listOf(8)),
+                                entry = PlusEntry.STANDS_FOOD,
+                                subtitle = UiText.Resource(Res.string.plus_stands_count, listOf(6)),
                             ),
                             PlusRowUiModel(entry = PlusEntry.HOURS, subtitle = null),
                         ),

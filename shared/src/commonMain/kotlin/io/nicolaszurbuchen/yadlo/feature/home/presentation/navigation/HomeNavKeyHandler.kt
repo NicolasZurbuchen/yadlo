@@ -10,7 +10,7 @@ class HomeNavKeyHandler(
     private val navigator: HomeNavigator,
 ) : NavKeyHandler {
     override fun EntryProviderScope<NavKey>.registerEntries() {
-        entry<HomeDestination> {
+        entry<HomeMainDestination> {
             HomeRoute(
                 onNavigateToProgramme = { navigator.navigateToProgramme() },
                 onNavigateToAnnouncements = { navigator.navigateToAnnouncements() },

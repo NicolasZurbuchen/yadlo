@@ -19,7 +19,7 @@ class PlusReducerTest {
     fun overviewUpdated_firstEmission_holdsWhatThePublishedContentOffers() {
         val result = with(reducer) { PlusState().reduce(PlusMessage.OverviewUpdated(overview(stands = 8))) }
 
-        assertEquals(8, result.overview?.standCount)
+        assertEquals(8, result.overview?.foodStandCount)
     }
 
     @Test
@@ -28,12 +28,13 @@ class PlusReducerTest {
 
         val result = with(reducer) { state.reduce(PlusMessage.OverviewUpdated(overview(stands = 8))) }
 
-        assertEquals(8, result.overview?.standCount)
+        assertEquals(8, result.overview?.foodStandCount)
     }
 
     private fun overview(stands: Int) =
         PlusOverview(
-            standCount = stands,
+            foodStandCount = stands,
+            makerStandCount = 0,
             cashAccepted = false,
             hasTransport = true,
             hasAccessibility = true,

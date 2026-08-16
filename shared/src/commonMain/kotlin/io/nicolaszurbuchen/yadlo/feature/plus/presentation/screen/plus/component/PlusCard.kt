@@ -38,11 +38,13 @@ fun PlusCard(
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm),
         modifier = modifier.fillMaxWidth(),
     ) {
+        // The header is inset from the card rather than flush with it, which is what makes the card
+        // read as a block the header labels instead of a box the header is inside.
         Text(
             text = stringResource(group.id.title).uppercase(),
             style = MaterialTheme.typography.headlineMedium,
             color = MaterialTheme.appColors.textTertiary,
-            modifier = Modifier.padding(horizontal = MaterialTheme.spacing.md),
+            modifier = Modifier.padding(horizontal = MaterialTheme.spacing.sm),
         )
 
         Column(

@@ -10,7 +10,7 @@ class MonYadloNavKeyHandler(
     private val navigator: MonYadloNavigator,
 ) : NavKeyHandler {
     override fun EntryProviderScope<NavKey>.registerEntries() {
-        entry<MonYadloDestination> {
+        entry<MonYadloMainDestination> {
             MonYadloRoute(
                 onNavigateToHappening = { id -> navigator.navigateToHappening(id) },
                 onNavigateToWishlist = { navigator.navigateToWishlist() },

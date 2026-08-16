@@ -24,7 +24,7 @@ class ObservePlusOverviewUseCaseTest {
 
             // The tab still opens; it simply has no rows. Every one of them is derived from a
             // section, which is what stops it ever opening an empty screen.
-            assertEquals(0, overview.standCount)
+            assertEquals(0, overview.foodStandCount)
             assertNull(overview.cashAccepted)
             assertFalse(overview.hasTransport)
             assertFalse(overview.hasAccessibility)
@@ -41,7 +41,41 @@ class ObservePlusOverviewUseCaseTest {
                     emitStatus(ready(happenings = listOf(stand("vegan-fabrik"), stand("guliko"))))
                 }
 
-            assertEquals(2, overviewFrom(repository).standCount)
+            assertEquals(2, overviewFrom(repository).foodStandCount)
+        }
+
+    @Test
+    fun invoke_theTwoHalves_areCountedApartFromEachOther() =
+        runTest {
+            val repository =
+                FakeContentRepository().apply {
+                    emitStatus(
+                        ready(
+                            happenings =
+                                listOf(
+                                    stand("vegan-fabrik"),
+                                    stand("guliko"),
+                                    stand("la-fanfrelucherie", category = CREATEURS),
+                                ),
+                        ),
+                    )
+                }
+
+            val overview = overviewFrom(repository)
+
+            // Two rows, two counts. One number over both would tell someone six trucks are waiting
+            // when two of them sell costumes.
+            assertEquals(2, overview.foodStandCount)
+            assertEquals(1, overview.makerStandCount)
+        }
+
+    @Test
+    fun invoke_aHalfWithNothingInIt_countsZeroAndLosesItsRow() =
+        runTest {
+            val repository =
+                FakeContentRepository().apply { emitStatus(ready(happenings = listOf(stand("vegan-fabrik")))) }
+
+            assertEquals(0, overviewFrom(repository).makerStandCount)
         }
 
     @Test
@@ -164,13 +198,13 @@ class ObservePlusOverviewUseCaseTest {
         runTest {
             val repository = FakeContentRepository().apply { emitStatus(ready()) }
             val useCase = ObservePlusOverviewUseCase(repository)
-            assertEquals(0, useCase().first().standCount)
+            assertEquals(0, useCase().first().foodStandCount)
 
             repository.emitStatus(ready(happenings = listOf(stand("vegan-fabrik"))))
 
             // The root of Plus is the screen most likely to be open when a refresh arrives, and a
             // refresh is what turns a section from absent into published.
-            assertEquals(1, useCase().first().standCount)
+            assertEquals(1, useCase().first().foodStandCount)
         }
 
     private suspend fun overviewFrom(repository: FakeContentRepository) = ObservePlusOverviewUseCase(repository)().first()

@@ -4,14 +4,14 @@ import io.nicolaszurbuchen.yadlo.common.content.domain.model.ContentStatus
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Happening
 import io.nicolaszurbuchen.yadlo.common.content.domain.repository.ContentRepository
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.model.StandDirectory
-import io.nicolaszurbuchen.yadlo.feature.plus.domain.model.StandGroup
+import io.nicolaszurbuchen.yadlo.feature.plus.domain.model.StandKind
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.model.StandListing
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.map
 
 /**
- * *Nourriture & boissons* — every Stand, grouped by Category.
+ * One half of the stands — the food trucks and the bar, or the makers.
  *
  * **A stand matches a dietary mark if it carries it or any of its dishes does.** SCHEMA.md keeps the
  * two levels apart on purpose — a Stand mark means all of it is, an Item mark means that dish is —
@@ -23,58 +23,42 @@ import kotlinx.coroutines.flow.map
  * The row still shows only the Stand's own marks, so nothing claims the whole truck is vegan
  * because one dish is.
  *
- * Categories keep their declared order and Stands keep the order the content lists them in, which
- * is the same rule the Wishlist and the Programme follow.
+ * Stands keep the order the content lists them in, which is the same rule the Wishlist and the
+ * Programme follow.
  */
 class ObserveStandDirectoryUseCase(
     private val contentRepository: ContentRepository,
 ) {
-    operator fun invoke(): Flow<StandDirectory> =
+    operator fun invoke(kind: StandKind): Flow<StandDirectory> =
         contentRepository
             .observeStatus()
             .filterIsInstance<ContentStatus.Ready>()
             .map { status ->
-                val edition = status.bundle.edition
-                val standsByCategory =
-                    edition.happenings
+                val stands =
+                    status.bundle.edition.happenings
                         .filterIsInstance<Happening.Stand>()
-                        .groupBy { it.category.id }
-
-                val groups =
-                    edition.categories
-                        .sortedBy { it.order }
-                        .filter { standsByCategory.containsKey(it.id) }
-                        .map { category ->
-                            StandGroup(
-                                categoryId = category.id,
-                                categoryName = category.name,
-                                stands =
-                                    standsByCategory.getValue(category.id).map { stand ->
-                                        StandListing(
-                                            id = stand.id,
-                                            name = stand.name,
-                                            offering = stand.offering,
-                                            marks = stand.marks,
-                                            dietaryMatches =
-                                                (
-                                                    stand.marks +
-                                                        stand.menu.flatMap { group ->
-                                                            group.items.flatMap { it.marks }
-                                                        }
-                                                ).toSet(),
-                                        )
-                                    },
+                        .filter { it.category.id == kind.categoryId }
+                        .map { stand ->
+                            StandListing(
+                                id = stand.id,
+                                name = stand.name,
+                                offering = stand.offering,
+                                marks = stand.marks,
+                                dietaryMatches =
+                                    (
+                                        stand.marks +
+                                            stand.menu.flatMap { group ->
+                                                group.items.flatMap { it.marks }
+                                            }
+                                    ).toSet(),
                             )
                         }
 
                 StandDirectory(
-                    groups = groups,
+                    stands = stands,
                     // Offered in the order they were first met walking the list, so the chips read
                     // the way the stands do rather than alphabetically against them.
-                    marks =
-                        groups
-                            .flatMap { group -> group.stands.flatMap { it.dietaryMatches } }
-                            .distinct(),
+                    marks = stands.flatMap { it.dietaryMatches }.distinct(),
                 )
             }
 }

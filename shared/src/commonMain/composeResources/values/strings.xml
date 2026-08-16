@@ -43,30 +43,31 @@
     <string name="programme_categories_all">Tout</string>
     <string name="programme_price_from">dès %1$s</string>
     <string name="programme_empty_filter">Aucune activité ne correspond à ce filtre.</string>
-    <string name="programme_empty_unpublished">Le programme n\'est pas encore publié.</string>
+    <string name="programme_empty_unpublished">Le programme n'est pas encore publié.</string>
 
-    <string name="mon_yadlo_empty">Rien dans ton programme pour l\'instant. Ouvre le Programme et garde ce que tu ne veux pas manquer.</string>
+    <string name="mon_yadlo_empty">Rien dans ton programme pour l'instant. Ouvre le Programme et garde ce que tu ne veux pas manquer.</string>
     <string name="mon_yadlo_wishlist_title">À essayer</string>
     <string name="mon_yadlo_wishlist_empty">Garde les stands qui te font envie depuis leur fiche.</string>
 
     <string name="wishlist_title">À essayer</string>
     <string name="wishlist_back">Retour</string>
-    <string name="wishlist_empty">Tu n\'as encore rien gardé. Les stands sont dans Plus › Nourriture &amp; boissons.</string>
+    <string name="wishlist_empty">Tu n'as encore rien gardé. Les stands sont dans Plus › Nourriture &amp; boissons.</string>
 
     <!-- Plus — the root list. Group names and row titles are fixed; only the subtitles come from content. -->
     <string name="plus_back">Retour</string>
     <string name="plus_group_on_site">Sur place</string>
-    <string name="plus_entry_stands">Nourriture &amp; boissons</string>
+    <string name="plus_entry_stands_food">Nourriture &amp; boissons</string>
+    <string name="plus_entry_stands_makers">Créateurs</string>
     <string name="plus_entry_payment">Paiement</string>
     <string name="plus_entry_access">Accès &amp; transports</string>
     <string name="plus_entry_accessibility">Accessibilité</string>
-    <string name="plus_entry_hours">Horaires d\'ouverture</string>
+    <string name="plus_entry_hours">Horaires d'ouverture</string>
     <string name="plus_entry_assistance">En cas de besoin</string>
     <string name="plus_entry_faq">Questions fréquentes</string>
     <string name="plus_group_festival">Le festival</string>
-    <string name="plus_group_involvement">S\'impliquer</string>
-    <string name="plus_group_app">L\'application</string>
-    <string name="plus_entry_story">L\'histoire de Yadlo</string>
+    <string name="plus_group_involvement">S'impliquer</string>
+    <string name="plus_group_app">L'application</string>
+    <string name="plus_entry_story">L'histoire de Yadlo</string>
     <string name="plus_entry_responsible">Festival responsable</string>
     <string name="plus_entry_partners">Partenaires</string>
     <string name="plus_entry_contact">Nous écrire</string>
@@ -76,36 +77,35 @@
     <string name="plus_entry_report">Signaler une information</string>
     <string name="plus_entry_privacy">Confidentialité</string>
     <string name="plus_stands_count">%1$s stands</string>
-    <string name="plus_payment_no_cash">Pas d\'espèces</string>
+    <string name="plus_payment_no_cash">Pas d'espèces</string>
     <string name="plus_assistance_subtitle">Urgences et objets trouvés</string>
     <string name="plus_story_since">Depuis %1$s</string>
     <string name="plus_partners_count">%1$s partenaires</string>
     <string name="plus_about_unofficial">Application non officielle</string>
 
-    <string name="story_empty">L\'histoire du festival n\'est pas encore publiée.</string>
+    <string name="story_empty">L'histoire du festival n'est pas encore publiée.</string>
 
-    <string name="partners_intro">Si Yadlo existe, c\'est grâce aux partenariats tissés jusqu\'ici. Chaque édition en dépend.</string>
-    <string name="partners_no_website">Ce partenaire n\'a pas de site web.</string>
+    <string name="partners_intro">Si Yadlo existe, c'est grâce aux partenariats tissés jusqu'ici. Chaque édition en dépend.</string>
+    <string name="partners_no_website">Ce partenaire n'a pas de site web.</string>
     <string name="partners_empty">Les partenaires ne sont pas encore publiés.</string>
 
     <string name="contact_section_emails">Écrire à la bonne adresse</string>
-    <string name="contact_section_address">L\'association</string>
-    <string name="contact_signup">S\'inscrire</string>
-    <string name="contact_empty">Aucune adresse n\'est encore publiée.</string>
+    <string name="contact_section_address">L'association</string>
+    <string name="contact_signup">S'inscrire</string>
+    <string name="contact_empty">Aucune adresse n'est encore publiée.</string>
 
-    <string name="page_empty">Rien n\'est encore publié ici.</string>
+    <string name="page_empty">Rien n'est encore publié ici.</string>
 
-    <string name="about_body">Yadlo est un festival de plage à Préverenges, au bord du Léman, chaque juillet depuis 2015. Cette application n\'est pas la sienne : elle a été construite par un visiteur, et l\'association n\'en est ni l\'auteure ni la responsable.\n\nTout ce qu\'elle affiche vient de ce que le festival publie — son site et son Instagram — recopié à la main dans des fichiers structurés.</string>
+    <string name="about_body">Yadlo est un festival de plage à Préverenges, au bord du Léman, chaque juillet depuis 2015. Cette application n'est pas la sienne : elle a été construite par un visiteur, et l'association n'en est ni l'auteure ni la responsable.\n\nTout ce qu'elle affiche vient de ce que le festival publie — son site et son Instagram — recopié à la main dans des fichiers structurés.</string>
     <string name="about_section_why">Pourquoi elle existe</string>
-    <string name="about_why">Parce que la programmation, les stands et les informations pratiques n\'existaient nulle part sous forme de données : elles vivaient dans des images et des publications. C\'est ce qui rendait impossible un programme personnel, un rappel ou un accès hors ligne.\n\nSi l\'association veut de cette application, elle est à elle. Écrivez-nous depuis Nous écrire.</string>
+    <string name="about_why">Parce que la programmation, les stands et les informations pratiques n'existaient nulle part sous forme de données : elles vivaient dans des images et des publications. C'est ce qui rendait impossible un programme personnel, un rappel ou un accès hors ligne.\n\nSi l'association veut de cette application, elle est à elle. Écrivez-nous depuis Nous écrire.</string>
 
-    <string name="privacy_body">Cette application ne collecte rien. Elle télécharge les fichiers publics du festival et écrit votre programme sur votre appareil, et c\'est tout.</string>
+    <string name="privacy_body">Cette application ne collecte rien. Elle télécharge les fichiers publics du festival et écrit votre programme sur votre appareil, et c'est tout.</string>
     <string name="privacy_section_facts">En clair</string>
     <string name="privacy_fact_no_account">Aucun compte, aucune inscription</string>
-    <string name="privacy_fact_no_analytics">Aucune mesure d\'audience, aucun traceur</string>
-    <string name="privacy_fact_plan_is_local">Votre programme reste sur votre téléphone et disparaît avec l\'application</string>
+    <string name="privacy_fact_no_analytics">Aucune mesure d'audience, aucun traceur</string>
+    <string name="privacy_fact_plan_is_local">Votre programme reste sur votre téléphone et disparaît avec l'application</string>
 
-    <string name="stands_title">Nourriture &amp; boissons</string>
     <string name="stands_filter_all">Tout</string>
     <string name="stands_no_match">Aucun stand ne porte cette mention.</string>
     <string name="stands_empty">Les stands ne sont pas encore publiés.</string>
@@ -115,28 +115,28 @@
     <string name="payment_section_refused">Non accepté</string>
     <string name="payment_section_notes">Bon à savoir</string>
     <string name="payment_section_links">Liens</string>
-    <string name="payment_empty">Rien n\'est encore publié sur les moyens de paiement.</string>
+    <string name="payment_empty">Rien n'est encore publié sur les moyens de paiement.</string>
 
     <string name="access_title">Accès</string>
     <string name="access_departures">Départs</string>
-    <string name="access_empty">Rien n\'est encore publié sur l\'accès au site.</string>
+    <string name="access_empty">Rien n'est encore publié sur l'accès au site.</string>
 
     <string name="accessibility_title">Accessibilité</string>
-    <string name="accessibility_intro">Le site est une plage : du sable, de l\'herbe, peu de surfaces dures. Voici ce que nous savons.</string>
+    <string name="accessibility_intro">Le site est une plage : du sable, de l'herbe, peu de surfaces dures. Voici ce que nous savons.</string>
     <string name="accessibility_section_available">Confirmé</string>
     <string name="accessibility_section_unavailable">Non disponible</string>
     <string name="accessibility_section_contact">Écrivez-nous avant de venir</string>
-    <string name="accessibility_contact_body">C\'est la manière la plus sûre d\'organiser votre venue : l\'équipe peut réserver une place, prévoir un accès ou vous accueillir à l\'arrivée.</string>
+    <string name="accessibility_contact_body">C'est la manière la plus sûre d'organiser votre venue : l'équipe peut réserver une place, prévoir un accès ou vous accueillir à l'arrivée.</string>
     <string name="accessibility_contact_hint">Objet : accessibilité</string>
-    <string name="accessibility_nothing_published">Le festival ne publie encore rien sur l\'accessibilité de son site. Plutôt que de vous rassurer à vide, voici quelqu\'un à qui demander.</string>
-    <string name="accessibility_empty">Rien n\'est encore publié sur l\'accessibilité.</string>
+    <string name="accessibility_nothing_published">Le festival ne publie encore rien sur l'accessibilité de son site. Plutôt que de vous rassurer à vide, voici quelqu'un à qui demander.</string>
+    <string name="accessibility_empty">Rien n'est encore publié sur l'accessibilité.</string>
 
     <string name="hours_title">Horaires</string>
-    <string name="hours_intro">À quelle heure le site ouvre, et jusqu\'à quand on peut manger, boire et se mouiller.</string>
+    <string name="hours_intro">À quelle heure le site ouvre, et jusqu'à quand on peut manger, boire et se mouiller.</string>
     <string name="hours_site_open">Site ouvert</string>
     <string name="hours_programme">Programme</string>
-    <string name="hours_estimated">Horaires déduits, à confirmer par l\'organisation.</string>
-    <string name="hours_before_opening">Certaines activités commencent avant l\'ouverture : la plage de Préverenges est publique.</string>
+    <string name="hours_estimated">Horaires déduits, à confirmer par l'organisation.</string>
+    <string name="hours_before_opening">Certaines activités commencent avant l'ouverture : la plage de Préverenges est publique.</string>
     <string name="hours_empty">Les horaires ne sont pas encore publiés.</string>
 
     <string name="assistance_title">En cas de besoin</string>
@@ -146,10 +146,10 @@
     <string name="assistance_empty">Les numéros ne sont pas encore publiés.</string>
 
     <string name="faq_title">Questions fréquentes</string>
-    <string name="faq_empty">Aucune question n\'a encore été publiée.</string>
+    <string name="faq_empty">Aucune question n'a encore été publiée.</string>
 
     <string name="happening_back">Retour</string>
-    <string name="happening_missing">Cette fiche n\'est plus disponible.</string>
+    <string name="happening_missing">Cette fiche n'est plus disponible.</string>
     <string name="happening_section_when">Quand</string>
     <string name="happening_section_price">Tarifs</string>
     <string name="happening_section_menu">Au menu</string>
@@ -181,13 +181,13 @@
     <string name="error_network_timeout_subtitle">The server took too long to respond.</string>
     <string name="error_network_http_title">Network error</string>
     <string name="error_network_http_subtitle_default">Something went wrong. Try again.</string>
-    <string name="error_database_query_failed_title">Couldn\'t read from storage</string>
+    <string name="error_database_query_failed_title">Couldn't read from storage</string>
     <string name="error_database_generic_subtitle">Something went wrong. Try again.</string>
-    <string name="error_database_insert_failed_title">Couldn\'t save to storage</string>
+    <string name="error_database_insert_failed_title">Couldn't save to storage</string>
     <string name="startup_content_unavailable_body">Yadlo needs to download the festival programme once. After that it works offline.</string>
-    <string name="error_content_unreadable_title">Couldn\'t read the festival content</string>
-    <string name="error_content_unreadable_subtitle">The published content couldn\'t be understood by this version of the app.</string>
-    <string name="error_pokemon_fetch_failed_title">Couldn\'t fetch a Pokémon</string>
+    <string name="error_content_unreadable_title">Couldn't read the festival content</string>
+    <string name="error_content_unreadable_subtitle">The published content couldn't be understood by this version of the app.</string>
+    <string name="error_pokemon_fetch_failed_title">Couldn't fetch a Pokémon</string>
     <string name="error_pokemon_fetch_failed_subtitle">Check your connection and try again.</string>
     <string name="error_unexpected_title">Something went wrong</string>
     <string name="error_unexpected_subtitle">Please try again.</string>

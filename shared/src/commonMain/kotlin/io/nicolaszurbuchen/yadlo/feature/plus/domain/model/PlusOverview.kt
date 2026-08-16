@@ -15,7 +15,12 @@ package io.nicolaszurbuchen.yadlo.feature.plus.domain.model
  * nothing about, and no payment section at all is a row that should not exist.
  */
 data class PlusOverview(
-    val standCount: Int,
+    /**
+     * Counted apart because they are two entries: nobody looking for dinner is also browsing for a
+     * second-hand costume, and a row is only drawn when its own half has something in it.
+     */
+    val foodStandCount: Int,
+    val makerStandCount: Int,
     val cashAccepted: Boolean?,
     val hasTransport: Boolean,
     val hasAccessibility: Boolean,

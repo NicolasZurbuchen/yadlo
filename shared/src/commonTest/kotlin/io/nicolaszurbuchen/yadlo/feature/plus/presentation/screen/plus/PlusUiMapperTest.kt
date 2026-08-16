@@ -46,7 +46,8 @@ class PlusUiMapperTest {
         // publishes and the only one that has to be read before leaving the house.
         assertEquals(
             listOf(
-                PlusEntry.STANDS,
+                PlusEntry.STANDS_FOOD,
+                PlusEntry.STANDS_MAKERS,
                 PlusEntry.PAYMENT,
                 PlusEntry.ACCESS,
                 PlusEntry.ACCESSIBILITY,
@@ -79,7 +80,8 @@ class PlusUiMapperTest {
         // The tab can never open a screen with nothing on it, which is what lets the whole of Plus
         // ship while half the festival's practical information is unwritten.
         assertTrue(PlusEntry.ACCESS !in rowsOf(PlusGroupUiId.ON_SITE, published().copy(hasTransport = false)))
-        assertTrue(PlusEntry.STANDS !in rowsOf(PlusGroupUiId.ON_SITE, published().copy(standCount = 0)))
+        assertTrue(PlusEntry.STANDS_FOOD !in rowsOf(PlusGroupUiId.ON_SITE, published().copy(foodStandCount = 0)))
+        assertTrue(PlusEntry.STANDS_MAKERS !in rowsOf(PlusGroupUiId.ON_SITE, published().copy(makerStandCount = 0)))
         assertTrue(PlusEntry.STORY !in rowsOf(PlusGroupUiId.FESTIVAL, published().copy(foundedYear = null)))
         assertTrue(PlusEntry.PARTNERS !in rowsOf(PlusGroupUiId.FESTIVAL, published().copy(partnerCount = 0)))
         assertTrue(PlusEntry.NEWSLETTER !in rowsOf(PlusGroupUiId.INVOLVEMENT, published().copy(newsletterUrl = null)))
@@ -127,14 +129,21 @@ class PlusUiMapperTest {
         // On one bar of signal that is what tells someone whether tapping costs a page load.
         assertEquals("↗", PlusEntry.NEWSLETTER.mark)
         assertEquals("✉", PlusEntry.REPORT.mark)
-        assertEquals("›", PlusEntry.STANDS.mark)
+        assertEquals("›", PlusEntry.STANDS_FOOD.mark)
     }
 
     @Test
-    fun toUiModel_theStandsRow_countsThemOnTheRow() {
-        val row = rowFor(PlusEntry.STANDS, published().copy(standCount = 8))
-
-        assertEquals(UiText.Resource(Res.string.plus_stands_count, listOf(8)), row?.subtitle)
+    fun toUiModel_eachStandsRow_countsItsOwnHalf() {
+        // Two rows, two counts. One number over both would be the tab telling you six trucks are
+        // waiting when two of them sell costumes.
+        assertEquals(
+            UiText.Resource(Res.string.plus_stands_count, listOf(6)),
+            rowFor(PlusEntry.STANDS_FOOD, published())?.subtitle,
+        )
+        assertEquals(
+            UiText.Resource(Res.string.plus_stands_count, listOf(2)),
+            rowFor(PlusEntry.STANDS_MAKERS, published())?.subtitle,
+        )
     }
 
     @Test
@@ -213,7 +222,8 @@ class PlusUiMapperTest {
 
     private fun published() =
         PlusOverview(
-            standCount = 8,
+            foodStandCount = 6,
+            makerStandCount = 2,
             cashAccepted = false,
             hasTransport = true,
             hasAccessibility = true,
@@ -231,7 +241,8 @@ class PlusUiMapperTest {
 
     private fun nothing() =
         PlusOverview(
-            standCount = 0,
+            foodStandCount = 0,
+            makerStandCount = 0,
             cashAccepted = null,
             hasTransport = false,
             hasAccessibility = false,

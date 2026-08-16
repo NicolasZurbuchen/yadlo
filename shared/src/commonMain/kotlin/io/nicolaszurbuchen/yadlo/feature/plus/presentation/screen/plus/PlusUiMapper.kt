@@ -21,10 +21,17 @@ fun PlusState.toUiModel(): PlusUiModel {
             // Every row here is conditional on the section behind it, so the tab can never open a
             // screen with nothing on it — which is what lets the whole of Plus ship while half the
             // festival's practical information is still unpublished.
+            // Two rows rather than one list with two headers: nobody looking for dinner is also
+            // browsing for a second-hand costume. The Wishlist still groups them, because there
+            // they are what one person kept.
             PlusRowUiModel(
-                entry = PlusEntry.STANDS,
-                subtitle = UiText.Resource(Res.string.plus_stands_count, listOf(loaded.standCount)),
-            ).takeIf { loaded.standCount > 0 },
+                entry = PlusEntry.STANDS_FOOD,
+                subtitle = UiText.Resource(Res.string.plus_stands_count, listOf(loaded.foodStandCount)),
+            ).takeIf { loaded.foodStandCount > 0 },
+            PlusRowUiModel(
+                entry = PlusEntry.STANDS_MAKERS,
+                subtitle = UiText.Resource(Res.string.plus_stands_count, listOf(loaded.makerStandCount)),
+            ).takeIf { loaded.makerStandCount > 0 },
             PlusRowUiModel(
                 entry = PlusEntry.PAYMENT,
                 // Written on the row only when it is refused. That the site takes cards is not news;

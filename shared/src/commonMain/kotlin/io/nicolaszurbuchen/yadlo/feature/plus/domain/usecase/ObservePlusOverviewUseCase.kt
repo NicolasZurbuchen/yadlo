@@ -4,6 +4,7 @@ import io.nicolaszurbuchen.yadlo.common.content.domain.model.ContentStatus
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Happening
 import io.nicolaszurbuchen.yadlo.common.content.domain.repository.ContentRepository
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.model.PlusOverview
+import io.nicolaszurbuchen.yadlo.feature.plus.domain.model.StandKind
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.map
@@ -39,8 +40,11 @@ class ObservePlusOverviewUseCase(
             .map { status ->
                 val festival = status.bundle.festival
 
+                val stands = status.bundle.edition.happenings.filterIsInstance<Happening.Stand>()
+
                 PlusOverview(
-                    standCount = status.bundle.edition.happenings.count { it is Happening.Stand },
+                    foodStandCount = stands.count { it.category.id == StandKind.FOOD.categoryId },
+                    makerStandCount = stands.count { it.category.id == StandKind.MAKERS.categoryId },
                     // Absent when nothing has been published about payment, false when cash is
                     // refused, true when it is taken — three states the row reads differently.
                     cashAccepted =

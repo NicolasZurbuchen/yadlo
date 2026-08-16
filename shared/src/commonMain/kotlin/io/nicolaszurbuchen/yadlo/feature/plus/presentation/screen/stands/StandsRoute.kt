@@ -8,6 +8,10 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.compose.viewmodel.koinViewModel
 
+/**
+ * Which half of the stands this is reaches the store through the ViewModel, never through here: a
+ * Route may only take lambdas, a Modifier or a ViewModel.
+ */
 @Composable
 fun StandsRoute(
     onNavigateBack: () -> Unit,

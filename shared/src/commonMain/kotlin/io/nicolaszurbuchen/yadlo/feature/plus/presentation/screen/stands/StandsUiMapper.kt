@@ -7,40 +7,34 @@ import yadlo.shared.generated.resources.stands_filter_all
 import yadlo.shared.generated.resources.stands_no_match
 
 fun StandsState.toUiModel(): StandsUiModel {
+    val title = UiText.Resource(kind.title)
+
     val loaded =
         directory ?: return StandsUiModel(
             isLoading = true,
+            title = title,
             chips = emptyList(),
-            groups = emptyList(),
+            stands = emptyList(),
             emptyMessage = null,
         )
 
     val filtered =
-        loaded.groups
-            .map { group ->
-                StandGroupUiModel(
-                    id = group.categoryId,
-                    // Written as the content authors it. The section header's own type slot carries
-                    // the tracking and the weight, the same as on the Wishlist.
-                    name = group.categoryName,
-                    stands =
-                        group.stands
-                            .filter { stand -> selectedMark == null || selectedMark in stand.dietaryMatches }
-                            .map { stand ->
-                                StandUiModel(
-                                    id = stand.id,
-                                    name = stand.name,
-                                    offering = stand.offering,
-                                    // The fiche's separator, so a stand reads the same in all three
-                                    // places it appears.
-                                    marks = stand.marks.joinToString(" · ").ifEmpty { null },
-                                )
-                            },
+        loaded.stands
+            .filter { stand -> selectedMark == null || selectedMark in stand.dietaryMatches }
+            .map { stand ->
+                StandUiModel(
+                    id = stand.id,
+                    name = stand.name,
+                    offering = stand.offering,
+                    // The fiche's separator, so a stand reads the same in all three places it
+                    // appears.
+                    marks = stand.marks.joinToString(" · ").ifEmpty { null },
                 )
-            }.filter { it.stands.isNotEmpty() }
+            }
 
     return StandsUiModel(
         isLoading = false,
+        title = title,
         chips =
             listOf(
                 StandChipUiModel(
@@ -58,7 +52,7 @@ fun StandsState.toUiModel(): StandsUiModel {
                         isSelected = mark == selectedMark,
                     )
                 },
-        groups = filtered,
+        stands = filtered,
         emptyMessage =
             when {
                 filtered.isNotEmpty() -> null

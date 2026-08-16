@@ -17,19 +17,26 @@ import yadlo.shared.generated.resources.stands_filter_all
 import yadlo.shared.generated.resources.stands_no_match
 
 /**
- * The 2026 shape: two categories, and a stand with marks beside three without. The filtered-to-
- * nothing state is the third, because it is the one a reader can act on and the one that reads
- * wrong if it says "no stands published".
+ * The 2026 shape of both halves. *Créateurs* is the one worth looking at: it publishes no marks at
+ * all, so its chip row is absent rather than showing a lone *Tout* that filters nothing.
  */
 private class StandsStateProvider : PreviewParameterProvider<StandsUiModel> {
     override val values =
         sequenceOf(
-            StandsUiModel(isLoading = true, chips = emptyList(), groups = emptyList(), emptyMessage = null),
-            listed(),
+            StandsUiModel(
+                isLoading = true,
+                title = UiText.Resource(StandsKind.FOOD.title),
+                chips = emptyList(),
+                stands = emptyList(),
+                emptyMessage = null,
+            ),
+            food(),
+            makers(),
             StandsUiModel(
                 isLoading = false,
+                title = UiText.Resource(StandsKind.FOOD.title),
                 chips = chips(selected = "sans gluten"),
-                groups = emptyList(),
+                stands = emptyList(),
                 emptyMessage = UiText.Resource(Res.string.stands_no_match),
             ),
         )
@@ -59,47 +66,59 @@ private fun chips(selected: String?) =
             StandChipUiModel(mark = it, label = UiText.Raw(it), isSelected = it == selected)
         }
 
-private fun listed() =
+private fun food() =
     StandsUiModel(
         isLoading = false,
+        title = UiText.Resource(StandsKind.FOOD.title),
         emptyMessage = null,
         chips = chips(selected = null),
-        groups =
+        stands =
             listOf(
-                StandGroupUiModel(
-                    id = "restauration",
-                    name = "Restauration",
-                    stands =
-                        listOf(
-                            StandUiModel(
-                                id = "vegan-fabrik",
-                                name = "Vegan Fabrik",
-                                offering = "Cuisine végétale",
-                                marks = "végan · bio",
-                            ),
-                            // Matched by the `végé` chip through one bokit, and showing no mark of
-                            // its own — the case the stand/item distinction exists for.
-                            StandUiModel(
-                                id = "de-lor-bokit",
-                                name = "De l'Or Bokit",
-                                offering = "Cuisine guadeloupéenne",
-                                marks = null,
-                            ),
-                            StandUiModel(id = "guliko", name = "Guliko", offering = "Cuisine géorgienne", marks = null),
-                        ),
+                StandUiModel(
+                    id = "vegan-fabrik",
+                    name = "Vegan Fabrik",
+                    offering = "Cuisine végétale",
+                    marks = "végan · bio",
                 ),
-                StandGroupUiModel(
-                    id = "createurs",
-                    name = "Créateurs",
-                    stands =
-                        listOf(
-                            StandUiModel(
-                                id = "la-fanfrelucherie",
-                                name = "La Fanfrelucherie",
-                                offering = "Costumes de seconde main",
-                                marks = null,
-                            ),
-                        ),
+                // Matched by the `végé` chip through one bokit, and showing no mark of its own —
+                // the case the stand/item distinction exists for.
+                StandUiModel(
+                    id = "de-lor-bokit",
+                    name = "De l'Or Bokit",
+                    offering = "Cuisine guadeloupéenne",
+                    marks = null,
+                ),
+                StandUiModel(id = "guliko", name = "Guliko", offering = "Cuisine géorgienne", marks = null),
+            ),
+    )
+
+private fun makers() =
+    StandsUiModel(
+        isLoading = false,
+        title = UiText.Resource(StandsKind.MAKERS.title),
+        emptyMessage = null,
+        // No marks published on either maker, so no chip row at all.
+        chips =
+            listOf(
+                StandChipUiModel(
+                    mark = null,
+                    label = UiText.Resource(Res.string.stands_filter_all),
+                    isSelected = true,
+                ),
+            ),
+        stands =
+            listOf(
+                StandUiModel(
+                    id = "la-fanfrelucherie",
+                    name = "La Fanfrelucherie",
+                    offering = "Costumes de seconde main",
+                    marks = null,
+                ),
+                StandUiModel(
+                    id = "les-secrets-de-houna",
+                    name = "Les Secrets de Houna",
+                    offering = "Huiles précieuses et soins naturels",
+                    marks = null,
                 ),
             ),
     )

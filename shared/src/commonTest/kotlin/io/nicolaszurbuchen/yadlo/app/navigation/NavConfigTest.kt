@@ -17,6 +17,7 @@ import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.PrivacyDes
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.StandsDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.StoryDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.page.PageKind
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands.StandsKind
 import kotlin.test.Test
 import kotlin.test.assertNotNull
 
@@ -52,11 +53,15 @@ class NavConfigTest {
 
     @Test
     fun navConfig_everyPlusDestination_isRegisteredForSavedState() {
-        // Plus is the deepest stack in the app — seven screens hang off one root — so it is also
-        // where a forgotten registration costs the most. Listed rather than looped because there is
-        // no enum of them: the tab's rows are built from the content, not from a fixed set.
+        // Plus is the deepest stack in the app — fourteen screens hang off one root — so it is also
+        // where a forgotten registration costs the most. Listed rather than looped: the sealed root
+        // groups them in one file, but polymorphic serialization is still told about each leaf, and
+        // a leaf added without a line here fails silently until a low-memory kill.
         listOf(
-            StandsDestination,
+            // Both halves of the stands, because they are one key with a value: a restored stack
+            // has to come back on the half it was on.
+            StandsDestination(StandsKind.FOOD),
+            StandsDestination(StandsKind.MAKERS),
             PaymentDestination,
             AccessDestination,
             AccessibilityDestination,
@@ -68,8 +73,6 @@ class NavConfigTest {
             ContactDestination,
             AboutDestination,
             PrivacyDestination,
-            // The one that carries a value: a restored stack has to come back on the same page,
-            // not on whichever the enum happens to declare first.
             PageDestination(PageKind.SOCIAL),
         ).forEach { destination ->
             assertNotNull(
