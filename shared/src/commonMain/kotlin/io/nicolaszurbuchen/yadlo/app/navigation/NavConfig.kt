@@ -9,7 +9,6 @@ import io.nicolaszurbuchen.yadlo.feature.monyadlo.presentation.navigation.MonYad
 import io.nicolaszurbuchen.yadlo.feature.monyadlo.presentation.navigation.WishlistDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.AboutDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.AccessDestination
-import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.AccessibilityDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.AssistanceDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.ContactDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.FaqDestination
@@ -52,7 +51,6 @@ val navConfig =
                     subclass(StandsDestination::class)
                     subclass(PaymentDestination::class)
                     subclass(AccessDestination::class)
-                    subclass(AccessibilityDestination::class)
                     subclass(HoursDestination::class)
                     subclass(AssistanceDestination::class)
                     subclass(FaqDestination::class)

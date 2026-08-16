@@ -1,6 +1,5 @@
 package io.nicolaszurbuchen.yadlo.common.content.data.datasource.remote.mapper
 
-import io.nicolaszurbuchen.yadlo.common.content.data.datasource.remote.dto.AccessibilityDto
 import io.nicolaszurbuchen.yadlo.common.content.data.datasource.remote.dto.AssistanceDto
 import io.nicolaszurbuchen.yadlo.common.content.data.datasource.remote.dto.CharterDto
 import io.nicolaszurbuchen.yadlo.common.content.data.datasource.remote.dto.ContactDto
@@ -207,44 +206,6 @@ class FestivalRemoteMapperTest {
     }
 
     @Test
-    fun toDomain_accessibility_keepsTheContactEvenWhenNothingIsPublished() {
-        val dto = minimal().copy(accessibility = AccessibilityDto(contactEmailId = "hello", provenance = "unverified"))
-
-        val accessibility = assertNotNull(dto.toDomain().accessibility)
-
-        // The list is empty because the festival publishes nothing, and the address is the only
-        // useful thing left on the screen. Losing it would leave a page that says nothing at all.
-        assertTrue(accessibility.items.isEmpty())
-        assertEquals("hello", accessibility.contactEmailId)
-    }
-
-    @Test
-    fun toDomain_accessibilityItem_carriesWhatIsNotAvailableAsPlainlyAsWhatIs() {
-        val dto =
-            minimal().copy(
-                accessibility =
-                    AccessibilityDto(
-                        items =
-                            listOf(
-                                AccessibilityDto.ItemDto(
-                                    id = "toilettes",
-                                    name = "Toilettes adaptées",
-                                    available = false,
-                                    note = "Le site est une plage.",
-                                ),
-                            ),
-                        contactEmailId = "hello",
-                        provenance = "confirmed",
-                    ),
-            )
-
-        val item = dto.toDomain().accessibility?.items?.single()
-
-        assertEquals(false, item?.available)
-        assertEquals("Le site est une plage.", item?.note)
-    }
-
-    @Test
     fun toDomain_emergencyNumbers_stayTextBecauseTheyAreDialledNotCounted() {
         val dto =
             minimal().copy(
@@ -370,7 +331,6 @@ class FestivalRemoteMapperTest {
                 ],
                 "provenance": "confirmed"
               },
-              "accessibilite": { "items": [], "contactEmailId": "hello", "provenance": "unverified" },
               "besoin": {
                 "emergencyNumbers": [{ "id": "ambulance", "label": "Ambulance", "number": "144" }],
                 "lostPropertyEmailId": "hello",
@@ -398,7 +358,6 @@ class FestivalRemoteMapperTest {
         assertEquals(listOf("hello@yadlo.ch"), festival.contact?.emails?.map { it.address })
         assertEquals(listOf("À pied"), festival.transport?.modes?.map { it.name })
         assertEquals(listOf("TWINT"), festival.payment?.methods?.map { it.name })
-        assertEquals("hello", festival.accessibility?.contactEmailId)
         assertEquals("144", festival.assistance?.emergencyNumbers?.single()?.number)
         assertEquals("Hot'Staff", festival.involvement?.volunteering?.name)
         assertEquals("Devenir partenaire", festival.involvement?.partnership?.name)

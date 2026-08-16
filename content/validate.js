@@ -424,7 +424,6 @@ for (const e of idx.editions)
 
 const emailIds = new Set(fest.contact.emails.map(e => e.id));
 for (const [p, v] of [
-  ['accessibilite.contactEmailId', fest.accessibilite.contactEmailId],
   ['besoin.lostPropertyEmailId', fest.besoin.lostPropertyEmailId],
   ['simpliquer.hotstaff.contactEmailId', fest.simpliquer.hotstaff.contactEmailId],
   ['simpliquer.partenaire.contactEmailId', fest.simpliquer.partenaire.contactEmailId],
@@ -467,13 +466,10 @@ for (const n of fest.paiement.notes || []) {
   }
 }
 
-// Accessibility records what is NOT available as deliberately as what is - "no accessible
-// toilets" is information someone needs before travelling, and silence is not.
-for (const i of fest.accessibilite.items || []) {
-  if (!i.id || !i.name) errors.push(`accessibilite ${i.id}: needs an id and a name`);
-  if (typeof i.available !== 'boolean') errors.push(`accessibilite ${i.id}: available must be true or false`);
-}
-if (!(fest.accessibilite.items || []).length) warns.push('festival.json: accessibilite has no items');
+// The accessibilite block is gone rather than published empty - see GAPS.md section 9. It comes
+// back when the association publishes something, and this guard is here so it does not drift back
+// as a shape with nothing in it in the meantime.
+if ('accessibilite' in fest) errors.push('festival.json: accessibilite is out until there is something to say - see GAPS.md');
 
 // Counted rather than listed: one line per missing image would drown every other finding.
 const noImage = ed.happenings.filter(h => !(h.images || []).length);

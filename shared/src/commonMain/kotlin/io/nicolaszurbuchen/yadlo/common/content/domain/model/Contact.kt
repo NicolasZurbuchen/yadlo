@@ -9,7 +9,7 @@ package io.nicolaszurbuchen.yadlo.common.content.domain.model
  *
  * [emails] is a list rather than nine named fields because the addresses are a directory the
  * association maintains — `musique@`, `foodtrucks@`, `staff@` — and a tenth should be a content
- * edit. Screens look one up by id ([Accessibility.contactEmailId], [Assistance.lostPropertyEmailId]).
+ * edit. Screens look one up by id ([Assistance.lostPropertyEmailId]).
  */
 data class Contact(
     val addressLines: List<String>,

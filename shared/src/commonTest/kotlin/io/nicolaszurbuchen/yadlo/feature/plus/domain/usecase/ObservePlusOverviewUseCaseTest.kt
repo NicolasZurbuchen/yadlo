@@ -1,7 +1,6 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase
 
 import io.nicolaszurbuchen.yadlo.common.content.domain.fake.FakeContentRepository
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.Accessibility
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Assistance
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.FaqEntry
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Involvement
@@ -31,7 +30,6 @@ class ObservePlusOverviewUseCaseTest {
             assertTrue(overview.socials.isEmpty())
             assertNull(overview.cashAccepted)
             assertFalse(overview.hasTransport)
-            assertFalse(overview.hasAccessibility)
             assertFalse(overview.hasOpeningHours)
             assertFalse(overview.hasAssistance)
             assertEquals(0, overview.faqCount)
@@ -189,21 +187,6 @@ class ObservePlusOverviewUseCaseTest {
             // A published-but-empty section would open a screen that says nothing, which is exactly
             // what deriving the rows is meant to prevent.
             assertFalse(overviewFrom(repository).hasTransport)
-        }
-
-    @Test
-    fun invoke_accessibilityWithNoItems_isStillWorthARow() =
-        runTest {
-            val empty =
-                Accessibility(items = emptyList(), contactEmailId = "hello", provenance = Provenance.UNVERIFIED)
-            val repository =
-                FakeContentRepository().apply {
-                    emitStatus(ready(festival = festival { copy(accessibility = empty) }))
-                }
-
-            // The one section whose emptiness is the content. Nothing is published about the site's
-            // accessibility, and the screen exists to say so and hand over an address.
-            assertTrue(overviewFrom(repository).hasAccessibility)
         }
 
     @Test

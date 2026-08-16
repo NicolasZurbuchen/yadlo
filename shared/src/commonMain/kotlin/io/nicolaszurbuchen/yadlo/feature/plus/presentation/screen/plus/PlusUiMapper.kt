@@ -43,7 +43,6 @@ fun PlusState.toUiModel(): PlusUiModel {
                 subtitle = UiText.Resource(Res.string.plus_payment_no_cash).takeIf { loaded.cashAccepted == false },
             ).takeIf { loaded.cashAccepted != null },
             PlusRowUiModel(entry = PlusEntryUiModel.ACCESS, subtitle = null).takeIf { loaded.hasTransport },
-            PlusRowUiModel(entry = PlusEntryUiModel.ACCESSIBILITY, subtitle = null).takeIf { loaded.hasAccessibility },
             PlusRowUiModel(entry = PlusEntryUiModel.HOURS, subtitle = null).takeIf { loaded.hasOpeningHours },
             PlusRowUiModel(
                 entry = PlusEntryUiModel.ASSISTANCE,

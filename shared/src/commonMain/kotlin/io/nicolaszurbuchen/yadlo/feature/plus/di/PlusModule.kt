@@ -1,6 +1,5 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.di
 
-import io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase.ObserveAccessibilityGuideUseCase
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase.ObserveAssistanceGuideUseCase
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase.ObserveContactRouterUseCase
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase.ObserveFaqUseCase
@@ -15,8 +14,6 @@ import io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase.ObserveTransportUse
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase.ObserveVolunteeringOfferUseCase
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.access.AccessStoreFactory
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.access.AccessViewModel
-import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.accessibility.AccessibilityStoreFactory
-import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.accessibility.AccessibilityViewModel
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.assistance.AssistanceStoreFactory
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.assistance.AssistanceViewModel
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.contact.ContactStoreFactory
@@ -51,7 +48,6 @@ val plusModule =
         factoryOf(::ObserveStandDirectoryUseCase)
         factoryOf(::ObservePaymentUseCase)
         factoryOf(::ObserveTransportUseCase)
-        factoryOf(::ObserveAccessibilityGuideUseCase)
         factoryOf(::ObserveOpeningDaysUseCase)
         factoryOf(::ObserveAssistanceGuideUseCase)
         factoryOf(::ObserveFaqUseCase)
@@ -64,7 +60,6 @@ val plusModule =
         factoryOf(::PlusStoreFactory)
         factoryOf(::PaymentStoreFactory)
         factoryOf(::AccessStoreFactory)
-        factoryOf(::AccessibilityStoreFactory)
         factoryOf(::HoursStoreFactory)
         factoryOf(::AssistanceStoreFactory)
         factoryOf(::FaqStoreFactory)
@@ -77,7 +72,6 @@ val plusModule =
         viewModelOf(::PlusViewModel)
         viewModelOf(::PaymentViewModel)
         viewModelOf(::AccessViewModel)
-        viewModelOf(::AccessibilityViewModel)
         viewModelOf(::HoursViewModel)
         viewModelOf(::AssistanceViewModel)
         viewModelOf(::FaqViewModel)

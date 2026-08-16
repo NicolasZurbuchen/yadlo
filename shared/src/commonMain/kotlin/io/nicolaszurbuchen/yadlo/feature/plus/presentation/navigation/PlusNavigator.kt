@@ -20,8 +20,6 @@ interface PlusNavigator {
 
     fun navigateToAccess()
 
-    fun navigateToAccessibility()
-
     fun navigateToHours()
 
     fun navigateToAssistance()

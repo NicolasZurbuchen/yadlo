@@ -37,7 +37,6 @@ class PlusReducerTest {
             makerStandCount = 0,
             cashAccepted = false,
             hasTransport = true,
-            hasAccessibility = true,
             hasOpeningHours = true,
             hasAssistance = true,
             faqCount = 1,

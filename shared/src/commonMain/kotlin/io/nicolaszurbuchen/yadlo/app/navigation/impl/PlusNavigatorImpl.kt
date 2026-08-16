@@ -3,7 +3,6 @@ package io.nicolaszurbuchen.yadlo.app.navigation.impl
 import io.nicolaszurbuchen.yadlo.feature.happening.presentation.navigation.HappeningDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.AboutDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.AccessDestination
-import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.AccessibilityDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.AssistanceDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.ContactDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.FaqDestination
@@ -32,10 +31,6 @@ class PlusNavigatorImpl(
 
     override fun navigateToAccess() {
         appNavigator.navigateTo(AccessDestination)
-    }
-
-    override fun navigateToAccessibility() {
-        appNavigator.navigateTo(AccessibilityDestination)
     }
 
     override fun navigateToHours() {

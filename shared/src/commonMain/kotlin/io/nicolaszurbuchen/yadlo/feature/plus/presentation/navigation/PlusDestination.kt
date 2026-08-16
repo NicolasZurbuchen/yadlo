@@ -39,9 +39,6 @@ internal data object PaymentDestination : PlusDestination
 internal data object AccessDestination : PlusDestination
 
 @Serializable
-internal data object AccessibilityDestination : PlusDestination
-
-@Serializable
 internal data object HoursDestination : PlusDestination
 
 @Serializable

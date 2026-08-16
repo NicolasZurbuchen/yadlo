@@ -53,7 +53,6 @@ class PlusUiMapperTest {
                 PlusEntryUiModel.STANDS_MAKERS,
                 PlusEntryUiModel.PAYMENT,
                 PlusEntryUiModel.ACCESS,
-                PlusEntryUiModel.ACCESSIBILITY,
                 PlusEntryUiModel.HOURS,
                 PlusEntryUiModel.ASSISTANCE,
                 PlusEntryUiModel.FAQ,
@@ -210,13 +209,6 @@ class PlusUiMapperTest {
     }
 
     @Test
-    fun toUiModel_accessibilityWithNothingPublished_stillGetsItsRow() {
-        // The one section whose emptiness is the content. Hiding the row would hide the only
-        // address a wheelchair user has to write to.
-        assertTrue(PlusEntryUiModel.ACCESSIBILITY in rowsOf(PlusGroupIdUiModel.ON_SITE, published().copy(hasAccessibility = true)))
-    }
-
-    @Test
     fun toUiModel_aGroupWithNoRowsLeft_isNotDrawnAsAnEmptyCard() {
         val model = PlusState(overview = nothing()).toUiModel()
 
@@ -254,7 +246,6 @@ class PlusUiMapperTest {
             makerStandCount = 2,
             cashAccepted = false,
             hasTransport = true,
-            hasAccessibility = true,
             hasOpeningHours = true,
             hasAssistance = true,
             faqCount = 1,
@@ -274,7 +265,6 @@ class PlusUiMapperTest {
             makerStandCount = 0,
             cashAccepted = null,
             hasTransport = false,
-            hasAccessibility = false,
             hasOpeningHours = false,
             hasAssistance = false,
             faqCount = 0,

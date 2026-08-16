@@ -60,7 +60,6 @@
     <string name="plus_entry_stands_makers">Créateurs</string>
     <string name="plus_entry_payment">Paiement</string>
     <string name="plus_entry_access">Accès &amp; transports</string>
-    <string name="plus_entry_accessibility">Accessibilité</string>
     <string name="plus_entry_hours">Horaires d'ouverture</string>
     <string name="plus_entry_assistance">En cas de besoin</string>
     <string name="plus_entry_faq">Questions fréquentes</string>
@@ -108,7 +107,7 @@
     <string name="about_section_why">Pourquoi elle existe</string>
     <string name="about_why">Parce que la programmation, les stands et les informations pratiques n'existaient nulle part sous forme de données : elles vivaient dans des images et des publications. C'est ce qui rendait impossible un programme personnel, un rappel ou un accès hors ligne.\n\nSi l'association veut de cette application, elle est à elle.</string>
     <string name="about_section_version">Version</string>
-    <string name="about_section_author">Qui l\'a construite</string>
+    <string name="about_section_author">Qui l'a construite</string>
     <string name="about_author_name">Nicolas Zurbuchen</string>
     <string name="about_author_email">nicolas.zurbuchen@outlook.com</string>
 
@@ -128,16 +127,6 @@
     <string name="access_title">Accès</string>
     <string name="access_departures">Départs</string>
     <string name="access_empty">Rien n'est encore publié sur l'accès au site.</string>
-
-    <string name="accessibility_title">Accessibilité</string>
-    <string name="accessibility_intro">Le site est une plage : du sable, de l'herbe, peu de surfaces dures. Voici ce que nous savons.</string>
-    <string name="accessibility_section_available">Confirmé</string>
-    <string name="accessibility_section_unavailable">Non disponible</string>
-    <string name="accessibility_section_contact">Écrivez-nous avant de venir</string>
-    <string name="accessibility_contact_body">C'est la manière la plus sûre d'organiser votre venue : l'équipe peut réserver une place, prévoir un accès ou vous accueillir à l'arrivée.</string>
-    <string name="accessibility_contact_hint">Objet : accessibilité</string>
-    <string name="accessibility_nothing_published">Le festival ne publie encore rien sur l'accessibilité de son site. Plutôt que de vous rassurer à vide, voici quelqu'un à qui demander.</string>
-    <string name="accessibility_empty">Rien n'est encore publié sur l'accessibilité.</string>
 
     <string name="hours_title">Horaires</string>
     <string name="hours_intro">À quelle heure le site ouvre, et jusqu'à quand on peut manger, boire et se mouiller.</string>

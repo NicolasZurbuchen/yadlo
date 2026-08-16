@@ -44,7 +44,6 @@ data class Festival(
     val contact: Contact? = null,
     val transport: Transport? = null,
     val payment: Payment? = null,
-    val accessibility: Accessibility? = null,
     val assistance: Assistance? = null,
     val involvement: Involvement? = null,
 )

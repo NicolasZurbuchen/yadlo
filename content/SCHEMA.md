@@ -16,7 +16,7 @@ Vocabulary is [CONTEXT.md](../CONTEXT.md). Why the content is shaped this way at
 
 | File | Holds | Fetched |
 |---|---|---|
-| `festival.json` | Live truth — history, contact, transport, payment, accessibility, FAQ, volunteering | At launch |
+| `festival.json` | Live truth — history, contact, transport, payment, FAQ, volunteering | At launch |
 | `editions/<year>/edition.json` | One frozen Edition — programme, activities, stands, menus, partners, figures | At launch |
 | `announcements.json` | Dated annonces from the organisers | At launch, and polled during LIVE |
 | `editions.json` | The list of editions that exist | On demand, archives only |
@@ -291,7 +291,6 @@ social          { id, name, url }[]
 links           { id, label, url }[]
 transports      { modes: Mode[], provenance }
 paiement        { headline, summary, methods: Method[], notes: {id, title, body, links: Link[]}[], provenance }
-accessibilite   { items: Item[], contactEmailId, provenance }
 besoin          { emergencyNumbers: {id, label, number}[], lostPropertyEmailId, provenance }
 simpliquer      { hotstaff: {...}, partenaire: {...} }
 ```
@@ -308,11 +307,12 @@ minimum is set, which is the normal state.
 **Every section here is now modelled and read by a screen.** The French key names stay on the wire
 and meet their English model names in exactly one place, the `@SerialName` pairs on `FestivalDto`:
 `histoire` → `story`, `responsable` → `charters`, `transports` → `transport`, `paiement` → `payment`,
-`accessibilite` → `accessibility`, `besoin` → `assistance`, `simpliquer` → `involvement`.
+`besoin` → `assistance`, `simpliquer` → `involvement`.
 
-The app reads a missing section as "not published" rather than as a broken file — every one of these
-screens already has that state, because `accessibilite.items` is genuinely empty today. A publish
-that drops the transport block costs the visitor the transport screen, not the festival.
+The app reads a missing section as "not published" rather than as a broken file: a publish that drops
+the transport block costs the visitor the transport screen, not the festival. `accessibilite` is
+currently exercising exactly that — it is not published, so there is no screen, and the validator
+errors if it reappears before there is something to put in it. See GAPS.md section 9.
 
 ### transports
 
@@ -359,12 +359,10 @@ to finish to know whether it was theirs, so the validator errors on it.
 
 ### accessibilite
 
-```
-Item  { id, name, available: boolean, note: string | null }
-```
-
-Same rule, and **recording what is *not* available matters as much as what is.** "No accessible
-toilets" is something a person needs before deciding to travel; silence tells them nothing.
+**Not published, and not modelled.** The shape was decided before the content existed, and what
+shipped was an empty list under a heading — a screen whose whole content was the admission that it
+had none. The section, its DTO, its domain model and its screen are all out. What it should say when
+it comes back is in GAPS.md section 9; the validator errors if the key reappears before then.
 
 ---
 

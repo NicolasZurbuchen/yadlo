@@ -313,7 +313,7 @@ recruitment pipeline keeps receiving its applications instead of landing in a pe
 inbox that has to forward them by hand during their busiest month.
 
 **Préparer sa venue.** Home borrows the *Sur place* group from Plus — transports, paiement,
-accessibilité, réservations — from J-7 and again on each festival morning. The payment rule
+réservations — from J-7 and again on each festival morning. The payment rule
 in particular is only actionable *before leaving the house*, which is when someone would
 otherwise stop at an ATM.
 
@@ -484,12 +484,13 @@ mid-festival on its own. It says out loud that some activities start before the 
 than clamping them: the beach is public, the morning yoga is on it, and correcting the festival
 about its own site would be worse than explaining it.
 
-**Accessibilité assumes the absence.** Nothing is published, so the screen is built around saying so
-and handing over an address — because when the data is missing, somebody to ask is the most useful
-thing a page can offer, and a reassuringly vague page is what gets someone to drive thirty
-kilometres for nothing. The list of open questions stays in content/GAPS.md where it is addressed to
-the association: rendering it would put French prose in Kotlin and need an app release to remove
-each line as it gets answered.
+**~~Accessibilité assumes the absence.~~ Withdrawn.** The screen was built around saying that nothing
+is published and handing over an address, on the reasoning that somebody to ask is the most useful
+thing a page can offer when the data is missing. Shipped, it read as a page that existed to apologise
+for itself — a visitor deciding whether a beach is navigable in a wheelchair opened it and was told
+to write an email. The section, its DTO, its domain model, its use case and its screen are out; the
+questions to ask the association stay in content/GAPS.md § 9, and the screen comes back when there
+are facts to put on it rather than a shape waiting for them.
 
 **One dietary filter, matching stand-or-dish.** SCHEMA.md keeps a Stand's marks and its Items' marks
 apart on purpose, and the distinction is real — but both answer "can I eat here", which is the only

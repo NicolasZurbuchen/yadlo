@@ -50,7 +50,6 @@ class ObservePlusOverviewUseCase(
                     cashAccepted =
                         festival.payment?.methods?.firstOrNull { it.id == CASH_METHOD_ID }?.accepted,
                     hasTransport = festival.transport?.modes.orEmpty().isNotEmpty(),
-                    hasAccessibility = festival.accessibility != null,
                     // Every FestivalDay carries its own opening window, so the Horaires screen has
                     // something to draw the moment the programme does.
                     hasOpeningHours = status.bundle.edition.days.isNotEmpty(),

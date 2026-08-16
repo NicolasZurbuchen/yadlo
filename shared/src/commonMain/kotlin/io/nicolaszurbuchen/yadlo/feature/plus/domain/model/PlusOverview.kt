@@ -25,7 +25,6 @@ data class PlusOverview(
     val makerStandCount: Int,
     val cashAccepted: Boolean?,
     val hasTransport: Boolean,
-    val hasAccessibility: Boolean,
     val hasOpeningHours: Boolean,
     val hasAssistance: Boolean,
     val faqCount: Int,

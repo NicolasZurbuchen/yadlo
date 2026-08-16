@@ -4,7 +4,6 @@ import androidx.navigation3.runtime.EntryProviderScope
 import androidx.navigation3.runtime.NavKey
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.about.AboutRoute
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.access.AccessRoute
-import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.accessibility.AccessibilityRoute
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.assistance.AssistanceRoute
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.contact.ContactRoute
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.faq.FaqRoute
@@ -40,7 +39,6 @@ class PlusNavKeyHandler(
                         PlusEntryUiModel.STANDS_MAKERS -> navigator.navigateToStands(StandsKindUiModel.MAKERS)
                         PlusEntryUiModel.PAYMENT -> navigator.navigateToPayment()
                         PlusEntryUiModel.ACCESS -> navigator.navigateToAccess()
-                        PlusEntryUiModel.ACCESSIBILITY -> navigator.navigateToAccessibility()
                         PlusEntryUiModel.HOURS -> navigator.navigateToHours()
                         PlusEntryUiModel.ASSISTANCE -> navigator.navigateToAssistance()
                         PlusEntryUiModel.FAQ -> navigator.navigateToFaq()
@@ -68,7 +66,6 @@ class PlusNavKeyHandler(
         entry<ResponsibleDestination> { ResponsibleRoute(onNavigateBack = { navigator.navigateBack() }) }
         entry<PaymentDestination> { PaymentRoute(onNavigateBack = { navigator.navigateBack() }) }
         entry<AccessDestination> { AccessRoute(onNavigateBack = { navigator.navigateBack() }) }
-        entry<AccessibilityDestination> { AccessibilityRoute(onNavigateBack = { navigator.navigateBack() }) }
         entry<HoursDestination> { HoursRoute(onNavigateBack = { navigator.navigateBack() }) }
         entry<AssistanceDestination> { AssistanceRoute(onNavigateBack = { navigator.navigateBack() }) }
         entry<FaqDestination> { FaqRoute(onNavigateBack = { navigator.navigateBack() }) }

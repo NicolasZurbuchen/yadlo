@@ -359,17 +359,25 @@ in a list. Every other mode carries `departures: null`, so there is one shape to
 > not pretend otherwise. Still worth asking: is there a **bancomat** nearby, and is there a
 > **deposit on cups** and how much?
 
-## 9. Accessibilité — a shape decided, content empty
+## 9. Accessibilité — withdrawn until there is something to say
 
-The shape is `{ id, name, available, note }` — same rule as paiement, and **recording what is *not*
-available matters as much as what is**: "no accessible toilets" is something a person needs before
-deciding to travel, and silence tells them nothing.
+**This is the one gap that shipped as a screen, and it should not have.** The block was published as
+an empty list with a contact address, and the screen built around admitting it knew nothing. That is
+defensible as a promise and indefensible as an answer: someone deciding whether to travel thirty
+kilometres to a beach opened a page that told them to write an email. The section, its DTO, its
+domain model, its use case and its screen are out of the app as of this branch, and `validate.js`
+errors if the key comes back before the content does.
+
+**It comes back.** Not as a shape waiting to be filled, but the day the association confirms or
+denies actual facts. The shape it had was right — `{ id, name, available, note }`, same rule as
+paiement, and **recording what is *not* available matters as much as what is**: "no accessible
+toilets" is something a person needs before deciding to travel, and silence tells them nothing.
 
 Candidates to confirm or deny: step-free access to the site, accessible toilets, a PMR parking
 space, what the ground is actually like (sand, grass, gravel — this is a beach), free entry for a
-companion, and whether the stage area has a viewing spot. The screen also keeps a direct contact
-line so someone can ask ahead rather than guess; `contactEmailId` points at `hello@yadlo.ch`
-until a better address exists.
+companion, and whether the stage area has a viewing spot. Worth asking the association directly
+rather than waiting for them to publish — it is the single question here most likely to decide
+whether somebody comes at all.
 
 ## ✅ Resolved — the match screening is 2026, not leftover
 

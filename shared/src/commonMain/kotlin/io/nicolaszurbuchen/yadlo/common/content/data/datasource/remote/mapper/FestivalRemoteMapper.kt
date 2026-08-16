@@ -1,6 +1,5 @@
 package io.nicolaszurbuchen.yadlo.common.content.data.datasource.remote.mapper
 
-import io.nicolaszurbuchen.yadlo.common.content.data.datasource.remote.dto.AccessibilityDto
 import io.nicolaszurbuchen.yadlo.common.content.data.datasource.remote.dto.AssistanceDto
 import io.nicolaszurbuchen.yadlo.common.content.data.datasource.remote.dto.CharterDto
 import io.nicolaszurbuchen.yadlo.common.content.data.datasource.remote.dto.ContactDto
@@ -11,7 +10,6 @@ import io.nicolaszurbuchen.yadlo.common.content.data.datasource.remote.dto.Invol
 import io.nicolaszurbuchen.yadlo.common.content.data.datasource.remote.dto.PaymentDto
 import io.nicolaszurbuchen.yadlo.common.content.data.datasource.remote.dto.StoryDto
 import io.nicolaszurbuchen.yadlo.common.content.data.datasource.remote.dto.TransportDto
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.Accessibility
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Assistance
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Charter
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Contact
@@ -49,7 +47,6 @@ fun FestivalDto.toDomain(): Festival =
         contact = contact?.toDomain(),
         transport = transport?.toDomain(),
         payment = payment?.toDomain(),
-        accessibility = accessibility?.toDomain(),
         assistance = assistance?.toDomain(),
         involvement = involvement?.toDomain(),
     )
@@ -139,16 +136,6 @@ private fun PaymentDto.toDomain(): Payment =
                 )
             },
         provenance = provenance.toProvenanceEnum("paiement.provenance"),
-    )
-
-private fun AccessibilityDto.toDomain(): Accessibility =
-    Accessibility(
-        items =
-            items.map {
-                Accessibility.Item(id = it.id, name = it.name, available = it.available, note = it.note)
-            },
-        contactEmailId = contactEmailId,
-        provenance = provenance.toProvenanceEnum("accessibilite.provenance"),
     )
 
 private fun AssistanceDto.toDomain(): Assistance =

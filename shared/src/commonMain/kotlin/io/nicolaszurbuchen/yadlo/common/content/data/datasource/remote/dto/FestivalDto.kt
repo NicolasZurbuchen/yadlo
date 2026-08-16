@@ -31,8 +31,6 @@ data class FestivalDto(
     val transport: TransportDto? = null,
     @SerialName("paiement")
     val payment: PaymentDto? = null,
-    @SerialName("accessibilite")
-    val accessibility: AccessibilityDto? = null,
     @SerialName("besoin")
     val assistance: AssistanceDto? = null,
     @SerialName("simpliquer")

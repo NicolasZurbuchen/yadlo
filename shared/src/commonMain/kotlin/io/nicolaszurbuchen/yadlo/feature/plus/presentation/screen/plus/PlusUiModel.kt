@@ -1,7 +1,6 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.plus
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.Accessible
 import androidx.compose.material.icons.automirrored.outlined.HelpOutline
 import androidx.compose.material.icons.automirrored.outlined.Send
 import androidx.compose.material.icons.outlined.CreditCard
@@ -26,7 +25,6 @@ import org.jetbrains.compose.resources.StringResource
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.plus_entry_about
 import yadlo.shared.generated.resources.plus_entry_access
-import yadlo.shared.generated.resources.plus_entry_accessibility
 import yadlo.shared.generated.resources.plus_entry_assistance
 import yadlo.shared.generated.resources.plus_entry_contact
 import yadlo.shared.generated.resources.plus_entry_faq
@@ -102,7 +100,6 @@ enum class PlusEntryUiModel(
     STANDS_MAKERS(Res.string.plus_entry_stands_makers, Icons.Outlined.Storefront),
     PAYMENT(Res.string.plus_entry_payment, Icons.Outlined.CreditCard),
     ACCESS(Res.string.plus_entry_access, Icons.Outlined.DirectionsBus),
-    ACCESSIBILITY(Res.string.plus_entry_accessibility, Icons.AutoMirrored.Outlined.Accessible),
     HOURS(Res.string.plus_entry_hours, Icons.Outlined.Schedule),
     ASSISTANCE(Res.string.plus_entry_assistance, Icons.Outlined.MedicalServices),
     FAQ(Res.string.plus_entry_faq, Icons.AutoMirrored.Outlined.HelpOutline),
