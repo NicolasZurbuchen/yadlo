@@ -13,8 +13,11 @@ import io.nicolaszurbuchen.yadlo.app.design.theme.YadloTheme
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 
 /**
- * One question, which is what 2026 publishes. Two are shown because a header set in the display
- * face has to hold a long question as well as a short one.
+ * The four questions 2026 publishes, plus the skeleton they arrive into.
+ *
+ * A header set in the display face has to hold a long question as well as a short one, and *Comment
+ * se protéger de la chaleur ?* against *Y a-t-il des boissons sans alcool ?* is that test with real
+ * words rather than lorem.
  */
 private class FaqStateProvider : PreviewParameterProvider<FaqUiModel> {
     override val values =
@@ -36,6 +39,18 @@ private fun FaqScreenPreview(
     }
 }
 
+@Preview
+@Composable
+private fun FaqScreenDarkPreview(
+    @PreviewParameter(FaqStateProvider::class) state: FaqUiModel,
+) {
+    YadloTheme(darkTheme = true) {
+        Box(modifier = Modifier.fillMaxSize().background(MaterialTheme.appColors.background)) {
+            FaqScreen(state = state, onBackClick = {})
+        }
+    }
+}
+
 private fun published() =
     FaqUiModel(
         isLoading = false,
@@ -50,9 +65,26 @@ private fun published() =
                             "activités sont payantes, et leur prix est indiqué sur leur fiche.",
                 ),
                 FaqEntryUiModel(
-                    id = "especes",
-                    question = "Puis-je payer en espèces ?",
-                    answer = "Non, le site est entièrement sans espèces. Carte ou TWINT.",
+                    id = "eau-potable",
+                    question = "Y a-t-il de l'eau potable gratuite sur le site ?",
+                    answer =
+                        "Oui. La Goutte est un robinet d'eau fraîche, accessible gratuitement et en tout temps. " +
+                            "Prenez une gourde : c'est le moyen le plus simple de tenir une journée entière au " +
+                            "bord du lac.",
+                ),
+                FaqEntryUiModel(
+                    id = "canicule",
+                    question = "Comment se protéger de la chaleur ?",
+                    answer =
+                        "Le site est prévu pour : une grande tente offre un maximum d'ombre, des brumisateurs " +
+                            "sont installés sur le site, et La Goutte donne accès à de l'eau fraîche gratuitement.",
+                ),
+                FaqEntryUiModel(
+                    id = "sans-alcool",
+                    question = "Y a-t-il des boissons sans alcool ?",
+                    answer =
+                        "Oui, et pas seulement de l'eau. Une sélection de boissons locales et rafraîchissantes " +
+                            "est proposée avec nos partenaires Vivi Kola, Kosmos, Grano Mate et Supernatural Club.",
                 ),
             ),
     )

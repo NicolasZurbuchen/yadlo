@@ -18,8 +18,9 @@ import yadlo.shared.generated.resources.faq_title
  * *Questions fréquentes.*
  *
  * Each question is a section header and its answer is the body under it — the same shape every
- * other Plus page uses, rather than an accordion. Nothing is hidden behind a tap: there is one
- * question today, and the screen exists because that question had no home at all.
+ * other Plus page uses, rather than an accordion. Nothing is hidden behind a tap: there are four
+ * questions today, and the screen exists because none of them had a home at all. Three of the four
+ * were answered publicly, once, in an Instagram caption that has since scrolled away.
  */
 @Composable
 fun FaqScreen(
