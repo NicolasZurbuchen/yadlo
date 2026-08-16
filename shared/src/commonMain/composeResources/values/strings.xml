@@ -124,10 +124,6 @@
 
     <string name="payment_title">Paiement</string>
     <string name="payment_section_accepted">Accepté partout</string>
-    <string name="payment_section_refused">Non accepté</string>
-    <string name="payment_section_notes">Bon à savoir</string>
-    <string name="payment_section_links">Liens</string>
-    <string name="payment_empty">Rien n'est encore publié sur les moyens de paiement.</string>
 
     <string name="access_title">Accès</string>
     <string name="access_departures">Départs</string>

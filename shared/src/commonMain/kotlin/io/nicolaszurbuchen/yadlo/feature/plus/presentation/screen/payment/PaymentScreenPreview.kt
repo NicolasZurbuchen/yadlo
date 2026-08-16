@@ -11,32 +11,22 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import io.nicolaszurbuchen.yadlo.app.design.theme.YadloTheme
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
-import io.nicolaszurbuchen.yadlo.infra.ui.UiText
-import yadlo.shared.generated.resources.Res
-import yadlo.shared.generated.resources.payment_empty
 
+/**
+ * The skeleton and the published block, which is the whole of this screen now that the empty state
+ * is gone: there is always a payment block, and a null one is the bundle still landing.
+ */
 private class PaymentStateProvider : PreviewParameterProvider<PaymentUiModel> {
     override val values =
         sequenceOf(
             PaymentUiModel(
                 isLoading = true,
-                accepted = emptyList(),
-                refused = emptyList(),
+                headline = null,
+                summary = null,
+                methods = emptyList(),
                 notes = emptyList(),
-                links = emptyList(),
-                emptyMessage = null,
             ),
             published(),
-            // Reachable only through a restored back stack over a publish that dropped the section.
-            // Drawn anyway, because a page that spins forever is a worse way to say so.
-            PaymentUiModel(
-                isLoading = false,
-                accepted = emptyList(),
-                refused = emptyList(),
-                notes = emptyList(),
-                links = emptyList(),
-                emptyMessage = UiText.Resource(Res.string.payment_empty),
-            ),
         )
 }
 
@@ -52,24 +42,62 @@ private fun PaymentScreenPreview(
     }
 }
 
+/**
+ * The dark half, and the one this screen most needs. The hero is the app's only large use of the
+ * bandeau blue as a ground, and it swaps ends between the themes — light draws dark ink on the
+ * bright blue, dark draws bright ink on the deep one. The tinted ✕ against three ✓ is the other
+ * thing that has to survive the swap.
+ */
+@Preview
+@Composable
+private fun PaymentScreenDarkPreview(
+    @PreviewParameter(PaymentStateProvider::class) state: PaymentUiModel,
+) {
+    YadloTheme(darkTheme = true) {
+        Box(modifier = Modifier.fillMaxSize().background(MaterialTheme.appColors.background)) {
+            PaymentScreen(state = state, onBackClick = {}, onLinkClick = {})
+        }
+    }
+}
+
 private fun published() =
     PaymentUiModel(
         isLoading = false,
-        accepted = listOf("Cartes Visa, Mastercard et Maestro", "TWINT"),
-        refused = listOf("Espèces"),
+        headline = "Carte et TWINT uniquement",
+        summary = "Aucun stand n'accepte les espèces, bar compris.",
+        methods =
+            listOf(
+                PaymentMethodUiModel(id = "carte", name = "Visa, Mastercard et Maestro — sans contact", accepted = true),
+                PaymentMethodUiModel(id = "twint", name = "TWINT", accepted = true),
+                PaymentMethodUiModel(id = "mobile", name = "Apple Pay et Google Pay", accepted = true),
+                PaymentMethodUiModel(id = "especes", name = "Espèces", accepted = false),
+            ),
         notes =
             listOf(
-                "Aucun stand n'accepte les espèces, bar compris. Prévoyez une carte ou TWINT avant de venir.",
-                "L'application TWINT dépend de votre banque : certaines ont la leur, d'autres passent par TWINT Prepaid.",
-            ),
-        links =
-            listOf(
-                PaymentLinkUiModel(
-                    id = "twint",
-                    label = "twint.ch",
-                    sublabel = "Site officiel",
-                    url = "https://www.twint.ch/",
+                PaymentNoteUiModel(
+                    id = "pas-de-twint",
+                    title = "Vous n'avez pas TWINT ?",
+                    body =
+                        "L'application dépend de votre banque : certaines ont la leur, d'autres passent par " +
+                            "TWINT Prepaid. La page officielle vous oriente vers la bonne.",
+                    links =
+                        listOf(
+                            PaymentLinkUiModel(
+                                id = "twint",
+                                label = "twint.ch",
+                                sublabel = "Site officiel",
+                                url = "https://www.twint.ch/",
+                            ),
+                        ),
+                ),
+                PaymentNoteUiModel(
+                    id = "pourquoi",
+                    title = "Pourquoi",
+                    body =
+                        "Sans caisse en liquide, les files avancent plus vite et l'équipe passe sa soirée à " +
+                            "servir plutôt qu'à compter. C'est aussi plus sûr pour des bénévoles qui ferment " +
+                            "le bar à trois heures du matin.",
+                    links = emptyList(),
                 ),
             ),
-        emptyMessage = null,
     )

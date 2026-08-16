@@ -126,9 +126,18 @@ private fun TransportDto.toDomain(): Transport =
 
 private fun PaymentDto.toDomain(): Payment =
     Payment(
+        headline = headline,
+        summary = summary,
         methods = methods.map { Payment.Method(id = it.id, name = it.name, accepted = it.accepted) },
-        notes = notes.map { Payment.Note(id = it.id, body = it.body) },
-        links = links.map { it.toDomain() },
+        notes =
+            notes.map { note ->
+                Payment.Note(
+                    id = note.id,
+                    title = note.title,
+                    body = note.body,
+                    links = note.links.map { it.toDomain() },
+                )
+            },
         provenance = provenance.toProvenanceEnum("paiement.provenance"),
     )
 

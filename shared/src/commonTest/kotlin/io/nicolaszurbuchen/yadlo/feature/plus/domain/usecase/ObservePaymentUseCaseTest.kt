@@ -33,14 +33,29 @@ class ObservePaymentUseCaseTest {
         }
 
     @Test
-    fun invoke_notesAndLinks_reachTheScreenUnchanged() =
+    fun invoke_theHeadline_reachesTheScreenUnchanged() =
         runTest {
             val repository = FakeContentRepository().apply { emitStatus(ready(festival = withPayment())) }
 
             val payment = ObservePaymentUseCase(repository)().first()
 
-            assertEquals(listOf("sans-especes"), payment?.notes?.map { it.id })
-            assertEquals("twint.ch", payment?.links?.single()?.label)
+            // The three words the whole screen exists to say, published rather than assembled here
+            // out of the method list.
+            assertEquals("Carte et TWINT uniquement", payment?.headline)
+            assertEquals("Aucun stand n'accepte les espèces.", payment?.summary)
+        }
+
+    @Test
+    fun invoke_aNotesLinks_travelWithTheNoteRatherThanTheBlock() =
+        runTest {
+            val repository = FakeContentRepository().apply { emitStatus(ready(festival = withPayment())) }
+
+            val payment = ObservePaymentUseCase(repository)().first()
+
+            assertEquals(listOf("pas-de-twint"), payment?.notes?.map { it.id })
+            // Which is what puts twint.ch under "Vous n'avez pas TWINT ?" rather than in a bin of
+            // links at the foot of the page.
+            assertEquals("twint.ch", payment?.notes?.single()?.links?.single()?.label)
         }
 
     @Test
@@ -62,19 +77,28 @@ class ObservePaymentUseCaseTest {
             copy(
                 payment =
                     Payment(
+                        headline = "Carte et TWINT uniquement",
+                        summary = "Aucun stand n'accepte les espèces.",
                         methods =
                             listOf(
                                 Payment.Method(id = "carte", name = "Cartes", accepted = true),
                                 Payment.Method(id = "especes", name = "Espèces", accepted = false),
                             ),
-                        notes = listOf(Payment.Note(id = "sans-especes", body = "Aucun stand n'accepte les espèces.")),
-                        links =
+                        notes =
                             listOf(
-                                InfoLink(
-                                    id = "twint",
-                                    label = "twint.ch",
-                                    sublabel = "Site officiel",
-                                    url = "https://www.twint.ch/",
+                                Payment.Note(
+                                    id = "pas-de-twint",
+                                    title = "Vous n'avez pas TWINT ?",
+                                    body = "L'application dépend de votre banque.",
+                                    links =
+                                        listOf(
+                                            InfoLink(
+                                                id = "twint",
+                                                label = "twint.ch",
+                                                sublabel = "Site officiel",
+                                                url = "https://www.twint.ch/",
+                                            ),
+                                        ),
                                 ),
                             ),
                         provenance = Provenance.CONFIRMED,

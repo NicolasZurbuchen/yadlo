@@ -3,97 +3,93 @@ package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.payment
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.InfoLink
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Payment
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Provenance
-import io.nicolaszurbuchen.yadlo.infra.ui.UiText
-import yadlo.shared.generated.resources.Res
-import yadlo.shared.generated.resources.payment_empty
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertNull
+import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class PaymentUiMapperTest {
     @Test
     fun toUiModel_beforeTheBundleLands_isLoading() {
-        val model = PaymentState().toUiModel()
-
-        assertTrue(model.isLoading)
-        assertNull(model.emptyMessage)
+        assertTrue(PaymentState().toUiModel().isLoading)
     }
 
     @Test
-    fun toUiModel_loadedWithNoSection_saysSoRatherThanSpinningForever() {
-        val model = PaymentState(payment = null, hasLoaded = true).toUiModel()
-
-        // Reachable through a restored back stack over a publish that dropped the block. Rare, and
-        // a page that spins is a worse way to say it than a sentence.
-        assertTrue(!model.isLoading)
-        assertEquals(UiText.Resource(Res.string.payment_empty), model.emptyMessage)
+    fun toUiModel_theBlockArrives_stopsLoading() {
+        assertFalse(loaded().isLoading)
     }
 
     @Test
-    fun toUiModel_splitsTheAcceptedFromTheRefused() {
+    fun toUiModel_theAnswerComesFirstAndIsPublishedRatherThanAssembled() {
         val model = loaded()
 
-        assertEquals(listOf("Cartes Visa, Mastercard et Maestro", "TWINT"), model.accepted)
-        assertEquals(listOf("Espèces"), model.refused)
+        // Three words, from the content. Deriving them from the method list would mean generating
+        // French out of a list of names, which is how a screen ends up saying something nobody wrote.
+        assertEquals("Carte et TWINT uniquement", model.headline)
+        assertEquals("Aucun stand n'accepte les espèces.", model.summary)
     }
 
     @Test
-    fun toUiModel_theRefusal_isItsOwnListAndNotTheLeftovers() {
-        // A list of what works answers "have I got one of these". The refusal answers "do I need to
-        // stop at a cash machine", which is the only question that has to be settled before
-        // leaving home — so it cannot be the last row of the first list.
-        assertEquals(1, loaded().refused.size)
+    fun toUiModel_theRefusal_staysInTheListAndSinksToTheBottomOfIt() {
+        // One column with one ✕ at the end of it: being sure about the refusal used to mean reading
+        // two sections and working out which was which.
+        assertEquals(
+            listOf("carte" to true, "twint" to true, "especes" to false),
+            loaded().methods.map { it.id to it.accepted },
+        )
     }
 
     @Test
     fun toUiModel_methodNames_areTheContentsOwnPhrasing() {
-        // Shortening "Cartes Visa, Mastercard et Maestro" would be deciding which cards matter.
-        assertEquals("Cartes Visa, Mastercard et Maestro", loaded().accepted.first())
+        // Shortening "Visa, Mastercard et Maestro — sans contact" would be deciding which cards
+        // matter and dropping the one word that answers "can I pay with my watch".
+        assertEquals("Visa, Mastercard et Maestro — sans contact", loaded().methods.first().name)
     }
 
     @Test
-    fun toUiModel_notes_carryTheirBodyAndNotTheirIds() {
-        assertEquals(listOf("Aucun stand n'accepte les espèces."), loaded().notes)
-    }
+    fun toUiModel_aNote_keepsItsHeadingItsBodyAndItsOwnLinks() {
+        val note = loaded().notes.single()
 
-    @Test
-    fun toUiModel_links_keepBothLinesForTheTile() {
-        val link = loaded().links.single()
-
-        assertEquals("twint.ch", link.label)
-        assertEquals("Site officiel", link.sublabel)
-        assertEquals("https://www.twint.ch/", link.url)
-    }
-
-    @Test
-    fun toUiModel_aPublishedSection_saysNothingAboutBeingEmpty() {
-        assertNull(loaded().emptyMessage)
+        assertEquals("Vous n'avez pas TWINT ?", note.title)
+        assertEquals("L'application dépend de votre banque.", note.body)
+        assertEquals("twint.ch", note.links.single().label)
+        assertEquals("Site officiel", note.links.single().sublabel)
+        assertEquals("https://www.twint.ch/", note.links.single().url)
     }
 
     private fun loaded() =
         PaymentState(
-            hasLoaded = true,
             payment =
                 Payment(
+                    headline = "Carte et TWINT uniquement",
+                    summary = "Aucun stand n'accepte les espèces.",
+                    // Deliberately published out of order, so the sort is exercised rather than
+                    // trusted to the file happening to be written the right way round.
                     methods =
                         listOf(
                             Payment.Method(
                                 id = "carte",
-                                name = "Cartes Visa, Mastercard et Maestro",
+                                name = "Visa, Mastercard et Maestro — sans contact",
                                 accepted = true,
                             ),
-                            Payment.Method(id = "twint", name = "TWINT", accepted = true),
                             Payment.Method(id = "especes", name = "Espèces", accepted = false),
+                            Payment.Method(id = "twint", name = "TWINT", accepted = true),
                         ),
-                    notes = listOf(Payment.Note(id = "sans-especes", body = "Aucun stand n'accepte les espèces.")),
-                    links =
+                    notes =
                         listOf(
-                            InfoLink(
-                                id = "twint",
-                                label = "twint.ch",
-                                sublabel = "Site officiel",
-                                url = "https://www.twint.ch/",
+                            Payment.Note(
+                                id = "pas-de-twint",
+                                title = "Vous n'avez pas TWINT ?",
+                                body = "L'application dépend de votre banque.",
+                                links =
+                                    listOf(
+                                        InfoLink(
+                                            id = "twint",
+                                            label = "twint.ch",
+                                            sublabel = "Site officiel",
+                                            url = "https://www.twint.ch/",
+                                        ),
+                                    ),
                             ),
                         ),
                     provenance = Provenance.CONFIRMED,

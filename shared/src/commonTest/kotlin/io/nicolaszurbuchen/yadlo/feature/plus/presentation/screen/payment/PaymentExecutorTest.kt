@@ -19,8 +19,7 @@ import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertFalse
-import kotlin.test.assertTrue
+import kotlin.test.assertNull
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class PaymentExecutorTest {
@@ -37,12 +36,12 @@ class PaymentExecutorTest {
     }
 
     @Test
-    fun onCreate_beforeAnyBundle_hasNotLoaded() =
+    fun onCreate_beforeAnyBundle_carriesNoBlock() =
         runTest {
             val store = createStore(FakeContentRepository())
             testDispatcher.scheduler.runCurrent()
 
-            assertFalse(store.state.hasLoaded)
+            assertNull(store.state.payment)
             store.dispose()
         }
 
@@ -55,23 +54,7 @@ class PaymentExecutorTest {
             repository.emitStatus(ready(festival = festival { copy(payment = payment()) }))
             testDispatcher.scheduler.runCurrent()
 
-            assertTrue(store.state.hasLoaded)
             assertEquals(2, store.state.payment?.methods?.size)
-            store.dispose()
-        }
-
-    @Test
-    fun onCreate_aBundleWithNoPaymentBlock_isLoadedRatherThanStillWaiting() =
-        runTest {
-            val repository = FakeContentRepository()
-            val store = createStore(repository)
-
-            repository.emitStatus(ready())
-            testDispatcher.scheduler.runCurrent()
-
-            // Reachable through a restored back stack over a publish that dropped the section, and
-            // the screen has to be able to say so instead of spinning.
-            assertTrue(store.state.hasLoaded)
             store.dispose()
         }
 
@@ -101,8 +84,9 @@ class PaymentExecutorTest {
                     Payment.Method(id = "carte", name = "Cartes", accepted = true),
                     Payment.Method(id = "especes", name = "Espèces", accepted = false),
                 ),
+            headline = null,
+            summary = null,
             notes = emptyList(),
-            links = emptyList(),
             provenance = Provenance.CONFIRMED,
         )
 }

@@ -162,8 +162,9 @@ class ObservePlusOverviewUseCaseTest {
             val payment =
                 Payment(
                     methods = listOf(Payment.Method(id = "twint", name = "TWINT", accepted = true)),
+                    headline = null,
+                    summary = null,
                     notes = emptyList(),
-                    links = emptyList(),
                     provenance = Provenance.CONFIRMED,
                 )
             val repository =
@@ -279,8 +280,9 @@ class ObservePlusOverviewUseCaseTest {
                                 Payment.Method(id = "carte", name = "Cartes", accepted = true),
                                 Payment.Method(id = "especes", name = "Espèces", accepted = cash),
                             ),
+                        headline = null,
+                        summary = null,
                         notes = emptyList(),
-                        links = emptyList(),
                         provenance = Provenance.CONFIRMED,
                     ),
             )

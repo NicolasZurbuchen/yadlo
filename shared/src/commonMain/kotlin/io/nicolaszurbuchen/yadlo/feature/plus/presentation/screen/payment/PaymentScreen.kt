@@ -1,36 +1,37 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.payment
 
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import io.nicolaszurbuchen.yadlo.app.design.component.YadloFactRow
 import io.nicolaszurbuchen.yadlo.app.design.component.YadloLinkTile
-import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.app.design.uimodel.FactMarkUiModel
 import io.nicolaszurbuchen.yadlo.app.design.uimodel.LinkMarkUiModel
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusBodyText
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusDetailScaffold
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusHeroStatement
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusSection
-import io.nicolaszurbuchen.yadlo.infra.ui.asString
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.payment.component.PaymentSkeleton
 import org.jetbrains.compose.resources.stringResource
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.payment_section_accepted
-import yadlo.shared.generated.resources.payment_section_links
-import yadlo.shared.generated.resources.payment_section_notes
-import yadlo.shared.generated.resources.payment_section_refused
 import yadlo.shared.generated.resources.payment_title
 
 /**
  * *Paiement.* Carte et TWINT — and, the part that has to be read before leaving the house, nothing
  * else.
  *
- * The refusal gets a section of its own rather than a footnote under the accepted list. Someone
- * scanning for "do I need cash" reads section headers, and burying the answer in the last row of a
- * list of what works is how the association's own site lost it.
+ * **The answer opens the screen.** It used to open with a section header called *Accepté partout*,
+ * which made a reader whose only question is "do I need cash" assemble the sentence out of a list
+ * before they could put the phone away. The hero says it in three words; the list under it is for
+ * the one holding a Maestro card who wants to be sure.
  *
- * The refusal is marked as well as sectioned — see [YadloFactRow] — so the odd one out is findable
- * without reading every line, while never being carried by colour alone.
+ * **One list, not two.** Accepted and refused were two sections, so being sure about the refusal
+ * meant reading both. In a single column, with the ✕ tinted against three ✓, the odd one out is
+ * findable without reading a word — while never being carried by colour alone, since it also has a
+ * glyph and a content description.
+ *
+ * Each note keeps its own heading and its own links, which is the only arrangement that puts
+ * twint.ch under *Vous n'avez pas TWINT ?* rather than in a bin of links at the foot of the page.
  */
 @Composable
 fun PaymentScreen(
@@ -43,44 +44,27 @@ fun PaymentScreen(
         title = stringResource(Res.string.payment_title),
         onBackClick = onBackClick,
         isLoading = state.isLoading,
+        skeleton = { PaymentSkeleton() },
         modifier = modifier,
     ) {
-        state.emptyMessage?.let { message ->
-            Text(
-                text = message.asString(),
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.appColors.textSecondary,
-                modifier = Modifier.fillMaxWidth(),
-            )
-        }
+        state.headline?.let { PlusHeroStatement(headline = it, summary = state.summary) }
 
-        if (state.accepted.isNotEmpty()) {
+        if (state.methods.isNotEmpty()) {
             PlusSection(title = stringResource(Res.string.payment_section_accepted)) {
-                state.accepted.forEach { YadloFactRow(mark = FactMarkUiModel.CHECK, fact = it) }
-            }
-        }
-
-        if (state.refused.isNotEmpty()) {
-            PlusSection(title = stringResource(Res.string.payment_section_refused)) {
-                state.refused.forEach { YadloFactRow(mark = FactMarkUiModel.CROSS, fact = it) }
-            }
-        }
-
-        if (state.notes.isNotEmpty()) {
-            PlusSection(title = stringResource(Res.string.payment_section_notes)) {
-                state.notes.forEach {
-                    Text(
-                        text = it,
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.appColors.textSecondary,
+                state.methods.forEach { method ->
+                    YadloFactRow(
+                        mark = if (method.accepted) FactMarkUiModel.CHECK else FactMarkUiModel.CROSS,
+                        fact = method.name,
                     )
                 }
             }
         }
 
-        if (state.links.isNotEmpty()) {
-            PlusSection(title = stringResource(Res.string.payment_section_links)) {
-                state.links.forEach { link ->
+        state.notes.forEach { note ->
+            PlusSection(title = note.title) {
+                PlusBodyText(text = note.body)
+
+                note.links.forEach { link ->
                     YadloLinkTile(
                         label = link.label,
                         mark = LinkMarkUiModel.EXTERNAL,

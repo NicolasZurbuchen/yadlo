@@ -61,7 +61,7 @@ class PaymentStoreFactory(
         override fun PaymentState.reduce(msg: PaymentMessage): PaymentState =
             when (msg) {
                 is PaymentMessage.PaymentUpdated -> {
-                    copy(payment = msg.payment, hasLoaded = true)
+                    copy(payment = msg.payment)
                 }
             }
     }

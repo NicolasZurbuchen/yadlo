@@ -201,8 +201,9 @@ class FestivalRemoteMapperTest {
         // "Espèces, non" is the whole point of this screen. A list of only the accepted methods
         // would answer a question nobody is asking.
         assertEquals(listOf("carte" to true, "especes" to false), payment?.methods?.map { it.id to it.accepted })
-        assertEquals(listOf("sans-especes"), payment?.notes?.map { it.id })
-        assertEquals("twint.ch", payment?.links?.single()?.label)
+        assertEquals(listOf("pas-de-twint"), payment?.notes?.map { it.id })
+        // The link belongs to the note that needs it rather than to the block.
+        assertEquals("twint.ch", payment?.notes?.single()?.links?.single()?.label)
     }
 
     @Test
@@ -362,9 +363,12 @@ class FestivalRemoteMapperTest {
               },
               "paiement": {
                 "methods": [{ "id": "twint", "name": "TWINT", "accepted": true }],
-                "notes": [{ "id": "sans-especes", "body": "Pas d'espèces." }],
-                "provenance": "confirmed",
-                "links": []
+                "headline": "Carte et TWINT uniquement",
+                "summary": "Pas d'espèces.",
+                "notes": [
+                  { "id": "pourquoi", "title": "Pourquoi", "body": "Les files avancent plus vite.", "links": [] }
+                ],
+                "provenance": "confirmed"
               },
               "accessibilite": { "items": [], "contactEmailId": "hello", "provenance": "unverified" },
               "besoin": {
@@ -478,10 +482,22 @@ class FestivalRemoteMapperTest {
                     PaymentDto.MethodDto(id = "carte", name = "Cartes", accepted = true),
                     PaymentDto.MethodDto(id = "especes", name = "Espèces", accepted = false),
                 ),
-            notes = listOf(PaymentDto.NoteDto(id = "sans-especes", body = "Aucun stand n'accepte les espèces.")),
-            links =
+            notes =
                 listOf(
-                    InfoLinkDto(id = "twint", label = "twint.ch", sublabel = "Site officiel", url = "https://www.twint.ch/"),
+                    PaymentDto.NoteDto(
+                        id = "pas-de-twint",
+                        title = "Vous n'avez pas TWINT ?",
+                        body = "L'application dépend de votre banque.",
+                        links =
+                            listOf(
+                                InfoLinkDto(
+                                    id = "twint",
+                                    label = "twint.ch",
+                                    sublabel = "Site officiel",
+                                    url = "https://www.twint.ch/",
+                                ),
+                            ),
+                    ),
                 ),
             provenance = "confirmed",
         )

@@ -24,13 +24,7 @@ sealed interface PaymentMessage {
     ) : PaymentMessage
 }
 
-/**
- * [hasLoaded] rather than a nullable-means-loading state, because null is a real answer here: the
- * content may carry no payment block at all. The row that opens this screen is derived from the
- * same absence and would not have been drawn — but a restored back stack can land on a screen whose
- * section a later publish removed, and a page that spins forever is a worse way to say so.
- */
+/** A null [payment] is the bundle not having landed yet. There is always a payment block. */
 data class PaymentState(
     val payment: Payment? = null,
-    val hasLoaded: Boolean = false,
 )
