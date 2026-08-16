@@ -279,10 +279,12 @@ Built unofficially, with the explicit aim of becoming the association's official
     **Deferred past v1.** The blast radius is exactly one user story — 16, the reminder before a
     saved item — plus the end-of-slot warnings of story 17. Everything else that looks time-driven
     (Phase, live pills, countdowns, Mon Yadlo) reads the injected clock and needs no notification.
-  - *Disk-cached remote images* — **not configured.** Coil3 is wired to the shared Ktor client
-    in `App.kt`, but the `ImageLoader` is built with no `diskCache { }` block, so the app is
-    relying on whatever Coil defaults to. For a festival app whose images must survive a field
-    with no signal, this needs to be set explicitly and verified on iOS, not assumed.
+  - *Disk-cached remote images* — **now configured.** Coil3 was wired to the shared Ktor client
+    but built with no `diskCache { }` block, and Coil3 defaults that to null: every image was
+    re-fetched on each cold start. It is now built in `infra/image/`, with the cache root behind an
+    `expect`/`actual` seam and the subdirectory chosen in common code so the platforms cannot
+    drift. Verified on an Android device — the directory is created, written and survives a
+    reinstall. **Not yet verified on iOS**, which needs a Mac; the target compiles.
 - Four bottom-nav destinations: **Accueil · Programme · Mon Yadlo · Plus**.
 - **The default destination follows the phase**: Programme (scrolled to now) during LIVE,
   Accueil for the rest of the year.
