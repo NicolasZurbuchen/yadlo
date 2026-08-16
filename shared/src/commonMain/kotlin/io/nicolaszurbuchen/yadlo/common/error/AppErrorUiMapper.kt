@@ -17,8 +17,6 @@ import yadlo.shared.generated.resources.error_network_timeout_subtitle
 import yadlo.shared.generated.resources.error_network_timeout_title
 import yadlo.shared.generated.resources.error_network_unavailable_subtitle
 import yadlo.shared.generated.resources.error_network_unavailable_title
-import yadlo.shared.generated.resources.error_pokemon_fetch_failed_subtitle
-import yadlo.shared.generated.resources.error_pokemon_fetch_failed_title
 import yadlo.shared.generated.resources.error_unexpected_subtitle
 import yadlo.shared.generated.resources.error_unexpected_title
 
@@ -74,14 +72,6 @@ fun AppError.toUiModel(): AppErrorUiModel =
                 title = UiText.Resource(Res.string.error_content_unreadable_title),
                 subtitle = UiText.Resource(Res.string.error_content_unreadable_subtitle),
                 icon = Icons.Outlined.ErrorOutline,
-            )
-        }
-
-        is AppError.PokemonExplorer.FetchFailed -> {
-            AppErrorUiModel(
-                title = UiText.Resource(Res.string.error_pokemon_fetch_failed_title),
-                subtitle = UiText.Resource(Res.string.error_pokemon_fetch_failed_subtitle),
-                icon = Icons.Outlined.WifiOff,
             )
         }
 

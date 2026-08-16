@@ -158,16 +158,6 @@
     <string name="happening_fact_supervised">Encadré par des bénévoles</string>
     <string name="happening_link_website">Site web</string>
 
-    <string name="pokemon_main_fab_description">Find a random Pokémon</string>
-    <string name="pokemon_main_history_title">History</string>
-    <string name="pokemon_main_clear_list">Clear list</string>
-    <string name="pokemon_main_empty_state">Tap the button below to discover your first Pokémon</string>
-
-    <string name="pokemon_detail_back">Back</string>
-    <string name="pokemon_detail_not_found">Pokémon not found</string>
-    <string name="pokemon_detail_height_label">Height: %1$s</string>
-    <string name="pokemon_detail_weight_label">Weight: %1$s</string>
-
     <string name="error_retry">Retry</string>
     <string name="error_dismiss">Dismiss</string>
     <string name="error_network_unavailable_title">No internet connection</string>
@@ -182,8 +172,6 @@
     <string name="startup_content_unavailable_body">Yadlo needs to download the festival programme once. After that it works offline.</string>
     <string name="error_content_unreadable_title">Couldn't read the festival content</string>
     <string name="error_content_unreadable_subtitle">The published content couldn't be understood by this version of the app.</string>
-    <string name="error_pokemon_fetch_failed_title">Couldn't fetch a Pokémon</string>
-    <string name="error_pokemon_fetch_failed_subtitle">Check your connection and try again.</string>
     <string name="error_unexpected_title">Something went wrong</string>
     <string name="error_unexpected_subtitle">Please try again.</string>
 </resources>

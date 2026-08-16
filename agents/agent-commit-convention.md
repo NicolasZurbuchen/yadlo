@@ -68,10 +68,4 @@ These two cases genuinely depend on judgment this doc can't fully remove. When y
 - **fix vs. feat** for behavior that was "obviously intended eventually" but never implemented (missing validation, unhandled edge case). If it was ever *working as designed*, treat it as `fix`. If the design never covered this case at all, treat it as `feat`.
 - **refactor vs. build** for build-script restructuring that also changes module boundaries (e.g. splitting a Gradle module). If the primary output is a build-graph change, `build`. If the primary output is a code-architecture change that happens to require touching Gradle files, `refactor`.
 
----
-
-## Leftover template scope
-
-`pokemon-explorer` is the template's example feature. It is still in the enum only because `feature/pokemonexplorer/` is still in the tree as a working reference. Delete the scope in the same commit that deletes the feature.
-
 Whenever the scope list changes, update all three places together — `commitlint.config.js`'s `scope-enum`, the `Scopes:` bullet in `README.md`, and this file. They have drifted apart before.

@@ -40,10 +40,6 @@ sealed interface AppError {
         ) : Content
     }
 
-    sealed interface PokemonExplorer : AppError {
-        data object FetchFailed : PokemonExplorer
-    }
-
     data class Unexpected(
         val cause: Throwable,
     ) : AppError

@@ -68,7 +68,7 @@ shared/
 ├── common/                           # Domain concepts genuinely shared across features
 │   └── error/                        # AppError / AppException
 ├── feature/                          # Vertical slices: data + domain + presentation each
-│   └── pokemonexplorer/              # ⚠ template example — see CLAUDE.md, to be deleted
+│   └── {home,programme,monyadlo,plus,happening}/
 └── infra/                            # Reusable plumbing, zero feature knowledge
     ├── database/  mvi/  navigation/  network/  platform/  ui/
 androidApp/                           # Android application module
@@ -122,14 +122,12 @@ This project uses **Husky** and **Commitlint** to enforce
 **Format:** `<type>(<scope>): <description>`
 
 - **Types:** `feat`, `fix`, `refactor`, `build`, `chore`, `ci`, `docs`, `perf`, `style`, `test`, `revert`.
-- **Scopes:** `network`, `database`, `content`, `notification`, `di`, `navigation`, `theme`, `common`, `gradle`, `deps`, `home`, `programme`, `mon-yadlo`, `happening`, `plus`, `pokemon-explorer`.
+- **Scopes:** `network`, `database`, `content`, `notification`, `di`, `navigation`, `theme`, `common`, `gradle`, `deps`, `home`, `programme`, `mon-yadlo`, `happening`, `plus`.
 - A scope is **required** for `feat`, `fix`, `refactor`, and `build`.
 
 Example: `feat(programme): add day-scoped search`
 
 > [!IMPORTANT]
-> `pokemon-explorer` is a leftover template scope, kept only while the example feature is still
-> in the tree. Remove it in the same commit that deletes `feature/pokemonexplorer/`.
 > The scope list lives in three places — `commitlint.config.js`, this README, and
 > [`agents/agent-commit-convention.md`](agents/agent-commit-convention.md) — and they have
 > drifted apart before. Update all three together.
