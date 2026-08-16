@@ -15,6 +15,10 @@ import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.home_figures_caveat
 
+/**
+ * The skeleton and the page, and three figures is the count that matters: two rows of two with the
+ * last cell empty is the only arrangement of the grid that can go wrong.
+ */
 private class StoryStateProvider : PreviewParameterProvider<StoryUiModel> {
     override val values =
         sequenceOf(
@@ -25,7 +29,6 @@ private class StoryStateProvider : PreviewParameterProvider<StoryUiModel> {
                 passageBody = null,
                 figures = emptyList(),
                 figuresCaveat = null,
-                emptyMessage = null,
             ),
             published(),
         )
@@ -37,6 +40,18 @@ private fun StoryScreenPreview(
     @PreviewParameter(StoryStateProvider::class) state: StoryUiModel,
 ) {
     YadloTheme {
+        Box(modifier = Modifier.fillMaxSize().background(MaterialTheme.appColors.background)) {
+            StoryScreen(state = state, onBackClick = {})
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun StoryScreenDarkPreview(
+    @PreviewParameter(StoryStateProvider::class) state: StoryUiModel,
+) {
+    YadloTheme(darkTheme = true) {
         Box(modifier = Modifier.fillMaxSize().background(MaterialTheme.appColors.background)) {
             StoryScreen(state = state, onBackClick = {})
         }
@@ -59,5 +74,4 @@ private fun published() =
                 StoryFigureUiModel(id = "biere", value = "3200", label = "litres de bière"),
             ),
         figuresCaveat = UiText.Resource(Res.string.home_figures_caveat),
-        emptyMessage = null,
     )

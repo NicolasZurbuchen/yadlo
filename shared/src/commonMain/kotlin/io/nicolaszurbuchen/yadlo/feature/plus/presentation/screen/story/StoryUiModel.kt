@@ -16,7 +16,6 @@ data class StoryUiModel(
     val passageBody: String?,
     val figures: List<StoryFigureUiModel>,
     val figuresCaveat: UiText?,
-    val emptyMessage: UiText?,
 )
 
 /** [value] is a String because some figures are ranges, and it is only ever printed beside [label]. */

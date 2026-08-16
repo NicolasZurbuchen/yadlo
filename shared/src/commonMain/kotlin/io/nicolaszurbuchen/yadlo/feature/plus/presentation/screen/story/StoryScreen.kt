@@ -9,7 +9,8 @@ import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusBodyText
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusDetailScaffold
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusSection
-import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.story.component.FigureRow
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.story.component.FigureGrid
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.story.component.StorySkeleton
 import io.nicolaszurbuchen.yadlo.infra.ui.asString
 import org.jetbrains.compose.resources.stringResource
 import yadlo.shared.generated.resources.Res
@@ -23,6 +24,8 @@ import yadlo.shared.generated.resources.plus_entry_story
  * on the tab, and out of context they are trivia; under the story of how the festival started they
  * are the point. It is also the one place where the live-truth file and one frozen Edition are read
  * onto the same screen, which the domain joins so this never has to know.
+ *
+ * The skeleton is its own for the figures' sake — see [StorySkeleton].
  */
 @Composable
 fun StoryScreen(
@@ -34,17 +37,9 @@ fun StoryScreen(
         title = stringResource(Res.string.plus_entry_story),
         onBackClick = onBackClick,
         isLoading = state.isLoading,
+        skeleton = { StorySkeleton() },
         modifier = modifier,
     ) {
-        state.emptyMessage?.let { message ->
-            Text(
-                text = message.asString(),
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.appColors.textSecondary,
-                modifier = Modifier.fillMaxWidth(),
-            )
-        }
-
         state.body?.let { PlusBodyText(text = it) }
 
         if (state.passageTitle != null && state.passageBody != null) {
@@ -55,7 +50,7 @@ fun StoryScreen(
 
         if (state.figures.isNotEmpty()) {
             PlusSection(title = stringResource(Res.string.home_figures_title)) {
-                FigureRow(figures = state.figures)
+                FigureGrid(figures = state.figures)
 
                 state.figuresCaveat?.let {
                     Text(

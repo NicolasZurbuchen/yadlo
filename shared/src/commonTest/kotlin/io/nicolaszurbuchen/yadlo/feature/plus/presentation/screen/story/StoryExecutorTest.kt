@@ -18,7 +18,7 @@ import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertFalse
+import kotlin.test.assertNull
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class StoryExecutorTest {
@@ -35,12 +35,12 @@ class StoryExecutorTest {
     }
 
     @Test
-    fun onCreate_beforeAnyBundle_hasNotLoaded() =
+    fun onCreate_beforeAnyBundle_carriesNoPage() =
         runTest {
             val store = createStore(FakeContentRepository())
             testDispatcher.scheduler.runCurrent()
 
-            assertFalse(store.state.hasLoaded)
+            assertNull(store.state.page)
             store.dispose()
         }
 

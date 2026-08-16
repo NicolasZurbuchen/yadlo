@@ -18,7 +18,11 @@ sealed interface StoryMessage {
     ) : StoryMessage
 }
 
+/**
+ * A null [page] is the bundle not having landed yet, and nothing else. The row that opens this
+ * screen is derived from the same story block, so "published without a story" is not a state the
+ * navigation can reach — a second flag beside the null would be a field describing an impossibility.
+ */
 data class StoryState(
     val page: StoryPage? = null,
-    val hasLoaded: Boolean = false,
 )

@@ -6,9 +6,9 @@ import io.nicolaszurbuchen.yadlo.feature.plus.domain.model.StoryPage
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.home_figures_caveat
-import yadlo.shared.generated.resources.story_empty
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
@@ -19,10 +19,10 @@ class StoryUiMapperTest {
     }
 
     @Test
-    fun toUiModel_loadedWithNoStory_saysSo() {
-        val model = StoryState(page = null, hasLoaded = true).toUiModel()
-
-        assertEquals(UiText.Resource(Res.string.story_empty), model.emptyMessage)
+    fun toUiModel_thePageArrives_stopsLoading() {
+        // The pair that matters now that one nullable field carries the whole state: the same field
+        // that means "waiting" has to mean "done" the moment it is filled.
+        assertFalse(loaded().isLoading)
     }
 
     @Test
@@ -67,12 +67,11 @@ class StoryUiMapperTest {
             )
 
         // A caveat with nothing under it would be an apology for an absent block.
-        assertNull(StoryState(page = page, hasLoaded = true).toUiModel().figuresCaveat)
+        assertNull(StoryState(page = page).toUiModel().figuresCaveat)
     }
 
     private fun loaded(confirmed: Boolean = true) =
         StoryState(
-            hasLoaded = true,
             page =
                 StoryPage(
                     foundedYear = 2015,

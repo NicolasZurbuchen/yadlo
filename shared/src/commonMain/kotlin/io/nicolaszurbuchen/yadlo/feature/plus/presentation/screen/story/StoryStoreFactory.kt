@@ -52,7 +52,7 @@ class StoryStoreFactory(
         override fun StoryState.reduce(msg: StoryMessage): StoryState =
             when (msg) {
                 is StoryMessage.StoryUpdated -> {
-                    copy(page = msg.page, hasLoaded = true)
+                    copy(page = msg.page)
                 }
             }
     }
