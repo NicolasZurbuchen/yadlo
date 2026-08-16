@@ -691,11 +691,10 @@ fake or an injected lambda:
   the same feature need it. Konsist enforces that anything named `Fake*` implements an
   interface and lives in `..domain.fake`.
 
-I was also wrong to write "no mocking of HTTP". The template fakes HTTP at Ktor's
-`MockEngine`, and `PokemonApiImplTest` is the prior art: build the client with a mock engine,
-capture the outgoing `HttpRequestData` to assert the URL, and hand back a canned JSON body to
-assert deserialisation. The content bundle's `*Api` gets the same treatment — including a
-malformed-body case, which is otherwise unreachable.
+I was also wrong to write "no mocking of HTTP". HTTP is faked at Ktor's `MockEngine`, and
+`ContentApiImplTest` is the prior art: build the client with a mock engine, capture the outgoing
+`HttpRequestData` to assert the URL, and hand back a canned JSON body to assert deserialisation —
+including a malformed-body case, which is otherwise unreachable.
 
 **The injected clock is a supported pattern here, not an imposition.** The architecture
 convention already documents it, along with the Koin trap it sets: `singleOf(::Impl)` resolves
@@ -738,11 +737,10 @@ cannot reach: the collapsing toolbar reaching its collapsed state on scroll, and
 rendering on Programme and the fiches. Screenshot tests are optional and, if added, should
 cover light and dark for one screen per tab rather than everything.
 
-**Prior art exists and should be copied, not reinvented.** `feature/pokemonexplorer/` carries
-a worked example of every test category above and is deliberately still in the tree for that
-reason. Read `MainReducerTest` before writing a reducer test, `PokemonApiImplTest` before an
-API test, `FakePokemonExplorerRepository` before a fake. Delete the feature once the first
-real Yadlo slice has replaced each of those as the reference.
+**Prior art exists and should be copied, not reinvented.** The template's example feature carried
+a worked example of every test category above and was kept in the tree for exactly that reason
+until the real slices replaced it; it is now deleted. Read `PlusReducerTest` before writing a
+reducer test, `ContentApiImplTest` before an API test, `FakeContentRepository` before a fake.
 
 ## Out of Scope
 

@@ -21,8 +21,6 @@ import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.Responsibl
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.StandsDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.StoryDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.VolunteeringDestination
-import io.nicolaszurbuchen.yadlo.feature.pokemonexplorer.presentation.navigation.DetailDestination
-import io.nicolaszurbuchen.yadlo.feature.pokemonexplorer.presentation.navigation.MainDestination
 import io.nicolaszurbuchen.yadlo.feature.programme.presentation.navigation.ProgrammeDestination
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
@@ -62,11 +60,6 @@ val navConfig =
                     subclass(AboutDestination::class)
                     subclass(PrivacyDestination::class)
                     subclass(HappeningDestination::class)
-
-                    // Template example feature, unreachable from the tab shell. Registered only
-                    // so its screens still restore while it is kept as a working reference.
-                    subclass(MainDestination::class)
-                    subclass(DetailDestination::class)
                 }
             }
     }

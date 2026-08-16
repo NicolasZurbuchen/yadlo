@@ -39,8 +39,6 @@ module.exports = {
         'mon-yadlo',
         'happening',
         'plus',
-        // Template example feature — remove together with feature/pokemonexplorer/
-        'pokemon-explorer',
       ],
     ],
     'scope-empty': [0],

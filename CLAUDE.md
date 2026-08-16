@@ -46,20 +46,20 @@ This repo was forked from the template and renamed on 2026-08-10. The placeholde
 `io.nicolaszurbuchen.yadlo`, the Application class is `YadloApplication`, the theme composable
 is `YadloTheme`, and the Compose generated-resources package is now `yadlo.shared.generated.resources`.
 
-Two things are deliberately **not** done yet:
+**`feature/pokemonexplorer/` is gone.** The template's example feature was kept as a working
+side-by-side reference and deleted once all four tabs had been built against the pattern six times
+over. Nothing of it remains — feature tree, `.sq` file, navigator, DI entry, `NavConfig` entries,
+strings, `AppError.PokemonExplorer` and the `pokemon-explorer` commit scope all went together. The
+five real features are the reference now; `agents/agent-architecture-convention.md` still describes
+the shape.
 
-1. **`feature/pokemonexplorer/` is still in the tree.** It is the template's example feature and
-   is kept only as a working side-by-side reference while the first real Yadlo feature is built.
-   Delete it — along with the `pokemonExplorerModule` entry in `app/di/AppModule.kt`,
-   `PokemonExplorerNavigatorImpl.kt`, the initial route in `app/navigation/NavConfig.kt`, its
-   strings in `composeResources/values/strings.xml`, its `.sq` file, its `error_pokemon_*`
-   entries, and the `pokemon-explorer` commit scope — once the pattern is internalised. Do not
-   ship it.
-2. **Two template capabilities assumed by SPEC.md have not been verified**: local notifications on
-   both platforms, and disk-cached remote images via Coil3. Coil3 and SQLDelight are wired; the
-   notification path is not, and Coil3's `ImageLoader` is built with no `diskCache { }` block.
-   Verify before designing around them. The bundled-snapshot fallback the earlier draft assumed is
-   no longer wanted — see DECISIONS.md § No bundled snapshot in v1.
+One thing is deliberately **not** done yet:
+
+- **Two template capabilities assumed by SPEC.md have not been verified**: local notifications on
+  both platforms, and disk-cached remote images via Coil3. Coil3 and SQLDelight are wired; the
+  notification path is not, and Coil3's `ImageLoader` is built with no `diskCache { }` block.
+  Verify before designing around them. The bundled-snapshot fallback the earlier draft assumed is
+  no longer wanted — see DECISIONS.md § No bundled snapshot in v1.
 
 ---
 

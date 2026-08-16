@@ -1,6 +1,6 @@
 # Agent Architecture Convention
 
-This file exists so an agent can place a new file in the right package and shape a new screen or feature correctly, without re-deriving the architecture from scratch or asking a human. The concrete example throughout is the `pokemon-explorer` feature; the pattern is what's fixed, not that specific feature or its file count.
+This file exists so an agent can place a new file in the right package and shape a new screen or feature correctly, without re-deriving the architecture from scratch or asking a human. The concrete examples throughout are the five real features; the pattern is what's fixed, not any one feature or its file count.
 
 ## Package placement — decision procedure
 
@@ -94,9 +94,9 @@ opened on a device.
 signatures at build time. It is not a drop-in for two reasons worth knowing before adding it:
 
 1. It is not in the version catalog, so it is a new test dependency.
-2. `verify()` trips on parameterised definitions — `viewModel { (id: Long) -> Foo(get(), id) }` — and
-   the template's own `pokemonExplorerModule` has exactly one. They need `verify(extraTypes = ...)`
-   or an explicit exclusion, which is the fiddly part.
+2. `verify()` trips on parameterised definitions — `viewModel { (id: String) -> Foo(get(), id) }` — and
+   `happeningModule` has one. They need `verify(extraTypes = ...)` or an explicit exclusion, which
+   is the fiddly part.
 
 **This belongs upstream in the template**, so every project forked from it starts with a verified
 graph rather than discovering the gap independently. Adding it here would fix one app; adding it

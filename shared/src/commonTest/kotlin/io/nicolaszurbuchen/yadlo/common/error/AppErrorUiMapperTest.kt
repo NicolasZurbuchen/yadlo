@@ -15,8 +15,6 @@ import yadlo.shared.generated.resources.error_network_timeout_subtitle
 import yadlo.shared.generated.resources.error_network_timeout_title
 import yadlo.shared.generated.resources.error_network_unavailable_subtitle
 import yadlo.shared.generated.resources.error_network_unavailable_title
-import yadlo.shared.generated.resources.error_pokemon_fetch_failed_subtitle
-import yadlo.shared.generated.resources.error_pokemon_fetch_failed_title
 import yadlo.shared.generated.resources.error_unexpected_subtitle
 import yadlo.shared.generated.resources.error_unexpected_title
 import kotlin.test.Test
@@ -102,20 +100,6 @@ class AppErrorUiMapperTest {
                 title = UiText.Resource(Res.string.error_database_insert_failed_title),
                 subtitle = UiText.Resource(Res.string.error_database_generic_subtitle),
                 icon = Icons.Outlined.Storage,
-            ),
-            result,
-        )
-    }
-
-    @Test
-    fun toUiModel_pokemonExplorerFetchFailed_mapsToWifiOffIcon() {
-        val result = AppError.PokemonExplorer.FetchFailed.toUiModel()
-
-        assertEquals(
-            AppErrorUiModel(
-                title = UiText.Resource(Res.string.error_pokemon_fetch_failed_title),
-                subtitle = UiText.Resource(Res.string.error_pokemon_fetch_failed_subtitle),
-                icon = Icons.Outlined.WifiOff,
             ),
             result,
         )
