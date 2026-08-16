@@ -142,9 +142,7 @@
     <string name="hours_title">Horaires</string>
     <string name="hours_intro">À quelle heure le site ouvre, et jusqu'à quand on peut manger, boire et se mouiller.</string>
     <string name="hours_site_open">Site ouvert</string>
-    <string name="hours_programme">Programme</string>
     <string name="hours_estimated">Horaires déduits, à confirmer par l'organisation.</string>
-    <string name="hours_before_opening">Certaines activités commencent avant l'ouverture : la plage de Préverenges est publique.</string>
     <string name="hours_empty">Les horaires ne sont pas encore publiés.</string>
 
     <string name="assistance_title">En cas de besoin</string>

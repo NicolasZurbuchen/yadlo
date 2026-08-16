@@ -11,25 +11,16 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import io.nicolaszurbuchen.yadlo.app.design.theme.YadloTheme
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
-import io.nicolaszurbuchen.yadlo.infra.ui.UiText
-import yadlo.shared.generated.resources.Res
-import yadlo.shared.generated.resources.hours_before_opening
 
 /**
- * The real 2026 hours. Saturday is the one worth looking at: it closes at 03:00 the next morning
- * and its programme starts at 10:00, two hours before the site opens — both true, and both would
- * read as bugs if the screen did not say so.
+ * The real 2026 hours, and the skeleton they arrive into. Saturday is the one worth looking at: it
+ * closes at 03:00 the next morning, which is a window crossing midnight and would read as a mistake
+ * if the card did anything other than print it.
  */
 private class HoursStateProvider : PreviewParameterProvider<HoursUiModel> {
     override val values =
         sequenceOf(
-            HoursUiModel(
-                isLoading = true,
-                days = emptyList(),
-                caveat = null,
-                beforeOpeningNote = null,
-                emptyMessage = null,
-            ),
+            HoursUiModel(isLoading = true, days = emptyList(), caveat = null, emptyMessage = null),
             published(),
         )
 }
@@ -46,16 +37,27 @@ private fun HoursScreenPreview(
     }
 }
 
+@Preview
+@Composable
+private fun HoursScreenDarkPreview(
+    @PreviewParameter(HoursStateProvider::class) state: HoursUiModel,
+) {
+    YadloTheme(darkTheme = true) {
+        Box(modifier = Modifier.fillMaxSize().background(MaterialTheme.appColors.background)) {
+            HoursScreen(state = state, onBackClick = {})
+        }
+    }
+}
+
 private fun published() =
     HoursUiModel(
         isLoading = false,
         days =
             listOf(
-                OpeningDayUiModel(id = "2026:fri", name = "Vendredi", window = "16:00 – 02:00", programme = "17:00 – 01:30"),
-                OpeningDayUiModel(id = "2026:sat", name = "Samedi", window = "12:00 – 03:00", programme = "10:00 – 02:30"),
-                OpeningDayUiModel(id = "2026:sun", name = "Dimanche", window = "12:00 – 22:00", programme = "10:00 – 21:00"),
+                OpeningDayUiModel(id = "2026:fri", name = "Vendredi", window = "16:00 – 02:00"),
+                OpeningDayUiModel(id = "2026:sat", name = "Samedi", window = "12:00 – 03:00"),
+                OpeningDayUiModel(id = "2026:sun", name = "Dimanche", window = "12:00 – 22:00"),
             ),
         caveat = null,
-        beforeOpeningNote = UiText.Resource(Res.string.hours_before_opening),
         emptyMessage = null,
     )

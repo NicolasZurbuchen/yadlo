@@ -11,6 +11,7 @@ import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusBodyText
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusDetailScaffold
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.hours.component.HoursSkeleton
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.hours.component.OpeningDayCard
 import io.nicolaszurbuchen.yadlo.infra.ui.asString
 import org.jetbrains.compose.resources.stringResource
@@ -22,9 +23,12 @@ import yadlo.shared.generated.resources.hours_title
  * *Horaires* — deduced from the programme, never authored.
  *
  * A FestivalDay's window *is* the opening hours, so this screen needed no new content field and
- * could ship while the association had published nothing about times. What it adds beneath is
- * honesty rather than a correction: some activities start before the site opens, because the beach
- * is public and the morning yoga is on it.
+ * could ship while the association had published nothing about times.
+ *
+ * **One time per day and nothing else.** It also printed the programme window under each day, plus
+ * a note explaining that a 10:00 activity on a site opening at 12:00 is legitimate — both true, and
+ * together they made a reader sort three facts to find the one they opened the screen for. The
+ * domain still derives the programme instants; they come back the day somebody asks for them.
  */
 @Composable
 fun HoursScreen(
@@ -36,6 +40,7 @@ fun HoursScreen(
         title = stringResource(Res.string.hours_title),
         onBackClick = onBackClick,
         isLoading = state.isLoading,
+        skeleton = { HoursSkeleton() },
         modifier = modifier,
     ) {
         state.emptyMessage?.let { message ->
@@ -58,9 +63,9 @@ fun HoursScreen(
             state.days.forEach { OpeningDayCard(day = it) }
         }
 
-        listOfNotNull(state.caveat, state.beforeOpeningNote).forEach { note ->
+        state.caveat?.let { caveat ->
             Text(
-                text = note.asString(),
+                text = caveat.asString(),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.appColors.textTertiary,
                 modifier = Modifier.fillMaxWidth(),

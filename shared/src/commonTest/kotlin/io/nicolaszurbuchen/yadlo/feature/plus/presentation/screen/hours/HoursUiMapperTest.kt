@@ -3,7 +3,6 @@ package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.hours
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.model.OpeningDay
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import yadlo.shared.generated.resources.Res
-import yadlo.shared.generated.resources.hours_before_opening
 import yadlo.shared.generated.resources.hours_empty
 import yadlo.shared.generated.resources.hours_estimated
 import kotlin.test.Test
@@ -44,36 +43,6 @@ class HoursUiMapperTest {
 
         // Saturday closes at 03:00 on the Sunday. A FestivalDay is a window, so this is one line.
         assertEquals("12:00 – 03:00", model.days.single().window)
-    }
-
-    @Test
-    fun toUiModel_theProgramme_spansTheFirstStartAndTheLastEnd() {
-        val model = HoursState(days = listOf(friday())).toUiModel()
-
-        assertEquals("17:00 – 01:30", model.days.single().programme)
-    }
-
-    @Test
-    fun toUiModel_aDayWithNothingProgrammed_stillShowsWhenTheSiteIsOpen() {
-        val model = HoursState(days = listOf(friday().copy(firstStartsAt = null, lastEndsAt = null))).toUiModel()
-
-        assertEquals("16:00 – 02:00", model.days.single().window)
-        assertNull(model.days.single().programme)
-    }
-
-    @Test
-    fun toUiModel_somethingStartingBeforeTheSiteOpens_isExplainedRatherThanCorrected() {
-        // The morning yoga runs at 10:00 on a day the festival opens at 12:00, because the plage de
-        // Préverenges is public. Clamping it would be telling the festival it is wrong about its
-        // own site.
-        val model = HoursState(days = listOf(saturday())).toUiModel()
-
-        assertEquals(UiText.Resource(Res.string.hours_before_opening), model.beforeOpeningNote)
-    }
-
-    @Test
-    fun toUiModel_everythingInsideTheWindow_needsNoExplanation() {
-        assertNull(HoursState(days = listOf(friday())).toUiModel().beforeOpeningNote)
     }
 
     @Test

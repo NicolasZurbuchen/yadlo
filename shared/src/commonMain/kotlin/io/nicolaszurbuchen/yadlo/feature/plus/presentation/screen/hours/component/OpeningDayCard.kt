@@ -3,29 +3,23 @@ package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.hours.compone
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.hours.OpeningDayUiModel
-import org.jetbrains.compose.resources.stringResource
-import yadlo.shared.generated.resources.Res
-import yadlo.shared.generated.resources.hours_programme
 
 /**
- * One day, with the answer set large.
+ * One day, and the one time that matters.
  *
- * **Only one time on this card really matters** — when the site opens and closes — so it takes the
- * display face at heading size and the programme window sits under it in the supporting role. A
- * card that gave both the same weight would make the reader do the sorting the screen exists to
- * have done for them.
+ * The card used to carry the programme window under the opening one, which made the reader sort two
+ * times to find the one they came for. There is a single answer on it now, set in the display face,
+ * and the day's name above it in the supporting role.
  */
 @Composable
 fun OpeningDayCard(
@@ -52,26 +46,5 @@ fun OpeningDayCard(
             style = MaterialTheme.typography.headlineSmall,
             color = MaterialTheme.appColors.textPrimary,
         )
-
-        day.programme?.let {
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm),
-                verticalAlignment = Alignment.Bottom,
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                Text(
-                    text = stringResource(Res.string.hours_programme),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.appColors.textSecondary,
-                    modifier = Modifier.weight(1f),
-                )
-
-                Text(
-                    text = it,
-                    style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.appColors.textSecondary,
-                )
-            }
-        }
     }
 }
