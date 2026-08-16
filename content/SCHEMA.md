@@ -290,7 +290,7 @@ contact         { address: {lines[], provenance}, phone, emails: {id, address, l
 social          { id, name, url }[]
 links           { id, label, url }[]
 transports      { modes: Mode[], provenance }
-paiement        { methods: Method[], notes: Note[], links: Link[], provenance }
+paiement        { headline, summary, methods: Method[], notes: {id, title, body, links: Link[]}[], provenance }
 accessibilite   { items: Item[], contactEmailId, provenance }
 besoin          { emergencyNumbers: {id, label, number}[], lostPropertyEmailId, provenance }
 simpliquer      { hotstaff: {...}, partenaire: {...} }

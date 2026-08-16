@@ -242,15 +242,22 @@
     "provenance": "confirmed"
   },
   "paiement": {
+    "headline": "Carte et TWINT uniquement",
+    "summary": "Aucun stand n'accepte les espèces, bar compris.",
     "methods": [
       {
         "id": "carte",
-        "name": "Cartes Visa, Mastercard et Maestro",
+        "name": "Visa, Mastercard et Maestro — sans contact",
         "accepted": true
       },
       {
         "id": "twint",
         "name": "TWINT",
+        "accepted": true
+      },
+      {
+        "id": "mobile",
+        "name": "Apple Pay et Google Pay",
         "accepted": true
       },
       {
@@ -261,27 +268,26 @@
     ],
     "notes": [
       {
-        "id": "sans-especes",
-        "body": "Aucun stand n'accepte les espèces, bar compris. Prévoyez une carte ou TWINT avant de venir."
-      },
-      {
-        "id": "sans-contact",
-        "body": "Les paiements sans contact passent partout, y compris depuis un téléphone ou une montre, partout où la carte correspondante est acceptée."
-      },
-      {
         "id": "pas-de-twint",
-        "body": "L'application TWINT dépend de votre banque : certaines ont la leur, d'autres passent par TWINT Prepaid. La page officielle vous oriente vers la bonne."
+        "title": "Vous n'avez pas TWINT ?",
+        "body": "L'application dépend de votre banque : certaines ont la leur, d'autres passent par TWINT Prepaid. La page officielle vous oriente vers la bonne.",
+        "links": [
+          {
+            "id": "twint",
+            "label": "twint.ch",
+            "sublabel": "Site officiel",
+            "url": "https://www.twint.ch/"
+          }
+        ]
+      },
+      {
+        "id": "pourquoi",
+        "title": "Pourquoi",
+        "body": "Sans caisse en liquide, les files avancent plus vite et l'équipe passe sa soirée à servir plutôt qu'à compter. C'est aussi plus sûr pour des bénévoles qui ferment le bar à trois heures du matin.",
+        "links": []
       }
     ],
-    "provenance": "confirmed",
-    "links": [
-      {
-        "id": "twint",
-        "label": "twint.ch",
-        "sublabel": "Site officiel",
-        "url": "https://www.twint.ch/"
-      }
-    ]
+    "provenance": "confirmed"
   },
   "accessibilite": {
     "items": [],
