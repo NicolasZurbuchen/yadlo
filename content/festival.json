@@ -156,30 +156,47 @@
   "transports": {
     "modes": [
       {
-        "id": "pied",
-        "name": "À pied",
-        "body": "Depuis la gare de Morges, 35 minutes le long du lac. Depuis l'arrêt Préverenges, Village, cinq minutes jusqu’à la plage.",
-        "links": [],
-        "departures": null
-      },
-      {
-        "id": "velo",
-        "name": "À vélo",
-        "body": "Parking vélo à l'entrée du site.",
-        "links": [],
-        "departures": null
-      },
-      {
         "id": "bus",
-        "name": "En bus",
-        "body": "Lignes 701 et 705, arrêt Préverenges, Village. Cinq minutes à pied jusqu’à la plage. Les deux lignes sont à plancher surbaissé.",
-        "links": [],
+        "name": "Venir en bus",
+        "body": null,
+        "facts": [
+          {
+            "id": "lignes",
+            "text": "Lignes 701 et 705, arrêt Préverenges, Village",
+            "caveat": false
+          },
+          {
+            "id": "marche",
+            "text": "Cinq minutes à pied jusqu’à la plage",
+            "caveat": false
+          },
+          {
+            "id": "plancher",
+            "text": "Les deux lignes sont à plancher surbaissé",
+            "caveat": false
+          }
+        ],
+        "links": [
+          {
+            "id": "horaires-701",
+            "label": "Horaires ligne 701",
+            "sublabel": "PDF · MBC",
+            "url": "https://gm-sittr-prod.s3.eu-west-1.amazonaws.com/timetables/mbc/auto/701/701-A.pdf"
+          },
+          {
+            "id": "horaires-705",
+            "label": "Horaires ligne 705",
+            "sublabel": "PDF · MBC",
+            "url": "https://gm-sittr-prod.s3.eu-west-1.amazonaws.com/timetables/mbc/auto/705/705-A.pdf"
+          }
+        ],
         "departures": null
       },
       {
         "id": "bus-nuit",
-        "name": "Bus de nuit",
+        "name": "Rentrer de nuit",
         "body": "Les bus pyjama desservent Morges, gare, avec correspondance pour Lausanne. Offerts par les MBC.",
+        "facts": [],
         "links": [],
         "departures": [
           {
@@ -227,14 +244,53 @@
       {
         "id": "voiture",
         "name": "En voiture",
-        "body": "Les places sont limitées et la distance jusqu’au site varie beaucoup, donc venez tôt ou autrement. Deux places sont réservées près de l’entrée.",
+        "body": null,
+        "facts": [
+          {
+            "id": "places",
+            "text": "Places limitées, et la distance jusqu’au site varie beaucoup",
+            "caveat": true
+          },
+          {
+            "id": "reservees",
+            "text": "Deux places réservées près de l’entrée",
+            "caveat": false
+          }
+        ],
+        "links": [
+          {
+            "id": "parkings",
+            "label": "Plan des parkings",
+            "sublabel": "PDF",
+            "url": "https://www.yadlo.ch/_files/ugd/f10d05_2b605fea9a6c4d3495014751f3c32731.pdf"
+          }
+        ],
+        "departures": null
+      },
+      {
+        "id": "velo-pied",
+        "name": "À vélo, à pied",
+        "body": null,
+        "facts": [
+          {
+            "id": "parking-velo",
+            "text": "Parking vélo à l’entrée du site",
+            "caveat": false
+          },
+          {
+            "id": "depuis-morges",
+            "text": "35 minutes depuis Morges, le long du lac",
+            "caveat": false
+          }
+        ],
         "links": [],
         "departures": null
       },
       {
-        "id": "bateau",
-        "name": "Par le lac",
-        "body": "C'est un festival de plage : on peut arriver par l'eau, à la nage ou à la rame. Prévoyez de quoi payer votre bière une fois sec — le site est sans espèces.",
+        "id": "nage",
+        "name": "À la nage",
+        "body": "C’est un festival de plage : on peut arriver par l’eau, à la nage ou à la rame. Prévoyez de quoi payer votre bière une fois sec — le site est sans espèces.",
+        "facts": [],
         "links": [],
         "departures": null
       }

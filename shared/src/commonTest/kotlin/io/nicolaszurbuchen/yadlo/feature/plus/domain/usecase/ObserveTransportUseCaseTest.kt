@@ -77,6 +77,7 @@ class ObserveTransportUseCaseTest {
                                     id = "pied",
                                     name = "À pied",
                                     body = "35 minutes depuis Morges.",
+                                    facts = emptyList(),
                                     links = emptyList(),
                                     departures = emptyList(),
                                 ),
@@ -84,6 +85,7 @@ class ObserveTransportUseCaseTest {
                                     id = "bus",
                                     name = "En bus",
                                     body = "Lignes 701 et 705.",
+                                    facts = emptyList(),
                                     links =
                                         listOf(
                                             InfoLink(
@@ -99,6 +101,7 @@ class ObserveTransportUseCaseTest {
                                     id = "bus-nuit",
                                     name = "Bus de nuit",
                                     body = "Vers Morges, gare.",
+                                    facts = emptyList(),
                                     links = emptyList(),
                                     departures =
                                         listOf(

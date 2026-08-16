@@ -318,17 +318,37 @@ errors if it reappears before there is something to put in it. See GAPS.md secti
 
 ```
 Mode
-  id          "pied" | "velo" | "bus" | "bus-nuit" | "voiture" | "bateau"
-  name        string
-  body        string | null
+  id          "bus" | "bus-nuit" | "voiture" | "velo-pied" | "nage"
+  name        string                  the section heading, as read: "Venir en bus"
+  body        string | null           prose, for a mode that is genuinely a sentence
+  facts       Fact[]                  [] when the mode is prose
   links       { id, label, sublabel, url }[]
   departures  Departure[] | null      null on every mode but bus-nuit
+
+Fact
+  id      string
+  text    string           "Lignes 701 et 705, arrêt Préverenges, Village"
+  caveat  boolean          true draws ⓘ instead of ✓
 
 Departure
   id     string
   night  string           "Vendredi"
   times  { time, note }[] "01:30", note usually null
 ```
+
+**Facts rather than a paragraph, wherever the mode is really a list.** *Lignes 701 et 705* and
+*cinq minutes à pied* were one sentence, and a sentence is what someone has to read to the end of
+before they know whether it was theirs. The modes that are genuinely prose — the night bus, arriving
+by water — keep `body` and publish no facts. A mode with neither is a heading with nothing under it,
+and the validator errors on it.
+
+**`caveat` is a boolean for the same reason `accepted` is on paiement.** A fact is either stated or
+it is a warning about one; *places limitées* is not a thing the site offers, it is the thing that
+will go wrong. Anything in between renders as a shrug.
+
+**The mode ids are the sections, not the vehicles.** *À vélo, à pied* is one heading because the two
+answers are the same answer, and the app never enumerates them: a shuttle laid on for one edition is
+a content edit and no release.
 
 `departures` is grouped **by night, not by row**: seven departures fit in four lines instead of
 filling the screen, and the one that matters — the last bus with no onward connection to Lausanne —

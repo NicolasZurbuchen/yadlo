@@ -432,12 +432,22 @@ for (const [p, v] of [
 if (fest.currentEditionId !== ed.id)
   warns.push(`festival.json currentEditionId=${fest.currentEditionId} but only edition ${ed.id} authored`);
 
-// Transport modes vary too much to share one shape beyond this: a name, some prose, and any
-// number of links. Walking is prose alone; the bus needs a timetable link; a night shuttle laid
-// on for one edition would be an Edition-level addition, not a mode here.
+// Transport modes vary too much to share one shape beyond this: a name, then any mix of prose,
+// stated facts, links and a timetable. Swimming is prose alone; the bus is four facts and two
+// PDFs; a night shuttle laid on for one edition would be an Edition-level addition, not a mode.
+//
+// A mode with neither prose nor facts is a heading with nothing under it, which is the one shape
+// the screen cannot draw.
 for (const m of fest.transports.modes || []) {
   if (!m.id || !m.name) errors.push(`transport ${m.id}: needs an id and a name`);
-  if (m.body === null) warns.push(`transport ${m.id}: no text yet`);
+  if (m.body === null && !(m.facts || []).length && !(m.departures || []).length)
+    errors.push(`transport ${m.id}: has nothing under its heading`);
+  // caveat is a boolean for the same reason paiement's accepted is: a fact is either stated or it
+  // is a warning about one, and "sort of" renders as a shrug.
+  for (const f of m.facts || []) {
+    if (!f.id || !f.text) errors.push(`transport ${m.id}/fact ${f.id}: needs an id and text`);
+    if (typeof f.caveat !== 'boolean') errors.push(`transport ${m.id}/fact ${f.id}: caveat must be true or false`);
+  }
   for (const l of m.links || []) {
     if (!l.label) errors.push(`transport ${m.id}: link without a label`);
     checkUrl(l.url, `transport ${m.id}/link`);

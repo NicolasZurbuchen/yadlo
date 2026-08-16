@@ -13,8 +13,16 @@ data class TransportDto(
         val id: String,
         val name: String,
         val body: String? = null,
+        val facts: List<FactDto> = emptyList(),
         val links: List<InfoLinkDto> = emptyList(),
         val departures: List<DepartureDto>? = null,
+    )
+
+    @Serializable
+    data class FactDto(
+        val id: String,
+        val text: String,
+        val caveat: Boolean,
     )
 
     @Serializable

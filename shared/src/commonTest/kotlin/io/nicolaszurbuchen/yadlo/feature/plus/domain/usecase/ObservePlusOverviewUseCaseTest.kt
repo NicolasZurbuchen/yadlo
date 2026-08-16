@@ -273,7 +273,17 @@ class ObservePlusOverviewUseCaseTest {
 
     private fun transportWithModes() =
         Transport(
-            modes = listOf(TransportMode(id = "pied", name = "À pied", body = null, links = emptyList(), departures = emptyList())),
+            modes =
+                listOf(
+                    TransportMode(
+                        id = "pied",
+                        name = "À pied",
+                        body = null,
+                        facts = emptyList(),
+                        links = emptyList(),
+                        departures = emptyList(),
+                    ),
+                ),
             provenance = Provenance.CONFIRMED,
         )
 

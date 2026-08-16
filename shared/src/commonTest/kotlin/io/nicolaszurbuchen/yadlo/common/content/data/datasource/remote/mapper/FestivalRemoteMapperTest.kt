@@ -194,6 +194,16 @@ class FestivalRemoteMapperTest {
     }
 
     @Test
+    fun toDomain_transportFacts_keepWhichOnesAreWarnings() {
+        val bus = minimal().copy(transport = transportDto()).toDomain().transport?.modes?.single { it.id == "bus" }
+
+        // The flag is the whole reason these are facts rather than a paragraph: one of them is what
+        // the site offers and the other is what will go wrong, and prose weighs them the same.
+        assertEquals(listOf(false, true), bus?.facts?.map { it.caveat })
+        assertEquals("Places limitées.", bus?.facts?.last()?.text)
+    }
+
+    @Test
     fun toDomain_payment_keepsTheRefusedMethodRatherThanFilteringItOut() {
         val payment = minimal().copy(payment = paymentDto()).toDomain().payment
 
@@ -426,7 +436,11 @@ class FestivalRemoteMapperTest {
                     TransportDto.ModeDto(
                         id = "bus",
                         name = "En bus",
-                        body = "Lignes 701 et 705.",
+                        facts =
+                            listOf(
+                                TransportDto.FactDto(id = "lignes", text = "Lignes 701 et 705.", caveat = false),
+                                TransportDto.FactDto(id = "places", text = "Places limitées.", caveat = true),
+                            ),
                         links =
                             listOf(
                                 InfoLinkDto(

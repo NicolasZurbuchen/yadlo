@@ -1,5 +1,6 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.access
 
+import io.nicolaszurbuchen.yadlo.app.design.uimodel.FactMarkUiModel
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.InfoLink
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Provenance
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Transport
@@ -84,6 +85,7 @@ class AccessUiMapperTest {
                                     id = "velo",
                                     name = "À vélo",
                                     body = null,
+                                    facts = emptyList(),
                                     links = emptyList(),
                                     departures = emptyList(),
                                 ),
@@ -94,6 +96,68 @@ class AccessUiMapperTest {
 
         assertNull(model.modes.single().body)
         assertEquals("À vélo", model.modes.single().name)
+    }
+
+    @Test
+    fun toUiModel_aCaveat_isMarkedApartFromWhatTheSiteActuallyOffers() {
+        val facts =
+            listOf(
+                TransportMode.Fact(id = "places", text = "Places limitées", caveat = true),
+                TransportMode.Fact(id = "reservees", text = "Deux places réservées", caveat = false),
+            )
+        val state =
+            AccessState(
+                hasLoaded = true,
+                transport =
+                    Transport(
+                        provenance = Provenance.CONFIRMED,
+                        modes =
+                            listOf(
+                                TransportMode(
+                                    id = "voiture",
+                                    name = "En voiture",
+                                    body = null,
+                                    facts = facts,
+                                    links = emptyList(),
+                                    departures = emptyList(),
+                                ),
+                            ),
+                    ),
+            )
+
+        // Both are true and they are not the same kind of true: one is what the site offers, the
+        // other is what will go wrong. In a paragraph they weigh the same.
+        assertEquals(
+            listOf(FactMarkUiModel.INFO, FactMarkUiModel.CHECK),
+            state.toUiModel().modes.single().facts.map { it.mark },
+        )
+    }
+
+    @Test
+    fun toUiModel_noFactIsEverARefusal() {
+        val state =
+            AccessState(
+                hasLoaded = true,
+                transport =
+                    Transport(
+                        provenance = Provenance.CONFIRMED,
+                        modes =
+                            listOf(
+                                TransportMode(
+                                    id = "bus",
+                                    name = "Venir en bus",
+                                    body = null,
+                                    facts = listOf(TransportMode.Fact(id = "lignes", text = "701 et 705", caveat = false)),
+                                    links = emptyList(),
+                                    departures = emptyList(),
+                                ),
+                            ),
+                    ),
+            )
+
+        // A way of getting here that does not exist is left out of the content rather than
+        // published as a ✕, so this screen has two marks where paiement has three.
+        assertTrue(state.toUiModel().modes.single().facts.none { it.mark == FactMarkUiModel.CROSS })
     }
 
     private fun loaded() = AccessState(hasLoaded = true, transport = transport(notes = true)).toUiModel()
@@ -107,6 +171,7 @@ class AccessUiMapperTest {
                         id = "pied",
                         name = "À pied",
                         body = "35 minutes depuis Morges.",
+                        facts = emptyList(),
                         links =
                             listOf(
                                 InfoLink(
@@ -122,6 +187,7 @@ class AccessUiMapperTest {
                         id = "bus-nuit",
                         name = "Bus de nuit",
                         body = "Vers Morges, gare.",
+                        facts = emptyList(),
                         links = emptyList(),
                         departures =
                             listOf(

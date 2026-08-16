@@ -99,11 +99,19 @@ class AccessExecutorTest {
             provenance = Provenance.CONFIRMED,
             modes =
                 listOf(
-                    TransportMode(id = "pied", name = "À pied", body = null, links = emptyList(), departures = emptyList()),
+                    TransportMode(
+                        id = "pied",
+                        name = "À pied",
+                        body = null,
+                        facts = emptyList(),
+                        links = emptyList(),
+                        departures = emptyList(),
+                    ),
                     TransportMode(
                         id = "bus-nuit",
                         name = "Bus de nuit",
                         body = null,
+                        facts = emptyList(),
                         links = emptyList(),
                         departures =
                             listOf(

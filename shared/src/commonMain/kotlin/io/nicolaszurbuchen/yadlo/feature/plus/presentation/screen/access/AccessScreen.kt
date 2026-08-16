@@ -5,6 +5,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import io.nicolaszurbuchen.yadlo.app.design.component.YadloFactRow
 import io.nicolaszurbuchen.yadlo.app.design.component.YadloLinkTile
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.app.design.uimodel.LinkMarkUiModel
@@ -18,11 +19,19 @@ import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.access_title
 
 /**
- * *Accès* — one section per published mode, from on foot to across the water.
+ * *Accès* — one section per published mode, from the bus to arriving by water.
  *
  * The modes are whatever the content declares, in its order. Nothing here is a Kotlin list of
  * transport types: a shuttle laid on for one edition, or a mode that stops running, is a content
- * edit and no app release.
+ * edit and no app release. That order is chronological — coming, then going home — which is how the
+ * page is read before leaving the house, and the accepted cost is that at 02:00 the last bus takes
+ * a little scrolling to find.
+ *
+ * **Marked facts where the mode is a list of conditions, prose only where it is genuinely a
+ * sentence.** *Lignes 701 et 705, arrêt Préverenges, Village · cinq minutes à pied · plancher
+ * surbaissé* was one paragraph, which made someone checking whether the bus works for them read all
+ * of it to find their line. The ⓘ against the ✓ is what separates the two places reserved by the
+ * entrance from the warning that the rest are not.
  */
 @Composable
 fun AccessScreen(
@@ -49,6 +58,10 @@ fun AccessScreen(
         state.modes.forEach { mode ->
             PlusSection(title = mode.name) {
                 mode.body?.let { PlusBodyText(text = it) }
+
+                mode.facts.forEach { fact ->
+                    YadloFactRow(mark = fact.mark, fact = fact.text)
+                }
 
                 mode.nights.forEach { NightDeparturesBlock(night = it) }
 

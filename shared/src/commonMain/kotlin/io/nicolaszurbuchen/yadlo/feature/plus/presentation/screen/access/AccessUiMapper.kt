@@ -1,5 +1,6 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.access
 
+import io.nicolaszurbuchen.yadlo.app.design.uimodel.FactMarkUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.access_empty
@@ -19,6 +20,17 @@ fun AccessState.toUiModel(): AccessUiModel {
                     id = mode.id,
                     name = mode.name,
                     body = mode.body,
+                    facts =
+                        mode.facts.map {
+                            AccessFactUiModel(
+                                id = it.id,
+                                text = it.text,
+                                // No CROSS here. A transport mode that does not exist is left out of
+                                // the content entirely rather than published as a refusal, so the
+                                // only two states a fact can be in are stated and warned about.
+                                mark = if (it.caveat) FactMarkUiModel.INFO else FactMarkUiModel.CHECK,
+                            )
+                        },
                     links =
                         mode.links.map {
                             AccessLinkUiModel(id = it.id, label = it.label, sublabel = it.sublabel, url = it.url)

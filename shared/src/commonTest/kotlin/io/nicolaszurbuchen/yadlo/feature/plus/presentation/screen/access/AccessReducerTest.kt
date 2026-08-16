@@ -38,7 +38,14 @@ class AccessReducerTest {
         Transport(
             modes =
                 listOf(
-                    TransportMode(id = "bus", name = "En bus", body = null, links = emptyList(), departures = emptyList()),
+                    TransportMode(
+                        id = "bus",
+                        name = "En bus",
+                        body = null,
+                        facts = emptyList(),
+                        links = emptyList(),
+                        departures = emptyList(),
+                    ),
                 ),
             provenance = Provenance.CONFIRMED,
         )

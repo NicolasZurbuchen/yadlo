@@ -102,6 +102,10 @@ private fun TransportDto.toDomain(): Transport =
                     id = mode.id,
                     name = mode.name,
                     body = mode.body,
+                    facts =
+                        mode.facts.map {
+                            TransportMode.Fact(id = it.id, text = it.text, caveat = it.caveat)
+                        },
                     links = mode.links.map { it.toDomain() },
                     // Null and empty both mean "this mode has no timetable", and every mode but the
                     // night bus publishes null. Flattened so no screen has to tell them apart.

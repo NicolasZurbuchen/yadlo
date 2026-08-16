@@ -1,5 +1,6 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.access
 
+import io.nicolaszurbuchen.yadlo.app.design.uimodel.FactMarkUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 
 /**
@@ -20,8 +21,22 @@ data class AccessModeUiModel(
     val id: String,
     val name: String,
     val body: String?,
+    val facts: List<AccessFactUiModel>,
     val links: List<AccessLinkUiModel>,
     val nights: List<AccessNightUiModel>,
+)
+
+/**
+ * One stated condition of arriving this way, marked ✓ or ⓘ.
+ *
+ * The mark is the whole point of the split: *deux places réservées près de l'entrée* and *places
+ * limitées* are both true, and the reader deciding whether to drive needs to see at a glance which
+ * of the two is the offer and which is the warning. In a paragraph they weigh the same.
+ */
+data class AccessFactUiModel(
+    val id: String,
+    val text: String,
+    val mark: FactMarkUiModel,
 )
 
 /**
