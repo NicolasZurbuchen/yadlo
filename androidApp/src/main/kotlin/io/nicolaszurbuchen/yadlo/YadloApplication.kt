@@ -10,6 +10,7 @@ class YadloApplication : Application() {
         super.onCreate()
         initKoin(
             isDebugBuild = BuildConfig.DEBUG,
+            appVersion = BuildConfig.VERSION_NAME,
             additionalModules = listOf(platformModule),
             appDeclaration = {
                 androidContext(this@YadloApplication)

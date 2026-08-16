@@ -16,7 +16,17 @@ import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 private fun AboutScreenPreview() {
     YadloTheme {
         Box(modifier = Modifier.fillMaxSize().background(MaterialTheme.appColors.background)) {
-            AboutScreen(onBackClick = {})
+            AboutScreen(state = AboutUiModel(version = "1.0"), onBackClick = {}, onEmailClick = {})
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun AboutScreenDarkPreview() {
+    YadloTheme(darkTheme = true) {
+        Box(modifier = Modifier.fillMaxSize().background(MaterialTheme.appColors.background)) {
+            AboutScreen(state = AboutUiModel(version = "1.0"), onBackClick = {}, onEmailClick = {})
         }
     }
 }

@@ -109,7 +109,11 @@
 
     <string name="about_body">Yadlo est un festival de plage à Préverenges, au bord du Léman, chaque juillet depuis 2015. Cette application n'est pas la sienne : elle a été construite par un visiteur, et l'association n'en est ni l'auteure ni la responsable.\n\nTout ce qu'elle affiche vient de ce que le festival publie — son site et son Instagram — recopié à la main dans des fichiers structurés.</string>
     <string name="about_section_why">Pourquoi elle existe</string>
-    <string name="about_why">Parce que la programmation, les stands et les informations pratiques n'existaient nulle part sous forme de données : elles vivaient dans des images et des publications. C'est ce qui rendait impossible un programme personnel, un rappel ou un accès hors ligne.\n\nSi l'association veut de cette application, elle est à elle. Écrivez-nous depuis Nous écrire.</string>
+    <string name="about_why">Parce que la programmation, les stands et les informations pratiques n'existaient nulle part sous forme de données : elles vivaient dans des images et des publications. C'est ce qui rendait impossible un programme personnel, un rappel ou un accès hors ligne.\n\nSi l'association veut de cette application, elle est à elle.</string>
+    <string name="about_section_version">Version</string>
+    <string name="about_section_author">Qui l\'a construite</string>
+    <string name="about_author_name">Nicolas Zurbuchen</string>
+    <string name="about_author_email">nicolas.zurbuchen@outlook.com</string>
 
     <string name="privacy_body">Cette application ne collecte rien. Elle télécharge les fichiers publics du festival et écrit votre programme sur votre appareil, et c'est tout.</string>
     <string name="privacy_section_facts">En clair</string>
