@@ -12,9 +12,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import coil3.ImageLoader
 import coil3.SingletonImageLoader
-import coil3.network.ktor3.KtorNetworkFetcherFactory
 import io.ktor.client.HttpClient
 import io.nicolaszurbuchen.yadlo.app.content.ContentUnavailableScreen
 import io.nicolaszurbuchen.yadlo.app.debug.TimeTravelPanel
@@ -24,6 +22,7 @@ import io.nicolaszurbuchen.yadlo.app.splash.SplashScreen
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.ContentStatus
 import io.nicolaszurbuchen.yadlo.common.content.domain.repository.ContentRepository
 import io.nicolaszurbuchen.yadlo.common.error.toUiModel
+import io.nicolaszurbuchen.yadlo.infra.image.createImageLoader
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 
@@ -32,11 +31,7 @@ fun App(modifier: Modifier = Modifier) {
     val httpClient = koinInject<HttpClient>()
     val contentRepository = koinInject<ContentRepository>()
     remember(Unit) {
-        SingletonImageLoader.setSafe { context ->
-            ImageLoader.Builder(context)
-                .components { add(KtorNetworkFetcherFactory(httpClient = { httpClient })) }
-                .build()
-        }
+        SingletonImageLoader.setSafe { context -> createImageLoader(context = context, httpClient = httpClient) }
     }
 
     val status by contentRepository.observeStatus().collectAsStateWithLifecycle()

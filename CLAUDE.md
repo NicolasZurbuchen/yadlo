@@ -55,11 +55,15 @@ the shape.
 
 One thing is deliberately **not** done yet:
 
-- **Two template capabilities assumed by SPEC.md have not been verified**: local notifications on
-  both platforms, and disk-cached remote images via Coil3. Coil3 and SQLDelight are wired; the
-  notification path is not, and Coil3's `ImageLoader` is built with no `diskCache { }` block.
-  Verify before designing around them. The bundled-snapshot fallback the earlier draft assumed is
-  no longer wanted — see DECISIONS.md § No bundled snapshot in v1.
+- **Local notifications do not exist**, on either platform: no code, no `expect`/`actual` seam, no
+  `POST_NOTIFICATIONS` permission. This is not a formality wrapping an existing capability — it is
+  the whole feature, twice. **Deferred past v1** by SPEC.md, whose blast radius is stories 16 and
+  17 alone; everything else that looks time-driven reads the injected clock. Don't build toward it
+  without reopening that decision.
+
+The other two capabilities the earlier draft assumed are settled: SQLDelight was always wired, and
+Coil3's disk cache is now configured in `infra/image/` and verified on an Android device. The
+bundled-snapshot fallback is no longer wanted — see DECISIONS.md § No bundled snapshot in v1.
 
 ---
 
