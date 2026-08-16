@@ -286,7 +286,7 @@ minSupportedAppVersion string | null
 histoire        { foundedYear, body, journee: {title, body, provenance}, provenance }
 faq             { id, question, answer, provenance }[]
 responsable     { charters: { id, name, body, url, provenance }[] }
-contact         { address: {lines[], provenance}, phone, emails: {id, address, label}[], provenance }
+contact         { address: {lines[], provenance}, phone, emails: {id, address, label, responsible}[], provenance }
 social          { id, name, url }[]
 links           { id, label, url }[]
 transports      { modes: Mode[], provenance }
