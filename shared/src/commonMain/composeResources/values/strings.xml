@@ -84,8 +84,12 @@
     <string name="plus_about_unofficial">Application non officielle</string>
 
     <!-- Trailing marks. Announced only where the mark is the one thing saying the tap leaves the app. -->
-    <string name="plus_mark_external">Ouvre le site web</string>
-    <string name="plus_mark_mail">Ouvre l'application e-mail</string>
+    <string name="link_mark_external">Ouvre le site web</string>
+    <string name="link_mark_mail">Ouvre l'application e-mail</string>
+
+    <!-- Leading marks on a stated fact. Announced because the mark carries the polarity. -->
+    <string name="fact_mark_yes">Oui</string>
+    <string name="fact_mark_no">Non</string>
 
     <string name="story_empty">L'histoire du festival n'est pas encore publiée.</string>
 

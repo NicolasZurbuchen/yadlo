@@ -1,9 +1,9 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.plus
 
+import io.nicolaszurbuchen.yadlo.app.design.uimodel.LinkMarkUiModel
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.SocialLink
 import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.socialIconFor
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.model.PlusOverview
-import io.nicolaszurbuchen.yadlo.feature.plus.presentation.uimodel.PlusMarkUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.plus_assistance_subtitle
@@ -130,9 +130,9 @@ class PlusUiMapperTest {
     fun toUiModel_theExternalRows_wearAMarkThatSaysWhereTheyGo() {
         // One leaves for the browser and one opens mail, against the chevron everything else wears.
         // On one bar of signal that is what tells someone whether tapping costs a page load.
-        assertEquals(PlusMarkUiModel.EXTERNAL, PlusEntryUiModel.NEWSLETTER.mark)
-        assertEquals(PlusMarkUiModel.MAIL, PlusEntryUiModel.REPORT.mark)
-        assertEquals(PlusMarkUiModel.DISCLOSURE, PlusEntryUiModel.STANDS_FOOD.mark)
+        assertEquals(LinkMarkUiModel.EXTERNAL, PlusEntryUiModel.NEWSLETTER.mark)
+        assertEquals(LinkMarkUiModel.MAIL, PlusEntryUiModel.REPORT.mark)
+        assertEquals(LinkMarkUiModel.DISCLOSURE, PlusEntryUiModel.STANDS_FOOD.mark)
     }
 
     @Test

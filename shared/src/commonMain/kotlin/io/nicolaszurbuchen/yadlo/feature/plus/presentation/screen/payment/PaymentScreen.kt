@@ -5,12 +5,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import io.nicolaszurbuchen.yadlo.app.design.component.YadloFactRow
+import io.nicolaszurbuchen.yadlo.app.design.component.YadloLinkTile
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
+import io.nicolaszurbuchen.yadlo.app.design.uimodel.FactMarkUiModel
+import io.nicolaszurbuchen.yadlo.app.design.uimodel.LinkMarkUiModel
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusDetailScaffold
-import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusFactRow
-import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusLinkTile
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusSection
-import io.nicolaszurbuchen.yadlo.feature.plus.presentation.uimodel.PlusMarkUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.asString
 import org.jetbrains.compose.resources.stringResource
 import yadlo.shared.generated.resources.Res
@@ -28,8 +29,8 @@ import yadlo.shared.generated.resources.payment_title
  * scanning for "do I need cash" reads section headers, and burying the answer in the last row of a
  * list of what works is how the association's own site lost it.
  *
- * Marks rather than colour: `✓` and `✕` on a neutral ground, under headers that already say which
- * is which. See [PlusFactRow].
+ * The refusal is marked as well as sectioned — see [YadloFactRow] — so the odd one out is findable
+ * without reading every line, while never being carried by colour alone.
  */
 @Composable
 fun PaymentScreen(
@@ -55,13 +56,13 @@ fun PaymentScreen(
 
         if (state.accepted.isNotEmpty()) {
             PlusSection(title = stringResource(Res.string.payment_section_accepted)) {
-                state.accepted.forEach { PlusFactRow(mark = ACCEPTED_MARK, fact = it) }
+                state.accepted.forEach { YadloFactRow(mark = FactMarkUiModel.CHECK, fact = it) }
             }
         }
 
         if (state.refused.isNotEmpty()) {
             PlusSection(title = stringResource(Res.string.payment_section_refused)) {
-                state.refused.forEach { PlusFactRow(mark = REFUSED_MARK, fact = it) }
+                state.refused.forEach { YadloFactRow(mark = FactMarkUiModel.CROSS, fact = it) }
             }
         }
 
@@ -80,9 +81,9 @@ fun PaymentScreen(
         if (state.links.isNotEmpty()) {
             PlusSection(title = stringResource(Res.string.payment_section_links)) {
                 state.links.forEach { link ->
-                    PlusLinkTile(
+                    YadloLinkTile(
                         label = link.label,
-                        mark = PlusMarkUiModel.EXTERNAL,
+                        mark = LinkMarkUiModel.EXTERNAL,
                         onClick = { onLinkClick(link.url) },
                         sublabel = link.sublabel,
                     )
@@ -91,6 +92,3 @@ fun PaymentScreen(
         }
     }
 }
-
-private const val ACCEPTED_MARK = "✓"
-private const val REFUSED_MARK = "✕"

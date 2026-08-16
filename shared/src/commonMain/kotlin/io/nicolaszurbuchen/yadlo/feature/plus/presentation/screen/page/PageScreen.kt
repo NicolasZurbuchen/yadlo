@@ -7,13 +7,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import io.nicolaszurbuchen.yadlo.app.design.component.YadloLinkTile
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
+import io.nicolaszurbuchen.yadlo.app.design.uimodel.LinkMarkUiModel
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusBodyText
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusDetailScaffold
-import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusLinkTile
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusSection
-import io.nicolaszurbuchen.yadlo.feature.plus.presentation.uimodel.PlusMarkUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.asString
 
 /**
@@ -52,9 +52,9 @@ fun PageScreen(
                     section.body?.let { PlusBodyText(text = it) }
 
                     section.links.forEach { link ->
-                        PlusLinkTile(
+                        YadloLinkTile(
                             label = link.label,
-                            mark = PlusMarkUiModel.EXTERNAL,
+                            mark = LinkMarkUiModel.EXTERNAL,
                             onClick = { onLinkClick(link.url) },
                             sublabel = link.sublabel,
                         )
@@ -70,9 +70,9 @@ fun PageScreen(
                     section.body?.let { PlusBodyText(text = it) }
 
                     section.links.forEach { link ->
-                        PlusLinkTile(
+                        YadloLinkTile(
                             label = link.label,
-                            mark = PlusMarkUiModel.EXTERNAL,
+                            mark = LinkMarkUiModel.EXTERNAL,
                             onClick = { onLinkClick(link.url) },
                             sublabel = link.sublabel,
                         )

@@ -5,13 +5,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import io.nicolaszurbuchen.yadlo.app.design.component.YadloLinkTile
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
+import io.nicolaszurbuchen.yadlo.app.design.uimodel.LinkMarkUiModel
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusBodyText
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusDetailScaffold
-import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusLinkTile
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusSection
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.assistance.component.EmergencyNumberRow
-import io.nicolaszurbuchen.yadlo.feature.plus.presentation.uimodel.PlusMarkUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.asString
 import org.jetbrains.compose.resources.stringResource
 import yadlo.shared.generated.resources.Res
@@ -63,9 +63,9 @@ fun AssistanceScreen(
             PlusSection(title = stringResource(Res.string.assistance_section_lost)) {
                 PlusBodyText(text = stringResource(Res.string.assistance_lost_body))
 
-                PlusLinkTile(
+                YadloLinkTile(
                     label = email,
-                    mark = PlusMarkUiModel.MAIL,
+                    mark = LinkMarkUiModel.MAIL,
                     onClick = { onLostPropertyClick(email) },
                 )
             }

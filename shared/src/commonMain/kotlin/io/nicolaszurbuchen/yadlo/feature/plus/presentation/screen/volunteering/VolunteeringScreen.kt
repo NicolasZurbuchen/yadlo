@@ -5,13 +5,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import io.nicolaszurbuchen.yadlo.app.design.component.YadloFactRow
+import io.nicolaszurbuchen.yadlo.app.design.component.YadloLinkTile
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
+import io.nicolaszurbuchen.yadlo.app.design.uimodel.FactMarkUiModel
+import io.nicolaszurbuchen.yadlo.app.design.uimodel.LinkMarkUiModel
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusBodyText
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusDetailScaffold
-import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusFactRow
-import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusLinkTile
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusSection
-import io.nicolaszurbuchen.yadlo.feature.plus.presentation.uimodel.PlusMarkUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.asString
 import org.jetbrains.compose.resources.stringResource
 import yadlo.shared.generated.resources.Res
@@ -67,28 +68,24 @@ fun VolunteeringScreen(
 
         if (state.perks.isNotEmpty()) {
             PlusSection(title = stringResource(Res.string.volunteering_section_perks)) {
-                state.perks.forEach { PlusFactRow(mark = PERK_MARK, fact = it) }
+                state.perks.forEach { YadloFactRow(mark = FactMarkUiModel.CHECK, fact = it) }
             }
         }
 
         state.signupUrl?.let { url ->
-            PlusLinkTile(
+            YadloLinkTile(
                 label = stringResource(Res.string.volunteering_signup),
-                mark = PlusMarkUiModel.EXTERNAL,
+                mark = LinkMarkUiModel.EXTERNAL,
                 onClick = { onSignupClick(url) },
             )
         }
 
         state.email?.let { address ->
-            PlusLinkTile(
+            YadloLinkTile(
                 label = address,
-                mark = PlusMarkUiModel.MAIL,
+                mark = LinkMarkUiModel.MAIL,
                 onClick = { onEmailClick(address) },
             )
         }
     }
 }
-
-// Not coloured, for the reason PlusFactRow gives: polarity is carried by the glyph and the section
-// it sits under, never by colour alone.
-private const val PERK_MARK = "✓"

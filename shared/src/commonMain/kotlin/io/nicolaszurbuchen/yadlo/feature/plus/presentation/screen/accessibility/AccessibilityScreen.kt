@@ -5,13 +5,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import io.nicolaszurbuchen.yadlo.app.design.component.YadloFactRow
+import io.nicolaszurbuchen.yadlo.app.design.component.YadloLinkTile
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
+import io.nicolaszurbuchen.yadlo.app.design.uimodel.FactMarkUiModel
+import io.nicolaszurbuchen.yadlo.app.design.uimodel.LinkMarkUiModel
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusBodyText
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusDetailScaffold
-import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusFactRow
-import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusLinkTile
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusSection
-import io.nicolaszurbuchen.yadlo.feature.plus.presentation.uimodel.PlusMarkUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.asString
 import org.jetbrains.compose.resources.stringResource
 import yadlo.shared.generated.resources.Res
@@ -68,7 +69,7 @@ fun AccessibilityScreen(
         if (state.available.isNotEmpty()) {
             PlusSection(title = stringResource(Res.string.accessibility_section_available)) {
                 state.available.forEach { fact ->
-                    PlusFactRow(mark = AVAILABLE_MARK, fact = fact.note?.let { "${fact.name} — $it" } ?: fact.name)
+                    YadloFactRow(mark = FactMarkUiModel.CHECK, fact = fact.note?.let { "${fact.name} — $it" } ?: fact.name)
                 }
             }
         }
@@ -76,7 +77,7 @@ fun AccessibilityScreen(
         if (state.unavailable.isNotEmpty()) {
             PlusSection(title = stringResource(Res.string.accessibility_section_unavailable)) {
                 state.unavailable.forEach { fact ->
-                    PlusFactRow(mark = UNAVAILABLE_MARK, fact = fact.note?.let { "${fact.name} — $it" } ?: fact.name)
+                    YadloFactRow(mark = FactMarkUiModel.CROSS, fact = fact.note?.let { "${fact.name} — $it" } ?: fact.name)
                 }
             }
         }
@@ -85,9 +86,9 @@ fun AccessibilityScreen(
             PlusSection(title = stringResource(Res.string.accessibility_section_contact)) {
                 PlusBodyText(text = stringResource(Res.string.accessibility_contact_body))
 
-                PlusLinkTile(
+                YadloLinkTile(
                     label = email,
-                    mark = PlusMarkUiModel.MAIL,
+                    mark = LinkMarkUiModel.MAIL,
                     onClick = { onContactClick(email) },
                     // A hint rather than a prefilled subject: the app opens a blank mail and the
                     // reader writes it, which needs no accent percent-encoded on two platforms.
@@ -97,6 +98,3 @@ fun AccessibilityScreen(
         }
     }
 }
-
-private const val AVAILABLE_MARK = "✓"
-private const val UNAVAILABLE_MARK = "✕"

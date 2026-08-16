@@ -74,6 +74,24 @@ data class AppColors(
      */
     val warning: Color,
     val onWarning: Color,
+    /**
+     * The polarity pair, and the only two roles in this layer that exist to be read as a *judgement*
+     * rather than as emphasis: a ✓ on an accepted payment method, a ✕ on a refused one.
+     *
+     * Ink roles rather than quads. Nothing is ever written *on* them — they tint a mark the size of a
+     * word beside the sentence they qualify — so they are held to the text floor on all three grounds
+     * instead of being paired with an ink of their own.
+     *
+     * [positive] is the same emerald as [live] and that is not an accident: one green in the app is
+     * one thing to learn. [negative] takes the magenta ramp deep enough to clear the page grounds,
+     * which is also what keeps it from reading as the `musique` category dot — that one is the
+     * mid-ramp anchor, and these two are five steps apart in either theme.
+     *
+     * Colour is never the only carrier. Every mark that takes one also has a glyph and a section
+     * header saying the same thing, which is what story 74 asks for.
+     */
+    val positive: Color,
+    val negative: Color,
     /** Veil over a photograph, so text stays readable on an image nobody vetted. Alpha is baked in. */
     val scrim: Color,
     /** The ink [scrim] exists to make legible. */
@@ -115,6 +133,8 @@ val LightAppColors =
         onLive = Color.White,
         warning = AmberPalette.amber800,
         onWarning = Color.White,
+        positive = EmeraldPalette.emerald800,
+        negative = MagentaPalette.magenta800,
         scrim = SCRIM,
         onScrim = Color.White,
     )
@@ -152,6 +172,8 @@ val DarkAppColors =
         onLive = SlatePalette.slate950,
         warning = AmberPalette.amber400,
         onWarning = SlatePalette.slate950,
+        positive = EmeraldPalette.emerald400,
+        negative = MagentaPalette.magenta400,
         scrim = SCRIM,
         onScrim = Color.White,
     )

@@ -28,7 +28,7 @@ import org.jetbrains.compose.resources.stringResource
  * The leading icon is decorative and carries no `contentDescription`: the label beside it says the
  * same thing in words, and a screen reader announcing "restaurant, Nourriture & boissons" reads the
  * row twice. The trailing mark is the opposite case for the two rows that leave the app — see
- * [io.nicolaszurbuchen.yadlo.feature.plus.presentation.uimodel.PlusMarkUiModel].
+ * [io.nicolaszurbuchen.yadlo.app.design.uimodel.LinkMarkUiModel].
  */
 @Composable
 fun PlusRow(

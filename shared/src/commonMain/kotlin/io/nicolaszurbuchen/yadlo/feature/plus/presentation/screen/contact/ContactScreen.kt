@@ -5,11 +5,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import io.nicolaszurbuchen.yadlo.app.design.component.YadloLinkTile
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
+import io.nicolaszurbuchen.yadlo.app.design.uimodel.LinkMarkUiModel
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusDetailScaffold
-import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusLinkTile
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusSection
-import io.nicolaszurbuchen.yadlo.feature.plus.presentation.uimodel.PlusMarkUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.asString
 import org.jetbrains.compose.resources.stringResource
 import yadlo.shared.generated.resources.Res
@@ -55,9 +55,9 @@ fun ContactScreen(
         if (state.emails.isNotEmpty()) {
             PlusSection(title = stringResource(Res.string.contact_section_emails)) {
                 state.emails.forEach { email ->
-                    PlusLinkTile(
+                    YadloLinkTile(
                         label = email.label,
-                        mark = PlusMarkUiModel.MAIL,
+                        mark = LinkMarkUiModel.MAIL,
                         onClick = { onEmailClick(email.address) },
                         sublabel = email.address,
                     )
