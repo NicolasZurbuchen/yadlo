@@ -20,7 +20,7 @@ import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertFalse
+import kotlin.test.assertNull
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class VolunteeringExecutorTest {
@@ -37,12 +37,12 @@ class VolunteeringExecutorTest {
     }
 
     @Test
-    fun onCreate_beforeAnyBundle_hasNotLoaded() =
+    fun onCreate_beforeAnyBundle_carriesNoOffer() =
         runTest {
             val store = createStore(FakeContentRepository())
             testDispatcher.scheduler.runCurrent()
 
-            assertFalse(store.state.hasLoaded)
+            assertNull(store.state.offer)
             store.dispose()
         }
 

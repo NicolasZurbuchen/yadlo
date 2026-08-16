@@ -99,8 +99,8 @@
     <string name="contact_section_address">L'association</string>
 
     <string name="volunteering_section_perks">Ce que ça t'apporte</string>
-    <string name="volunteering_signup">S'inscrire</string>
-    <string name="volunteering_empty">Le recrutement des bénévoles n'est pas ouvert pour le moment.</string>
+    <string name="volunteering_signup">S&apos;inscrire</string>
+    <string name="volunteering_section_act">Nous rejoindre</string>
 
     <string name="responsible_empty">Aucune charte n&apos;est encore publiée.</string>
 

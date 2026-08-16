@@ -1,30 +1,21 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.volunteering
 
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.model.VolunteeringOffer
-import io.nicolaszurbuchen.yadlo.infra.ui.UiText
-import yadlo.shared.generated.resources.Res
-import yadlo.shared.generated.resources.volunteering_empty
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class VolunteeringUiMapperTest {
     @Test
     fun toUiModel_beforeTheBundleLands_isLoading() {
-        val model = VolunteeringState().toUiModel()
-
-        assertTrue(model.isLoading)
-        assertNull(model.emptyMessage)
+        assertTrue(VolunteeringState().toUiModel().isLoading)
     }
 
     @Test
-    fun toUiModel_recruitingClosed_saysSoRatherThanShowingAnEmptyPage() {
-        val model = VolunteeringState(offer = null, hasLoaded = true).toUiModel()
-
-        assertEquals(UiText.Resource(Res.string.volunteering_empty), model.emptyMessage)
-        assertTrue(!model.isLoading)
-        assertTrue(model.perks.isEmpty())
+    fun toUiModel_theOfferArrives_stopsLoading() {
+        assertFalse(loaded().isLoading)
     }
 
     @Test
@@ -43,7 +34,6 @@ class VolunteeringUiMapperTest {
         assertEquals(listOf("Tote bag", "Repas végane"), model.perks)
         assertEquals("https://ehro.app/o/yadlo/", model.signupUrl)
         assertEquals("staff@yadlo.ch", model.email)
-        assertNull(model.emptyMessage)
     }
 
     @Test
@@ -58,7 +48,6 @@ class VolunteeringUiMapperTest {
 
     private fun loaded(signupUrl: String? = "https://ehro.app/o/yadlo/") =
         VolunteeringState(
-            hasLoaded = true,
             offer =
                 VolunteeringOffer(
                     name = "Hot'Staff",

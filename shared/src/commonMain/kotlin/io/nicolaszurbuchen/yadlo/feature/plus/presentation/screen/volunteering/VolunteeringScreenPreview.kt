@@ -11,11 +11,11 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import io.nicolaszurbuchen.yadlo.app.design.theme.YadloTheme
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
-import io.nicolaszurbuchen.yadlo.infra.ui.UiText
-import yadlo.shared.generated.resources.Res
-import yadlo.shared.generated.resources.volunteering_empty
 
-/** Recruiting open, and recruiting closed — the second is a real state every year in August. */
+/**
+ * The skeleton and the campaign. The closed state is gone with `hasLoaded` — recruiting is treated
+ * as always open for now, and DECISIONS.md § Open holds the question that leaves behind.
+ */
 private class VolunteeringStateProvider : PreviewParameterProvider<VolunteeringUiModel> {
     override val values =
         sequenceOf(
@@ -26,10 +26,8 @@ private class VolunteeringStateProvider : PreviewParameterProvider<VolunteeringU
                 perks = emptyList(),
                 signupUrl = null,
                 email = null,
-                emptyMessage = null,
             ),
             published(),
-            closed(),
         )
 }
 
@@ -39,6 +37,18 @@ private fun VolunteeringScreenPreview(
     @PreviewParameter(VolunteeringStateProvider::class) state: VolunteeringUiModel,
 ) {
     YadloTheme {
+        Box(modifier = Modifier.fillMaxSize().background(MaterialTheme.appColors.background)) {
+            VolunteeringScreen(state = state, onBackClick = {}, onSignupClick = {}, onEmailClick = {})
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun VolunteeringScreenDarkPreview(
+    @PreviewParameter(VolunteeringStateProvider::class) state: VolunteeringUiModel,
+) {
+    YadloTheme(darkTheme = true) {
         Box(modifier = Modifier.fillMaxSize().background(MaterialTheme.appColors.background)) {
             VolunteeringScreen(state = state, onBackClick = {}, onSignupClick = {}, onEmailClick = {})
         }
@@ -61,16 +71,4 @@ private fun published() =
             ),
         signupUrl = "https://ehro.app/o/yadlo/",
         email = "staff@yadlo.ch",
-        emptyMessage = null,
-    )
-
-private fun closed() =
-    VolunteeringUiModel(
-        isLoading = false,
-        name = null,
-        body = null,
-        perks = emptyList(),
-        signupUrl = null,
-        email = null,
-        emptyMessage = UiText.Resource(Res.string.volunteering_empty),
     )

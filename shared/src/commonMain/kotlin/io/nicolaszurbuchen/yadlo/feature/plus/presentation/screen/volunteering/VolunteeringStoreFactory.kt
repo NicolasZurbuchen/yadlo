@@ -63,7 +63,7 @@ class VolunteeringStoreFactory(
         override fun VolunteeringState.reduce(msg: VolunteeringMessage): VolunteeringState =
             when (msg) {
                 is VolunteeringMessage.OfferUpdated -> {
-                    copy(offer = msg.offer, hasLoaded = true)
+                    copy(offer = msg.offer)
                 }
             }
     }

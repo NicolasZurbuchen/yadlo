@@ -29,11 +29,12 @@ sealed interface VolunteeringMessage {
 }
 
 /**
- * [hasLoaded] and a nullable [offer] are two facts, not one: the bundle has not landed yet, versus
- * it landed with no campaign in it. Recruiting closes, and when it does this screen has to be able
- * to say so rather than spin.
+ * A null [offer] is the bundle not having landed yet.
+ *
+ * Recruiting closing is deliberately not a state here — see DECISIONS.md § Open. The row that opens
+ * this screen is derived from the same block, so an edition between campaigns loses the row rather
+ * than opening a page that says the campaign is over.
  */
 data class VolunteeringState(
     val offer: VolunteeringOffer? = null,
-    val hasLoaded: Boolean = false,
 )

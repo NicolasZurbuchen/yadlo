@@ -839,6 +839,17 @@ whether the recap is worth building at all.
 so the empty state points at Plus › Nourriture & boissons or at search. Left here in case
 the empty state proves too passive in practice.
 
+**Recruiting is treated as always open.** *Devenir Hot'Staff* was built with two states — a
+campaign, and a campaign that has closed — on the reasoning that recruiting is seasonal and
+a row silently disappearing in August is worse than a page saying so. Decided for now that
+the app does not model the closed case: the row is still derived from the `simpliquer`
+block, so removing the block removes the row, and the screen itself assumes there is an
+offer to show. What is unresolved is what should happen in the weeks between one edition
+closing its applications and the next opening them — whether the row stays with a "revenez
+en janvier" page, disappears, or the content gains a window with dates on it. The third is
+the only version that survives an association that forgets to edit anything, which is an
+argument for it and a reason it has not been built.
+
 ## Content that does not exist yet
 
 Everything here is missing from the website and from any structured source. It is the
