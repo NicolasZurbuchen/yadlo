@@ -35,10 +35,14 @@ data class Payment(
      * [links] belong to the note rather than to the block, which is the only arrangement that puts
      * twint.ch under *Vous n'avez pas TWINT ?* instead of in a bin of links at the foot of the page.
      * The same shape `ResponsiblePage.Section` already has, for the same reason.
+     *
+     * [title] is null for a note published before the heading existed. Content ships on its own
+     * schedule and is read by builds older and newer than itself, so this is a state the app really
+     * reaches rather than one it is hedging against — the paragraph stands on its own when it does.
      */
     data class Note(
         val id: String,
-        val title: String,
+        val title: String?,
         val body: String,
         val links: List<InfoLink>,
     )

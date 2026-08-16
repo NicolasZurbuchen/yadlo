@@ -338,14 +338,24 @@ carries a note rather than being buried in a list.
 
 ```
 Method  { id, name, accepted: boolean }
-Note    { id, body }
+Note    { id, title, body, links: Link[] }
 ```
 
 **`accepted` is a boolean, never "unknown".** A method nobody has confirmed is left out entirely
 rather than rendered as a shrug — "TWINT: ?" helps no one, and a note or the FAQ can say it is being
-checked. This is why Apple Pay and Google Pay are *not* methods: contactless wallets almost certainly
-work wherever the cards do, but "almost certainly" is not what this list claims. It is stated in a
-note instead, which is free text and does not pretend to be an official method list.
+checked.
+
+**`headline` and `summary` are the answer, written.** A reader opening this screen has one question,
+and deriving three words of French from a list of method names is how a screen ends up saying
+something nobody wrote.
+
+**Links belong to a note, not to the block.** That is the only arrangement that puts twint.ch under
+*Vous n'avez pas TWINT ?* rather than in a bin of links at the foot of the page.
+
+**`title` is required here and optional on the wire.** The app reads a note without one rather than
+refusing `festival.json` — a required field nested in a section fails the whole file, so one late
+heading would cost the visitor every screen — but a paragraph with no heading is one the reader has
+to finish to know whether it was theirs, so the validator errors on it.
 
 ### accessibilite
 

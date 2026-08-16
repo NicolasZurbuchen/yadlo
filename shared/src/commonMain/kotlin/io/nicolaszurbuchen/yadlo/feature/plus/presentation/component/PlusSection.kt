@@ -18,10 +18,14 @@ import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
  * separate, and a practical-information page is one continuous reading of one subject. The screen
  * decides which sections exist by which lists are non-empty, so a header is never drawn with
  * nothing under it.
+ *
+ * A null [title] draws the block without its header. That is not a styling option — it is what a
+ * block whose content is published without a heading looks like, and an empty rule of uppercase
+ * nothing above a paragraph would be worse than no rule at all.
  */
 @Composable
 fun PlusSection(
-    title: String,
+    title: String?,
     modifier: Modifier = Modifier,
     content: @Composable ColumnScope.() -> Unit,
 ) {
@@ -29,11 +33,13 @@ fun PlusSection(
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm),
         modifier = modifier.fillMaxWidth(),
     ) {
-        Text(
-            text = title.uppercase(),
-            style = MaterialTheme.typography.headlineMedium,
-            color = MaterialTheme.appColors.textTertiary,
-        )
+        title?.let {
+            Text(
+                text = it.uppercase(),
+                style = MaterialTheme.typography.headlineMedium,
+                color = MaterialTheme.appColors.textTertiary,
+            )
+        }
 
         content()
     }

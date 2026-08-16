@@ -455,6 +455,18 @@ for (const m of fest.paiement.methods || []) {
 }
 if (!(fest.paiement.methods || []).length) warns.push('festival.json: paiement has no methods');
 
+// The app reads a note without a title rather than refusing the whole file - that tolerance is
+// what stops one late heading costing the visitor every screen. It is not licence to publish
+// one: a paragraph with no heading is a paragraph the reader has to finish to know whether it
+// was theirs.
+for (const n of fest.paiement.notes || []) {
+  if (!n.id || !n.title || !n.body) errors.push(`paiement note ${n.id}: needs an id, a title and a body`);
+  for (const l of n.links || []) {
+    if (!l.label) errors.push(`paiement note ${n.id}: link without a label`);
+    checkUrl(l.url, `paiement note ${n.id}/link`);
+  }
+}
+
 // Accessibility records what is NOT available as deliberately as what is - "no accessible
 // toilets" is information someone needs before travelling, and silence is not.
 for (const i of fest.accessibilite.items || []) {

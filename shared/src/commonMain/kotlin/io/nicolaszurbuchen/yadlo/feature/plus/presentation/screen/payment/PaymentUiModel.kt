@@ -27,10 +27,15 @@ data class PaymentMethodUiModel(
     val accepted: Boolean,
 )
 
-/** A heading, a paragraph, and the links that belong under *that* heading rather than to the page. */
+/**
+ * A heading, a paragraph, and the links that belong under *that* heading rather than to the page.
+ *
+ * [title] is null for a note the published content has not given a heading, which is what content
+ * older than the build that reads it looks like. The paragraph then stands on its own.
+ */
 data class PaymentNoteUiModel(
     val id: String,
-    val title: String,
+    val title: String?,
     val body: String,
     val links: List<PaymentLinkUiModel>,
 )

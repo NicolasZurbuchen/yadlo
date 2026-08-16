@@ -405,6 +405,33 @@ class FestivalRemoteMapperTest {
         assertEquals(listOf("Newsletter"), festival.links.map { it.label })
     }
 
+    @Test
+    fun published_json_aPaymentNoteWithNoHeadingYet_costsTheHeadingAndNotTheFestival() {
+        // The shape that was live when the headings were added to the app: notes with a body and no
+        // title. A required field inside a section does not fail the section, it fails
+        // festival.json, so this exact document took the whole app down instead of one heading.
+        val json =
+            """
+            {
+              "schemaVersion": 1,
+              "name": "Yadlo",
+              "tagline": "Mouille ton corps, arrose ton esprit",
+              "currentEditionId": "2026",
+              "paiement": {
+                "methods": [{ "id": "twint", "name": "TWINT", "accepted": true }],
+                "notes": [{ "id": "sans-especes", "body": "Aucun stand n'accepte les espèces." }],
+                "provenance": "confirmed"
+              }
+            }
+            """.trimIndent()
+
+        val festival = contentJson.decodeFromString<FestivalDto>(json).toDomain()
+
+        assertEquals("Yadlo", festival.name)
+        assertNull(festival.payment?.notes?.single()?.title)
+        assertEquals("Aucun stand n'accepte les espèces.", festival.payment?.notes?.single()?.body)
+    }
+
     // endregion
 
     private fun minimal() =

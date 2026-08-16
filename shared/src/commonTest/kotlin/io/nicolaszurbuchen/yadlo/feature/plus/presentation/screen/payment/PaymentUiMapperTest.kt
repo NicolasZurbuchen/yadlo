@@ -6,6 +6,7 @@ import io.nicolaszurbuchen.yadlo.common.content.domain.model.Provenance
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class PaymentUiMapperTest {
@@ -55,6 +56,36 @@ class PaymentUiMapperTest {
         assertEquals("twint.ch", note.links.single().label)
         assertEquals("Site officiel", note.links.single().sublabel)
         assertEquals("https://www.twint.ch/", note.links.single().url)
+    }
+
+    @Test
+    fun toUiModel_aNoteWithNoHeading_keepsItsParagraphRatherThanBeingDropped() {
+        // What content older than the build that reads it looks like. The paragraph is still the
+        // answer to somebody's question; only the heading over it is missing.
+        val state =
+            PaymentState(
+                payment =
+                    Payment(
+                        headline = null,
+                        summary = null,
+                        methods = emptyList(),
+                        notes =
+                            listOf(
+                                Payment.Note(
+                                    id = "sans-especes",
+                                    title = null,
+                                    body = "Aucun stand n'accepte les espèces.",
+                                    links = emptyList(),
+                                ),
+                            ),
+                        provenance = Provenance.CONFIRMED,
+                    ),
+            )
+
+        val note = state.toUiModel().notes.single()
+
+        assertNull(note.title)
+        assertEquals("Aucun stand n'accepte les espèces.", note.body)
     }
 
     private fun loaded() =
