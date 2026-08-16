@@ -37,12 +37,12 @@ class StandsExecutorTest {
     @Test
     fun onCreate_theKindFromTheDestination_reachesTheState() =
         runTest {
-            val store = createStore(FakeContentRepository(), StandsKind.MAKERS)
+            val store = createStore(FakeContentRepository(), StandsKindUiModel.MAKERS)
             testDispatcher.scheduler.runCurrent()
 
             // Translated once at construction so neither the navigation package nor the mapper has
             // to name a domain type.
-            assertEquals(StandsKind.MAKERS, store.state.kind)
+            assertEquals(StandsKindUiModel.MAKERS, store.state.kind)
             assertNull(store.state.directory)
             store.dispose()
         }
@@ -51,7 +51,7 @@ class StandsExecutorTest {
     fun onCreate_readsOnlyTheHalfTheDestinationAskedFor() =
         runTest {
             val repository = FakeContentRepository()
-            val store = createStore(repository, StandsKind.FOOD)
+            val store = createStore(repository, StandsKindUiModel.FOOD)
 
             repository.emitStatus(mixed())
             testDispatcher.scheduler.runCurrent()
@@ -64,7 +64,7 @@ class StandsExecutorTest {
     fun onCreate_theOtherKind_readsTheOtherHalf() =
         runTest {
             val repository = FakeContentRepository()
-            val store = createStore(repository, StandsKind.MAKERS)
+            val store = createStore(repository, StandsKindUiModel.MAKERS)
 
             repository.emitStatus(mixed())
             testDispatcher.scheduler.runCurrent()
@@ -79,7 +79,7 @@ class StandsExecutorTest {
     fun markSelected_narrowsTheListWithoutTouchingTheDirectory() =
         runTest {
             val repository = FakeContentRepository()
-            val store = createStore(repository, StandsKind.FOOD)
+            val store = createStore(repository, StandsKindUiModel.FOOD)
             repository.emitStatus(ready(happenings = listOf(stand("vegan-fabrik", marks = listOf("végan")))))
             testDispatcher.scheduler.runCurrent()
 
@@ -96,7 +96,7 @@ class StandsExecutorTest {
     @Test
     fun markSelected_null_clearsTheFilter() =
         runTest {
-            val store = createStore(FakeContentRepository(), StandsKind.FOOD)
+            val store = createStore(FakeContentRepository(), StandsKindUiModel.FOOD)
             testDispatcher.scheduler.runCurrent()
             store.accept(StandsIntent.MarkSelected("végan"))
             testDispatcher.scheduler.runCurrent()
@@ -111,7 +111,7 @@ class StandsExecutorTest {
     @Test
     fun standClicked_opensTheFicheTheProgrammeAlsoOpens() =
         runTest {
-            val store = createStore(FakeContentRepository(), StandsKind.FOOD)
+            val store = createStore(FakeContentRepository(), StandsKindUiModel.FOOD)
             testDispatcher.scheduler.runCurrent()
 
             store.labels.test {
@@ -127,7 +127,7 @@ class StandsExecutorTest {
     fun refresh_landsWhileTheListIsOpen_followsIt() =
         runTest {
             val repository = FakeContentRepository()
-            val store = createStore(repository, StandsKind.FOOD)
+            val store = createStore(repository, StandsKindUiModel.FOOD)
             repository.emitStatus(ready(happenings = listOf(stand("vegan-fabrik"))))
             testDispatcher.scheduler.runCurrent()
 
@@ -140,7 +140,7 @@ class StandsExecutorTest {
 
     private fun createStore(
         repository: FakeContentRepository,
-        kind: StandsKind,
+        kind: StandsKindUiModel,
     ): StandsStore =
         StandsStoreFactory(
             storeFactory = DefaultStoreFactory(),

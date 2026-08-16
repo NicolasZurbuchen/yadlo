@@ -12,6 +12,7 @@ import io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase.ObservePlusPageUseC
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase.ObserveStandDirectoryUseCase
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase.ObserveStoryPageUseCase
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase.ObserveTransportUseCase
+import io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase.ObserveVolunteeringOfferUseCase
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.access.AccessStoreFactory
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.access.AccessViewModel
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.accessibility.AccessibilityStoreFactory
@@ -24,7 +25,7 @@ import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.faq.FaqStoreFa
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.faq.FaqViewModel
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.hours.HoursStoreFactory
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.hours.HoursViewModel
-import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.page.PageKind
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.page.PageKindUiModel
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.page.PageStoreFactory
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.page.PageViewModel
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.partners.PartnersStoreFactory
@@ -33,11 +34,13 @@ import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.payment.Paymen
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.payment.PaymentViewModel
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.plus.PlusStoreFactory
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.plus.PlusViewModel
-import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands.StandsKind
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands.StandsKindUiModel
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands.StandsStoreFactory
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands.StandsViewModel
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.story.StoryStoreFactory
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.story.StoryViewModel
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.volunteering.VolunteeringStoreFactory
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.volunteering.VolunteeringViewModel
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
@@ -57,6 +60,7 @@ val plusModule =
         factoryOf(::ObservePartnerTiersUseCase)
         factoryOf(::ObserveContactRouterUseCase)
         factoryOf(::ObservePlusPageUseCase)
+        factoryOf(::ObserveVolunteeringOfferUseCase)
 
         factoryOf(::PlusStoreFactory)
         factoryOf(::PaymentStoreFactory)
@@ -68,6 +72,7 @@ val plusModule =
         factoryOf(::StoryStoreFactory)
         factoryOf(::PartnersStoreFactory)
         factoryOf(::ContactStoreFactory)
+        factoryOf(::VolunteeringStoreFactory)
 
         viewModelOf(::PlusViewModel)
         viewModelOf(::PaymentViewModel)
@@ -79,15 +84,16 @@ val plusModule =
         viewModelOf(::StoryViewModel)
         viewModelOf(::PartnersViewModel)
         viewModelOf(::ContactViewModel)
+        viewModelOf(::VolunteeringViewModel)
 
         // Parameterised rather than declared with viewModelOf: which page — and which half of the
         // stands — is being read arrives from the NavKey, so the kind is a construction parameter
         // rather than a dependency. The same shape the fiche uses for its Happening id.
-        viewModel { (kind: PageKind) ->
+        viewModel { (kind: PageKindUiModel) ->
             PageViewModel(PageStoreFactory(get(), get(), kind))
         }
 
-        viewModel { (kind: StandsKind) ->
+        viewModel { (kind: StandsKindUiModel) ->
             StandsViewModel(StandsStoreFactory(get(), get(), kind))
         }
     }

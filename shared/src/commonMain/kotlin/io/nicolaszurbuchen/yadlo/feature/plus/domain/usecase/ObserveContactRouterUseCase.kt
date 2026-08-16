@@ -8,12 +8,10 @@ import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.map
 
 /**
- * *Nous écrire* — the volunteering offer, the address directory, and where the association sits.
+ * *Nous écrire* — the address directory and where the association sits.
  *
  * Null when there is no contact block at all, because an aiguillage with nowhere to send anyone is
- * not a screen. The volunteering half is separately nullable: it is the one part of this that is a
- * campaign rather than a permanent fact, and an edition that is not recruiting should not be made
- * to publish an empty one.
+ * not a screen.
  */
 class ObserveContactRouterUseCase(
     private val contentRepository: ContentRepository,
@@ -23,14 +21,8 @@ class ObserveContactRouterUseCase(
             .observeStatus()
             .filterIsInstance<ContentStatus.Ready>()
             .map { status ->
-                val festival = status.bundle.festival
-                val volunteering = festival.involvement?.volunteering
-
-                festival.contact?.let { contact ->
+                status.bundle.festival.contact?.let { contact ->
                     ContactRouter(
-                        volunteering = volunteering,
-                        volunteeringEmail =
-                            contact.emails.firstOrNull { it.id == volunteering?.contactEmailId }?.address,
                         emails = contact.emails,
                         addressLines = contact.addressLines,
                     )

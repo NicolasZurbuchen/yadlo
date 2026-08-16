@@ -20,8 +20,6 @@ class ContactReducerTest {
     fun routerUpdated_firstEmission_holdsTheDirectory() {
         val router =
             ContactRouter(
-                volunteering = null,
-                volunteeringEmail = null,
                 emails = emptyList(),
                 addressLines = listOf("Avenue de la Plage 1"),
             )

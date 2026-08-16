@@ -70,9 +70,9 @@
     <string name="plus_entry_story">L'histoire de Yadlo</string>
     <string name="plus_entry_responsible">Festival responsable</string>
     <string name="plus_entry_partners">Partenaires</string>
+    <string name="plus_entry_volunteering">Devenir bénévole</string>
     <string name="plus_entry_contact">Nous écrire</string>
     <string name="plus_entry_newsletter">Newsletter</string>
-    <string name="plus_entry_social">Réseaux sociaux</string>
     <string name="plus_entry_about">À propos de cette app</string>
     <string name="plus_entry_report">Signaler une information</string>
     <string name="plus_entry_privacy">Confidentialité</string>
@@ -83,6 +83,10 @@
     <string name="plus_partners_count">%1$s partenaires</string>
     <string name="plus_about_unofficial">Application non officielle</string>
 
+    <!-- Trailing marks. Announced only where the mark is the one thing saying the tap leaves the app. -->
+    <string name="plus_mark_external">Ouvre le site web</string>
+    <string name="plus_mark_mail">Ouvre l'application e-mail</string>
+
     <string name="story_empty">L'histoire du festival n'est pas encore publiée.</string>
 
     <string name="partners_intro">Si Yadlo existe, c'est grâce aux partenariats tissés jusqu'ici. Chaque édition en dépend.</string>
@@ -91,8 +95,11 @@
 
     <string name="contact_section_emails">Écrire à la bonne adresse</string>
     <string name="contact_section_address">L'association</string>
-    <string name="contact_signup">S'inscrire</string>
     <string name="contact_empty">Aucune adresse n'est encore publiée.</string>
+
+    <string name="volunteering_section_perks">Ce que ça t'apporte</string>
+    <string name="volunteering_signup">S'inscrire</string>
+    <string name="volunteering_empty">Le recrutement des bénévoles n'est pas ouvert pour le moment.</string>
 
     <string name="page_empty">Rien n'est encore publié ici.</string>
 

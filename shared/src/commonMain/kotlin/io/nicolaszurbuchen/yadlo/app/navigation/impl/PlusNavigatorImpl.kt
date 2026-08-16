@@ -15,14 +15,15 @@ import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.PlusNaviga
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.PrivacyDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.StandsDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.StoryDestination
-import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.page.PageKind
-import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands.StandsKind
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.VolunteeringDestination
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.page.PageKindUiModel
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands.StandsKindUiModel
 import io.nicolaszurbuchen.yadlo.infra.navigation.AppNavigator
 
 class PlusNavigatorImpl(
     private val appNavigator: AppNavigator,
 ) : PlusNavigator {
-    override fun navigateToStands(kind: StandsKind) {
+    override fun navigateToStands(kind: StandsKindUiModel) {
         appNavigator.navigateTo(StandsDestination(kind))
     }
 
@@ -62,7 +63,11 @@ class PlusNavigatorImpl(
         appNavigator.navigateTo(ContactDestination)
     }
 
-    override fun navigateToPage(kind: PageKind) {
+    override fun navigateToVolunteering() {
+        appNavigator.navigateTo(VolunteeringDestination)
+    }
+
+    override fun navigateToPage(kind: PageKindUiModel) {
         appNavigator.navigateTo(PageDestination(kind))
     }
 

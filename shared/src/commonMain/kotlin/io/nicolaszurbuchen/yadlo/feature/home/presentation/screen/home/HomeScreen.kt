@@ -12,11 +12,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
+import io.nicolaszurbuchen.yadlo.common.content.presentation.component.SocialLinksRow
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.component.AnnouncementsBlock
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.component.CountdownBlock
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.component.FiguresBlock
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.component.HeroBlock
-import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.component.SocialBlock
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.component.ThankYouBlock
 
 /**
@@ -73,7 +73,7 @@ fun HomeScreen(
                 }
 
                 is HomeBlockUiModel.Social -> {
-                    SocialBlock(block = block, onSocialClick = onSocialClick)
+                    SocialLinksRow(items = block.items, onSocialClick = onSocialClick)
                 }
             }
         }

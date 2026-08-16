@@ -9,18 +9,19 @@ import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.assistance.Ass
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.contact.ContactRoute
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.faq.FaqRoute
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.hours.HoursRoute
-import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.page.PageKind
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.page.PageKindUiModel
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.page.PageRoute
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.page.PageViewModel
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.partners.PartnersRoute
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.payment.PaymentRoute
-import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.plus.PlusEntry
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.plus.PlusEntryUiModel
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.plus.PlusRoute
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.privacy.PrivacyRoute
-import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands.StandsKind
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands.StandsKindUiModel
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands.StandsRoute
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands.StandsViewModel
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.story.StoryRoute
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.volunteering.VolunteeringRoute
 import io.nicolaszurbuchen.yadlo.infra.navigation.NavKeyHandler
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
@@ -37,22 +38,22 @@ class PlusNavKeyHandler(
             PlusRoute(
                 onNavigateToEntry = { entry ->
                     when (entry) {
-                        PlusEntry.STANDS_FOOD -> navigator.navigateToStands(StandsKind.FOOD)
-                        PlusEntry.STANDS_MAKERS -> navigator.navigateToStands(StandsKind.MAKERS)
-                        PlusEntry.PAYMENT -> navigator.navigateToPayment()
-                        PlusEntry.ACCESS -> navigator.navigateToAccess()
-                        PlusEntry.ACCESSIBILITY -> navigator.navigateToAccessibility()
-                        PlusEntry.HOURS -> navigator.navigateToHours()
-                        PlusEntry.ASSISTANCE -> navigator.navigateToAssistance()
-                        PlusEntry.FAQ -> navigator.navigateToFaq()
-                        PlusEntry.STORY -> navigator.navigateToStory()
-                        PlusEntry.RESPONSIBLE -> navigator.navigateToPage(PageKind.RESPONSIBLE)
-                        PlusEntry.PARTNERS -> navigator.navigateToPartners()
-                        PlusEntry.CONTACT -> navigator.navigateToContact()
-                        PlusEntry.SOCIAL -> navigator.navigateToPage(PageKind.SOCIAL)
-                        PlusEntry.ABOUT -> navigator.navigateToAbout()
-                        PlusEntry.PRIVACY -> navigator.navigateToPrivacy()
-                        PlusEntry.NEWSLETTER, PlusEntry.REPORT -> Unit
+                        PlusEntryUiModel.STANDS_FOOD -> navigator.navigateToStands(StandsKindUiModel.FOOD)
+                        PlusEntryUiModel.STANDS_MAKERS -> navigator.navigateToStands(StandsKindUiModel.MAKERS)
+                        PlusEntryUiModel.PAYMENT -> navigator.navigateToPayment()
+                        PlusEntryUiModel.ACCESS -> navigator.navigateToAccess()
+                        PlusEntryUiModel.ACCESSIBILITY -> navigator.navigateToAccessibility()
+                        PlusEntryUiModel.HOURS -> navigator.navigateToHours()
+                        PlusEntryUiModel.ASSISTANCE -> navigator.navigateToAssistance()
+                        PlusEntryUiModel.FAQ -> navigator.navigateToFaq()
+                        PlusEntryUiModel.STORY -> navigator.navigateToStory()
+                        PlusEntryUiModel.RESPONSIBLE -> navigator.navigateToPage(PageKindUiModel.RESPONSIBLE)
+                        PlusEntryUiModel.PARTNERS -> navigator.navigateToPartners()
+                        PlusEntryUiModel.CONTACT -> navigator.navigateToContact()
+                        PlusEntryUiModel.VOLUNTEERING -> navigator.navigateToVolunteering()
+                        PlusEntryUiModel.ABOUT -> navigator.navigateToAbout()
+                        PlusEntryUiModel.PRIVACY -> navigator.navigateToPrivacy()
+                        PlusEntryUiModel.NEWSLETTER, PlusEntryUiModel.REPORT -> Unit
                     }
                 },
             )
@@ -85,6 +86,7 @@ class PlusNavKeyHandler(
         entry<StoryDestination> { StoryRoute(onNavigateBack = { navigator.navigateBack() }) }
         entry<PartnersDestination> { PartnersRoute(onNavigateBack = { navigator.navigateBack() }) }
         entry<ContactDestination> { ContactRoute(onNavigateBack = { navigator.navigateBack() }) }
+        entry<VolunteeringDestination> { VolunteeringRoute(onNavigateBack = { navigator.navigateBack() }) }
         entry<AboutDestination> { AboutRoute(onNavigateBack = { navigator.navigateBack() }) }
         entry<PrivacyDestination> { PrivacyRoute(onNavigateBack = { navigator.navigateBack() }) }
     }

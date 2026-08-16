@@ -1,7 +1,7 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation
 
-import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.page.PageKind
-import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands.StandsKind
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.page.PageKindUiModel
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands.StandsKindUiModel
 
 /**
  * Plus is the one tab that is mostly a table of contents, so it is also the one with a navigator
@@ -15,7 +15,7 @@ import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands.StandsK
  * not have.
  */
 interface PlusNavigator {
-    fun navigateToStands(kind: StandsKind)
+    fun navigateToStands(kind: StandsKindUiModel)
 
     fun navigateToPayment()
 
@@ -35,7 +35,9 @@ interface PlusNavigator {
 
     fun navigateToContact()
 
-    fun navigateToPage(kind: PageKind)
+    fun navigateToVolunteering()
+
+    fun navigateToPage(kind: PageKindUiModel)
 
     fun navigateToAbout()
 

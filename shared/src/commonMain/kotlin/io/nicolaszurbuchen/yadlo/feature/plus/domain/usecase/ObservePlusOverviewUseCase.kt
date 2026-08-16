@@ -59,8 +59,9 @@ class ObservePlusOverviewUseCase(
                     foundedYear = festival.story?.foundedYear,
                     charterNames = festival.charters.map { it.name },
                     partnerCount = status.bundle.edition.partners.sumOf { it.members.size },
+                    hasVolunteering = festival.involvement?.volunteering != null,
                     hasContact = festival.contact?.emails.orEmpty().isNotEmpty(),
-                    socialCount = festival.social.size,
+                    socials = festival.social,
                     newsletterUrl = festival.links.firstOrNull { it.id == NEWSLETTER_LINK_ID }?.url,
                     reportEmail =
                         festival.contact?.emails?.firstOrNull { it.id == GENERAL_EMAIL_ID }?.address,

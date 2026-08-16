@@ -1,6 +1,9 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.plus
 
+import io.nicolaszurbuchen.yadlo.common.content.domain.model.SocialLink
+import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.socialIconFor
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.model.PlusOverview
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.uimodel.PlusMarkUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.plus_assistance_subtitle
@@ -29,10 +32,10 @@ class PlusUiMapperTest {
         // you on site, what tells you about the festival, what asks something of you, the app.
         assertEquals(
             listOf(
-                PlusGroupUiId.ON_SITE,
-                PlusGroupUiId.FESTIVAL,
-                PlusGroupUiId.INVOLVEMENT,
-                PlusGroupUiId.APP,
+                PlusGroupIdUiModel.ON_SITE,
+                PlusGroupIdUiModel.FESTIVAL,
+                PlusGroupIdUiModel.INVOLVEMENT,
+                PlusGroupIdUiModel.APP,
             ),
             model.groups.map { it.id },
         )
@@ -46,32 +49,32 @@ class PlusUiMapperTest {
         // publishes and the only one that has to be read before leaving the house.
         assertEquals(
             listOf(
-                PlusEntry.STANDS_FOOD,
-                PlusEntry.STANDS_MAKERS,
-                PlusEntry.PAYMENT,
-                PlusEntry.ACCESS,
-                PlusEntry.ACCESSIBILITY,
-                PlusEntry.HOURS,
-                PlusEntry.ASSISTANCE,
-                PlusEntry.FAQ,
+                PlusEntryUiModel.STANDS_FOOD,
+                PlusEntryUiModel.STANDS_MAKERS,
+                PlusEntryUiModel.PAYMENT,
+                PlusEntryUiModel.ACCESS,
+                PlusEntryUiModel.ACCESSIBILITY,
+                PlusEntryUiModel.HOURS,
+                PlusEntryUiModel.ASSISTANCE,
+                PlusEntryUiModel.FAQ,
             ),
-            rowsOf(PlusGroupUiId.ON_SITE, published()),
+            rowsOf(PlusGroupIdUiModel.ON_SITE, published()),
         )
     }
 
     @Test
     fun toUiModel_theOtherThreeGroups_carryWhatTheContentSupports() {
         assertEquals(
-            listOf(PlusEntry.STORY, PlusEntry.RESPONSIBLE, PlusEntry.PARTNERS),
-            rowsOf(PlusGroupUiId.FESTIVAL, published()),
+            listOf(PlusEntryUiModel.STORY, PlusEntryUiModel.RESPONSIBLE, PlusEntryUiModel.PARTNERS),
+            rowsOf(PlusGroupIdUiModel.FESTIVAL, published()),
         )
         assertEquals(
-            listOf(PlusEntry.CONTACT, PlusEntry.NEWSLETTER, PlusEntry.SOCIAL),
-            rowsOf(PlusGroupUiId.INVOLVEMENT, published()),
+            listOf(PlusEntryUiModel.VOLUNTEERING, PlusEntryUiModel.CONTACT, PlusEntryUiModel.NEWSLETTER),
+            rowsOf(PlusGroupIdUiModel.INVOLVEMENT, published()),
         )
         assertEquals(
-            listOf(PlusEntry.ABOUT, PlusEntry.REPORT, PlusEntry.PRIVACY),
-            rowsOf(PlusGroupUiId.APP, published()),
+            listOf(PlusEntryUiModel.ABOUT, PlusEntryUiModel.REPORT, PlusEntryUiModel.PRIVACY),
+            rowsOf(PlusGroupIdUiModel.APP, published()),
         )
     }
 
@@ -79,19 +82,19 @@ class PlusUiMapperTest {
     fun toUiModel_aSectionThatWasNeverPublished_getsNoRow() {
         // The tab can never open a screen with nothing on it, which is what lets the whole of Plus
         // ship while half the festival's practical information is unwritten.
-        assertTrue(PlusEntry.ACCESS !in rowsOf(PlusGroupUiId.ON_SITE, published().copy(hasTransport = false)))
-        assertTrue(PlusEntry.STANDS_FOOD !in rowsOf(PlusGroupUiId.ON_SITE, published().copy(foodStandCount = 0)))
-        assertTrue(PlusEntry.STANDS_MAKERS !in rowsOf(PlusGroupUiId.ON_SITE, published().copy(makerStandCount = 0)))
-        assertTrue(PlusEntry.STORY !in rowsOf(PlusGroupUiId.FESTIVAL, published().copy(foundedYear = null)))
-        assertTrue(PlusEntry.PARTNERS !in rowsOf(PlusGroupUiId.FESTIVAL, published().copy(partnerCount = 0)))
-        assertTrue(PlusEntry.NEWSLETTER !in rowsOf(PlusGroupUiId.INVOLVEMENT, published().copy(newsletterUrl = null)))
+        assertTrue(PlusEntryUiModel.ACCESS !in rowsOf(PlusGroupIdUiModel.ON_SITE, published().copy(hasTransport = false)))
+        assertTrue(PlusEntryUiModel.STANDS_FOOD !in rowsOf(PlusGroupIdUiModel.ON_SITE, published().copy(foodStandCount = 0)))
+        assertTrue(PlusEntryUiModel.STANDS_MAKERS !in rowsOf(PlusGroupIdUiModel.ON_SITE, published().copy(makerStandCount = 0)))
+        assertTrue(PlusEntryUiModel.STORY !in rowsOf(PlusGroupIdUiModel.FESTIVAL, published().copy(foundedYear = null)))
+        assertTrue(PlusEntryUiModel.PARTNERS !in rowsOf(PlusGroupIdUiModel.FESTIVAL, published().copy(partnerCount = 0)))
+        assertTrue(PlusEntryUiModel.NEWSLETTER !in rowsOf(PlusGroupIdUiModel.INVOLVEMENT, published().copy(newsletterUrl = null)))
     }
 
     @Test
     fun toUiModel_theStoryRow_writesTheYearTheFestivalStarted() {
         assertEquals(
             UiText.Resource(Res.string.plus_story_since, listOf("2015")),
-            rowFor(PlusEntry.STORY, published())?.subtitle,
+            rowFor(PlusEntryUiModel.STORY, published())?.subtitle,
         )
     }
 
@@ -99,37 +102,62 @@ class PlusUiMapperTest {
     fun toUiModel_theCharterRow_namesTheChartersRatherThanRepeatingItsOwnTitle() {
         // "Charte FestiPlus" says more than "Festival responsable" does, and it comes out of the
         // content rather than out of a string.
-        assertEquals(UiText.Raw("FestiPlus"), rowFor(PlusEntry.RESPONSIBLE, published())?.subtitle)
+        assertEquals(UiText.Raw("FestiPlus"), rowFor(PlusEntryUiModel.RESPONSIBLE, published())?.subtitle)
     }
 
     @Test
     fun toUiModel_twoCharters_readAsOneLine() {
         val overview = published().copy(charterNames = listOf("FestiPlus", "Charte du lac"))
 
-        assertEquals(UiText.Raw("FestiPlus · Charte du lac"), rowFor(PlusEntry.RESPONSIBLE, overview)?.subtitle)
+        assertEquals(UiText.Raw("FestiPlus · Charte du lac"), rowFor(PlusEntryUiModel.RESPONSIBLE, overview)?.subtitle)
     }
 
     @Test
     fun toUiModel_theAppGroup_standsWithNoContentAtAll() {
         // À propos and Confidentialité are the app's own words, not the festival's. They are the
         // one part of this tab that cannot go missing when a publish does.
-        assertEquals(listOf(PlusEntry.ABOUT, PlusEntry.PRIVACY), rowsOf(PlusGroupUiId.APP, nothing()))
+        assertEquals(listOf(PlusEntryUiModel.ABOUT, PlusEntryUiModel.PRIVACY), rowsOf(PlusGroupIdUiModel.APP, nothing()))
     }
 
     @Test
     fun toUiModel_nothingPublished_leavesOnlyTheAppGroup() {
         val model = PlusState(overview = nothing()).toUiModel()
 
-        assertEquals(listOf(PlusGroupUiId.APP), model.groups.map { it.id })
+        assertEquals(listOf(PlusGroupIdUiModel.APP), model.groups.map { it.id })
     }
 
     @Test
     fun toUiModel_theExternalRows_wearAMarkThatSaysWhereTheyGo() {
-        // `↗` leaves for the browser and `✉` opens mail, against the chevron everything else wears.
+        // One leaves for the browser and one opens mail, against the chevron everything else wears.
         // On one bar of signal that is what tells someone whether tapping costs a page load.
-        assertEquals("↗", PlusEntry.NEWSLETTER.mark)
-        assertEquals("✉", PlusEntry.REPORT.mark)
-        assertEquals("›", PlusEntry.STANDS_FOOD.mark)
+        assertEquals(PlusMarkUiModel.EXTERNAL, PlusEntryUiModel.NEWSLETTER.mark)
+        assertEquals(PlusMarkUiModel.MAIL, PlusEntryUiModel.REPORT.mark)
+        assertEquals(PlusMarkUiModel.DISCLOSURE, PlusEntryUiModel.STANDS_FOOD.mark)
+    }
+
+    @Test
+    fun toUiModel_theNetworks_reachTheFooterWithTheirBundledMarks() {
+        val model = PlusState(overview = published()).toUiModel()
+
+        // Drawn at the foot rather than counted into a row that opened a screen of four links out.
+        // The icon is resolved here, against the marks the app ships, so the row never renders an
+        // empty square for a network the content added first.
+        assertEquals(listOf("Instagram"), model.socials.map { it.name })
+        assertEquals(socialIconFor("instagram"), model.socials.single().icon)
+    }
+
+    @Test
+    fun toUiModel_noNetworksPublished_leavesNoFooterToDraw() {
+        assertTrue(PlusState(overview = nothing()).toUiModel().socials.isEmpty())
+    }
+
+    @Test
+    fun toUiModel_recruitingClosed_takesTheVolunteeringRowWithIt() {
+        // A campaign rather than a permanent fact: in August there is nothing to sign up to, and a
+        // row leading to a page that says so is worse than no row.
+        assertTrue(
+            PlusEntryUiModel.VOLUNTEERING !in rowsOf(PlusGroupIdUiModel.INVOLVEMENT, published().copy(hasVolunteering = false)),
+        )
     }
 
     @Test
@@ -138,24 +166,24 @@ class PlusUiMapperTest {
         // waiting when two of them sell costumes.
         assertEquals(
             UiText.Resource(Res.string.plus_stands_count, listOf(6)),
-            rowFor(PlusEntry.STANDS_FOOD, published())?.subtitle,
+            rowFor(PlusEntryUiModel.STANDS_FOOD, published())?.subtitle,
         )
         assertEquals(
             UiText.Resource(Res.string.plus_stands_count, listOf(2)),
-            rowFor(PlusEntry.STANDS_MAKERS, published())?.subtitle,
+            rowFor(PlusEntryUiModel.STANDS_MAKERS, published())?.subtitle,
         )
     }
 
     @Test
     fun toUiModel_cashRefused_isWrittenOnThePaymentRow() {
-        val row = rowFor(PlusEntry.PAYMENT, published().copy(cashAccepted = false))
+        val row = rowFor(PlusEntryUiModel.PAYMENT, published().copy(cashAccepted = false))
 
         assertEquals(UiText.Resource(Res.string.plus_payment_no_cash), row?.subtitle)
     }
 
     @Test
     fun toUiModel_cashTaken_saysNothingRatherThanSayingSoIsFine() {
-        val row = rowFor(PlusEntry.PAYMENT, published().copy(cashAccepted = true))
+        val row = rowFor(PlusEntryUiModel.PAYMENT, published().copy(cashAccepted = true))
 
         // That the site takes cards is not news. Only the refusal is worth a line someone has to
         // act on before leaving the house.
@@ -164,12 +192,12 @@ class PlusUiMapperTest {
 
     @Test
     fun toUiModel_noPaymentSectionAtAll_removesTheRowRatherThanEmptyingIt() {
-        assertTrue(PlusEntry.PAYMENT !in rowsOf(PlusGroupUiId.ON_SITE, published().copy(cashAccepted = null)))
+        assertTrue(PlusEntryUiModel.PAYMENT !in rowsOf(PlusGroupIdUiModel.ON_SITE, published().copy(cashAccepted = null)))
     }
 
     @Test
     fun toUiModel_theAssistanceRow_namesWhatWasMergedIntoIt() {
-        val row = rowFor(PlusEntry.ASSISTANCE, published())
+        val row = rowFor(PlusEntryUiModel.ASSISTANCE, published())
 
         // Three subjects behind one row needs the row to say so, or nobody opens it until they are
         // already looking for one of the three.
@@ -178,21 +206,21 @@ class PlusUiMapperTest {
 
     @Test
     fun toUiModel_aFaqWithNoQuestions_getsNoRow() {
-        assertTrue(PlusEntry.FAQ !in rowsOf(PlusGroupUiId.ON_SITE, published().copy(faqCount = 0)))
+        assertTrue(PlusEntryUiModel.FAQ !in rowsOf(PlusGroupIdUiModel.ON_SITE, published().copy(faqCount = 0)))
     }
 
     @Test
     fun toUiModel_accessibilityWithNothingPublished_stillGetsItsRow() {
         // The one section whose emptiness is the content. Hiding the row would hide the only
         // address a wheelchair user has to write to.
-        assertTrue(PlusEntry.ACCESSIBILITY in rowsOf(PlusGroupUiId.ON_SITE, published().copy(hasAccessibility = true)))
+        assertTrue(PlusEntryUiModel.ACCESSIBILITY in rowsOf(PlusGroupIdUiModel.ON_SITE, published().copy(hasAccessibility = true)))
     }
 
     @Test
     fun toUiModel_aGroupWithNoRowsLeft_isNotDrawnAsAnEmptyCard() {
         val model = PlusState(overview = nothing()).toUiModel()
 
-        assertTrue(model.groups.none { it.id == PlusGroupUiId.ON_SITE })
+        assertTrue(model.groups.none { it.id == PlusGroupIdUiModel.ON_SITE })
     }
 
     @Test
@@ -201,7 +229,7 @@ class PlusUiMapperTest {
     }
 
     private fun rowsOf(
-        group: PlusGroupUiId,
+        group: PlusGroupIdUiModel,
         overview: PlusOverview,
     ) = PlusState(overview = overview)
         .toUiModel()
@@ -212,7 +240,7 @@ class PlusUiMapperTest {
         .map { it.entry }
 
     private fun rowFor(
-        entry: PlusEntry,
+        entry: PlusEntryUiModel,
         overview: PlusOverview,
     ) = PlusState(overview = overview)
         .toUiModel()
@@ -233,8 +261,9 @@ class PlusUiMapperTest {
             foundedYear = 2015,
             charterNames = listOf("FestiPlus"),
             partnerCount = 39,
+            hasVolunteering = true,
             hasContact = true,
-            socialCount = 4,
+            socials = listOf(SocialLink(id = "instagram", name = "Instagram", url = "https://example.ch/i")),
             newsletterUrl = "https://example.ch/newsletter",
             reportEmail = "hello@yadlo.ch",
         )
@@ -252,8 +281,9 @@ class PlusUiMapperTest {
             foundedYear = null,
             charterNames = emptyList(),
             partnerCount = 0,
+            hasVolunteering = false,
             hasContact = false,
-            socialCount = 0,
+            socials = emptyList(),
             newsletterUrl = null,
             reportEmail = null,
         )

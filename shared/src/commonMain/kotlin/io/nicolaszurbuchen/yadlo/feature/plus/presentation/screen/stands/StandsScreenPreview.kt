@@ -25,7 +25,7 @@ private class StandsStateProvider : PreviewParameterProvider<StandsUiModel> {
         sequenceOf(
             StandsUiModel(
                 isLoading = true,
-                title = UiText.Resource(StandsKind.FOOD.title),
+                title = UiText.Resource(StandsKindUiModel.FOOD.title),
                 chips = emptyList(),
                 stands = emptyList(),
                 emptyMessage = null,
@@ -34,7 +34,7 @@ private class StandsStateProvider : PreviewParameterProvider<StandsUiModel> {
             makers(),
             StandsUiModel(
                 isLoading = false,
-                title = UiText.Resource(StandsKind.FOOD.title),
+                title = UiText.Resource(StandsKindUiModel.FOOD.title),
                 chips = chips(selected = "sans gluten"),
                 stands = emptyList(),
                 emptyMessage = UiText.Resource(Res.string.stands_no_match),
@@ -69,7 +69,7 @@ private fun chips(selected: String?) =
 private fun food() =
     StandsUiModel(
         isLoading = false,
-        title = UiText.Resource(StandsKind.FOOD.title),
+        title = UiText.Resource(StandsKindUiModel.FOOD.title),
         emptyMessage = null,
         chips = chips(selected = null),
         stands =
@@ -95,7 +95,7 @@ private fun food() =
 private fun makers() =
     StandsUiModel(
         isLoading = false,
-        title = UiText.Resource(StandsKind.MAKERS.title),
+        title = UiText.Resource(StandsKindUiModel.MAKERS.title),
         emptyMessage = null,
         // No marks published on either maker, so no chip row at all.
         chips =

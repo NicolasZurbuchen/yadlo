@@ -16,9 +16,11 @@ import androidx.compose.material.icons.outlined.Park
 import androidx.compose.material.icons.outlined.Restaurant
 import androidx.compose.material.icons.outlined.Sailing
 import androidx.compose.material.icons.outlined.Schedule
-import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material.icons.outlined.Storefront
+import androidx.compose.material.icons.outlined.VolunteerActivism
 import androidx.compose.ui.graphics.vector.ImageVector
+import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SocialLinkUiModel
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.uimodel.PlusMarkUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import org.jetbrains.compose.resources.StringResource
 import yadlo.shared.generated.resources.Res
@@ -35,24 +37,29 @@ import yadlo.shared.generated.resources.plus_entry_payment
 import yadlo.shared.generated.resources.plus_entry_privacy
 import yadlo.shared.generated.resources.plus_entry_report
 import yadlo.shared.generated.resources.plus_entry_responsible
-import yadlo.shared.generated.resources.plus_entry_social
 import yadlo.shared.generated.resources.plus_entry_stands_food
 import yadlo.shared.generated.resources.plus_entry_stands_makers
 import yadlo.shared.generated.resources.plus_entry_story
+import yadlo.shared.generated.resources.plus_entry_volunteering
 import yadlo.shared.generated.resources.plus_group_app
 import yadlo.shared.generated.resources.plus_group_festival
 import yadlo.shared.generated.resources.plus_group_involvement
 import yadlo.shared.generated.resources.plus_group_on_site
 
 /**
- * The root of Plus: four cards of rows over everything the festival is that is not its programme.
+ * The root of Plus: four cards of rows over everything the festival is that is not its programme,
+ * and the association's networks under them.
  *
  * A null-free model — a row that has no section behind it was never built, so the screen never has
  * to decide whether to draw one.
+ *
+ * [socials] are a footer rather than a row that opens a screen of four links. They are the way a
+ * page signs off, not a subject someone goes looking for, and Accueil already ends the same way.
  */
 data class PlusUiModel(
     val isLoading: Boolean,
     val groups: List<PlusGroupUiModel>,
+    val socials: List<SocialLinkUiModel>,
 )
 
 /**
@@ -65,7 +72,7 @@ data class PlusUiModel(
  * Declaration order *is* display order, the same contract [io.nicolaszurbuchen.yadlo.app.navigation.Tab]
  * holds for the bottom bar.
  */
-enum class PlusGroupUiId(
+enum class PlusGroupIdUiModel(
     val title: StringResource,
 ) {
     ON_SITE(Res.string.plus_group_on_site),
@@ -77,20 +84,19 @@ enum class PlusGroupUiId(
 /**
  * One row of the root, and the only thing the screen hands back when it is tapped.
  *
- * The title and icon hang off the entry rather than off the row, because they are fixed properties
- * of *which entry this is* — nothing about the content can change them, and putting them here keeps
- * the mapper deciding only what it actually decides: which rows exist, and what each one says
- * underneath.
+ * The title, icon and mark hang off the entry rather than off the row, because they are fixed
+ * properties of *which entry this is* — nothing about the content can change them, and putting them
+ * here keeps the mapper deciding only what it actually decides: which rows exist, and what each one
+ * says underneath.
+ *
+ * [mark] is where the tap goes. Everything defaults to staying in the app; the two that do not are
+ * the two the reader deserves warning about, and `PlusEntryUiModelTest` is what keeps a third from
+ * being added without the Route learning to send it out.
  */
-enum class PlusEntry(
+enum class PlusEntryUiModel(
     val title: StringResource,
     val icon: ImageVector,
-    /**
-     * Where the tap goes, said on the row itself. `›` stays inside, `↗` leaves for the browser, `✉`
-     * opens mail — SPEC.md § Interaction rules, and the reason a reader on one bar of signal knows
-     * before tapping whether it is about to cost them a page load.
-     */
-    val mark: String = DISCLOSURE,
+    val mark: PlusMarkUiModel = PlusMarkUiModel.DISCLOSURE,
 ) {
     STANDS_FOOD(Res.string.plus_entry_stands_food, Icons.Outlined.Restaurant),
     STANDS_MAKERS(Res.string.plus_entry_stands_makers, Icons.Outlined.Storefront),
@@ -103,25 +109,28 @@ enum class PlusEntry(
     STORY(Res.string.plus_entry_story, Icons.Outlined.Sailing),
     RESPONSIBLE(Res.string.plus_entry_responsible, Icons.Outlined.Park),
     PARTNERS(Res.string.plus_entry_partners, Icons.Outlined.Groups),
+
+    /**
+     * *Devenir Hot'Staff*, on its own row and above *Nous écrire*. Volunteering is the one thing in
+     * this group the association is actively recruiting for, and burying it inside a mail router
+     * made the biggest call to action on the tab reachable only by someone already looking for a
+     * mail address.
+     */
+    VOLUNTEERING(Res.string.plus_entry_volunteering, Icons.Outlined.VolunteerActivism),
     CONTACT(Res.string.plus_entry_contact, Icons.Outlined.MailOutline),
-    NEWSLETTER(Res.string.plus_entry_newsletter, Icons.AutoMirrored.Outlined.Send, EXTERNAL),
-    SOCIAL(Res.string.plus_entry_social, Icons.Outlined.Share),
+    NEWSLETTER(Res.string.plus_entry_newsletter, Icons.AutoMirrored.Outlined.Send, PlusMarkUiModel.EXTERNAL),
     ABOUT(Res.string.plus_entry_about, Icons.Outlined.Info),
-    REPORT(Res.string.plus_entry_report, Icons.Outlined.Flag, MAIL),
+    REPORT(Res.string.plus_entry_report, Icons.Outlined.Flag, PlusMarkUiModel.MAIL),
     PRIVACY(Res.string.plus_entry_privacy, Icons.Outlined.Lock),
 }
 
-private const val DISCLOSURE = "›"
-private const val EXTERNAL = "↗"
-private const val MAIL = "✉"
-
 data class PlusGroupUiModel(
-    val id: PlusGroupUiId,
+    val id: PlusGroupIdUiModel,
     val rows: List<PlusRowUiModel>,
 )
 
 /** [subtitle] is the little the row can say from the content before you open it. */
 data class PlusRowUiModel(
-    val entry: PlusEntry,
+    val entry: PlusEntryUiModel,
     val subtitle: UiText?,
 )

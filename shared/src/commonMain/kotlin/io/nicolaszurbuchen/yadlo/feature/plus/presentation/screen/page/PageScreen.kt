@@ -13,6 +13,7 @@ import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusBodyTex
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusDetailScaffold
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusLinkTile
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusSection
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.uimodel.PlusMarkUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.asString
 
 /**
@@ -53,7 +54,7 @@ fun PageScreen(
                     section.links.forEach { link ->
                         PlusLinkTile(
                             label = link.label,
-                            mark = EXTERNAL_MARK,
+                            mark = PlusMarkUiModel.EXTERNAL,
                             onClick = { onLinkClick(link.url) },
                             sublabel = link.sublabel,
                         )
@@ -71,7 +72,7 @@ fun PageScreen(
                     section.links.forEach { link ->
                         PlusLinkTile(
                             label = link.label,
-                            mark = EXTERNAL_MARK,
+                            mark = PlusMarkUiModel.EXTERNAL,
                             onClick = { onLinkClick(link.url) },
                             sublabel = link.sublabel,
                         )
@@ -81,5 +82,3 @@ fun PageScreen(
         }
     }
 }
-
-private const val EXTERNAL_MARK = "↗"

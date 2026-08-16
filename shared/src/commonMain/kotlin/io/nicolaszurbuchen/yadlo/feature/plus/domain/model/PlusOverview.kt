@@ -1,5 +1,7 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.domain.model
 
+import io.nicolaszurbuchen.yadlo.common.content.domain.model.SocialLink
+
 /**
  * What the published content can currently answer, and the little of it the root list writes on a
  * row before you open it.
@@ -30,8 +32,14 @@ data class PlusOverview(
     val foundedYear: Int?,
     val charterNames: List<String>,
     val partnerCount: Int,
+    /** False when the edition has closed its applications — recruiting is a campaign, not a fact. */
+    val hasVolunteering: Boolean,
     val hasContact: Boolean,
-    val socialCount: Int,
+    /**
+     * The links themselves rather than a count, because the tab now *draws* them at its foot
+     * instead of counting them into a row that opened a screen of four links.
+     */
+    val socials: List<SocialLink>,
     /**
      * The two rows that leave the app from the root rather than opening a screen. Carried as URLs
      * because the tab is where they are tapped, and a row that cannot say where it goes should not

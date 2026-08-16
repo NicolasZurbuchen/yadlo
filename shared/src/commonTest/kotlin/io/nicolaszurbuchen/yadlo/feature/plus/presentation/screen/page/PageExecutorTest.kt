@@ -38,11 +38,11 @@ class PageExecutorTest {
     @Test
     fun onCreate_theKindFromTheDestination_reachesTheState() =
         runTest {
-            val store = createStore(FakeContentRepository(), PageKind.SOCIAL)
+            val store = createStore(FakeContentRepository(), PageKindUiModel.RESPONSIBLE)
             testDispatcher.scheduler.runCurrent()
 
             // Translated once at construction so nothing downstream has to name a domain type.
-            assertEquals(PageKind.SOCIAL, store.state.kind)
+            assertEquals(PageKindUiModel.RESPONSIBLE, store.state.kind)
             store.dispose()
         }
 
@@ -50,7 +50,7 @@ class PageExecutorTest {
     fun onCreate_readsTheSectionTheDestinationAskedFor() =
         runTest {
             val repository = FakeContentRepository()
-            val store = createStore(repository, PageKind.RESPONSIBLE)
+            val store = createStore(repository, PageKindUiModel.RESPONSIBLE)
 
             repository.emitStatus(ready(festival = published()))
             testDispatcher.scheduler.runCurrent()
@@ -62,22 +62,9 @@ class PageExecutorTest {
         }
 
     @Test
-    fun onCreate_theOtherPageId_readsTheOtherSection() =
-        runTest {
-            val repository = FakeContentRepository()
-            val store = createStore(repository, PageKind.SOCIAL)
-
-            repository.emitStatus(ready(festival = published()))
-            testDispatcher.scheduler.runCurrent()
-
-            assertEquals(listOf("Instagram"), store.state.page?.sections?.single()?.links?.map { it.label })
-            store.dispose()
-        }
-
-    @Test
     fun linkClicked_publishesTheUrlForThePlatformToOpen() =
         runTest {
-            val store = createStore(FakeContentRepository(), PageKind.SOCIAL)
+            val store = createStore(FakeContentRepository(), PageKindUiModel.RESPONSIBLE)
             testDispatcher.scheduler.runCurrent()
 
             store.labels.test {
@@ -89,7 +76,7 @@ class PageExecutorTest {
 
     private fun createStore(
         repository: FakeContentRepository,
-        kind: PageKind,
+        kind: PageKindUiModel,
     ): PageStore =
         PageStoreFactory(
             storeFactory = DefaultStoreFactory(),

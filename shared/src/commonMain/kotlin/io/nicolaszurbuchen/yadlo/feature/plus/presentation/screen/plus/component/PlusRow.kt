@@ -22,11 +22,13 @@ import io.nicolaszurbuchen.yadlo.infra.ui.asString
 import org.jetbrains.compose.resources.stringResource
 
 /**
- * One entry of the root list. Icon, name, sometimes a line of what is behind it, and a chevron.
+ * One entry of the root list. Icon, name, sometimes a line of what is behind it, and the mark that
+ * says where tapping goes.
  *
- * The icon is decorative and carries no `contentDescription`: the label beside it says the same
- * thing in words, and a screen reader announcing "restaurant, Nourriture & boissons" reads the row
- * twice.
+ * The leading icon is decorative and carries no `contentDescription`: the label beside it says the
+ * same thing in words, and a screen reader announcing "restaurant, Nourriture & boissons" reads the
+ * row twice. The trailing mark is the opposite case for the two rows that leave the app — see
+ * [io.nicolaszurbuchen.yadlo.feature.plus.presentation.uimodel.PlusMarkUiModel].
  */
 @Composable
 fun PlusRow(
@@ -70,10 +72,11 @@ fun PlusRow(
             }
         }
 
-        Text(
-            text = row.entry.mark,
-            style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.appColors.textTertiary,
+        Icon(
+            imageVector = row.entry.mark.icon,
+            contentDescription = row.entry.mark.contentDescription?.let { stringResource(it) },
+            tint = MaterialTheme.appColors.textTertiary,
+            modifier = Modifier.size(ICON_SIZE),
         )
     }
 }

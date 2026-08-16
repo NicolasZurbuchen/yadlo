@@ -11,6 +11,7 @@ import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusDetailS
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusLinkTile
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusSection
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.access.component.NightDeparturesBlock
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.uimodel.PlusMarkUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.asString
 import org.jetbrains.compose.resources.stringResource
 import yadlo.shared.generated.resources.Res
@@ -54,7 +55,7 @@ fun AccessScreen(
                 mode.links.forEach { link ->
                     PlusLinkTile(
                         label = link.label,
-                        mark = EXTERNAL_MARK,
+                        mark = PlusMarkUiModel.EXTERNAL,
                         onClick = { onLinkClick(link.url) },
                         sublabel = link.sublabel,
                     )
@@ -63,5 +64,3 @@ fun AccessScreen(
         }
     }
 }
-
-private const val EXTERNAL_MARK = "↗"

@@ -1,4 +1,4 @@
-package io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.component
+package io.nicolaszurbuchen.yadlo.common.content.presentation.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -14,11 +14,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
-import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.HomeBlockUiModel
+import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SocialLinkUiModel
 import org.jetbrains.compose.resources.painterResource
 
 /**
- * The four networks, quietly, at the foot of the screen.
+ * The four networks, quietly, at the foot of a screen. Accueil ends with it, and so does Plus.
  *
  * The association's own marks, bundled rather than fetched — they are chrome, not content, and a
  * row of empty squares is a worse first launch than no row at all. They are monochrome single-path
@@ -34,8 +34,8 @@ import org.jetbrains.compose.resources.painterResource
  */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun SocialBlock(
-    block: HomeBlockUiModel.Social,
+fun SocialLinksRow(
+    items: List<SocialLinkUiModel>,
     onSocialClick: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -43,7 +43,7 @@ fun SocialBlock(
         horizontalArrangement = Arrangement.Center,
         modifier = modifier.fillMaxWidth(),
     ) {
-        block.items.forEach { item ->
+        items.forEach { item ->
             if (item.icon != null) {
                 // IconButton rather than a clickable Icon: it brings the 48dp touch target that a
                 // bare 24dp mark would not, and four in a row is exactly the case that needs one.

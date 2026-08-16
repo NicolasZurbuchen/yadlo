@@ -4,7 +4,6 @@ import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import org.jetbrains.compose.resources.StringResource
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.plus_entry_responsible
-import yadlo.shared.generated.resources.plus_entry_social
 
 /**
  * The shared text page: a title, some prose, and somewhere to go.
@@ -28,11 +27,10 @@ data class PageUiModel(
  * translates once at construction, so the UiMapper never has to name a domain type — which it is
  * not allowed to import, and which the alternative would have smuggled in fully qualified.
  */
-enum class PageKind(
+enum class PageKindUiModel(
     val title: StringResource,
 ) {
     RESPONSIBLE(Res.string.plus_entry_responsible),
-    SOCIAL(Res.string.plus_entry_social),
 }
 
 data class PageSectionUiModel(

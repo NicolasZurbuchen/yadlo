@@ -11,6 +11,7 @@ import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusDetailS
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusLinkTile
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusSection
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.assistance.component.EmergencyNumberRow
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.uimodel.PlusMarkUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.asString
 import org.jetbrains.compose.resources.stringResource
 import yadlo.shared.generated.resources.Res
@@ -64,12 +65,10 @@ fun AssistanceScreen(
 
                 PlusLinkTile(
                     label = email,
-                    mark = MAIL_MARK,
+                    mark = PlusMarkUiModel.MAIL,
                     onClick = { onLostPropertyClick(email) },
                 )
             }
         }
     }
 }
-
-private const val MAIL_MARK = "✉"

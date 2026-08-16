@@ -46,7 +46,7 @@ sealed interface StandsMessage {
  * content — so the bar reads correctly while the list is still loading.
  */
 data class StandsState(
-    val kind: StandsKind,
+    val kind: StandsKindUiModel,
     val directory: StandDirectory? = null,
     val selectedMark: String? = null,
 )

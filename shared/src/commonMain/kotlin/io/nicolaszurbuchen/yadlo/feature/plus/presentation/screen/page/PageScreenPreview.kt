@@ -17,12 +17,16 @@ import io.nicolaszurbuchen.yadlo.infra.ui.UiText
  * Both shapes the gabarit takes: a titled section with prose and a link, and an untitled one that
  * is nothing but links. If those two do not both read well, the entries sharing this screen were
  * wrong to share it.
+ *
+ * Only one page routes here today — *Réseaux sociaux* became the footer of the tab — so the second
+ * is drawn under the same title. It stays because the untitled-section shape is the one the
+ * remaining unpublished sections will arrive in, and it is the shape that breaks first.
  */
 private class PageStateProvider : PreviewParameterProvider<PageUiModel> {
     override val values =
         sequenceOf(
             responsible(),
-            social(),
+            untitledSections(),
         )
 }
 
@@ -41,7 +45,7 @@ private fun PageScreenPreview(
 private fun responsible() =
     PageUiModel(
         isLoading = false,
-        title = UiText.Resource(PageKind.RESPONSIBLE.title),
+        title = UiText.Resource(PageKindUiModel.RESPONSIBLE.title),
         emptyMessage = null,
         sections =
             listOf(
@@ -64,23 +68,22 @@ private fun responsible() =
             ),
     )
 
-private fun social() =
+private fun untitledSections() =
     PageUiModel(
         isLoading = false,
-        title = UiText.Resource(PageKind.SOCIAL.title),
+        title = UiText.Resource(PageKindUiModel.RESPONSIBLE.title),
         emptyMessage = null,
         sections =
             listOf(
                 PageSectionUiModel(
-                    id = "reseaux",
+                    id = "chartes",
                     title = null,
                     body = null,
                     links =
                         listOf(
-                            PageLinkUiModel(id = "instagram", label = "Instagram", sublabel = null, url = "https://a"),
-                            PageLinkUiModel(id = "facebook", label = "Facebook", sublabel = null, url = "https://b"),
-                            PageLinkUiModel(id = "youtube", label = "YouTube", sublabel = null, url = "https://c"),
-                            PageLinkUiModel(id = "tiktok", label = "TikTok", sublabel = null, url = "https://d"),
+                            PageLinkUiModel(id = "festiplus", label = "FestiPlus", sublabel = null, url = "https://a"),
+                            PageLinkUiModel(id = "lac", label = "Charte du lac", sublabel = null, url = "https://b"),
+                            PageLinkUiModel(id = "vaud", label = "Charte vaudoise", sublabel = null, url = "https://c"),
                         ),
                 ),
             ),

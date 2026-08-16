@@ -17,7 +17,6 @@ private class ContactStateProvider : PreviewParameterProvider<ContactUiModel> {
         sequenceOf(
             ContactUiModel(
                 isLoading = true,
-                volunteering = null,
                 emails = emptyList(),
                 address = null,
                 emptyMessage = null,
@@ -33,7 +32,7 @@ private fun ContactScreenPreview(
 ) {
     YadloTheme {
         Box(modifier = Modifier.fillMaxSize().background(MaterialTheme.appColors.background)) {
-            ContactScreen(state = state, onBackClick = {}, onEmailClick = {}, onSignupClick = {})
+            ContactScreen(state = state, onBackClick = {}, onEmailClick = {})
         }
     }
 }
@@ -42,14 +41,6 @@ private fun published() =
     ContactUiModel(
         isLoading = false,
         emptyMessage = null,
-        volunteering =
-            VolunteeringUiModel(
-                name = "Hot'Staff",
-                body = "Les bénévoles s'engagent pour un minimum de 6 heures pendant l'événement.",
-                perks = listOf("Tote bag et t-shirt Hot Staff", "Repas végane chaque jour"),
-                signupUrl = "https://ehro.app/o/yadlo/",
-                email = "staff@yadlo.ch",
-            ),
         emails =
             listOf(
                 ContactEmailUiModel(id = "hello", label = "Informations générales", address = "hello@yadlo.ch"),

@@ -73,21 +73,6 @@ class ContactExecutorTest {
             store.dispose()
         }
 
-    @Test
-    fun signupClicked_opensTheAssociationsOwnRecruitmentSite() =
-        runTest {
-            val store = createStore(FakeContentRepository())
-            testDispatcher.scheduler.runCurrent()
-
-            store.labels.test {
-                store.accept(ContactIntent.SignupClicked("https://ehro.app/o/yadlo/"))
-                // Their pipeline keeps receiving its applications rather than a personal inbox
-                // forwarding them by hand in the busiest month of their year.
-                assertEquals(ContactLabel.OpenUrl("https://ehro.app/o/yadlo/"), awaitItem())
-            }
-            store.dispose()
-        }
-
     private fun createStore(repository: FakeContentRepository): ContactStore =
         ContactStoreFactory(
             storeFactory = DefaultStoreFactory(),

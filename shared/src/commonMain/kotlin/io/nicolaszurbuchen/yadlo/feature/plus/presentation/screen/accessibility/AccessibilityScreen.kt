@@ -11,6 +11,7 @@ import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusDetailS
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusFactRow
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusLinkTile
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusSection
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.uimodel.PlusMarkUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.asString
 import org.jetbrains.compose.resources.stringResource
 import yadlo.shared.generated.resources.Res
@@ -86,7 +87,7 @@ fun AccessibilityScreen(
 
                 PlusLinkTile(
                     label = email,
-                    mark = MAIL_MARK,
+                    mark = PlusMarkUiModel.MAIL,
                     onClick = { onContactClick(email) },
                     // A hint rather than a prefilled subject: the app opens a blank mail and the
                     // reader writes it, which needs no accent percent-encoded on two platforms.
@@ -99,6 +100,3 @@ fun AccessibilityScreen(
 
 private const val AVAILABLE_MARK = "✓"
 private const val UNAVAILABLE_MARK = "✕"
-
-/** `✉` opens mail, per SPEC.md § Interaction rules. */
-private const val MAIL_MARK = "✉"

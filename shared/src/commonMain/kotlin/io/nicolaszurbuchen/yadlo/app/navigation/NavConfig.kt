@@ -21,6 +21,7 @@ import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.PlusMainDe
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.PrivacyDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.StandsDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.StoryDestination
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.VolunteeringDestination
 import io.nicolaszurbuchen.yadlo.feature.pokemonexplorer.presentation.navigation.DetailDestination
 import io.nicolaszurbuchen.yadlo.feature.pokemonexplorer.presentation.navigation.MainDestination
 import io.nicolaszurbuchen.yadlo.feature.programme.presentation.navigation.ProgrammeDestination
@@ -58,6 +59,7 @@ val navConfig =
                     subclass(StoryDestination::class)
                     subclass(PartnersDestination::class)
                     subclass(ContactDestination::class)
+                    subclass(VolunteeringDestination::class)
                     subclass(PageDestination::class)
                     subclass(AboutDestination::class)
                     subclass(PrivacyDestination::class)

@@ -6,9 +6,8 @@ import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase.ObserveContactRouterUseCase
+import io.nicolaszurbuchen.yadlo.infra.ui.mailtoUrl
 import kotlinx.coroutines.launch
-
-private const val MAIL_SCHEME = "mailto:"
 
 interface ContactStore : Store<ContactIntent, ContactState, ContactLabel>
 
@@ -42,11 +41,10 @@ class ContactStoreFactory(
         }
 
         override fun executeIntent(intent: ContactIntent) {
-            // Both leave the app, and that is the whole design: no backend, no stored message, and
-            // the association's own recruitment site keeps receiving its applications.
+            // It leaves the app, and that is the whole design: no backend, no stored message, and
+            // the association's own inboxes keep receiving their own mail.
             when (intent) {
-                is ContactIntent.EmailClicked -> publish(ContactLabel.OpenUrl("$MAIL_SCHEME${intent.address}"))
-                is ContactIntent.SignupClicked -> publish(ContactLabel.OpenUrl(intent.url))
+                is ContactIntent.EmailClicked -> publish(ContactLabel.OpenUrl(mailtoUrl(intent.address)))
             }
         }
 

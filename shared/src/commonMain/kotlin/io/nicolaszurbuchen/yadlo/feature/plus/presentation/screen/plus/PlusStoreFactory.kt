@@ -6,9 +6,8 @@ import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase.ObservePlusOverviewUseCase
+import io.nicolaszurbuchen.yadlo.infra.ui.mailtoUrl
 import kotlinx.coroutines.launch
-
-private const val MAIL_SCHEME = "mailto:"
 
 interface PlusStore : Store<PlusIntent, PlusState, PlusLabel>
 
@@ -49,7 +48,11 @@ class PlusStoreFactory(
                 }
 
                 PlusIntent.ReportClicked -> {
-                    state().overview?.reportEmail?.let { publish(PlusLabel.OpenUrl("$MAIL_SCHEME$it")) }
+                    state().overview?.reportEmail?.let { publish(PlusLabel.OpenUrl(mailtoUrl(it))) }
+                }
+
+                is PlusIntent.SocialClicked -> {
+                    publish(PlusLabel.OpenUrl(intent.url))
                 }
             }
         }

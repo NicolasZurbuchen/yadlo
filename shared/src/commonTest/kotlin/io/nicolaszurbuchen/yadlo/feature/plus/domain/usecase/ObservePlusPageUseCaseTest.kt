@@ -3,13 +3,11 @@ package io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase
 import io.nicolaszurbuchen.yadlo.common.content.domain.fake.FakeContentRepository
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Charter
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Provenance
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.SocialLink
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.model.PlusPageId
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class ObservePlusPageUseCaseTest {
@@ -69,44 +67,6 @@ class ObservePlusPageUseCaseTest {
             val repository = FakeContentRepository().apply { emitStatus(ready()) }
 
             assertTrue(pageFrom(repository, PlusPageId.RESPONSIBLE).sections.isEmpty())
-        }
-
-    @Test
-    fun invoke_social_isOneUntitledSectionOfLinks() =
-        runTest {
-            val repository =
-                FakeContentRepository().apply {
-                    emitStatus(
-                        ready(
-                            festival =
-                                festival {
-                                    copy(
-                                        social =
-                                            listOf(
-                                                SocialLink(id = "instagram", name = "Instagram", url = "https://a"),
-                                                SocialLink(id = "tiktok", name = "TikTok", url = "https://b"),
-                                            ),
-                                    )
-                                },
-                        ),
-                    )
-                }
-
-            val section = pageFrom(repository, PlusPageId.SOCIAL).sections.single()
-
-            // The page's own title already says what these are; a second heading repeating it is
-            // noise, which is why a section's title is nullable at all.
-            assertNull(section.title)
-            assertEquals(listOf("Instagram", "TikTok"), section.links.map { it.label })
-        }
-
-    @Test
-    fun invoke_socialWithNoNetworks_isAPageWithNoSections() =
-        runTest {
-            val repository = FakeContentRepository().apply { emitStatus(ready()) }
-
-            // Not one empty section: an untitled section with no links would draw as a blank gap.
-            assertTrue(pageFrom(repository, PlusPageId.SOCIAL).sections.isEmpty())
         }
 
     private suspend fun pageFrom(

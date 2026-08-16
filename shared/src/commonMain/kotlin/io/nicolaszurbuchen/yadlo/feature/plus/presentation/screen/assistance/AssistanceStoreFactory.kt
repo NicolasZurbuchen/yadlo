@@ -6,6 +6,7 @@ import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase.ObserveAssistanceGuideUseCase
+import io.nicolaszurbuchen.yadlo.infra.ui.mailtoUrl
 import kotlinx.coroutines.launch
 
 /**
@@ -14,7 +15,6 @@ import kotlinx.coroutines.launch
  * hand needs, and the only one that is safe to give a row a reader might brush past.
  */
 private const val TEL_SCHEME = "tel:"
-private const val MAIL_SCHEME = "mailto:"
 
 /** Spaces and non-breaking spaces are how a number is read, never how it is dialled. */
 private val NON_DIALLABLE = Regex("[^+0-9]")
@@ -57,7 +57,7 @@ class AssistanceStoreFactory(
                 }
 
                 is AssistanceIntent.LostPropertyClicked -> {
-                    publish(AssistanceLabel.OpenUrl("$MAIL_SCHEME${intent.email}"))
+                    publish(AssistanceLabel.OpenUrl(mailtoUrl(intent.email)))
                 }
             }
         }

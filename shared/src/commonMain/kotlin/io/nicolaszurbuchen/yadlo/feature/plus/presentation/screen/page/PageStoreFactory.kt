@@ -21,7 +21,7 @@ interface PageStore : Store<PageIntent, PageState, PageLabel>
 class PageStoreFactory(
     private val storeFactory: StoreFactory,
     private val observePlusPage: ObservePlusPageUseCase,
-    private val kind: PageKind,
+    private val kind: PageKindUiModel,
 ) {
     fun create(): PageStore =
         object :
@@ -63,10 +63,9 @@ class PageStoreFactory(
     }
 
     /** The one translation between what the back stack carries and what the content is keyed by. */
-    private fun PageKind.toPageId(): PlusPageId =
+    private fun PageKindUiModel.toPageId(): PlusPageId =
         when (this) {
-            PageKind.RESPONSIBLE -> PlusPageId.RESPONSIBLE
-            PageKind.SOCIAL -> PlusPageId.SOCIAL
+            PageKindUiModel.RESPONSIBLE -> PlusPageId.RESPONSIBLE
         }
 
     // internal (not private) so PageReducerTest can exercise it directly

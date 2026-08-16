@@ -29,7 +29,6 @@ fun ContactRoute(
         state = state,
         onBackClick = onNavigateBack,
         onEmailClick = { address -> viewModel.onIntent(ContactIntent.EmailClicked(address)) },
-        onSignupClick = { url -> viewModel.onIntent(ContactIntent.SignupClicked(url)) },
         modifier = modifier,
     )
 }

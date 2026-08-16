@@ -2,7 +2,6 @@ package io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase
 
 import io.nicolaszurbuchen.yadlo.common.content.domain.fake.FakeContentRepository
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Contact
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.Involvement
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Provenance
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
@@ -29,31 +28,6 @@ class ObserveContactRouterUseCaseTest {
         }
 
     @Test
-    fun invoke_theVolunteeringContactId_isResolvedToAnAddress() =
-        runTest {
-            val repository = FakeContentRepository().apply { emitStatus(ready(festival = withContact())) }
-
-            assertEquals("staff@yadlo.ch", routerFrom(repository)?.volunteeringEmail)
-        }
-
-    @Test
-    fun invoke_noVolunteeringCampaign_stillLeavesTheDirectory() =
-        runTest {
-            val repository =
-                FakeContentRepository().apply {
-                    emitStatus(ready(festival = withContact(volunteering = false)))
-                }
-
-            val router = routerFrom(repository)
-
-            // Recruiting is a campaign, the address book is a permanent fact. An edition that is not
-            // recruiting should not have to publish an empty offer to keep its contacts.
-            assertNull(router?.volunteering)
-            assertNull(router?.volunteeringEmail)
-            assertEquals(3, router?.emails?.size)
-        }
-
-    @Test
     fun invoke_carriesThePostalAddress() =
         runTest {
             val repository = FakeContentRepository().apply { emitStatus(ready(festival = withContact())) }
@@ -61,9 +35,19 @@ class ObserveContactRouterUseCaseTest {
             assertEquals(listOf("Avenue de la Plage 1", "1028 Préverenges"), routerFrom(repository)?.addressLines)
         }
 
+    @Test
+    fun invoke_theStaffAddress_isStillInTheDirectory() =
+        runTest {
+            val repository = FakeContentRepository().apply { emitStatus(ready(festival = withContact())) }
+
+            // Recruiting moved to its own screen, but the address did not leave the address book:
+            // someone browsing the directory for the staff desk still finds it here.
+            assertEquals("staff@yadlo.ch", routerFrom(repository)?.emails?.firstOrNull { it.id == "staff" }?.address)
+        }
+
     private suspend fun routerFrom(repository: FakeContentRepository) = ObserveContactRouterUseCase(repository)().first()
 
-    private fun withContact(volunteering: Boolean = true) =
+    private fun withContact() =
         festival {
             copy(
                 contact =
@@ -81,20 +65,6 @@ class ObserveContactRouterUseCaseTest {
                                 Contact.Email(id = "staff", address = "staff@yadlo.ch", label = "Staff"),
                             ),
                         provenance = Provenance.CONFIRMED,
-                    ),
-                involvement =
-                    Involvement(
-                        volunteering =
-                            Involvement
-                                .Volunteering(
-                                    name = "Hot'Staff",
-                                    body = "Six heures minimum.",
-                                    perks = listOf("Tote bag"),
-                                    signupUrl = "https://ehro.app/o/yadlo/",
-                                    contactEmailId = "staff",
-                                    provenance = Provenance.CONFIRMED,
-                                ).takeIf { volunteering },
-                        partnership = null,
                     ),
             )
         }

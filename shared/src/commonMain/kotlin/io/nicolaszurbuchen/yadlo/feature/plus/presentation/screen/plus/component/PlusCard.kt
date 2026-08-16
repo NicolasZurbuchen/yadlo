@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
-import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.plus.PlusEntry
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.plus.PlusEntryUiModel
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.plus.PlusGroupUiModel
 import org.jetbrains.compose.resources.stringResource
 
@@ -31,7 +31,7 @@ import org.jetbrains.compose.resources.stringResource
 @Composable
 fun PlusCard(
     group: PlusGroupUiModel,
-    onEntryClick: (PlusEntry) -> Unit,
+    onEntryClick: (PlusEntryUiModel) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(

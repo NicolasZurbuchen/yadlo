@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.map
 
-/** A network's own name is its label, and a charter's is its own; there is nothing to add under it. */
+/** A charter's own name is its label; there is nothing to add under it. */
 private val NO_SUBLABEL: String? = null
 
 /**
@@ -30,7 +30,6 @@ class ObservePlusPageUseCase(
             .map { status ->
                 when (pageId) {
                     PlusPageId.RESPONSIBLE -> status.bundle.festival.toResponsiblePage()
-                    PlusPageId.SOCIAL -> status.bundle.festival.toSocialPage()
                 }
             }
 
@@ -55,25 +54,4 @@ class ObservePlusPageUseCase(
                     )
                 },
         )
-
-    /** One untitled section: the page's own title says what these are. */
-    private fun Festival.toSocialPage() =
-        PlusPage(
-            sections =
-                listOf(
-                    PlusPage.Section(
-                        id = SOCIAL_SECTION,
-                        title = null,
-                        body = null,
-                        links =
-                            social.map {
-                                InfoLink(id = it.id, label = it.name, sublabel = NO_SUBLABEL, url = it.url)
-                            },
-                    ),
-                ).filter { it.links.isNotEmpty() },
-        )
-
-    private companion object {
-        const val SOCIAL_SECTION = "reseaux"
-    }
 }

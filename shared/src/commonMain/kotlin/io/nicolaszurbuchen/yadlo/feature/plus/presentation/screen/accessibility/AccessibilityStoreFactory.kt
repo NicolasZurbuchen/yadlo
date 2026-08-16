@@ -6,6 +6,7 @@ import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase.ObserveAccessibilityGuideUseCase
+import io.nicolaszurbuchen.yadlo.infra.ui.mailtoUrl
 import kotlinx.coroutines.launch
 
 /**
@@ -13,7 +14,6 @@ import kotlinx.coroutines.launch
  * accent for every mail client on two platforms, to save a tap on a screen that has already told
  * the reader what to write about.
  */
-private const val MAIL_SCHEME = "mailto:"
 
 interface AccessibilityStore : Store<AccessibilityIntent, AccessibilityState, AccessibilityLabel>
 
@@ -55,7 +55,7 @@ class AccessibilityStoreFactory(
         override fun executeIntent(intent: AccessibilityIntent) {
             when (intent) {
                 is AccessibilityIntent.ContactClicked -> {
-                    publish(AccessibilityLabel.OpenUrl("$MAIL_SCHEME${intent.email}"))
+                    publish(AccessibilityLabel.OpenUrl(mailtoUrl(intent.email)))
                 }
             }
         }

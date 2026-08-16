@@ -11,13 +11,13 @@ class StandsReducerTest {
 
     @Test
     fun directoryUpdated_beforeAnyEmission_thereIsNoDirectoryAndNoFilterButThereIsAKind() {
-        val state = StandsState(kind = StandsKind.MAKERS)
+        val state = StandsState(kind = StandsKindUiModel.MAKERS)
 
         // Which half this is arrives with the destination, not with the content, so the title is
         // known before anything has been read.
         assertNull(state.directory)
         assertNull(state.selectedMark)
-        assertEquals(StandsKind.MAKERS, state.kind)
+        assertEquals(StandsKindUiModel.MAKERS, state.kind)
     }
 
     @Test
@@ -49,11 +49,11 @@ class StandsReducerTest {
         // Widening back to everything because content moved would silently undo something the
         // reader did, on the screen where they are least likely to notice.
         assertEquals("végan", result.selectedMark)
-        assertEquals(StandsKind.FOOD, result.kind)
+        assertEquals(StandsKindUiModel.FOOD, result.kind)
     }
 
     private fun state(selectedMark: String? = null) =
-        StandsState(kind = StandsKind.FOOD, directory = directory(), selectedMark = selectedMark)
+        StandsState(kind = StandsKindUiModel.FOOD, directory = directory(), selectedMark = selectedMark)
 
     private fun directory() =
         StandDirectory(

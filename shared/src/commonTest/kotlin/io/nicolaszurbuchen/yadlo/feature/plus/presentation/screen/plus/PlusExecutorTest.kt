@@ -1,5 +1,7 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.plus
 
+import app.cash.turbine.test
+import com.arkivanov.mvikotlin.extensions.coroutines.labels
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import io.nicolaszurbuchen.yadlo.common.content.domain.fake.FakeContentRepository
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase.ObservePlusOverviewUseCase
@@ -70,6 +72,22 @@ class PlusExecutorTest {
             testDispatcher.scheduler.runCurrent()
 
             assertEquals(2, store.state.overview?.foodStandCount)
+            store.dispose()
+        }
+
+    @Test
+    fun socialClicked_carriesItsOwnUrlBecauseTheFooterDrawsFourOfThem() =
+        runTest {
+            val store = createStore(FakeContentRepository())
+            testDispatcher.scheduler.runCurrent()
+
+            store.labels.test {
+                store.accept(PlusIntent.SocialClicked("https://www.instagram.com/yadlo_ch/"))
+                // The exception to the rule the other two rows follow: which network was tapped is
+                // the only thing distinguishing them, so the intent carries it rather than the
+                // store looking it back up.
+                assertEquals(PlusLabel.OpenUrl("https://www.instagram.com/yadlo_ch/"), awaitItem())
+            }
             store.dispose()
         }
 

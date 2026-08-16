@@ -16,8 +16,9 @@ import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.PaymentDes
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.PrivacyDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.StandsDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.StoryDestination
-import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.page.PageKind
-import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands.StandsKind
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.VolunteeringDestination
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.page.PageKindUiModel
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands.StandsKindUiModel
 import kotlin.test.Test
 import kotlin.test.assertNotNull
 
@@ -60,8 +61,8 @@ class NavConfigTest {
         listOf(
             // Both halves of the stands, because they are one key with a value: a restored stack
             // has to come back on the half it was on.
-            StandsDestination(StandsKind.FOOD),
-            StandsDestination(StandsKind.MAKERS),
+            StandsDestination(StandsKindUiModel.FOOD),
+            StandsDestination(StandsKindUiModel.MAKERS),
             PaymentDestination,
             AccessDestination,
             AccessibilityDestination,
@@ -73,7 +74,8 @@ class NavConfigTest {
             ContactDestination,
             AboutDestination,
             PrivacyDestination,
-            PageDestination(PageKind.SOCIAL),
+            VolunteeringDestination,
+            PageDestination(PageKindUiModel.RESPONSIBLE),
         ).forEach { destination ->
             assertNotNull(
                 navConfig.serializersModule.getPolymorphic(NavKey::class, destination),

@@ -19,7 +19,7 @@ interface StandsStore : Store<StandsIntent, StandsState, StandsLabel>
 class StandsStoreFactory(
     private val storeFactory: StoreFactory,
     private val observeStandDirectory: ObserveStandDirectoryUseCase,
-    private val kind: StandsKind,
+    private val kind: StandsKindUiModel,
 ) {
     fun create(): StandsStore =
         object :
@@ -67,10 +67,10 @@ class StandsStoreFactory(
     }
 
     /** The one translation between what the back stack carries and what the content is keyed by. */
-    private fun StandsKind.toStandKind(): StandKind =
+    private fun StandsKindUiModel.toStandKind(): StandKind =
         when (this) {
-            StandsKind.FOOD -> StandKind.FOOD
-            StandsKind.MAKERS -> StandKind.MAKERS
+            StandsKindUiModel.FOOD -> StandKind.FOOD
+            StandsKindUiModel.MAKERS -> StandKind.MAKERS
         }
 
     // internal (not private) so StandsReducerTest can exercise it directly

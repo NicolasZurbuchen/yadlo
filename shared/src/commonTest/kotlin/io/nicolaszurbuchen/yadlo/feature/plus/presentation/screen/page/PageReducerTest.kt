@@ -10,19 +10,19 @@ class PageReducerTest {
 
     @Test
     fun pageUpdated_beforeAnyEmission_thereIsNoPageButThereIsAKind() {
-        val state = PageState(kind = PageKind.SOCIAL)
+        val state = PageState(kind = PageKindUiModel.RESPONSIBLE)
 
         // Which page this is arrives with the destination, not with the content, so the title is
         // known before anything has been read.
         assertNull(state.page)
-        assertEquals(PageKind.SOCIAL, state.kind)
+        assertEquals(PageKindUiModel.RESPONSIBLE, state.kind)
     }
 
     @Test
     fun pageUpdated_firstEmission_holdsTheSections() {
         val page = PlusPage(sections = listOf(PlusPage.Section(id = "a", title = null, body = "…", links = emptyList())))
 
-        val result = with(reducer) { PageState(kind = PageKind.RESPONSIBLE).reduce(PageMessage.PageUpdated(page)) }
+        val result = with(reducer) { PageState(kind = PageKindUiModel.RESPONSIBLE).reduce(PageMessage.PageUpdated(page)) }
 
         assertEquals(listOf("a"), result.page?.sections?.map { it.id })
     }
@@ -31,13 +31,13 @@ class PageReducerTest {
     fun pageUpdated_aRefreshEmptyingTheSection_doesNotChangeWhichPageThisIs() {
         val state =
             PageState(
-                kind = PageKind.SOCIAL,
+                kind = PageKindUiModel.RESPONSIBLE,
                 page = PlusPage(sections = listOf(PlusPage.Section(id = "a", title = null, body = null, links = emptyList()))),
             )
 
         val result = with(reducer) { state.reduce(PageMessage.PageUpdated(PlusPage(sections = emptyList()))) }
 
-        assertEquals(PageKind.SOCIAL, result.kind)
+        assertEquals(PageKindUiModel.RESPONSIBLE, result.kind)
         assertEquals(emptyList(), result.page?.sections)
     }
 }

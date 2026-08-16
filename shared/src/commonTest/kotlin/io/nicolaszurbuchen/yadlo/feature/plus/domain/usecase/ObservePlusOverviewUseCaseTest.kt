@@ -4,8 +4,10 @@ import io.nicolaszurbuchen.yadlo.common.content.domain.fake.FakeContentRepositor
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Accessibility
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Assistance
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.FaqEntry
+import io.nicolaszurbuchen.yadlo.common.content.domain.model.Involvement
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Payment
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Provenance
+import io.nicolaszurbuchen.yadlo.common.content.domain.model.SocialLink
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Transport
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.TransportMode
 import kotlinx.coroutines.flow.first
@@ -25,6 +27,8 @@ class ObservePlusOverviewUseCaseTest {
             // The tab still opens; it simply has no rows. Every one of them is derived from a
             // section, which is what stops it ever opening an empty screen.
             assertEquals(0, overview.foodStandCount)
+            assertFalse(overview.hasVolunteering)
+            assertTrue(overview.socials.isEmpty())
             assertNull(overview.cashAccepted)
             assertFalse(overview.hasTransport)
             assertFalse(overview.hasAccessibility)
@@ -76,6 +80,62 @@ class ObservePlusOverviewUseCaseTest {
                 FakeContentRepository().apply { emitStatus(ready(happenings = listOf(stand("vegan-fabrik")))) }
 
             assertEquals(0, overviewFrom(repository).makerStandCount)
+        }
+
+    @Test
+    fun invoke_anOpenCampaign_offersTheVolunteeringRow() =
+        runTest {
+            val involvement =
+                Involvement(
+                    volunteering =
+                        Involvement.Volunteering(
+                            name = "Hot'Staff",
+                            body = "Six heures minimum.",
+                            perks = emptyList(),
+                            signupUrl = "https://ehro.app/o/yadlo/",
+                            contactEmailId = "staff",
+                            provenance = Provenance.CONFIRMED,
+                        ),
+                    partnership = null,
+                )
+            val repository =
+                FakeContentRepository().apply {
+                    emitStatus(ready(festival = festival { copy(involvement = involvement) }))
+                }
+
+            assertTrue(overviewFrom(repository).hasVolunteering)
+        }
+
+    @Test
+    fun invoke_recruitingClosed_losesTheRowRatherThanOpeningAnEmptyPage() =
+        runTest {
+            val repository =
+                FakeContentRepository().apply {
+                    emitStatus(
+                        ready(festival = festival { copy(involvement = Involvement(volunteering = null, partnership = null)) }),
+                    )
+                }
+
+            // An involvement block that mentions only partnership is not a campaign. Recruiting is
+            // seasonal and the row has to disappear with it.
+            assertFalse(overviewFrom(repository).hasVolunteering)
+        }
+
+    @Test
+    fun invoke_theNetworks_travelWholeRatherThanAsACount() =
+        runTest {
+            val socials =
+                listOf(
+                    SocialLink(id = "instagram", name = "Instagram", url = "https://example.ch/i"),
+                    SocialLink(id = "tiktok", name = "TikTok", url = "https://example.ch/t"),
+                )
+            val repository =
+                FakeContentRepository().apply { emitStatus(ready(festival = festival { copy(social = socials) })) }
+
+            // The tab draws them at its foot now, so it needs the links themselves — a count was
+            // enough only while they were a row that opened a screen.
+            assertEquals(listOf("Instagram", "TikTok"), overviewFrom(repository).socials.map { it.name })
+            assertEquals("https://example.ch/i", overviewFrom(repository).socials.first().url)
         }
 
     @Test

@@ -44,8 +44,9 @@ class PlusReducerTest {
             foundedYear = 2015,
             charterNames = listOf("FestiPlus"),
             partnerCount = 39,
+            hasVolunteering = true,
             hasContact = true,
-            socialCount = 4,
+            socials = emptyList(),
             newsletterUrl = null,
             reportEmail = null,
         )

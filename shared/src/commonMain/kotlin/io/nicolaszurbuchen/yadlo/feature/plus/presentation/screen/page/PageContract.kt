@@ -32,6 +32,6 @@ sealed interface PageMessage {
  * association's. It is the presentation mirror of [PlusPageId], translated once by the store.
  */
 data class PageState(
-    val kind: PageKind,
+    val kind: PageKindUiModel,
     val page: PlusPage? = null,
 )

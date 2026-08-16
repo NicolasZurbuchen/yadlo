@@ -15,28 +15,28 @@ import kotlin.test.assertTrue
 class StandsUiMapperTest {
     @Test
     fun toUiModel_beforeAnythingIsRead_isLoadingButAlreadyKnowsItsTitle() {
-        val model = StandsState(kind = StandsKind.FOOD).toUiModel()
+        val model = StandsState(kind = StandsKindUiModel.FOOD).toUiModel()
 
         // The title comes from the entry that was tapped, not from the content, so the bar reads
         // correctly while the list is still arriving.
         assertTrue(model.isLoading)
-        assertEquals(UiText.Resource(StandsKind.FOOD.title), model.title)
+        assertEquals(UiText.Resource(StandsKindUiModel.FOOD.title), model.title)
         assertTrue(model.stands.isEmpty())
         assertNull(model.emptyMessage)
     }
 
     @Test
     fun toUiModel_theTitle_matchesTheRowThatOpenedIt() {
-        val model = StandsState(kind = StandsKind.MAKERS, directory = directory()).toUiModel()
+        val model = StandsState(kind = StandsKindUiModel.MAKERS, directory = directory()).toUiModel()
 
-        assertEquals(UiText.Resource(StandsKind.MAKERS.title), model.title)
+        assertEquals(UiText.Resource(StandsKindUiModel.MAKERS.title), model.title)
     }
 
     @Test
     fun toUiModel_nothingPublished_saysSoRatherThanBlamingTheFilter() {
         val model =
             StandsState(
-                kind = StandsKind.FOOD,
+                kind = StandsKindUiModel.FOOD,
                 directory = StandDirectory(stands = emptyList(), marks = emptyList()),
             ).toUiModel()
 
@@ -74,7 +74,7 @@ class StandsUiMapperTest {
         // drawing a lone *Tout* that filters nothing.
         val model =
             StandsState(
-                kind = StandsKind.MAKERS,
+                kind = StandsKindUiModel.MAKERS,
                 directory = StandDirectory(stands = listOf(listing("la-fanfrelucherie")), marks = emptyList()),
             ).toUiModel()
 
@@ -123,7 +123,7 @@ class StandsUiMapperTest {
     }
 
     private fun state(selectedMark: String? = null) =
-        StandsState(kind = StandsKind.FOOD, directory = directory(), selectedMark = selectedMark)
+        StandsState(kind = StandsKindUiModel.FOOD, directory = directory(), selectedMark = selectedMark)
 
     private fun directory() =
         StandDirectory(

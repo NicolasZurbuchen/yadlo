@@ -6,7 +6,6 @@ import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.page_empty
 import yadlo.shared.generated.resources.plus_entry_responsible
-import yadlo.shared.generated.resources.plus_entry_social
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
@@ -15,7 +14,7 @@ import kotlin.test.assertTrue
 class PageUiMapperTest {
     @Test
     fun toUiModel_beforeAnythingIsRead_isLoadingButAlreadyKnowsItsTitle() {
-        val model = PageState(kind = PageKind.RESPONSIBLE).toUiModel()
+        val model = PageState(kind = PageKindUiModel.RESPONSIBLE).toUiModel()
 
         // The title comes from which entry was tapped, not from the content, so the bar reads
         // correctly while the body is still arriving.
@@ -24,15 +23,8 @@ class PageUiMapperTest {
     }
 
     @Test
-    fun toUiModel_theTitle_matchesTheRowThatOpenedIt() {
-        val model = PageState(kind = PageKind.SOCIAL, page = PlusPage(sections = emptyList())).toUiModel()
-
-        assertEquals(UiText.Resource(Res.string.plus_entry_social), model.title)
-    }
-
-    @Test
     fun toUiModel_aPublishedSectionWithNoSections_saysSo() {
-        val model = PageState(kind = PageKind.RESPONSIBLE, page = PlusPage(sections = emptyList())).toUiModel()
+        val model = PageState(kind = PageKindUiModel.RESPONSIBLE, page = PlusPage(sections = emptyList())).toUiModel()
 
         assertEquals(UiText.Resource(Res.string.page_empty), model.emptyMessage)
     }
@@ -63,7 +55,7 @@ class PageUiMapperTest {
 
     private fun loaded() =
         PageState(
-            kind = PageKind.RESPONSIBLE,
+            kind = PageKindUiModel.RESPONSIBLE,
             page =
                 PlusPage(
                     sections =

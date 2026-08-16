@@ -6,10 +6,6 @@ sealed interface ContactIntent {
     data class EmailClicked(
         val address: String,
     ) : ContactIntent
-
-    data class SignupClicked(
-        val url: String,
-    ) : ContactIntent
 }
 
 sealed interface ContactLabel {
@@ -28,6 +24,11 @@ sealed interface ContactMessage {
     ) : ContactMessage
 }
 
+/**
+ * [hasLoaded] and a nullable [router] are two facts, not one: the bundle has not landed yet, versus
+ * it landed with no contact block in it. The first is a screen still filling in, the second is a
+ * screen that says so.
+ */
 data class ContactState(
     val router: ContactRouter? = null,
     val hasLoaded: Boolean = false,
