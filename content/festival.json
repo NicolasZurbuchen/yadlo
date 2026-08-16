@@ -20,6 +20,24 @@
       "question": "L'entrée est-elle payante ?",
       "answer": "Non. L'entrée du festival est libre et gratuite, les trois jours. Seules certaines activités sont payantes, et leur prix est indiqué sur leur fiche.",
       "provenance": "confirmed"
+    },
+    {
+      "id": "eau-potable",
+      "question": "Y a-t-il de l'eau potable gratuite sur le site ?",
+      "answer": "Oui. La Goutte est un robinet d'eau fraîche, accessible gratuitement et en tout temps. Prenez une gourde : c'est le moyen le plus simple de tenir une journée entière au bord du lac.",
+      "provenance": "confirmed"
+    },
+    {
+      "id": "canicule",
+      "question": "Comment se protéger de la chaleur ?",
+      "answer": "Le site est prévu pour : une grande tente offre un maximum d'ombre, des brumisateurs sont installés sur le site, et La Goutte donne accès à de l'eau fraîche gratuitement.",
+      "provenance": "confirmed"
+    },
+    {
+      "id": "sans-alcool",
+      "question": "Y a-t-il des boissons sans alcool ?",
+      "answer": "Oui, et pas seulement de l'eau. Une sélection de boissons locales et rafraîchissantes est proposée avec nos partenaires Vivi Kola, Kosmos, Grano Mate et Supernatural Club.",
+      "provenance": "confirmed"
     }
   ],
   "responsable": {
