@@ -24,10 +24,10 @@ data class StandsUiModel(
 /**
  * Which half is being shown, carrying the one string the content cannot supply.
  *
- * A mirror of `StandKind` rather than the domain enum itself, and the mirror earns its keep the
- * same way [io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.page.PageKindUiModel] does: the
+ * A mirror of `StandKind` rather than the domain enum itself, and the mirror earns its keep: the
  * store translates once at construction, so neither the navigation package nor the UiMapper has to
- * name a domain type — and neither is allowed to.
+ * name a domain type — and neither is allowed to. It is the last of these left, now that Festival
+ * responsable stopped being one page of a parameterised gabarit and became a screen about one thing.
  *
  * The titles are the app's words, not the content's. The Category is called *Restauration*; the
  * entry someone taps when they are hungry says *Nourriture & boissons*.

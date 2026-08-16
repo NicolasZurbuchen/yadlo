@@ -3,16 +3,15 @@ package io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase
 import io.nicolaszurbuchen.yadlo.common.content.domain.fake.FakeContentRepository
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Charter
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Provenance
-import io.nicolaszurbuchen.yadlo.feature.plus.domain.model.PlusPageId
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-class ObservePlusPageUseCaseTest {
+class ObserveResponsiblePageUseCaseTest {
     @Test
-    fun invoke_responsible_makesOneSectionPerCharter() =
+    fun invoke_makesOneSectionPerCharter() =
         runTest {
             val repository =
                 FakeContentRepository().apply {
@@ -28,7 +27,7 @@ class ObservePlusPageUseCaseTest {
 
             // Each is a separate commitment with its own body and its own site, so each is its own
             // section rather than a paragraph in a shared one.
-            assertEquals(listOf("festiplus", "autre"), pageFrom(repository, PlusPageId.RESPONSIBLE).sections.map { it.id })
+            assertEquals(listOf("festiplus", "autre"), pageFrom(repository).sections.map { it.id })
         }
 
     @Test
@@ -39,7 +38,7 @@ class ObservePlusPageUseCaseTest {
                     emitStatus(ready(festival = festival { copy(charters = listOf(charter("festiplus", "FestiPlus"))) }))
                 }
 
-            val section = pageFrom(repository, PlusPageId.RESPONSIBLE).sections.single()
+            val section = pageFrom(repository).sections.single()
 
             assertEquals("FestiPlus", section.title)
             assertEquals("https://festiplus.ch/", section.links.single().url)
@@ -55,7 +54,7 @@ class ObservePlusPageUseCaseTest {
                     )
                 }
 
-            val section = pageFrom(repository, PlusPageId.RESPONSIBLE).sections.single()
+            val section = pageFrom(repository).sections.single()
 
             assertTrue(section.links.isEmpty())
             assertEquals("Charte interne", section.title)
@@ -66,13 +65,10 @@ class ObservePlusPageUseCaseTest {
         runTest {
             val repository = FakeContentRepository().apply { emitStatus(ready()) }
 
-            assertTrue(pageFrom(repository, PlusPageId.RESPONSIBLE).sections.isEmpty())
+            assertTrue(pageFrom(repository).sections.isEmpty())
         }
 
-    private suspend fun pageFrom(
-        repository: FakeContentRepository,
-        pageId: PlusPageId,
-    ) = ObservePlusPageUseCase(repository)(pageId).first()
+    private suspend fun pageFrom(repository: FakeContentRepository) = ObserveResponsiblePageUseCase(repository)().first()
 
     private fun charter(
         id: String,

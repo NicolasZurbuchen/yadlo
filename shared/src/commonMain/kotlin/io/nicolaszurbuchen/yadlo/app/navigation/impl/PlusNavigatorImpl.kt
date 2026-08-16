@@ -8,15 +8,14 @@ import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.Assistance
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.ContactDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.FaqDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.HoursDestination
-import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.PageDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.PartnersDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.PaymentDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.PlusNavigator
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.PrivacyDestination
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.ResponsibleDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.StandsDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.StoryDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.VolunteeringDestination
-import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.page.PageKindUiModel
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands.StandsKindUiModel
 import io.nicolaszurbuchen.yadlo.infra.navigation.AppNavigator
 
@@ -67,8 +66,8 @@ class PlusNavigatorImpl(
         appNavigator.navigateTo(VolunteeringDestination)
     }
 
-    override fun navigateToPage(kind: PageKindUiModel) {
-        appNavigator.navigateTo(PageDestination(kind))
+    override fun navigateToResponsible() {
+        appNavigator.navigateTo(ResponsibleDestination)
     }
 
     override fun navigateToAbout() {

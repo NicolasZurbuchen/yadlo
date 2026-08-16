@@ -9,14 +9,12 @@ import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.assistance.Ass
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.contact.ContactRoute
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.faq.FaqRoute
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.hours.HoursRoute
-import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.page.PageKindUiModel
-import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.page.PageRoute
-import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.page.PageViewModel
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.partners.PartnersRoute
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.payment.PaymentRoute
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.plus.PlusEntryUiModel
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.plus.PlusRoute
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.privacy.PrivacyRoute
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.responsible.ResponsibleRoute
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands.StandsKindUiModel
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands.StandsRoute
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands.StandsViewModel
@@ -47,7 +45,7 @@ class PlusNavKeyHandler(
                         PlusEntryUiModel.ASSISTANCE -> navigator.navigateToAssistance()
                         PlusEntryUiModel.FAQ -> navigator.navigateToFaq()
                         PlusEntryUiModel.STORY -> navigator.navigateToStory()
-                        PlusEntryUiModel.RESPONSIBLE -> navigator.navigateToPage(PageKindUiModel.RESPONSIBLE)
+                        PlusEntryUiModel.RESPONSIBLE -> navigator.navigateToResponsible()
                         PlusEntryUiModel.PARTNERS -> navigator.navigateToPartners()
                         PlusEntryUiModel.CONTACT -> navigator.navigateToContact()
                         PlusEntryUiModel.VOLUNTEERING -> navigator.navigateToVolunteering()
@@ -67,16 +65,7 @@ class PlusNavKeyHandler(
             )
         }
 
-        // Which page it is reaches the store through the ViewModel, the same construction-parameter
-        // route the fiche's Happening id travels. The destination survives process death, so a
-        // restored back stack rebuilds the page it was on.
-        entry<PageDestination> { destination ->
-            PageRoute(
-                onNavigateBack = { navigator.navigateBack() },
-                viewModel = koinViewModel<PageViewModel>(parameters = { parametersOf(destination.kind) }),
-            )
-        }
-
+        entry<ResponsibleDestination> { ResponsibleRoute(onNavigateBack = { navigator.navigateBack() }) }
         entry<PaymentDestination> { PaymentRoute(onNavigateBack = { navigator.navigateBack() }) }
         entry<AccessDestination> { AccessRoute(onNavigateBack = { navigator.navigateBack() }) }
         entry<AccessibilityDestination> { AccessibilityRoute(onNavigateBack = { navigator.navigateBack() }) }

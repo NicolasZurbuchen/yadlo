@@ -1,6 +1,5 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation
 
-import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.page.PageKindUiModel
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands.StandsKindUiModel
 
 /**
@@ -10,7 +9,7 @@ import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands.StandsK
  * that a feature never learns which key another one owns — which is what lets
  * [navigateToHappening] reach the fiche the Programme also opens.
  *
- * [navigateToPage] is the exception and earns it: several entries are the same screen with
+ * [navigateToResponsible] is the exception and earns it: several entries are the same screen with
  * different words, and giving each its own method would be inventing a distinction the app does
  * not have.
  */
@@ -37,7 +36,7 @@ interface PlusNavigator {
 
     fun navigateToVolunteering()
 
-    fun navigateToPage(kind: PageKindUiModel)
+    fun navigateToResponsible()
 
     fun navigateToAbout()
 

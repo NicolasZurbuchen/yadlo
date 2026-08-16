@@ -13,13 +13,13 @@ import io.nicolaszurbuchen.yadlo.common.content.domain.model.InfoLink
  * and no styling: a [Section] is a heading, a paragraph and some links, and an entry that needs
  * more than that has earned a screen of its own. Horaires and Paiement both did.
  */
-data class PlusPage(
+data class ResponsiblePage(
     val sections: List<Section>,
 ) {
     data class Section(
         val id: String,
-        /** Null on a page whose title above it says everything — a privacy statement has one voice. */
-        val title: String?,
+        /** A charter names itself; there is no untitled section on this page. */
+        val title: String,
         val body: String?,
         val links: List<InfoLink>,
     )

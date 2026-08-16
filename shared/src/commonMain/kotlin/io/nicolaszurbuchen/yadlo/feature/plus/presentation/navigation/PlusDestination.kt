@@ -1,7 +1,6 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation
 
 import androidx.navigation3.runtime.NavKey
-import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.page.PageKindUiModel
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands.StandsKindUiModel
 import kotlinx.serialization.Serializable
 
@@ -29,17 +28,9 @@ internal data class StandsDestination(
     val kind: StandsKindUiModel,
 ) : PlusDestination
 
-/**
- * The shared text page, and which of them it is.
- *
- * It carries [PageKindUiModel] rather than the domain's own `PlusPageId` because navigation is
- * presentation, and presentation may not import from domain. The store translates the two once, at
- * the only point that has business knowing both.
- */
+/** *Festival responsable* — the charters the association has signed. */
 @Serializable
-internal data class PageDestination(
-    val kind: PageKindUiModel,
-) : PlusDestination
+internal data object ResponsibleDestination : PlusDestination
 
 @Serializable
 internal data object PaymentDestination : PlusDestination

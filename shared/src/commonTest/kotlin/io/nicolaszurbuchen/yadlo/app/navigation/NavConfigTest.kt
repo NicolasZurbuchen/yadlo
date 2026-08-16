@@ -10,14 +10,13 @@ import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.Assistance
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.ContactDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.FaqDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.HoursDestination
-import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.PageDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.PartnersDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.PaymentDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.PrivacyDestination
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.ResponsibleDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.StandsDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.StoryDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.VolunteeringDestination
-import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.page.PageKindUiModel
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands.StandsKindUiModel
 import kotlin.test.Test
 import kotlin.test.assertNotNull
@@ -75,7 +74,7 @@ class NavConfigTest {
             AboutDestination,
             PrivacyDestination,
             VolunteeringDestination,
-            PageDestination(PageKindUiModel.RESPONSIBLE),
+            ResponsibleDestination,
         ).forEach { destination ->
             assertNotNull(
                 navConfig.serializersModule.getPolymorphic(NavKey::class, destination),

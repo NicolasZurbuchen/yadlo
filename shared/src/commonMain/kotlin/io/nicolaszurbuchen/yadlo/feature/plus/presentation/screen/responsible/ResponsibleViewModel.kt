@@ -1,4 +1,4 @@
-package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.page
+package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.responsible
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,20 +11,20 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 
-class PageViewModel(
-    factory: PageStoreFactory,
+class ResponsibleViewModel(
+    factory: ResponsibleStoreFactory,
 ) : ViewModel() {
     private val store = factory.create()
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    val state: StateFlow<PageUiModel> =
+    val state: StateFlow<ResponsibleUiModel> =
         store.stateFlow
             .map { it.toUiModel() }
             .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), store.state.toUiModel())
 
-    val labels: Flow<PageLabel> = store.labels
+    val labels: Flow<ResponsibleLabel> = store.labels
 
-    fun onIntent(intent: PageIntent) {
+    fun onIntent(intent: ResponsibleIntent) {
         store.accept(intent)
     }
 
