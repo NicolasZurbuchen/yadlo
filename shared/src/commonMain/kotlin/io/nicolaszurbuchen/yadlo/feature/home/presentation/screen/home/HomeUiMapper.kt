@@ -1,5 +1,7 @@
 package io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home
 
+import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SocialLinkUiModel
+import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.socialIconFor
 import io.nicolaszurbuchen.yadlo.common.time.FESTIVAL_TIME_ZONE
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.uimodel.AnnouncementUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
@@ -136,7 +138,7 @@ fun HomeState.toUiModel(): HomeUiModel {
             HomeBlockUiModel.Social(
                 items =
                     loaded.social.map {
-                        SocialUiModel(id = it.id, name = it.name, icon = socialIconFor(it.id), url = it.url)
+                        SocialLinkUiModel(id = it.id, name = it.name, icon = socialIconFor(it.id), url = it.url)
                     },
             )
         }

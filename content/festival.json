@@ -20,6 +20,24 @@
       "question": "L'entrée est-elle payante ?",
       "answer": "Non. L'entrée du festival est libre et gratuite, les trois jours. Seules certaines activités sont payantes, et leur prix est indiqué sur leur fiche.",
       "provenance": "confirmed"
+    },
+    {
+      "id": "eau-potable",
+      "question": "Y a-t-il de l'eau potable gratuite sur le site ?",
+      "answer": "Oui. La Goutte est un robinet d'eau fraîche, accessible gratuitement et en tout temps. Prenez une gourde : c'est le moyen le plus simple de tenir une journée entière au bord du lac.",
+      "provenance": "confirmed"
+    },
+    {
+      "id": "canicule",
+      "question": "Comment se protéger de la chaleur ?",
+      "answer": "Le site est prévu pour : une grande tente offre un maximum d'ombre, des brumisateurs sont installés sur le site, et La Goutte donne accès à de l'eau fraîche gratuitement.",
+      "provenance": "confirmed"
+    },
+    {
+      "id": "sans-alcool",
+      "question": "Y a-t-il des boissons sans alcool ?",
+      "answer": "Oui, et pas seulement de l'eau. Une sélection de boissons locales et rafraîchissantes est proposée avec nos partenaires Vivi Kola, Kosmos, Grano Mate et Supernatural Club.",
+      "provenance": "confirmed"
     }
   ],
   "responsable": {
@@ -47,47 +65,56 @@
       {
         "id": "hello",
         "address": "hello@yadlo.ch",
-        "label": "Informations générales"
+        "label": "Informations générales",
+        "responsible": null
       },
       {
         "id": "communication",
         "address": "communication@yadlo.ch",
-        "label": "Communication"
+        "label": "Communication",
+        "responsible": "Anaïs M."
       },
       {
         "id": "animations",
         "address": "animations@yadlo.ch",
-        "label": "Animations"
+        "label": "Animations",
+        "responsible": "Quentin B."
       },
       {
         "id": "foodtrucks",
         "address": "foodtrucks@yadlo.ch",
-        "label": "Food trucks"
+        "label": "Food trucks",
+        "responsible": "Jeremy R."
       },
       {
         "id": "lac",
         "address": "lac@yadlo.ch",
-        "label": "Lac"
+        "label": "Lac",
+        "responsible": "Fabrice D."
       },
       {
         "id": "musique",
         "address": "musique@yadlo.ch",
-        "label": "Programmation musicale"
+        "label": "Programmation musicale",
+        "responsible": "Jeremy B."
       },
       {
         "id": "fnb",
         "address": "fnb@yadlo.ch",
-        "label": "Restauration et boissons"
+        "label": "Restauration et boissons",
+        "responsible": "Anne-lise V."
       },
       {
         "id": "staff",
         "address": "staff@yadlo.ch",
-        "label": "Staff"
+        "label": "Staff",
+        "responsible": "Maeva C."
       },
       {
         "id": "silentparty",
         "address": "silentparty@yadlo.ch",
-        "label": "Silent Party"
+        "label": "Silent Party",
+        "responsible": "Yannick M."
       }
     ],
     "provenance": "confirmed"
@@ -129,30 +156,47 @@
   "transports": {
     "modes": [
       {
-        "id": "pied",
-        "name": "À pied",
-        "body": "Depuis la gare de Morges, 35 minutes le long du lac. Depuis l'arrêt Préverenges, Village, cinq minutes jusqu’à la plage.",
-        "links": [],
-        "departures": null
-      },
-      {
-        "id": "velo",
-        "name": "À vélo",
-        "body": "Parking vélo à l'entrée du site.",
-        "links": [],
-        "departures": null
-      },
-      {
         "id": "bus",
-        "name": "En bus",
-        "body": "Lignes 701 et 705, arrêt Préverenges, Village. Cinq minutes à pied jusqu’à la plage. Les deux lignes sont à plancher surbaissé.",
-        "links": [],
+        "name": "Venir en bus",
+        "body": null,
+        "facts": [
+          {
+            "id": "lignes",
+            "text": "Lignes 701 et 705, arrêt Préverenges, Village",
+            "caveat": false
+          },
+          {
+            "id": "marche",
+            "text": "Cinq minutes à pied jusqu’à la plage",
+            "caveat": false
+          },
+          {
+            "id": "plancher",
+            "text": "Les deux lignes sont à plancher surbaissé",
+            "caveat": false
+          }
+        ],
+        "links": [
+          {
+            "id": "horaires-701",
+            "label": "Horaires ligne 701",
+            "sublabel": "PDF · MBC",
+            "url": "https://gm-sittr-prod.s3.eu-west-1.amazonaws.com/timetables/mbc/auto/701/701-A.pdf"
+          },
+          {
+            "id": "horaires-705",
+            "label": "Horaires ligne 705",
+            "sublabel": "PDF · MBC",
+            "url": "https://gm-sittr-prod.s3.eu-west-1.amazonaws.com/timetables/mbc/auto/705/705-A.pdf"
+          }
+        ],
         "departures": null
       },
       {
         "id": "bus-nuit",
-        "name": "Bus de nuit",
+        "name": "Rentrer de nuit",
         "body": "Les bus pyjama desservent Morges, gare, avec correspondance pour Lausanne. Offerts par les MBC.",
+        "facts": [],
         "links": [],
         "departures": [
           {
@@ -200,14 +244,53 @@
       {
         "id": "voiture",
         "name": "En voiture",
-        "body": "Les places sont limitées et la distance jusqu’au site varie beaucoup, donc venez tôt ou autrement. Deux places sont réservées près de l’entrée.",
+        "body": null,
+        "facts": [
+          {
+            "id": "places",
+            "text": "Places limitées, et la distance jusqu’au site varie beaucoup",
+            "caveat": true
+          },
+          {
+            "id": "reservees",
+            "text": "Deux places réservées près de l’entrée",
+            "caveat": false
+          }
+        ],
+        "links": [
+          {
+            "id": "parkings",
+            "label": "Plan des parkings",
+            "sublabel": "PDF",
+            "url": "https://www.yadlo.ch/_files/ugd/f10d05_2b605fea9a6c4d3495014751f3c32731.pdf"
+          }
+        ],
+        "departures": null
+      },
+      {
+        "id": "velo-pied",
+        "name": "À vélo, à pied",
+        "body": null,
+        "facts": [
+          {
+            "id": "parking-velo",
+            "text": "Parking vélo à l’entrée du site",
+            "caveat": false
+          },
+          {
+            "id": "depuis-morges",
+            "text": "35 minutes depuis Morges, le long du lac",
+            "caveat": false
+          }
+        ],
         "links": [],
         "departures": null
       },
       {
-        "id": "bateau",
-        "name": "Par le lac",
-        "body": "C'est un festival de plage : on peut arriver par l'eau, à la nage ou à la rame. Prévoyez de quoi payer votre bière une fois sec — le site est sans espèces.",
+        "id": "nage",
+        "name": "À la nage",
+        "body": "C’est un festival de plage : on peut arriver par l’eau, à la nage ou à la rame. Prévoyez de quoi payer votre bière une fois sec — le site est sans espèces.",
+        "facts": [],
         "links": [],
         "departures": null
       }
@@ -215,15 +298,22 @@
     "provenance": "confirmed"
   },
   "paiement": {
+    "headline": "Carte et TWINT uniquement",
+    "summary": "Aucun stand n'accepte les espèces, bar compris.",
     "methods": [
       {
         "id": "carte",
-        "name": "Cartes Visa, Mastercard et Maestro",
+        "name": "Visa, Mastercard et Maestro — sans contact",
         "accepted": true
       },
       {
         "id": "twint",
         "name": "TWINT",
+        "accepted": true
+      },
+      {
+        "id": "mobile",
+        "name": "Apple Pay et Google Pay",
         "accepted": true
       },
       {
@@ -234,32 +324,26 @@
     ],
     "notes": [
       {
-        "id": "sans-especes",
-        "body": "Aucun stand n'accepte les espèces, bar compris. Prévoyez une carte ou TWINT avant de venir."
-      },
-      {
-        "id": "sans-contact",
-        "body": "Les paiements sans contact passent partout, y compris depuis un téléphone ou une montre, partout où la carte correspondante est acceptée."
-      },
-      {
         "id": "pas-de-twint",
-        "body": "L'application TWINT dépend de votre banque : certaines ont la leur, d'autres passent par TWINT Prepaid. La page officielle vous oriente vers la bonne."
+        "title": "Vous n'avez pas TWINT ?",
+        "body": "L'application dépend de votre banque : certaines ont la leur, d'autres passent par TWINT Prepaid. La page officielle vous oriente vers la bonne.",
+        "links": [
+          {
+            "id": "twint",
+            "label": "twint.ch",
+            "sublabel": "Site officiel",
+            "url": "https://www.twint.ch/"
+          }
+        ]
+      },
+      {
+        "id": "pourquoi",
+        "title": "Pourquoi",
+        "body": "Sans caisse en liquide, les files avancent plus vite et l'équipe passe sa soirée à servir plutôt qu'à compter. C'est aussi plus sûr pour des bénévoles qui ferment le bar à trois heures du matin.",
+        "links": []
       }
     ],
-    "provenance": "confirmed",
-    "links": [
-      {
-        "id": "twint",
-        "label": "twint.ch",
-        "sublabel": "Site officiel",
-        "url": "https://www.twint.ch/"
-      }
-    ]
-  },
-  "accessibilite": {
-    "items": [],
-    "contactEmailId": "hello",
-    "provenance": "unverified"
+    "provenance": "confirmed"
   },
   "besoin": {
     "emergencyNumbers": [

@@ -11,9 +11,9 @@ import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.MoreHoriz
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation3.runtime.NavKey
-import io.nicolaszurbuchen.yadlo.feature.home.presentation.navigation.HomeDestination
-import io.nicolaszurbuchen.yadlo.feature.monyadlo.presentation.navigation.MonYadloDestination
-import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.PlusDestination
+import io.nicolaszurbuchen.yadlo.feature.home.presentation.navigation.HomeMainDestination
+import io.nicolaszurbuchen.yadlo.feature.monyadlo.presentation.navigation.MonYadloMainDestination
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.PlusMainDestination
 import io.nicolaszurbuchen.yadlo.feature.programme.presentation.navigation.ProgrammeDestination
 import org.jetbrains.compose.resources.StringResource
 import yadlo.shared.generated.resources.Res
@@ -36,7 +36,7 @@ enum class Tab(
     val unselectedIcon: ImageVector,
 ) {
     HOME(
-        root = HomeDestination,
+        root = HomeMainDestination,
         label = Res.string.tab_home,
         selectedIcon = Icons.Filled.Home,
         unselectedIcon = Icons.Outlined.Home,
@@ -48,7 +48,7 @@ enum class Tab(
         unselectedIcon = Icons.Outlined.CalendarMonth,
     ),
     MON_YADLO(
-        root = MonYadloDestination,
+        root = MonYadloMainDestination,
         label = Res.string.tab_mon_yadlo,
         // The heart is the save affordance everywhere else in the app, so the tab that holds
         // saved Slots wears the same symbol rather than inventing a second vocabulary for it.
@@ -56,7 +56,7 @@ enum class Tab(
         unselectedIcon = Icons.Outlined.FavoriteBorder,
     ),
     PLUS(
-        root = PlusDestination,
+        root = PlusMainDestination,
         label = Res.string.tab_plus,
         selectedIcon = Icons.Filled.MoreHoriz,
         unselectedIcon = Icons.Outlined.MoreHoriz,

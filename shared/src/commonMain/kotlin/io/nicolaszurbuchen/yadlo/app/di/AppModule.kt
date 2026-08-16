@@ -6,6 +6,7 @@ import io.nicolaszurbuchen.yadlo.common.plan.di.planModule
 import io.nicolaszurbuchen.yadlo.feature.happening.di.happeningModule
 import io.nicolaszurbuchen.yadlo.feature.home.di.homeModule
 import io.nicolaszurbuchen.yadlo.feature.monyadlo.di.monYadloModule
+import io.nicolaszurbuchen.yadlo.feature.plus.di.plusModule
 import io.nicolaszurbuchen.yadlo.feature.pokemonexplorer.di.pokemonExplorerModule
 import io.nicolaszurbuchen.yadlo.feature.programme.di.programmeModule
 import io.nicolaszurbuchen.yadlo.infra.database.databaseModule
@@ -25,6 +26,7 @@ val appModule =
         monYadloModule,
         networkModule,
         planModule,
+        plusModule,
         programmeModule,
         storeModule,
         timeModule,

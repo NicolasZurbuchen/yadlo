@@ -11,6 +11,8 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import io.nicolaszurbuchen.yadlo.app.design.theme.YadloTheme
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
+import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SocialLinkUiModel
+import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.socialIconFor
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.uimodel.AnnouncementUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import yadlo.shared.generated.resources.Res
@@ -121,10 +123,10 @@ private class HomeStackProvider : PreviewParameterProvider<HomeUiModel> {
         HomeBlockUiModel.Social(
             items =
                 listOf(
-                    SocialUiModel("instagram", "Instagram", socialIconFor("instagram"), "https://example.com/i"),
-                    SocialUiModel("facebook", "Facebook", socialIconFor("facebook"), "https://example.com/f"),
-                    SocialUiModel("youtube", "YouTube", socialIconFor("youtube"), "https://example.com/y"),
-                    SocialUiModel("tiktok", "TikTok", socialIconFor("tiktok"), "https://example.com/t"),
+                    SocialLinkUiModel("instagram", "Instagram", socialIconFor("instagram"), "https://example.com/i"),
+                    SocialLinkUiModel("facebook", "Facebook", socialIconFor("facebook"), "https://example.com/f"),
+                    SocialLinkUiModel("youtube", "YouTube", socialIconFor("youtube"), "https://example.com/y"),
+                    SocialLinkUiModel("tiktok", "TikTok", socialIconFor("tiktok"), "https://example.com/t"),
                 ),
         )
 }

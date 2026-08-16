@@ -153,6 +153,11 @@ Built unofficially, with the explicit aim of becoming the association's official
     so that I am not misled by a reassuring but vague page.
 41. As a visitor with reduced mobility, I want a direct way to write ahead, so that the team
     can arrange what the page cannot promise.
+
+> **39–41 are not built in v1.** They were, and the screen was withdrawn: with nothing published it
+> could only say so and offer an address, which is a page that exists to apologise for itself in
+> front of the one reader who most needs an answer. The questions to put to the association are in
+> content/GAPS.md § 9, and the screen returns when there are facts for it — see DECISIONS.md.
 42. As a parent, I want to know where the children's corner is and where lost children are
     reunited, so that I have a plan before I need one.
 43. As a visitor, I want emergency numbers and the first aid post in one place, so that I
@@ -374,7 +379,7 @@ own copy?" — plus one file that exists purely because of how often it changes.
 ```
 content/
   festival.json        live:   histoire, contact, réseaux, transports,
-                               paiement, accessibilité, FAQ, Hot'Staff
+                               paiement, FAQ, Hot'Staff
   announcements.json   live:   dated annonces, polled during LIVE
   editions.json        list of available editions (archives only)
   editions/
@@ -522,11 +527,46 @@ actions in the bar. Silent Party = same template + booking row.
 emergency numbers merge into a single **"En cas de besoin"** screen — justified by a shared
 user situation, not by tidiness. Most remaining entries share one text-page template.
 
+> **What shipped, and the rows that did not.** All four cards, fifteen rows, and thirteen
+> screens behind them. **Every row is derived from the section behind it**, so the tab can never
+> open a screen with nothing on it — which is what let the whole thing ship while half the
+> festival's practical information is unpublished, and what makes a rolled-back publish cost a row
+> rather than a dead end. The four groups and their order live in the screen, not in the content or
+> the domain: that payment is third is a design decision about how the tab is read.
+>
+> One entry is built around content that does not exist and is better for it: **Horaires** deduces
+> everything from the programme — a FestivalDay's window *is* the opening hours — so it needed no new
+> content field and follows a set added mid-festival on its own.
+>
+> **Accessibilité tried the same trick and failed at it.** A screen assuming the absence works when
+> the absence is still an answer; here it left a visitor deciding whether a beach is navigable in a
+> wheelchair with a page saying nobody knows, write in. Withdrawn entirely — section, DTO, model and
+> screen — until the association confirms something. content/GAPS.md § 9 holds the questions.
+>
+> *Festival responsable* and *Réseaux sociaux* share **one parameterised screen** — the gabarit the
+> prototype concluded most of this tab is. *À propos* and *Confidentialité* are static: every word
+> on them is an app string rather than content, which is exactly what makes them the two rows that
+> survive a publish going missing.
+>
+> **Three rows of the prototype are deliberately absent.** *Plan du site* has no content at all —
+> only a parking PDF exists and the booth map has to be drawn. *Langue* would open a picker with one
+> language in it. *Notifications* are a settled deferral past v1. A row that opens nothing is worse
+> than no row. **Two more are outside this pass**: *Éditions précédentes* needs the on-demand third
+> file, the only non-offline feature in the app; *Effacer mes données* needs a repository capability
+> that does not exist yet and is the one row that writes.
+
 **Partenaires** — logos grouped by tier. **Tapping a logo opens that partner's site in the
 browser; a partner with no URL shows a toast saying it has none.** Five of the 39 have no website —
 two genuinely have none, one is an activity of the festival rather than a company, and one has an
 address that 404s — so silence on tap would be the common case, not the edge one, and a tap that
 does nothing reads as a bug.
+
+> **What shipped.** The tiers, sorted by their declared order, as grids of tappable cards — and the
+> cards draw **names rather than logos**, because no partner in the 2026 content has a logo file
+> supplied. The name is what the logo was standing for, and a grid of grey rectangles would read as
+> a broken screen. The "no website" message is keyed on a **counter in the state** rather than
+> published as a one-shot Label, so that a second tap says it a second time and the behaviour is
+> assertable rather than a fire-and-forget.
 
 **Splash** — one background photograph of the beach under a tint, the Yadlo wordmark, the logo and
 the motto, and beneath them the two **soutien public** logos, Morges and Préverenges.

@@ -546,6 +546,26 @@ class PresentationLayerTest {
             }
     }
 
+    /**
+     * A `UiModel` file is the screen's vocabulary, and the suffix is what says "this is what the
+     * screen is handed" rather than "this is a domain type that leaked". Without the rule the
+     * suffix survives on the record classes — which the mapper returns and so cannot be misnamed —
+     * and quietly stops applying to the enums beside them, which is exactly where the confusion
+     * with a domain enum of the same name would start.
+     *
+     * Top-level only. Members of a sealed hierarchy read as `HomeBlockUiModel.Countdown`, where the
+     * parent already carries the suffix and repeating it on the child says nothing.
+     */
+    @Test
+    fun `top-level types in UiModel files must be suffixed with UiModel`() {
+        scope.files
+            .withNameEndingWith("UiModel")
+            .assertTrue { file ->
+                (file.classes(includeNested = false) + file.interfaces(includeNested = false) + file.objects(includeNested = false))
+                    .all { it.name.endsWith("UiModel") }
+            }
+    }
+
     @Test
     fun `UiMapper functions must map from the matching State to the matching UiModel`() {
         scope.files

@@ -424,7 +424,6 @@ for (const e of idx.editions)
 
 const emailIds = new Set(fest.contact.emails.map(e => e.id));
 for (const [p, v] of [
-  ['accessibilite.contactEmailId', fest.accessibilite.contactEmailId],
   ['besoin.lostPropertyEmailId', fest.besoin.lostPropertyEmailId],
   ['simpliquer.hotstaff.contactEmailId', fest.simpliquer.hotstaff.contactEmailId],
   ['simpliquer.partenaire.contactEmailId', fest.simpliquer.partenaire.contactEmailId],
@@ -433,12 +432,22 @@ for (const [p, v] of [
 if (fest.currentEditionId !== ed.id)
   warns.push(`festival.json currentEditionId=${fest.currentEditionId} but only edition ${ed.id} authored`);
 
-// Transport modes vary too much to share one shape beyond this: a name, some prose, and any
-// number of links. Walking is prose alone; the bus needs a timetable link; a night shuttle laid
-// on for one edition would be an Edition-level addition, not a mode here.
+// Transport modes vary too much to share one shape beyond this: a name, then any mix of prose,
+// stated facts, links and a timetable. Swimming is prose alone; the bus is four facts and two
+// PDFs; a night shuttle laid on for one edition would be an Edition-level addition, not a mode.
+//
+// A mode with neither prose nor facts is a heading with nothing under it, which is the one shape
+// the screen cannot draw.
 for (const m of fest.transports.modes || []) {
   if (!m.id || !m.name) errors.push(`transport ${m.id}: needs an id and a name`);
-  if (m.body === null) warns.push(`transport ${m.id}: no text yet`);
+  if (m.body === null && !(m.facts || []).length && !(m.departures || []).length)
+    errors.push(`transport ${m.id}: has nothing under its heading`);
+  // caveat is a boolean for the same reason paiement's accepted is: a fact is either stated or it
+  // is a warning about one, and "sort of" renders as a shrug.
+  for (const f of m.facts || []) {
+    if (!f.id || !f.text) errors.push(`transport ${m.id}/fact ${f.id}: needs an id and text`);
+    if (typeof f.caveat !== 'boolean') errors.push(`transport ${m.id}/fact ${f.id}: caveat must be true or false`);
+  }
   for (const l of m.links || []) {
     if (!l.label) errors.push(`transport ${m.id}: link without a label`);
     checkUrl(l.url, `transport ${m.id}/link`);
@@ -455,13 +464,22 @@ for (const m of fest.paiement.methods || []) {
 }
 if (!(fest.paiement.methods || []).length) warns.push('festival.json: paiement has no methods');
 
-// Accessibility records what is NOT available as deliberately as what is - "no accessible
-// toilets" is information someone needs before travelling, and silence is not.
-for (const i of fest.accessibilite.items || []) {
-  if (!i.id || !i.name) errors.push(`accessibilite ${i.id}: needs an id and a name`);
-  if (typeof i.available !== 'boolean') errors.push(`accessibilite ${i.id}: available must be true or false`);
+// The app reads a note without a title rather than refusing the whole file - that tolerance is
+// what stops one late heading costing the visitor every screen. It is not licence to publish
+// one: a paragraph with no heading is a paragraph the reader has to finish to know whether it
+// was theirs.
+for (const n of fest.paiement.notes || []) {
+  if (!n.id || !n.title || !n.body) errors.push(`paiement note ${n.id}: needs an id, a title and a body`);
+  for (const l of n.links || []) {
+    if (!l.label) errors.push(`paiement note ${n.id}: link without a label`);
+    checkUrl(l.url, `paiement note ${n.id}/link`);
+  }
 }
-if (!(fest.accessibilite.items || []).length) warns.push('festival.json: accessibilite has no items');
+
+// The accessibilite block is gone rather than published empty - see GAPS.md section 9. It comes
+// back when the association publishes something, and this guard is here so it does not drift back
+// as a shape with nothing in it in the meantime.
+if ('accessibilite' in fest) errors.push('festival.json: accessibilite is out until there is something to say - see GAPS.md');
 
 // Counted rather than listed: one line per missing image would drown every other finding.
 const noImage = ed.happenings.filter(h => !(h.images || []).length);

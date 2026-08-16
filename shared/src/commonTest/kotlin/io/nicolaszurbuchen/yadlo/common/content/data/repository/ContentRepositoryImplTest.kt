@@ -132,6 +132,55 @@ class ContentRepositoryImplTest {
         }
 
     @Test
+    fun refresh_documentThisBuildCannotParse_keepsTheCacheRatherThanOverwritingIt() =
+        runTest {
+            // The failure the version number is supposed to announce and sometimes does not: content
+            // edited without bumping it. Written into the cache, those bytes fail on every cold start
+            // after, so the app would be bricked until the *content* was fixed.
+            val local = StubLocal(publishedDocuments().mapValues { (_, doc) -> doc.body })
+            val unreadable = publishedDocuments() + (EDITION to ContentDocumentDto(body = """{ "schemaVersion": 1 }""", etag = null))
+            val repository = repository(remote = StubRemote(documents = unreadable), local = local)
+
+            repository.refresh()
+
+            val status = repository.observeStatus().value
+            assertIs<ContentStatus.Ready>(status)
+            assertTrue(status.updateRequired)
+            assertTrue(local.writes.none { it == EDITION })
+            assertEquals("DJ ALF", status.bundle.edition.slots.single().happening.name)
+        }
+
+    @Test
+    fun refresh_nothingCachedAndNothingReadable_reportsUnavailableRatherThanSpinning() =
+        runTest {
+            // Cold start against content this build cannot read. Every document is refused, so
+            // nothing is cached and there is no bundle to publish; without this the visitor watches
+            // a spinner that never resolves.
+            val newer = publishedDocuments().mapValues { (_, doc) -> ContentDocumentDto(body = """{ "schemaVersion": 99 }""", etag = null) }
+            val repository = repository(remote = StubRemote(documents = newer))
+
+            repository.refresh()
+
+            val status = repository.observeStatus().value
+            assertIs<ContentStatus.Unavailable>(status)
+            assertIs<AppError.Content.MalformedField>(status.error)
+        }
+
+    @Test
+    fun refresh_aCacheThisBuildCannotRead_reportsUnavailableRatherThanThrowing() =
+        runTest {
+            // Written by an older build that read festival.json differently. It reaches the fetch
+            // step before anything publishes, which is where an uncaught parse failure used to take
+            // the process down on launch rather than the screen.
+            val local = StubLocal(mapOf(FESTIVAL to "{ }"))
+            val repository = repository(remote = StubRemote(documents = emptyMap()), local = local)
+
+            repository.refresh()
+
+            assertIs<ContentStatus.Unavailable>(repository.observeStatus().value)
+        }
+
+    @Test
     fun refresh_everyDocumentReadable_doesNotAskForAnUpdate() =
         runTest {
             val repository = repository(remote = StubRemote(documents = publishedDocuments()))

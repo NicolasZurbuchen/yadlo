@@ -2,6 +2,7 @@ package io.nicolaszurbuchen.yadlo.app.navigation
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -10,6 +11,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
@@ -133,6 +135,13 @@ fun MainScaffold(modifier: Modifier = Modifier) {
                 )
             }
         },
+        // **Off the tab roots the shell keeps none of the window for itself.** Hiding the two bars
+        // is not enough: a Scaffold still hands its content the system-bar insets, so a detail
+        // screen was drawn under a status-bar-high strip of nothing and then added its own inset on
+        // top of it — which reads exactly like the shell's bar with the title taken out of it. Below
+        // a tab root the screen owns the whole window, and PlusDetailScaffold's own Scaffold applies
+        // the insets once, where the bar that has to clear them actually is.
+        contentWindowInsets = if (isAtTabRoot) ScaffoldDefaults.contentWindowInsets else WindowInsets(0),
         modifier = modifier,
     ) { contentPadding ->
         NavGraph(

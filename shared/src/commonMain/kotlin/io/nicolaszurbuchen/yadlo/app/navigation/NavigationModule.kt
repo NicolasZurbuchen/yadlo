@@ -3,6 +3,7 @@ package io.nicolaszurbuchen.yadlo.app.navigation
 import io.nicolaszurbuchen.yadlo.app.navigation.impl.HappeningNavigatorImpl
 import io.nicolaszurbuchen.yadlo.app.navigation.impl.HomeNavigatorImpl
 import io.nicolaszurbuchen.yadlo.app.navigation.impl.MonYadloNavigatorImpl
+import io.nicolaszurbuchen.yadlo.app.navigation.impl.PlusNavigatorImpl
 import io.nicolaszurbuchen.yadlo.app.navigation.impl.PokemonExplorerNavigatorImpl
 import io.nicolaszurbuchen.yadlo.app.navigation.impl.ProgrammeNavigatorImpl
 import io.nicolaszurbuchen.yadlo.feature.happening.presentation.navigation.HappeningNavKeyHandler
@@ -12,6 +13,7 @@ import io.nicolaszurbuchen.yadlo.feature.home.presentation.navigation.HomeNaviga
 import io.nicolaszurbuchen.yadlo.feature.monyadlo.presentation.navigation.MonYadloNavKeyHandler
 import io.nicolaszurbuchen.yadlo.feature.monyadlo.presentation.navigation.MonYadloNavigator
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.PlusNavKeyHandler
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.PlusNavigator
 import io.nicolaszurbuchen.yadlo.feature.pokemonexplorer.presentation.navigation.PokemonExplorerNavKeyHandler
 import io.nicolaszurbuchen.yadlo.feature.pokemonexplorer.presentation.navigation.PokemonExplorerNavigator
 import io.nicolaszurbuchen.yadlo.feature.programme.presentation.navigation.ProgrammeNavKeyHandler
@@ -29,6 +31,7 @@ val appNavigationModule =
         singleOf(::HomeNavigatorImpl) bind HomeNavigator::class
         singleOf(::ProgrammeNavigatorImpl) bind ProgrammeNavigator::class
         singleOf(::MonYadloNavigatorImpl) bind MonYadloNavigator::class
+        singleOf(::PlusNavigatorImpl) bind PlusNavigator::class
         singleOf(::HappeningNavigatorImpl) bind HappeningNavigator::class
         singleOf(::PokemonExplorerNavigatorImpl) bind PokemonExplorerNavigator::class
 

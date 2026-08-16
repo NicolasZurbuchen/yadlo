@@ -16,7 +16,7 @@ Vocabulary is [CONTEXT.md](../CONTEXT.md). Why the content is shaped this way at
 
 | File | Holds | Fetched |
 |---|---|---|
-| `festival.json` | Live truth — history, contact, transport, payment, accessibility, FAQ, volunteering | At launch |
+| `festival.json` | Live truth — history, contact, transport, payment, FAQ, volunteering | At launch |
 | `editions/<year>/edition.json` | One frozen Edition — programme, activities, stands, menus, partners, figures | At launch |
 | `announcements.json` | Dated annonces from the organisers | At launch, and polled during LIVE |
 | `editions.json` | The list of editions that exist | On demand, archives only |
@@ -286,12 +286,11 @@ minSupportedAppVersion string | null
 histoire        { foundedYear, body, journee: {title, body, provenance}, provenance }
 faq             { id, question, answer, provenance }[]
 responsable     { charters: { id, name, body, url, provenance }[] }
-contact         { address: {lines[], provenance}, phone, emails: {id, address, label}[], provenance }
+contact         { address: {lines[], provenance}, phone, emails: {id, address, label, responsible}[], provenance }
 social          { id, name, url }[]
 links           { id, label, url }[]
 transports      { modes: Mode[], provenance }
-paiement        { methods: Method[], notes: Note[], links: Link[], provenance }
-accessibilite   { items: Item[], contactEmailId, provenance }
+paiement        { headline, summary, methods: Method[], notes: {id, title, body, links: Link[]}[], provenance }
 besoin          { emergencyNumbers: {id, label, number}[], lostPropertyEmailId, provenance }
 simpliquer      { hotstaff: {...}, partenaire: {...} }
 ```
@@ -305,24 +304,51 @@ bricks itself on the Saturday afternoon is worse than one showing week-old data.
 rather than in a separate manifest because this file is fetched first anyway. `null` means no
 minimum is set, which is the normal state.
 
-Only these five fields are modelled in the app today. The sections below are published and validated
-but not yet read by any screen, and are modelled when the screen that renders them exists.
+**Every section here is now modelled and read by a screen.** The French key names stay on the wire
+and meet their English model names in exactly one place, the `@SerialName` pairs on `FestivalDto`:
+`histoire` → `story`, `responsable` → `charters`, `transports` → `transport`, `paiement` → `payment`,
+`besoin` → `assistance`, `simpliquer` → `involvement`.
+
+The app reads a missing section as "not published" rather than as a broken file: a publish that drops
+the transport block costs the visitor the transport screen, not the festival. `accessibilite` is
+currently exercising exactly that — it is not published, so there is no screen, and the validator
+errors if it reappears before there is something to put in it. See GAPS.md section 9.
 
 ### transports
 
 ```
 Mode
-  id          "pied" | "velo" | "bus" | "bus-nuit" | "voiture" | "bateau"
-  name        string
-  body        string | null
+  id          "bus" | "bus-nuit" | "voiture" | "velo-pied" | "nage"
+  name        string                  the section heading, as read: "Venir en bus"
+  body        string | null           prose, for a mode that is genuinely a sentence
+  facts       Fact[]                  [] when the mode is prose
   links       { id, label, sublabel, url }[]
   departures  Departure[] | null      null on every mode but bus-nuit
+
+Fact
+  id      string
+  text    string           "Lignes 701 et 705, arrêt Préverenges, Village"
+  caveat  boolean          true draws ⓘ instead of ✓
 
 Departure
   id     string
   night  string           "Vendredi"
   times  { time, note }[] "01:30", note usually null
 ```
+
+**Facts rather than a paragraph, wherever the mode is really a list.** *Lignes 701 et 705* and
+*cinq minutes à pied* were one sentence, and a sentence is what someone has to read to the end of
+before they know whether it was theirs. The modes that are genuinely prose — the night bus, arriving
+by water — keep `body` and publish no facts. A mode with neither is a heading with nothing under it,
+and the validator errors on it.
+
+**`caveat` is a boolean for the same reason `accepted` is on paiement.** A fact is either stated or
+it is a warning about one; *places limitées* is not a thing the site offers, it is the thing that
+will go wrong. Anything in between renders as a shrug.
+
+**The mode ids are the sections, not the vehicles.** *À vélo, à pied* is one heading because the two
+answers are the same answer, and the app never enumerates them: a shuttle laid on for one edition is
+a content edit and no release.
 
 `departures` is grouped **by night, not by row**: seven departures fit in four lines instead of
 filling the screen, and the one that matters — the last bus with no onward connection to Lausanne —
@@ -332,23 +358,31 @@ carries a note rather than being buried in a list.
 
 ```
 Method  { id, name, accepted: boolean }
-Note    { id, body }
+Note    { id, title, body, links: Link[] }
 ```
 
 **`accepted` is a boolean, never "unknown".** A method nobody has confirmed is left out entirely
 rather than rendered as a shrug — "TWINT: ?" helps no one, and a note or the FAQ can say it is being
-checked. This is why Apple Pay and Google Pay are *not* methods: contactless wallets almost certainly
-work wherever the cards do, but "almost certainly" is not what this list claims. It is stated in a
-note instead, which is free text and does not pretend to be an official method list.
+checked.
+
+**`headline` and `summary` are the answer, written.** A reader opening this screen has one question,
+and deriving three words of French from a list of method names is how a screen ends up saying
+something nobody wrote.
+
+**Links belong to a note, not to the block.** That is the only arrangement that puts twint.ch under
+*Vous n'avez pas TWINT ?* rather than in a bin of links at the foot of the page.
+
+**`title` is required here and optional on the wire.** The app reads a note without one rather than
+refusing `festival.json` — a required field nested in a section fails the whole file, so one late
+heading would cost the visitor every screen — but a paragraph with no heading is one the reader has
+to finish to know whether it was theirs, so the validator errors on it.
 
 ### accessibilite
 
-```
-Item  { id, name, available: boolean, note: string | null }
-```
-
-Same rule, and **recording what is *not* available matters as much as what is.** "No accessible
-toilets" is something a person needs before deciding to travel; silence tells them nothing.
+**Not published, and not modelled.** The shape was decided before the content existed, and what
+shipped was an empty list under a heading — a screen whose whole content was the admission that it
+had none. The section, its DTO, its domain model and its screen are all out. What it should say when
+it comes back is in GAPS.md section 9; the validator errors if the key reappears before then.
 
 ---
 

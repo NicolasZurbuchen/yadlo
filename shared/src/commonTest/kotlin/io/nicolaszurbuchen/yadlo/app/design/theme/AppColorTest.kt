@@ -78,6 +78,24 @@ class AppColorTest {
     }
 
     @Test
+    fun thePolarityPair_meetsWcagAaOnEveryGroundAMarkCanLandOn() {
+        // Held to the text floor rather than the 3:1 non-text one. A ✓ or a ✕ is the size of a word
+        // and is read as one — it is not a border or a chart segment — and it is the whole answer on
+        // the row it sits on. The dark half is where a green picked in light mode quietly fails.
+        listOf(LightAppColors to "light", DarkAppColors to "dark").forEach { (colors, theme) ->
+            listOf("positive" to colors.positive, "negative" to colors.negative).forEach { (roleName, role) ->
+                listOf(
+                    "background" to colors.background,
+                    "surface" to colors.surface,
+                    "surfaceRaised" to colors.surfaceRaised,
+                ).forEach { (groundName, ground) ->
+                    assertMeetsAa(role, ground, "$theme: $roleName on $groundName")
+                }
+            }
+        }
+    }
+
+    @Test
     fun borderStrong_meetsTheNonTextFloorOnEveryGround() {
         // A drawn edge is a UI component, not text, so 3:1 is the bar rather than 4.5:1. It still
         // needs one: an unselected filter chip whose border cannot be seen is an invisible control.
