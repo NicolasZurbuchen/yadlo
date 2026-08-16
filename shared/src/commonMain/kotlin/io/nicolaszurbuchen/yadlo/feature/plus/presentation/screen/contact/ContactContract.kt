@@ -24,12 +24,7 @@ sealed interface ContactMessage {
     ) : ContactMessage
 }
 
-/**
- * [hasLoaded] and a nullable [router] are two facts, not one: the bundle has not landed yet, versus
- * it landed with no contact block in it. The first is a screen still filling in, the second is a
- * screen that says so.
- */
+/** A null [router] is the bundle not having landed yet. */
 data class ContactState(
     val router: ContactRouter? = null,
-    val hasLoaded: Boolean = false,
 )

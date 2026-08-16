@@ -135,7 +135,7 @@ class AssistanceExecutorTest {
                     Contact(
                         addressLines = emptyList(),
                         phone = null,
-                        emails = listOf(Contact.Email(id = "hello", address = "hello@yadlo.ch", label = "Infos")),
+                        emails = listOf(Contact.Email(id = "hello", address = "hello@yadlo.ch", label = "Infos", responsible = null)),
                         provenance = Provenance.CONFIRMED,
                     ),
             )

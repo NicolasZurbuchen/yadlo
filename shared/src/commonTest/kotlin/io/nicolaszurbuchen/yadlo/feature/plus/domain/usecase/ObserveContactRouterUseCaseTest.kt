@@ -56,13 +56,14 @@ class ObserveContactRouterUseCaseTest {
                         phone = null,
                         emails =
                             listOf(
-                                Contact.Email(id = "hello", address = "hello@yadlo.ch", label = "Informations"),
+                                Contact.Email(id = "hello", address = "hello@yadlo.ch", label = "Informations", responsible = null),
                                 Contact.Email(
                                     id = "musique",
                                     address = "musique@yadlo.ch",
                                     label = "Programmation musicale",
+                                    responsible = "Jeremy B.",
                                 ),
-                                Contact.Email(id = "staff", address = "staff@yadlo.ch", label = "Staff"),
+                                Contact.Email(id = "staff", address = "staff@yadlo.ch", label = "Staff", responsible = null),
                             ),
                         provenance = Provenance.CONFIRMED,
                     ),

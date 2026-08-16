@@ -25,5 +25,6 @@ data class ContactDto(
         val id: String,
         val address: String,
         val label: String,
+        val responsible: String? = null,
     )
 }

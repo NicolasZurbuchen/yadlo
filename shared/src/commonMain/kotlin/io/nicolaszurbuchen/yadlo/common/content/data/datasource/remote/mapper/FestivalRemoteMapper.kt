@@ -90,7 +90,10 @@ private fun ContactDto.toDomain(): Contact =
     Contact(
         addressLines = address.lines,
         phone = phone,
-        emails = emails.map { Contact.Email(id = it.id, address = it.address, label = it.label) },
+        emails =
+            emails.map {
+                Contact.Email(id = it.id, address = it.address, label = it.label, responsible = it.responsible)
+            },
         provenance = provenance.toProvenanceEnum("contact.provenance"),
     )
 

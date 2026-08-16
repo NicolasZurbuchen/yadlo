@@ -19,7 +19,7 @@ import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertFalse
+import kotlin.test.assertNull
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class ContactExecutorTest {
@@ -36,12 +36,12 @@ class ContactExecutorTest {
     }
 
     @Test
-    fun onCreate_beforeAnyBundle_hasNotLoaded() =
+    fun onCreate_beforeAnyBundle_carriesNoRouter() =
         runTest {
             val store = createStore(FakeContentRepository())
             testDispatcher.scheduler.runCurrent()
 
-            assertFalse(store.state.hasLoaded)
+            assertNull(store.state.router)
             store.dispose()
         }
 
@@ -86,7 +86,7 @@ class ContactExecutorTest {
                     Contact(
                         addressLines = emptyList(),
                         phone = null,
-                        emails = listOf(Contact.Email(id = "hello", address = "hello@yadlo.ch", label = "Infos")),
+                        emails = listOf(Contact.Email(id = "hello", address = "hello@yadlo.ch", label = "Infos", responsible = null)),
                         provenance = Provenance.CONFIRMED,
                     ),
             )

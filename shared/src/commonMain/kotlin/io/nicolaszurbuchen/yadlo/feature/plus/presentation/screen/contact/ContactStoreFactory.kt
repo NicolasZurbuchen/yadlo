@@ -62,7 +62,7 @@ class ContactStoreFactory(
         override fun ContactState.reduce(msg: ContactMessage): ContactState =
             when (msg) {
                 is ContactMessage.RouterUpdated -> {
-                    copy(router = msg.router, hasLoaded = true)
+                    copy(router = msg.router)
                 }
             }
     }

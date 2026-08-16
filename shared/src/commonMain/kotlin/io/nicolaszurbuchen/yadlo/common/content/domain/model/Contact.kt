@@ -22,5 +22,11 @@ data class Contact(
         val address: String,
         /** What this address is for, in the association's words — "Programmation musicale". */
         val label: String,
+        /**
+         * Who is behind it, when the association has said. Null on `hello@`, which is the general
+         * address precisely because nobody in particular owns it — the one entry where a name would
+         * be an invention rather than a fact.
+         */
+        val responsible: String?,
     )
 }

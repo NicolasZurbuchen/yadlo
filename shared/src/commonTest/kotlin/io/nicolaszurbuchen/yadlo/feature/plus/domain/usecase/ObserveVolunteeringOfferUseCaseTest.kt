@@ -88,7 +88,7 @@ class ObserveVolunteeringOfferUseCaseTest {
                 Contact(
                     addressLines = emptyList(),
                     phone = null,
-                    emails = listOf(Contact.Email(id = "staff", address = "staff@yadlo.ch", label = "Staff")),
+                    emails = listOf(Contact.Email(id = "staff", address = "staff@yadlo.ch", label = "Staff", responsible = null)),
                     provenance = Provenance.CONFIRMED,
                 ),
             involvement =
