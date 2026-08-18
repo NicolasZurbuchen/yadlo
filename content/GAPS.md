@@ -112,9 +112,14 @@ and they are invented. Better a real carte with four dishes than a convincing on
 2. **The dietary marks confirmed.** Every dish is now tagged `vegan`, `vegetarien`,
    `sans-gluten`, `sans-lactose` or `piquant` from its ingredients, and those tags are what the
    filter answers with. They are inferences, and a wrong one on a menu is worse than a wrong price.
-3. **Is anything halal?** `halal` is in the vocabulary and **nothing carries it**, deliberately:
-   it is the one mark that cannot be inferred from a list of ingredients, and it is the one a
-   reader would rely on for reasons a wrong answer does not repair. It needs the vendor to say so.
+3. **Is Man'ouchy halal, and is anyone else?** Every dish on their carte now carries `halal` — a
+   Lebanese kitchen sourcing from a halal butcher is the ordinary case rather than a special
+   claim, so it is the plausible one to write, and writing it on the whole carte is what makes
+   the stand answer *tout halal* rather than *options halal*.
+
+   It is still **an invention**. It is also the one mark on this list that cannot be inferred
+   from a list of ingredients, and the one a reader relies on for reasons a wrong answer does not
+   repair. **Confirm it with the vendor or take it out before anyone acts on it.**
 4. **Opening hours for all six.** A Stand's Slots are its opening windows, and not one is
    published, so every stand currently has none. Are they simply open whenever the site is?
 5. **Prices confirmed for Yadlo.** Everything priced is marked `unverified` — see below.
