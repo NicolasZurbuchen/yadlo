@@ -1,5 +1,6 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.assistance
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
@@ -34,6 +35,11 @@ import yadlo.shared.generated.resources.assistance_title
  *
  * A rule between numbers rather than spacing alone: four large figures in one stack read as one
  * block, and the point of the screen is that each is a different call.
+ *
+ * The numbers get a column of their own so that nothing sits between a rule and the row it closes.
+ * The section's own spacing was pushing the rules 8dp clear of the rows on either side, which left
+ * a tap lighting up a strip floating between two lines. The row pads itself instead, inside its
+ * touch target, so the ripple runs the row's full height and stops exactly where the rule is.
  */
 @Composable
 fun AssistanceScreen(
@@ -60,12 +66,14 @@ fun AssistanceScreen(
 
         if (state.numbers.isNotEmpty()) {
             PlusSection(title = stringResource(Res.string.assistance_section_emergency)) {
-                state.numbers.forEachIndexed { index, number ->
-                    if (index > 0) {
-                        HorizontalDivider(color = MaterialTheme.appColors.borderSubtle)
-                    }
+                Column(modifier = Modifier.fillMaxWidth()) {
+                    state.numbers.forEachIndexed { index, number ->
+                        if (index > 0) {
+                            HorizontalDivider(color = MaterialTheme.appColors.borderSubtle)
+                        }
 
-                    EmergencyNumberRow(number = number, onClick = onNumberClick)
+                        EmergencyNumberRow(number = number, onClick = onNumberClick)
+                    }
                 }
             }
         }
