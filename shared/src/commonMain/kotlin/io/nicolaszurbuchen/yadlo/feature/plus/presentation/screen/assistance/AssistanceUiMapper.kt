@@ -9,6 +9,7 @@ fun AssistanceState.toUiModel(): AssistanceUiModel {
         return AssistanceUiModel(
             isLoading = true,
             numbers = emptyList(),
+            recognition = emptyList(),
             lostPropertyEmail = null,
             emptyMessage = null,
         )
@@ -18,6 +19,7 @@ fun AssistanceState.toUiModel(): AssistanceUiModel {
         guide ?: return AssistanceUiModel(
             isLoading = false,
             numbers = emptyList(),
+            recognition = emptyList(),
             lostPropertyEmail = null,
             emptyMessage = UiText.Resource(Res.string.assistance_empty),
         )
@@ -30,6 +32,7 @@ fun AssistanceState.toUiModel(): AssistanceUiModel {
             loaded.numbers.map {
                 EmergencyNumberUiModel(id = it.id, number = it.number, label = it.label)
             },
+        recognition = loaded.recognition.map { it.text },
         lostPropertyEmail = loaded.lostPropertyEmail,
         emptyMessage =
             if (loaded.numbers.isEmpty() && loaded.lostPropertyEmail == null) {

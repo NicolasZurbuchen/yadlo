@@ -15,7 +15,13 @@ import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 private class AssistanceStateProvider : PreviewParameterProvider<AssistanceUiModel> {
     override val values =
         sequenceOf(
-            AssistanceUiModel(isLoading = true, numbers = emptyList(), lostPropertyEmail = null, emptyMessage = null),
+            AssistanceUiModel(
+                isLoading = true,
+                numbers = emptyList(),
+                recognition = emptyList(),
+                lostPropertyEmail = null,
+                emptyMessage = null,
+            ),
             published(),
         )
 }
@@ -42,6 +48,7 @@ private fun published() =
                 EmergencyNumberUiModel(id = "police", number = "117", label = "Police"),
                 EmergencyNumberUiModel(id = "pompiers", number = "118", label = "Pompiers"),
             ),
+        recognition = listOf("T-shirts Hot’Staff — il y en a 160 sur le site"),
         lostPropertyEmail = "hello@yadlo.ch",
         emptyMessage = null,
     )

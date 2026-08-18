@@ -52,7 +52,7 @@ class AssistanceUiMapperTest {
         val model =
             AssistanceState(
                 hasLoaded = true,
-                guide = AssistanceGuide(numbers = listOf(number("144", "Ambulance")), lostPropertyEmail = null),
+                guide = AssistanceGuide(numbers = listOf(number("144", "Ambulance")), recognition = emptyList(), lostPropertyEmail = null),
             ).toUiModel()
 
         // The numbers are the half that needs nobody's confirmation. A broken reference elsewhere
@@ -66,10 +66,17 @@ class AssistanceUiMapperTest {
         val model =
             AssistanceState(
                 hasLoaded = true,
-                guide = AssistanceGuide(numbers = emptyList(), lostPropertyEmail = null),
+                guide = AssistanceGuide(numbers = emptyList(), recognition = emptyList(), lostPropertyEmail = null),
             ).toUiModel()
 
         assertEquals(UiText.Resource(Res.string.assistance_empty), model.emptyMessage)
+    }
+
+    @Test
+    fun toUiModel_recognition_isCarriedAsTheContentWroteIt() {
+        // The 160 is a fact about one edition, so it is authored rather than derived from an
+        // archived figure — and the mapper's job is to not touch it.
+        assertEquals(listOf("T-shirts Hot'Staff"), loaded().recognition)
     }
 
     private fun loaded() =
@@ -77,6 +84,8 @@ class AssistanceUiMapperTest {
             hasLoaded = true,
             guide =
                 AssistanceGuide(
+                    recognition =
+                        listOf(Assistance.Recognition(id = "tshirts", text = "T-shirts Hot'Staff")),
                     numbers =
                         listOf(
                             number("112", "Urgences (numéro européen)"),

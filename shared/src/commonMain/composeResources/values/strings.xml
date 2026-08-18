@@ -157,6 +157,7 @@
 
     <string name="assistance_title">En cas de besoin</string>
     <string name="assistance_section_emergency">Urgence vitale</string>
+    <string name="assistance_section_recognition">Reconnaître l'équipe</string>
     <string name="assistance_section_lost">Objets trouvés</string>
     <string name="assistance_lost_body">Pendant le festival, au poste de secours. Après, écrivez-nous.</string>
     <string name="assistance_empty">Les numéros ne sont pas encore publiés.</string>

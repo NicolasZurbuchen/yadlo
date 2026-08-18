@@ -6,6 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class AssistanceDto(
     val emergencyNumbers: List<EmergencyNumberDto> = emptyList(),
+    val recognition: List<RecognitionDto> = emptyList(),
     val lostPropertyEmailId: String,
     val provenance: String,
 ) {
@@ -14,5 +15,11 @@ data class AssistanceDto(
         val id: String,
         val label: String,
         val number: String,
+    )
+
+    @Serializable
+    data class RecognitionDto(
+        val id: String,
+        val text: String,
     )
 }

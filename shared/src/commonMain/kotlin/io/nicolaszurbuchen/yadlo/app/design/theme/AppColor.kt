@@ -54,6 +54,14 @@ data class AppColors(
     val accentSubtle: Color,
     val onAccentSubtle: Color,
     /**
+     * The accent as ink on a page ground — the emergency numbers, and so far only those.
+     *
+     * A role of its own because [accent] is a fill: it is chosen to carry [onAccent], and as text it
+     * measures 2.3:1 on the lightest ground, which is unreadable. This is the same rose ramp at the
+     * step that can be written with.
+     */
+    val accentInk: Color,
+    /**
      * A Slot running now — the filled `en cours` pill on a Programme or Mon Yadlo row.
      *
      * A role of its own rather than [primary] because the two appear on the same row and mean
@@ -112,6 +120,7 @@ val LightAppColors =
         onAccent = SlatePalette.slate900,
         accentSubtle = RosePalette.rose100,
         onAccentSubtle = RosePalette.rose900,
+        accentInk = RosePalette.rose700,
         // Two steps darker than the `terre` anchor, not the anchor itself: a filled pill has to
         // carry white, and emerald600 is a category fill chosen to sit beside four other hues
         // rather than to be written on.
@@ -152,6 +161,9 @@ val DarkAppColors =
         onAccent = SlatePalette.slate950,
         accentSubtle = RosePalette.rose900,
         onAccentSubtle = RosePalette.rose200,
+        // The ramp swaps ends in dark, like every other pair here: rose700 is invisible on a dark
+        // ground, and rose400 — the accent itself — lands just under 4.5:1 on the raised one.
+        accentInk = RosePalette.rose300,
         // Both swap ends in dark for the same reason the blue does: the light steps are too deep to
         // read as anything against a dark ground, whether they are being written on or written in.
         live = EmeraldPalette.emerald400,

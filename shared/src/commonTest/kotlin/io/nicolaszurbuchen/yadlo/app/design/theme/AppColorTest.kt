@@ -61,6 +61,8 @@ class AppColorTest {
                     "textPrimary" to colors.textPrimary,
                     "textSecondary" to colors.textSecondary,
                     "textTertiary" to colors.textTertiary,
+                    // Not a text role by name, but it is only ever drawn as text — see AppColors.
+                    "accentInk" to colors.accentInk,
                 )
             val grounds =
                 listOf(

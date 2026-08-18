@@ -126,6 +126,7 @@ class AssistanceExecutorTest {
             copy(
                 assistance =
                     Assistance(
+                        recognition = emptyList(),
                         emergencyNumbers =
                             listOf(Assistance.EmergencyNumber(id = "ambulance", label = "Ambulance", number = "144")),
                         lostPropertyEmailId = "hello",

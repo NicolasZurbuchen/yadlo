@@ -21,6 +21,7 @@ class AssistanceReducerTest {
     fun guideUpdated_firstEmission_holdsTheNumbers() {
         val guide =
             AssistanceGuide(
+                recognition = emptyList(),
                 numbers = listOf(Assistance.EmergencyNumber(id = "ambulance", label = "Ambulance", number = "144")),
                 lostPropertyEmail = "hello@yadlo.ch",
             )
