@@ -3,12 +3,12 @@ package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.payment
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import io.nicolaszurbuchen.yadlo.app.design.component.YadloFactRow
+import io.nicolaszurbuchen.yadlo.app.design.component.YadloHero
 import io.nicolaszurbuchen.yadlo.app.design.component.YadloLinkTile
 import io.nicolaszurbuchen.yadlo.app.design.uimodel.FactMarkUiModel
 import io.nicolaszurbuchen.yadlo.app.design.uimodel.LinkMarkUiModel
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusBodyText
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusDetailScaffold
-import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusHeroStatement
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusSection
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.payment.component.PaymentSkeleton
 import org.jetbrains.compose.resources.stringResource
@@ -47,7 +47,7 @@ fun PaymentScreen(
         skeleton = { PaymentSkeleton() },
         modifier = modifier,
     ) {
-        state.headline?.let { PlusHeroStatement(headline = it, summary = state.summary) }
+        state.headline?.let { YadloHero(title = it, body = state.summary) }
 
         if (state.methods.isNotEmpty()) {
             PlusSection(title = stringResource(Res.string.payment_section_accepted)) {
