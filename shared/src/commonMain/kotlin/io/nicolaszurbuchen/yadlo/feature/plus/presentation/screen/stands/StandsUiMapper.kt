@@ -1,6 +1,6 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands
 
-import io.nicolaszurbuchen.yadlo.app.design.uimodel.DietaryMarkUiModel
+import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloDietaryMarkUiModel
 import io.nicolaszurbuchen.yadlo.app.design.uimodel.toDietaryTags
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import yadlo.shared.generated.resources.Res
@@ -22,7 +22,9 @@ fun StandsState.toUiModel(): StandsUiModel {
 
     val filtered =
         loaded.stands
-            .filter { stand -> selectedMark == null || selectedMark in stand.dietary }
+            // Every selected mark, not any of them. See StandsState for why the union is the
+            // dangerous half of that choice.
+            .filter { stand -> stand.dietary.keys.containsAll(selectedMarks) }
             .map { stand ->
                 StandUiModel(
                     id = stand.id,
@@ -40,18 +42,18 @@ fun StandsState.toUiModel(): StandsUiModel {
                 StandChipUiModel(
                     mark = null,
                     label = UiText.Resource(Res.string.stands_filter_all),
-                    isSelected = selectedMark == null,
+                    isSelected = selectedMarks.isEmpty(),
                 ),
             ) +
                 // The app's word for the content's id, and the same word on every screen. A chip
                 // for a mark this build has no glyph for is dropped rather than labelled with a
-                // slug — see DietaryMarkUiModel.forId.
+                // slug — see YadloDietaryMarkUiModel.forId.
                 loaded.marks.mapNotNull { mark ->
-                    DietaryMarkUiModel.forId(mark)?.let {
+                    YadloDietaryMarkUiModel.forId(mark)?.let {
                         StandChipUiModel(
                             mark = mark,
                             label = UiText.Resource(it.label),
-                            isSelected = mark == selectedMark,
+                            isSelected = mark in selectedMarks,
                         )
                     }
                 },
@@ -60,9 +62,9 @@ fun StandsState.toUiModel(): StandsUiModel {
             when {
                 filtered.isNotEmpty() -> null
 
-                // Nothing matched a chip the reader chose, versus nothing published at all. Only one
-                // of the two is something they can do anything about.
-                selectedMark != null -> UiText.Resource(Res.string.stands_no_match)
+                // Nothing matched the chips the reader chose, versus nothing published at all. Only
+                // one of the two is something they can do anything about.
+                selectedMarks.isNotEmpty() -> UiText.Resource(Res.string.stands_no_match)
 
                 else -> UiText.Resource(Res.string.stands_empty)
             },

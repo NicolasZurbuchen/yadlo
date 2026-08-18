@@ -3,8 +3,8 @@ package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.model.StandDirectory
 
 sealed interface StandsIntent {
-    /** Null is *Tout*. One mark at a time — see [StandsState.selectedMark]. */
-    data class MarkSelected(
+    /** Null is *Tout*, which clears the lot. Any other mark toggles — see [StandsState.selectedMarks]. */
+    data class MarkToggled(
         val mark: String?,
     ) : StandsIntent
 
@@ -28,16 +28,17 @@ sealed interface StandsMessage {
         val directory: StandDirectory,
     ) : StandsMessage
 
-    data class MarkSelected(
+    data class MarkToggled(
         val mark: String?,
     ) : StandsMessage
 }
 
 /**
- * **One mark at a time, not a set.** Combining `végan` and `sans gluten` reads as an intersection to
- * whoever wrote it and as a union to whoever reads it, and on six stands the difference is one
- * scroll either way. A single chip is unambiguous and is also how someone actually asks the
- * question: *what can I eat*, not *what satisfies all of these*.
+ * **[selectedMarks] combine as an AND, and that is the only safe reading.** A set was avoided at
+ * first because two chips read as an intersection to whoever wrote them and a union to whoever
+ * reads them — but the two readings are not equally wrong here. Someone who needs vegan *and*
+ * gluten-free, shown a stand that is merely vegan, is being pointed at food they cannot eat. The
+ * union fails toward harm; the intersection fails toward one fewer row.
  *
  * The filter is not persisted. It answers a question asked once at the counter, and a chip that
  * survived into the next launch would silently hide two thirds of the list.
@@ -48,5 +49,5 @@ sealed interface StandsMessage {
 data class StandsState(
     val kind: StandsKindUiModel,
     val directory: StandDirectory? = null,
-    val selectedMark: String? = null,
+    val selectedMarks: Set<String> = emptySet(),
 )

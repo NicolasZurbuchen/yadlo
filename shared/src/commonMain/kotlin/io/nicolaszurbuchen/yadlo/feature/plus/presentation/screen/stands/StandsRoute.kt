@@ -33,7 +33,7 @@ fun StandsRoute(
     StandsScreen(
         state = state,
         onBackClick = onNavigateBack,
-        onMarkClick = { mark -> viewModel.onIntent(StandsIntent.MarkSelected(mark)) },
+        onMarkClick = { mark -> viewModel.onIntent(StandsIntent.MarkToggled(mark)) },
         onStandClick = { id -> viewModel.onIntent(StandsIntent.StandClicked(id)) },
         modifier = modifier,
     )

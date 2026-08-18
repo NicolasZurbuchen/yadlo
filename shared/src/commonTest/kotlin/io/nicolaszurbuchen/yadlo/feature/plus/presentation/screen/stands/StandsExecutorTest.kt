@@ -19,6 +19,7 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
+import kotlin.test.assertTrue
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class StandsExecutorTest {
@@ -83,12 +84,12 @@ class StandsExecutorTest {
             repository.emitStatus(ready(happenings = listOf(stand("vegan-fabrik", itemMarks = listOf(listOf("vegan"))))))
             testDispatcher.scheduler.runCurrent()
 
-            store.accept(StandsIntent.MarkSelected("végan"))
+            store.accept(StandsIntent.MarkToggled("vegan"))
             testDispatcher.scheduler.runCurrent()
 
             // The filter is state, not a refetch: the directory stays whole and the mapper narrows
             // it, so clearing the chip costs nothing.
-            assertEquals("végan", store.state.selectedMark)
+            assertEquals(setOf("vegan"), store.state.selectedMarks)
             assertEquals(1, store.state.directory?.stands?.size)
             store.dispose()
         }
@@ -98,13 +99,13 @@ class StandsExecutorTest {
         runTest {
             val store = createStore(FakeContentRepository(), StandsKindUiModel.FOOD)
             testDispatcher.scheduler.runCurrent()
-            store.accept(StandsIntent.MarkSelected("végan"))
+            store.accept(StandsIntent.MarkToggled("vegan"))
             testDispatcher.scheduler.runCurrent()
 
-            store.accept(StandsIntent.MarkSelected(null))
+            store.accept(StandsIntent.MarkToggled(null))
             testDispatcher.scheduler.runCurrent()
 
-            assertNull(store.state.selectedMark)
+            assertTrue(store.state.selectedMarks.isEmpty())
             store.dispose()
         }
 

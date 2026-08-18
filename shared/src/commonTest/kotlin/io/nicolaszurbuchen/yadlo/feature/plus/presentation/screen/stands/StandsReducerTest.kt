@@ -6,6 +6,7 @@ import io.nicolaszurbuchen.yadlo.feature.plus.domain.model.StandListing
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
+import kotlin.test.assertTrue
 
 class StandsReducerTest {
     private val reducer = StandsStoreFactory.ReducerImpl
@@ -17,7 +18,7 @@ class StandsReducerTest {
         // Which half this is arrives with the destination, not with the content, so the title is
         // known before anything has been read.
         assertNull(state.directory)
-        assertNull(state.selectedMark)
+        assertTrue(state.selectedMarks.isEmpty())
         assertEquals(StandsKindUiModel.MAKERS, state.kind)
     }
 
@@ -29,32 +30,43 @@ class StandsReducerTest {
     }
 
     @Test
-    fun markSelected_replacesTheChipRatherThanAddingToIt() {
-        val result = with(reducer) { state(selectedMark = "vegan").reduce(StandsMessage.MarkSelected("vegetarien")) }
+    fun markToggled_aSecondMark_addsToTheFirstRatherThanReplacingIt() {
+        val result = with(reducer) { state(setOf("vegan")).reduce(StandsMessage.MarkToggled("sans-gluten")) }
 
-        // One mark at a time: two chips read as an intersection to whoever wrote them and a union
-        // to whoever reads them, and on six stands the difference is one scroll.
-        assertEquals("vegetarien", result.selectedMark)
+        // Someone who needs both needs both. See StandsState for why the union is the dangerous
+        // reading of two chips and the intersection the safe one.
+        assertEquals(setOf("vegan", "sans-gluten"), result.selectedMarks)
     }
 
     @Test
-    fun markSelected_null_isTheChipThatClearsTheFilter() {
-        assertNull(with(reducer) { state(selectedMark = "vegan").reduce(StandsMessage.MarkSelected(null)) }.selectedMark)
+    fun markToggled_aMarkAlreadyOn_turnsItOff() {
+        val result = with(reducer) { state(setOf("vegan", "sans-gluten")).reduce(StandsMessage.MarkToggled("vegan")) }
+
+        assertEquals(setOf("sans-gluten"), result.selectedMarks)
+    }
+
+    @Test
+    fun markToggled_null_isTheChipThatClearsTheLot() {
+        // *Tout* clears rather than toggling, which is what makes it the way back to the whole list
+        // from any combination.
+        val result = with(reducer) { state(setOf("vegan", "sans-gluten")).reduce(StandsMessage.MarkToggled(null)) }
+
+        assertTrue(result.selectedMarks.isEmpty())
     }
 
     @Test
     fun directoryUpdated_aRefreshLandsUnderTheReader_leavesTheirChipAndTheirHalfAlone() {
         val result =
-            with(reducer) { state(selectedMark = "vegan").reduce(StandsMessage.DirectoryUpdated(directory())) }
+            with(reducer) { state(setOf("vegan")).reduce(StandsMessage.DirectoryUpdated(directory())) }
 
         // Widening back to everything because content moved would silently undo something the
         // reader did, on the screen where they are least likely to notice.
-        assertEquals("vegan", result.selectedMark)
+        assertEquals(setOf("vegan"), result.selectedMarks)
         assertEquals(StandsKindUiModel.FOOD, result.kind)
     }
 
-    private fun state(selectedMark: String? = null) =
-        StandsState(kind = StandsKindUiModel.FOOD, directory = directory(), selectedMark = selectedMark)
+    private fun state(selectedMarks: Set<String> = emptySet()) =
+        StandsState(kind = StandsKindUiModel.FOOD, directory = directory(), selectedMarks = selectedMarks)
 
     private fun directory() =
         StandDirectory(
