@@ -49,7 +49,7 @@ Every closed value set in the content. Widening one should be a decision, not a 
 | `provenance` | `confirmed` · `archived` · `unverified` |
 | `kind` | `artist` · `activity` · `stand` |
 | `category.id` | `musique` · `silent` · `eau` · `terre` · `enfants` · `restauration` · `createurs` |
-| `marks` | `végé` · `végan` · `sans gluten` · `sans lactose` · `piquant` · `bio` |
+| `marks` | `vegan` · `vegetarien` · `sans-gluten` · `sans-lactose` · `halal` · `piquant` |
 | `link.type` | `website` · `instagram` · `facebook` · `youtube` · `tiktok` · `spotify` · `appleMusic` · `soundcloud` · `bandcamp` · `beatport` |
 | `currency` | `CHF` |
 | `price.tiers[].per` | `personne` · `équipe` · `null` |
@@ -210,7 +210,6 @@ there is one and nothing when there is not.
 
 ```
 offering  string | null    "Cuisine végétale"
-marks     string[]         describe the WHOLE stand
 links     Link[]
 menu      MenuGroup[]      [] when unpublished
 ```
@@ -231,15 +230,32 @@ Item
   provenance   Provenance
 ```
 
-**The level of a mark is its meaning.** On the Stand it describes everything sold — Vegan Fabrik is
-`végan` and `bio` because all of it is. On an Item it describes that item alone — De l'Or Bokit
-carries no stand mark, but its `Le Végé` is `végé`. That is the difference between "this stand is
-entirely vegan" and "this stand has a vegan option", which is the actual question someone scanning a
-row of trucks is asking. **A stand-level mark must never be repeated on its items.**
+**Marks live on the dish and nowhere else.** A Stand used to carry its own list, meaning "all of it
+is", while its items carried theirs, meaning "this one is" — two levels that could contradict each
+other, and that a content edit adding one non-vegan dish would silently make false.
 
-`source` exists because no menu here is confirmed by the festival: one is a vendor's own carte for a
-different location, one was read off a photograph of a handwritten chalkboard. That belongs next to
-the prices, not in a document nobody ships.
+The app derives the stand's answer from its menu instead: a mark every dish carries reads as
+*100 % végan*, one that only some carry reads as *options véganes*. That is the difference someone
+scanning a row of trucks is actually asking about, and deriving it is the only way it cannot be
+wrong.
+
+Which means **every dish must be marked**, including the ones that carry nothing: an untagged dish
+is read as "not vegan", and one forgotten drink is what turns *100 % végan* into *options véganes*.
+
+**The vocabulary is closed and slugged.** Slugs rather than the French words they used to be,
+because the app keys an icon and a colour off each one, and `végan` is two different byte sequences
+depending on who typed it. The label a reader sees is the app's, exactly as a Category's colour is.
+
+`bio` is gone with the stand level: it is a claim about sourcing rather than about whether someone
+can eat the thing, and it was the one mark the filter could not answer a question with. `halal`
+replaces it in the vocabulary and nothing carries it yet — see GAPS.md.
+
+`source` exists because **no menu here is confirmed by the festival**, and they are not all
+unconfirmed in the same way: two are the vendor's own published carte cut down to festival portions,
+two are reconstructed from the dishes the vendor lists without prices, and two are plausible cartes
+for a stand that publishes nothing at all beyond "crêpes, gaufres et glaces". A reader deciding
+whether to trust a price deserves to know which of those they are looking at, and that belongs next
+to the price rather than in a document nobody ships.
 
 ### Slot
 
