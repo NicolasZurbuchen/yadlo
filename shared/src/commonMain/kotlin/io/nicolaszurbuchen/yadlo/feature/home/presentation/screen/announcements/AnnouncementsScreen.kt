@@ -91,7 +91,9 @@ fun AnnouncementsScreen(
 
             else -> {
                 LazyColumn(
-                    contentPadding = PaddingValues(MaterialTheme.spacing.md),
+                    // Vertical only: the rows reach the screen edges so their ripple and the rules
+                    // between them do too, and each row carries its own horizontal inset.
+                    contentPadding = PaddingValues(vertical = MaterialTheme.spacing.md),
                     modifier = Modifier.fillMaxSize().padding(contentPadding),
                 ) {
                     items(state.items, key = { it.id }) { item ->

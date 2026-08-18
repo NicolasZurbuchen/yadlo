@@ -1,9 +1,11 @@
 package io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.component
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.component.AnnouncementCard
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.HomeBlockUiModel
@@ -18,6 +20,10 @@ import yadlo.shared.generated.resources.home_announcements_all
  * A summary, not the feed: the two most recent, with the way to the rest in the header. The action
  * is absent when there is no rest, because a button opening what you are already reading is the
  * same problem as one that does nothing.
+ *
+ * The rows run to the block's own edges rather than inside its padding, so a tap ripples across the
+ * whole width and the rule between two annonces is a rule between two annonces rather than a line
+ * floating in the middle of one. Each row pads itself instead — see [AnnouncementCard].
  */
 @Composable
 fun AnnouncementsBlock(
@@ -30,6 +36,7 @@ fun AnnouncementsBlock(
         title = block.title,
         actionLabel = if (block.hasMore) UiText.Resource(Res.string.home_announcements_all) else null,
         onActionClick = if (block.hasMore) onSeeAllClick else null,
+        contentPadding = PaddingValues(0.dp),
         modifier = modifier,
     ) {
         block.items.forEachIndexed { index, item ->
