@@ -18,6 +18,10 @@ import io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme
  * Three readings rather than an hourly ruler: the bar is for the shape of the day, not for reading
  * a time off, and the exact hours are on the row itself. Once at the top rather than per row is
  * what keeps this from becoming the right-hand time column layout B2 exists to avoid.
+ *
+ * The ink the chrome blue carries rather than the dim metadata role these three would take on the
+ * page: there is no dim step that clears 4.5:1 on that ground — the tertiary role measures 2.4:1 —
+ * and three times nobody can read is worse than three times that are not quieter than the chips.
  */
 @Composable
 fun ProgrammeScaleRow(
@@ -35,7 +39,7 @@ fun ProgrammeScaleRow(
             Text(
                 text = reading,
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.appColors.textTertiary,
+                color = MaterialTheme.appColors.onPrimarySubtle,
             )
         }
     }

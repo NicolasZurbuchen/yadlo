@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -20,15 +19,20 @@ import io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme
  * The day, the kind, and the span the bars are drawn against — everything you set before you read
  * the list.
  *
- * **One block on the page ground, closed off by a single rule.** It was drawn on a surface of its
- * own for a while, so the bar and the filters would read as one piece of chrome — but the bar is the
- * bandeau blue now, and a filter row on that blue cannot be built: an unselected chip's outline
- * measures 1.6:1 against it and a selected one's fill 2.8:1, so the control disappears into its own
- * background. The bar being a colour of its own is what separates chrome from page; these are
- * controls over a list, sitting on the same ground the list does, with a rule where they end.
+ * **The bar's own blue, continuing it.** These are chrome — they do not scroll away with the list,
+ * which is half the point of them: a filter you have to scroll back up to change is a filter that
+ * gets used once — so they are the bottom of the toolbar rather than the top of the page. No rule
+ * closes the block off any more; where the blue stops is where the chrome stops.
  *
- * It does not scroll away with the list, which is the other half of the point: a filter you have to
- * scroll back up to change is a filter that gets used once.
+ * **The chips are rebuilt for that ground rather than inherited onto it.** The page-ground roles do
+ * not survive on #74AEE0 — the outline measures 1.6:1 and the label 2.4:1 — so every chip here takes
+ * the ink the blue carries, for its label and for a drawn edge it keeps even when filled. That edge
+ * is the part that matters: a Category fill measures between 1.2:1 and 2.1:1 against this blue, so a
+ * selected chip in Material's borderless style would have no visible boundary at all.
+ *
+ * The Category dot keeps its hue untouched at whatever it measures. It is a swatch beside a word
+ * that already says the same thing, and what separates *enfants* gold from *musique* magenta at a
+ * glance is the hue, not the luminance a contrast ratio measures.
  */
 @Composable
 fun ProgrammeHeader(
@@ -40,7 +44,7 @@ fun ProgrammeHeader(
     onAllCategoriesClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(modifier = modifier.fillMaxWidth().background(MaterialTheme.appColors.background)) {
+    Column(modifier = modifier.fillMaxWidth().background(MaterialTheme.appColors.primarySubtle)) {
         if (days.isNotEmpty()) {
             DayChipRow(days = days, onDayClick = onDayClick)
         }
@@ -62,10 +66,6 @@ fun ProgrammeHeader(
                 modifier = Modifier.offset(y = -ROW_OVERLAP).padding(bottom = MaterialTheme.spacing.xs),
             )
         }
-
-        // The one line on this screen that is not between two Slots: it closes the chrome off from
-        // the list rather than separating two rows of it.
-        HorizontalDivider(color = MaterialTheme.appColors.borderSubtle)
     }
 }
 

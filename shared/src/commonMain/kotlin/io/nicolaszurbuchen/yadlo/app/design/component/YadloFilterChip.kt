@@ -24,6 +24,16 @@ import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
  * [selectedFill] and [selectedInk] exist because a Category chip fills with its own hue rather than
  * with the app's primary — the colour is the Category, and a selected *musique* chip that turned
  * blue would be saying something false. Everything else takes the defaults.
+ *
+ * [ink] and [outline] exist because the ground is no longer always the page. The Programme's filters
+ * sit on the bandeau blue, where the page-ground roles do not survive: the outline measures 1.6:1
+ * against it and the label 2.4:1. A chip on a coloured chrome passes the ink that chrome carries.
+ *
+ * [selectedOutline] defaults to the fill, which is the borderless Material look and the right one on
+ * the page. On the chrome it becomes the same drawn edge the unselected chip has, because a filled
+ * chip's boundary is otherwise the fill itself — and a Category fill on that blue is between 1.2:1
+ * and 2.1:1, so the control would have no visible edge at all. The outline gives it one without
+ * touching the hue, which is the part that carries the meaning.
  */
 @Composable
 fun YadloFilterChip(
@@ -33,6 +43,9 @@ fun YadloFilterChip(
     modifier: Modifier = Modifier,
     selectedFill: Color = MaterialTheme.appColors.primary,
     selectedInk: Color = MaterialTheme.appColors.onPrimary,
+    ink: Color = MaterialTheme.appColors.textSecondary,
+    outline: Color = MaterialTheme.appColors.borderStrong,
+    selectedOutline: Color = selectedFill,
     leadingIcon: @Composable (() -> Unit)? = null,
 ) {
     FilterChip(
@@ -48,7 +61,7 @@ fun YadloFilterChip(
         colors =
             FilterChipDefaults.filterChipColors(
                 containerColor = Color.Transparent,
-                labelColor = MaterialTheme.appColors.textSecondary,
+                labelColor = ink,
                 selectedContainerColor = selectedFill,
                 selectedLabelColor = selectedInk,
                 selectedLeadingIconColor = selectedInk,
@@ -57,8 +70,8 @@ fun YadloFilterChip(
             FilterChipDefaults.filterChipBorder(
                 enabled = true,
                 selected = isSelected,
-                borderColor = MaterialTheme.appColors.borderStrong,
-                selectedBorderColor = selectedFill,
+                borderColor = outline,
+                selectedBorderColor = selectedOutline,
             ),
         modifier = modifier,
     )

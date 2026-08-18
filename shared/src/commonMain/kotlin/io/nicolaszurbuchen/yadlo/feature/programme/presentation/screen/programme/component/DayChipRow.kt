@@ -10,6 +10,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import io.nicolaszurbuchen.yadlo.app.design.component.YadloFilterChip
+import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme.DayChipUiModel
 
@@ -25,6 +26,9 @@ import io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme
  * [YadloFilterChip] rather than a `Text` on a rounded background, which is what this used to be: it
  * sat a few dp taller than the Category chips directly beneath it, which is the sort of difference
  * nobody can name and everybody sees.
+ *
+ * The ink is the one the chrome blue carries, here and on the edge the chip keeps when it fills —
+ * see [ProgrammeHeader] for why nothing on this ground can use the page's own roles.
  */
 @Composable
 fun DayChipRow(
@@ -45,6 +49,9 @@ fun DayChipRow(
                 label = day.name,
                 isSelected = day.isSelected,
                 onClick = { onDayClick(day.id) },
+                ink = MaterialTheme.appColors.onPrimarySubtle,
+                outline = MaterialTheme.appColors.onPrimarySubtle,
+                selectedOutline = MaterialTheme.appColors.onPrimarySubtle,
             )
         }
     }
