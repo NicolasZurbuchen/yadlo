@@ -1,6 +1,8 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.volunteering
 
+import io.nicolaszurbuchen.yadlo.common.content.domain.model.Contact
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.model.VolunteeringOffer
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.uimodel.PlusEmailUiModel
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -33,7 +35,7 @@ class VolunteeringUiMapperTest {
         assertEquals("Six heures minimum.", model.body)
         assertEquals(listOf("Tote bag", "Repas végane"), model.perks)
         assertEquals("https://ehro.app/o/yadlo/", model.signupUrl)
-        assertEquals("staff@yadlo.ch", model.email)
+        assertEquals(PlusEmailUiModel(id = "staff", label = "Staff", responsible = "Maeva C.", address = "staff@yadlo.ch"), model.email)
     }
 
     @Test
@@ -43,7 +45,7 @@ class VolunteeringUiMapperTest {
         val model = loaded(signupUrl = null)
 
         assertNull(model.signupUrl)
-        assertEquals("staff@yadlo.ch", model.email)
+        assertEquals("staff@yadlo.ch", model.email?.address)
     }
 
     private fun loaded(signupUrl: String? = "https://ehro.app/o/yadlo/") =
@@ -54,7 +56,11 @@ class VolunteeringUiMapperTest {
                     body = "Six heures minimum.",
                     perks = listOf("Tote bag", "Repas végane"),
                     signupUrl = signupUrl,
-                    email = "staff@yadlo.ch",
+                    email = staffEmail(),
                 ),
         ).toUiModel()
+
+    // The whole directory entry, not the address: the tile names the concern and whoever is behind
+    // it, the same way *Nous écrire* does.
+    private fun staffEmail() = Contact.Email(id = "staff", address = "staff@yadlo.ch", label = "Staff", responsible = "Maeva C.")
 }

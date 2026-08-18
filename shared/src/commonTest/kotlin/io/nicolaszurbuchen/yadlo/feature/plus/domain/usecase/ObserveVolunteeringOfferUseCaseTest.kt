@@ -47,7 +47,12 @@ class ObserveVolunteeringOfferUseCaseTest {
             val repository = FakeContentRepository().apply { emitStatus(ready(festival = withInvolvement())) }
 
             // The one thing a signup page cannot answer, and the screen has no way to look an id up.
-            assertEquals("staff@yadlo.ch", offerFrom(repository)?.email)
+            // The whole entry rather than the address, so the tile can name the concern and whoever
+            // is behind it the way *Nous écrire* does.
+            assertEquals(
+                Contact.Email(id = "staff", address = "staff@yadlo.ch", label = "Staff", responsible = null),
+                offerFrom(repository)?.email,
+            )
         }
 
     @Test

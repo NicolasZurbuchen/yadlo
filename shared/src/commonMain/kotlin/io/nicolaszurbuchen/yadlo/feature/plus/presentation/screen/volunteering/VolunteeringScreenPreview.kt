@@ -11,6 +11,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import io.nicolaszurbuchen.yadlo.app.design.theme.YadloTheme
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.uimodel.PlusEmailUiModel
 
 /**
  * The skeleton and the campaign. The closed state is gone with `hasLoaded` — recruiting is treated
@@ -70,5 +71,11 @@ private fun published() =
                 "Repas végane chaque jour",
             ),
         signupUrl = "https://ehro.app/o/yadlo/",
-        email = "staff@yadlo.ch",
+        email =
+            PlusEmailUiModel(
+                id = "staff",
+                label = "Staff",
+                responsible = "Maeva C.",
+                address = "staff@yadlo.ch",
+            ),
     )
