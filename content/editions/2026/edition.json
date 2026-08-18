@@ -868,10 +868,6 @@
       "provenance": "confirmed",
       "stand": {
         "offering": "Cuisine végétale",
-        "marks": [
-          "végan",
-          "bio"
-        ],
         "links": [
           {
             "type": "website",
@@ -891,7 +887,7 @@
             "id": "plats",
             "name": "Plats",
             "description": null,
-            "source": "Liste transmise, non publiée par le festival",
+            "source": "Carte publiée par le vendeur, adaptée aux portions et aux prix d’un stand de festival — non confirmée par le festival",
             "items": [
               {
                 "name": "Assiette de mezzés",
@@ -899,8 +895,12 @@
                   "amount": 15,
                   "currency": "CHF"
                 },
-                "description": null,
-                "marks": [],
+                "description": "Houmous, caviar d’aubergine, falafels, salade et pain plat.",
+                "marks": [
+                  "vegan",
+                  "vegetarien",
+                  "sans-lactose"
+                ],
                 "provenance": "unverified"
               },
               {
@@ -909,8 +909,12 @@
                   "amount": 18,
                   "currency": "CHF"
                 },
-                "description": null,
-                "marks": [],
+                "description": "Seitan maison à la farine de gluten, poivrons, oignons, riz parfumé.",
+                "marks": [
+                  "vegan",
+                  "vegetarien",
+                  "sans-lactose"
+                ],
                 "provenance": "unverified"
               },
               {
@@ -919,8 +923,13 @@
                   "amount": 19,
                   "currency": "CHF"
                 },
-                "description": null,
-                "marks": [],
+                "description": "Tofu suisse Swissoja mijoté aux légumes de saison et lait de coco, riz.",
+                "marks": [
+                  "vegan",
+                  "vegetarien",
+                  "sans-lactose",
+                  "sans-gluten"
+                ],
                 "provenance": "unverified"
               },
               {
@@ -929,8 +938,12 @@
                   "amount": 5,
                   "currency": "CHF"
                 },
-                "description": null,
-                "marks": [],
+                "description": "Pâte fine, sauce tomate, mozzarella végétale, origan.",
+                "marks": [
+                  "vegan",
+                  "vegetarien",
+                  "sans-lactose"
+                ],
                 "provenance": "unverified"
               }
             ]
@@ -938,8 +951,8 @@
           {
             "id": "tartelettes",
             "name": "Tartelettes",
-            "description": null,
-            "source": "Photo du tableau du stand, date inconnue",
+            "description": "Pâte sablée végétale, crème à l’aquafaba ou à la noix de cajou.",
+            "source": "Carte publiée par le vendeur, adaptée aux portions et aux prix d’un stand de festival — non confirmée par le festival",
             "items": [
               {
                 "name": "Myrtilles",
@@ -947,8 +960,12 @@
                   "amount": 5.5,
                   "currency": "CHF"
                 },
-                "description": null,
-                "marks": [],
+                "description": "Crème de cajou, myrtilles fraîches.",
+                "marks": [
+                  "vegan",
+                  "vegetarien",
+                  "sans-lactose"
+                ],
                 "provenance": "unverified"
               },
               {
@@ -957,8 +974,12 @@
                   "amount": 4.5,
                   "currency": "CHF"
                 },
-                "description": null,
-                "marks": [],
+                "description": "Pommes caramélisées, cannelle.",
+                "marks": [
+                  "vegan",
+                  "vegetarien",
+                  "sans-lactose"
+                ],
                 "provenance": "unverified"
               },
               {
@@ -967,8 +988,12 @@
                   "amount": 4.5,
                   "currency": "CHF"
                 },
-                "description": null,
-                "marks": [],
+                "description": "Abricots de saison, amandes effilées.",
+                "marks": [
+                  "vegan",
+                  "vegetarien",
+                  "sans-lactose"
+                ],
                 "provenance": "unverified"
               },
               {
@@ -977,8 +1002,12 @@
                   "amount": 4.5,
                   "currency": "CHF"
                 },
-                "description": null,
-                "marks": [],
+                "description": "Crème au citron montée à l’aquafaba.",
+                "marks": [
+                  "vegan",
+                  "vegetarien",
+                  "sans-lactose"
+                ],
                 "provenance": "unverified"
               }
             ]
@@ -987,7 +1016,7 @@
             "id": "a-grignoter",
             "name": "À grignoter",
             "description": null,
-            "source": "Photo du tableau du stand, date inconnue",
+            "source": "Carte publiée par le vendeur, adaptée aux portions et aux prix d’un stand de festival — non confirmée par le festival",
             "items": [
               {
                 "name": "Salade de fruits",
@@ -995,8 +1024,13 @@
                   "amount": 4.5,
                   "currency": "CHF"
                 },
-                "description": null,
-                "marks": [],
+                "description": "Fruits frais de saison, menthe.",
+                "marks": [
+                  "vegan",
+                  "vegetarien",
+                  "sans-lactose",
+                  "sans-gluten"
+                ],
                 "provenance": "unverified"
               },
               {
@@ -1005,8 +1039,13 @@
                   "amount": 5,
                   "currency": "CHF"
                 },
-                "description": null,
-                "marks": [],
+                "description": "Pommes de terre, huile de tournesol, sel.",
+                "marks": [
+                  "vegan",
+                  "vegetarien",
+                  "sans-lactose",
+                  "sans-gluten"
+                ],
                 "provenance": "unverified"
               }
             ]
@@ -1015,7 +1054,7 @@
             "id": "boissons",
             "name": "Boissons",
             "description": null,
-            "source": "Photo du tableau du stand, date inconnue",
+            "source": "Carte publiée par le vendeur, adaptée aux portions et aux prix d’un stand de festival — non confirmée par le festival",
             "items": [
               {
                 "name": "Lassi",
@@ -1023,8 +1062,13 @@
                   "amount": 4.5,
                   "currency": "CHF"
                 },
-                "description": null,
-                "marks": [],
+                "description": "Yaourt de coco, mangue, cardamome.",
+                "marks": [
+                  "vegan",
+                  "vegetarien",
+                  "sans-lactose",
+                  "sans-gluten"
+                ],
                 "provenance": "unverified"
               }
             ]
@@ -1042,9 +1086,212 @@
       "provenance": "confirmed",
       "stand": {
         "offering": "Cuisine géorgienne",
-        "marks": [],
         "links": [],
-        "menu": []
+        "menu": [
+          {
+            "id": "entrees",
+            "name": "Entrées",
+            "description": null,
+            "source": "Carte reconstituée d’après celle du vendeur, adaptée aux portions et aux prix d’un stand de festival — non confirmée par le festival",
+            "items": [
+              {
+                "name": "Khinkali, les 5",
+                "price": {
+                  "amount": 13,
+                  "currency": "CHF"
+                },
+                "description": "Raviolis géorgiens farcis au bœuf, oignon, coriandre et cumin.",
+                "marks": [],
+                "provenance": "unverified"
+              },
+              {
+                "name": "Khachapuri",
+                "price": {
+                  "amount": 12,
+                  "currency": "CHF"
+                },
+                "description": "Feuilleté chaud au cœur de fromage fondant et œuf.",
+                "marks": [
+                  "vegetarien"
+                ],
+                "provenance": "unverified"
+              },
+              {
+                "name": "Pkhali",
+                "price": {
+                  "amount": 9,
+                  "currency": "CHF"
+                },
+                "description": "Bouchées d’épinards et de betterave aux noix, ail et épices géorgiennes.",
+                "marks": [
+                  "vegan",
+                  "vegetarien",
+                  "sans-lactose",
+                  "sans-gluten"
+                ],
+                "provenance": "unverified"
+              },
+              {
+                "name": "Badrijani",
+                "price": {
+                  "amount": 10,
+                  "currency": "CHF"
+                },
+                "description": "Aubergines grillées roulées à la crème de noix, grenade.",
+                "marks": [
+                  "vegan",
+                  "vegetarien",
+                  "sans-lactose",
+                  "sans-gluten"
+                ],
+                "provenance": "unverified"
+              },
+              {
+                "name": "Lobiani",
+                "price": {
+                  "amount": 11,
+                  "currency": "CHF"
+                },
+                "description": "Galette cuite au four farcie aux haricots rouges et aux épices.",
+                "marks": [
+                  "vegan",
+                  "vegetarien",
+                  "sans-lactose"
+                ],
+                "provenance": "unverified"
+              }
+            ]
+          },
+          {
+            "id": "plats",
+            "name": "Plats",
+            "description": null,
+            "source": "Carte reconstituée d’après celle du vendeur, adaptée aux portions et aux prix d’un stand de festival — non confirmée par le festival",
+            "items": [
+              {
+                "name": "Gulibowl",
+                "price": {
+                  "amount": 17,
+                  "currency": "CHF"
+                },
+                "description": "Riz, légumes marinés, pkhali, pickles et grenade.",
+                "marks": [
+                  "vegan",
+                  "vegetarien",
+                  "sans-lactose",
+                  "sans-gluten"
+                ],
+                "provenance": "unverified"
+              },
+              {
+                "name": "Guliwrap",
+                "price": {
+                  "amount": 15,
+                  "currency": "CHF"
+                },
+                "description": "Lavash garni de kababi de bœuf, oignons au citron, adjika.",
+                "marks": [
+                  "piquant"
+                ],
+                "provenance": "unverified"
+              },
+              {
+                "name": "Ajapsandali",
+                "price": {
+                  "amount": 14,
+                  "currency": "CHF"
+                },
+                "description": "Ratatouille géorgienne — aubergine, poivron, tomate, coriandre.",
+                "marks": [
+                  "vegan",
+                  "vegetarien",
+                  "sans-lactose",
+                  "sans-gluten"
+                ],
+                "provenance": "unverified"
+              },
+              {
+                "name": "Shashlik",
+                "price": {
+                  "amount": 18,
+                  "currency": "CHF"
+                },
+                "description": "Brochette de bœuf marinée, oignons rouges, pain plat.",
+                "marks": [],
+                "provenance": "unverified"
+              }
+            ]
+          },
+          {
+            "id": "desserts",
+            "name": "Desserts",
+            "description": null,
+            "source": "Carte reconstituée d’après celle du vendeur, adaptée aux portions et aux prix d’un stand de festival — non confirmée par le festival",
+            "items": [
+              {
+                "name": "Gozinaki",
+                "price": {
+                  "amount": 6,
+                  "currency": "CHF"
+                },
+                "description": "Noix caramélisées au miel.",
+                "marks": [
+                  "vegetarien",
+                  "sans-gluten"
+                ],
+                "provenance": "unverified"
+              },
+              {
+                "name": "Pelamushi",
+                "price": {
+                  "amount": 6,
+                  "currency": "CHF"
+                },
+                "description": "Gelée de jus de raisin aux noix.",
+                "marks": [
+                  "vegan",
+                  "vegetarien",
+                  "sans-lactose",
+                  "sans-gluten"
+                ],
+                "provenance": "unverified"
+              }
+            ]
+          },
+          {
+            "id": "sauces",
+            "name": "Sauces maison",
+            "description": null,
+            "source": "Carte reconstituée d’après celle du vendeur, adaptée aux portions et aux prix d’un stand de festival — non confirmée par le festival",
+            "items": [
+              {
+                "name": "Adjika",
+                "price": null,
+                "description": "Poivron rouge, piment, ail, coriandre, fenugrec bleu.",
+                "marks": [
+                  "vegan",
+                  "vegetarien",
+                  "sans-lactose",
+                  "sans-gluten",
+                  "piquant"
+                ],
+                "provenance": "unverified"
+              },
+              {
+                "name": "Tkemali",
+                "price": null,
+                "description": "Prunes acidulées, ail, aneth, menthe pouliot.",
+                "marks": [
+                  "vegan",
+                  "vegetarien",
+                  "sans-lactose",
+                  "sans-gluten"
+                ],
+                "provenance": "unverified"
+              }
+            ]
+          }
+        ]
       }
     },
     {
@@ -1057,7 +1304,6 @@
       "provenance": "confirmed",
       "stand": {
         "offering": "Cuisine libanaise",
-        "marks": [],
         "links": [
           {
             "type": "website",
@@ -1072,7 +1318,235 @@
             "url": "https://www.facebook.com/manouchy1"
           }
         ],
-        "menu": []
+        "menu": [
+          {
+            "id": "manouches",
+            "name": "Man’ouchés",
+            "description": "La galette libanaise, cuite à la commande.",
+            "source": "Carte reconstituée d’après celle du vendeur, adaptée aux portions et aux prix d’un stand de festival — non confirmée par le festival",
+            "items": [
+              {
+                "name": "Zaatar khodra",
+                "price": {
+                  "amount": 10,
+                  "currency": "CHF"
+                },
+                "description": "Thym, sésame, huile d’olive, tomate, concombre, menthe.",
+                "marks": [
+                  "vegan",
+                  "vegetarien",
+                  "sans-lactose"
+                ],
+                "provenance": "unverified"
+              },
+              {
+                "name": "Zaatar labné",
+                "price": {
+                  "amount": 11,
+                  "currency": "CHF"
+                },
+                "description": "Thym, sésame, labné maison, crudités.",
+                "marks": [
+                  "vegetarien"
+                ],
+                "provenance": "unverified"
+              },
+              {
+                "name": "Jebné",
+                "price": {
+                  "amount": 11,
+                  "currency": "CHF"
+                },
+                "description": "Trio de fromages — mozzarella, fromage jaune, halloumi.",
+                "marks": [
+                  "vegetarien"
+                ],
+                "provenance": "unverified"
+              },
+              {
+                "name": "Lahm bi ajine",
+                "price": {
+                  "amount": 13,
+                  "currency": "CHF"
+                },
+                "description": "Viande de bœuf hachée, tomate, oignon, épices libanaises.",
+                "marks": [],
+                "provenance": "unverified"
+              }
+            ]
+          },
+          {
+            "id": "sandwichs",
+            "name": "Sandwichs",
+            "description": null,
+            "source": "Carte reconstituée d’après celle du vendeur, adaptée aux portions et aux prix d’un stand de festival — non confirmée par le festival",
+            "items": [
+              {
+                "name": "Falafel libanais",
+                "price": {
+                  "amount": 12,
+                  "currency": "CHF"
+                },
+                "description": "Boulettes de pois chiche, tarator, crudités, pickles.",
+                "marks": [
+                  "vegan",
+                  "vegetarien",
+                  "sans-lactose"
+                ],
+                "provenance": "unverified"
+              },
+              {
+                "name": "Shawarma de poulet",
+                "price": {
+                  "amount": 14,
+                  "currency": "CHF"
+                },
+                "description": "Poulet mariné, ail, crudités, cornichons.",
+                "marks": [
+                  "sans-lactose"
+                ],
+                "provenance": "unverified"
+              },
+              {
+                "name": "Shawarma de bœuf",
+                "price": {
+                  "amount": 15,
+                  "currency": "CHF"
+                },
+                "description": "Bœuf mariné, tahina, tomate, oignon au sumac.",
+                "marks": [
+                  "sans-lactose"
+                ],
+                "provenance": "unverified"
+              }
+            ]
+          },
+          {
+            "id": "mezzes",
+            "name": "Mezzés",
+            "description": null,
+            "source": "Carte reconstituée d’après celle du vendeur, adaptée aux portions et aux prix d’un stand de festival — non confirmée par le festival",
+            "items": [
+              {
+                "name": "Houmous",
+                "price": {
+                  "amount": 8,
+                  "currency": "CHF"
+                },
+                "description": "Pois chiche, tahina, jus de citron frais, huile d’olive.",
+                "marks": [
+                  "vegan",
+                  "vegetarien",
+                  "sans-lactose",
+                  "sans-gluten"
+                ],
+                "provenance": "unverified"
+              },
+              {
+                "name": "Houmous on fire",
+                "price": {
+                  "amount": 8,
+                  "currency": "CHF"
+                },
+                "description": "Houmous et sauce au poivron rouge relevée.",
+                "marks": [
+                  "vegan",
+                  "vegetarien",
+                  "sans-lactose",
+                  "sans-gluten",
+                  "piquant"
+                ],
+                "provenance": "unverified"
+              },
+              {
+                "name": "Taboulé libanais",
+                "price": {
+                  "amount": 8,
+                  "currency": "CHF"
+                },
+                "description": "Persil, tomate, oignon, boulgour, citron.",
+                "marks": [
+                  "vegan",
+                  "vegetarien",
+                  "sans-lactose"
+                ],
+                "provenance": "unverified"
+              },
+              {
+                "name": "Batata harra",
+                "price": {
+                  "amount": 9,
+                  "currency": "CHF"
+                },
+                "description": "Cubes de pomme de terre à l’ail, coriandre et piment.",
+                "marks": [
+                  "vegan",
+                  "vegetarien",
+                  "sans-lactose",
+                  "sans-gluten",
+                  "piquant"
+                ],
+                "provenance": "unverified"
+              }
+            ]
+          },
+          {
+            "id": "douceurs",
+            "name": "Douceurs",
+            "description": null,
+            "source": "Carte reconstituée d’après celle du vendeur, adaptée aux portions et aux prix d’un stand de festival — non confirmée par le festival",
+            "items": [
+              {
+                "name": "Baklavas, les 4",
+                "price": {
+                  "amount": 7,
+                  "currency": "CHF"
+                },
+                "description": "Pâte filo, pistache, noix, sirop de fleur d’oranger.",
+                "marks": [
+                  "vegetarien"
+                ],
+                "provenance": "unverified"
+              }
+            ]
+          },
+          {
+            "id": "boissons",
+            "name": "Boissons",
+            "description": null,
+            "source": "Carte reconstituée d’après celle du vendeur, adaptée aux portions et aux prix d’un stand de festival — non confirmée par le festival",
+            "items": [
+              {
+                "name": "Ayran maison",
+                "price": {
+                  "amount": 4.5,
+                  "currency": "CHF"
+                },
+                "description": "Yaourt battu, eau, sel.",
+                "marks": [
+                  "vegetarien",
+                  "sans-gluten"
+                ],
+                "provenance": "unverified"
+              },
+              {
+                "name": "Limonade à la fleur d’oranger",
+                "price": {
+                  "amount": 5,
+                  "currency": "CHF"
+                },
+                "description": "Citron pressé, eau de fleur d’oranger, menthe.",
+                "marks": [
+                  "vegan",
+                  "vegetarien",
+                  "sans-lactose",
+                  "sans-gluten"
+                ],
+                "provenance": "unverified"
+              }
+            ]
+          }
+        ]
       }
     },
     {
@@ -1085,7 +1559,6 @@
       "provenance": "confirmed",
       "stand": {
         "offering": "Cuisine guadeloupéenne",
-        "marks": [],
         "links": [
           {
             "type": "website",
@@ -1104,8 +1577,8 @@
           {
             "id": "bokits",
             "name": "Bokits",
-            "description": "Sandwich frit guadeloupéen",
-            "source": "Carte publiée sur delorbokit.ch",
+            "description": "Le sandwich frit guadeloupéen, garni à la commande.",
+            "source": "Carte publiée par le vendeur, adaptée aux portions et aux prix d’un stand de festival — non confirmée par le festival",
             "items": [
               {
                 "name": "Quelle Histwa",
@@ -1113,7 +1586,7 @@
                   "amount": 17,
                   "currency": "CHF"
                 },
-                "description": "Poulet (CH) mariné au sel Caraïbes, pikliz",
+                "description": "Poulet suisse mariné au sel caraïbes, pikliz.",
                 "marks": [],
                 "provenance": "unverified"
               },
@@ -1123,17 +1596,7 @@
                   "amount": 18,
                   "currency": "CHF"
                 },
-                "description": "Bœuf (CH) mariné au sel Caraïbes, pikliz",
-                "marks": [],
-                "provenance": "unverified"
-              },
-              {
-                "name": "Le Gwada",
-                "price": {
-                  "amount": 18,
-                  "currency": "CHF"
-                },
-                "description": "Chiquetaille de morue (MSC), pikliz",
+                "description": "Bœuf suisse mariné au sel caraïbes, pikliz.",
                 "marks": [],
                 "provenance": "unverified"
               },
@@ -1143,9 +1606,21 @@
                   "amount": 15,
                   "currency": "CHF"
                 },
-                "description": "Feta, concombre, pikliz",
+                "description": "Feta, concombre, pikliz.",
                 "marks": [
-                  "végé"
+                  "vegetarien"
+                ],
+                "provenance": "unverified"
+              },
+              {
+                "name": "Le Gwada",
+                "price": {
+                  "amount": 18,
+                  "currency": "CHF"
+                },
+                "description": "Chiquetaille de morue MSC, pikliz.",
+                "marks": [
+                  "sans-lactose"
                 ],
                 "provenance": "unverified"
               }
@@ -1155,13 +1630,17 @@
             "id": "sauces",
             "name": "Sauces maison",
             "description": null,
-            "source": "Carte publiée sur delorbokit.ch",
+            "source": "Carte publiée par le vendeur, adaptée aux portions et aux prix d’un stand de festival — non confirmée par le festival",
             "items": [
               {
                 "name": "Créole",
                 "price": null,
-                "description": "Oignon, ail, piment, huile, épices",
+                "description": "Oignon, ail, piment, huile, épices.",
                 "marks": [
+                  "vegan",
+                  "vegetarien",
+                  "sans-lactose",
+                  "sans-gluten",
                   "piquant"
                 ],
                 "provenance": "unverified"
@@ -1169,15 +1648,24 @@
               {
                 "name": "Chien",
                 "price": null,
-                "description": "Tomates, oignon, ail, cives, ciboulette, persil, citron, huile, épices",
-                "marks": [],
+                "description": "Tomate, oignon, ail, cives, ciboulette, persil, citron, huile, épices.",
+                "marks": [
+                  "vegan",
+                  "vegetarien",
+                  "sans-lactose",
+                  "sans-gluten"
+                ],
                 "provenance": "unverified"
               },
               {
                 "name": "Pikliz",
                 "price": null,
-                "description": "Carotte, oignon rouge, chou blanc, poivron, citron, épices",
+                "description": "Carotte, oignon rouge, chou blanc, poivron, citron, épices.",
                 "marks": [
+                  "vegan",
+                  "vegetarien",
+                  "sans-lactose",
+                  "sans-gluten",
                   "piquant"
                 ],
                 "provenance": "unverified"
@@ -1197,9 +1685,139 @@
       "provenance": "confirmed",
       "stand": {
         "offering": "Cuisine méditerranéenne",
-        "marks": [],
         "links": [],
-        "menu": []
+        "menu": [
+          {
+            "id": "gyros",
+            "name": "Gyros",
+            "description": null,
+            "source": "Carte plausible d’après la spécialité annoncée, aucune carte n’étant publiée — non confirmée par le festival",
+            "items": [
+              {
+                "name": "Gyros poulet",
+                "price": {
+                  "amount": 15,
+                  "currency": "CHF"
+                },
+                "description": "Poulet grillé, tzatziki, tomate, oignon rouge, frites, pita.",
+                "marks": [],
+                "provenance": "unverified"
+              },
+              {
+                "name": "Gyros porc",
+                "price": {
+                  "amount": 15,
+                  "currency": "CHF"
+                },
+                "description": "Porc grillé, tzatziki, tomate, oignon rouge, frites, pita.",
+                "marks": [],
+                "provenance": "unverified"
+              },
+              {
+                "name": "Assiette gyros",
+                "price": {
+                  "amount": 19,
+                  "currency": "CHF"
+                },
+                "description": "Viande grillée, salade grecque, tzatziki, frites, pita.",
+                "marks": [],
+                "provenance": "unverified"
+              }
+            ]
+          },
+          {
+            "id": "focaccias",
+            "name": "Focaccias",
+            "description": null,
+            "source": "Carte plausible d’après la spécialité annoncée, aucune carte n’étant publiée — non confirmée par le festival",
+            "items": [
+              {
+                "name": "Jambon cru & roquette",
+                "price": {
+                  "amount": 14,
+                  "currency": "CHF"
+                },
+                "description": "Focaccia à l’huile d’olive, jambon cru, roquette, parmesan.",
+                "marks": [],
+                "provenance": "unverified"
+              },
+              {
+                "name": "Caprese",
+                "price": {
+                  "amount": 13,
+                  "currency": "CHF"
+                },
+                "description": "Mozzarella, tomate, basilic, huile d’olive.",
+                "marks": [
+                  "vegetarien"
+                ],
+                "provenance": "unverified"
+              },
+              {
+                "name": "Légumes grillés",
+                "price": {
+                  "amount": 13,
+                  "currency": "CHF"
+                },
+                "description": "Courgette, aubergine, poivron, olives, origan.",
+                "marks": [
+                  "vegan",
+                  "vegetarien",
+                  "sans-lactose"
+                ],
+                "provenance": "unverified"
+              }
+            ]
+          },
+          {
+            "id": "a-cote",
+            "name": "À côté",
+            "description": null,
+            "source": "Carte plausible d’après la spécialité annoncée, aucune carte n’étant publiée — non confirmée par le festival",
+            "items": [
+              {
+                "name": "Frites",
+                "price": {
+                  "amount": 6,
+                  "currency": "CHF"
+                },
+                "description": "Pommes de terre, huile de tournesol, origan, sel.",
+                "marks": [
+                  "vegan",
+                  "vegetarien",
+                  "sans-lactose",
+                  "sans-gluten"
+                ],
+                "provenance": "unverified"
+              },
+              {
+                "name": "Tzatziki & pita",
+                "price": {
+                  "amount": 7,
+                  "currency": "CHF"
+                },
+                "description": "Yaourt grec, concombre, ail, aneth, huile d’olive.",
+                "marks": [
+                  "vegetarien"
+                ],
+                "provenance": "unverified"
+              },
+              {
+                "name": "Salade grecque",
+                "price": {
+                  "amount": 9,
+                  "currency": "CHF"
+                },
+                "description": "Tomate, concombre, oignon, olives, feta, origan.",
+                "marks": [
+                  "vegetarien",
+                  "sans-gluten"
+                ],
+                "provenance": "unverified"
+              }
+            ]
+          }
+        ]
       }
     },
     {
@@ -1212,9 +1830,132 @@
       "provenance": "confirmed",
       "stand": {
         "offering": "Crêpes, gaufres et glaces",
-        "marks": [],
         "links": [],
-        "menu": []
+        "menu": [
+          {
+            "id": "crepes",
+            "name": "Crêpes",
+            "description": null,
+            "source": "Carte plausible d’après la spécialité annoncée, aucune carte n’étant publiée — non confirmée par le festival",
+            "items": [
+              {
+                "name": "Sucre",
+                "price": {
+                  "amount": 5,
+                  "currency": "CHF"
+                },
+                "description": "Pâte à crêpe au lait, sucre cristallisé.",
+                "marks": [
+                  "vegetarien"
+                ],
+                "provenance": "unverified"
+              },
+              {
+                "name": "Citron",
+                "price": {
+                  "amount": 6,
+                  "currency": "CHF"
+                },
+                "description": "Citron pressé, sucre.",
+                "marks": [
+                  "vegetarien"
+                ],
+                "provenance": "unverified"
+              },
+              {
+                "name": "Nutella",
+                "price": {
+                  "amount": 7,
+                  "currency": "CHF"
+                },
+                "description": "Pâte à tartiner aux noisettes.",
+                "marks": [
+                  "vegetarien"
+                ],
+                "provenance": "unverified"
+              }
+            ]
+          },
+          {
+            "id": "gaufres",
+            "name": "Gaufres",
+            "description": null,
+            "source": "Carte plausible d’après la spécialité annoncée, aucune carte n’étant publiée — non confirmée par le festival",
+            "items": [
+              {
+                "name": "Nature",
+                "price": {
+                  "amount": 5,
+                  "currency": "CHF"
+                },
+                "description": "Gaufre de Liège, sucre perlé.",
+                "marks": [
+                  "vegetarien"
+                ],
+                "provenance": "unverified"
+              },
+              {
+                "name": "Chantilly & fruits rouges",
+                "price": {
+                  "amount": 7,
+                  "currency": "CHF"
+                },
+                "description": "Crème fouettée, fruits rouges de saison.",
+                "marks": [
+                  "vegetarien"
+                ],
+                "provenance": "unverified"
+              }
+            ]
+          },
+          {
+            "id": "glaces",
+            "name": "Glaces",
+            "description": null,
+            "source": "Carte plausible d’après la spécialité annoncée, aucune carte n’étant publiée — non confirmée par le festival",
+            "items": [
+              {
+                "name": "Cornet, une boule",
+                "price": {
+                  "amount": 4,
+                  "currency": "CHF"
+                },
+                "description": "Glace au lait, cornet gaufré.",
+                "marks": [
+                  "vegetarien"
+                ],
+                "provenance": "unverified"
+              },
+              {
+                "name": "Cornet, deux boules",
+                "price": {
+                  "amount": 6.5,
+                  "currency": "CHF"
+                },
+                "description": "Glace au lait, cornet gaufré.",
+                "marks": [
+                  "vegetarien"
+                ],
+                "provenance": "unverified"
+              },
+              {
+                "name": "Sorbet, une boule",
+                "price": {
+                  "amount": 4,
+                  "currency": "CHF"
+                },
+                "description": "Sorbet aux fruits, sans produit laitier.",
+                "marks": [
+                  "vegan",
+                  "vegetarien",
+                  "sans-lactose",
+                  "sans-gluten"
+                ],
+                "provenance": "unverified"
+              }
+            ]
+          }
+        ]
       }
     },
     {
@@ -1227,7 +1968,6 @@
       "provenance": "confirmed",
       "stand": {
         "offering": "Costumes de seconde main",
-        "marks": [],
         "links": [],
         "menu": []
       }
@@ -1242,7 +1982,6 @@
       "provenance": "confirmed",
       "stand": {
         "offering": "Huiles précieuses et soins naturels",
-        "marks": [],
         "links": [
           {
             "type": "website",
@@ -1933,7 +2672,7 @@
     {
       "id": "heures-musique",
       "value": "45",
-      "label": "heures de DJ sets et concerts",
+      "label": "heures de concerts",
       "provenance": "archived"
     },
     {
