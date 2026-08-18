@@ -11,6 +11,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import io.nicolaszurbuchen.yadlo.app.design.theme.YadloTheme
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
+import io.nicolaszurbuchen.yadlo.app.design.uimodel.FigureUiModel
 import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SocialLinkUiModel
 import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.socialIconFor
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.uimodel.AnnouncementUiModel
@@ -87,7 +88,7 @@ private class HomeStackProvider : PreviewParameterProvider<HomeUiModel> {
             items =
                 listOf(
                     FigureUiModel("visiteurs", "6000", "visiteurs"),
-                    FigureUiModel("heures-musique", "45", "heures de DJ sets et concerts"),
+                    FigureUiModel("heures-musique", "45", "heures de concerts"),
                     FigureUiModel("litres-biere", "3200", "litres de bière"),
                     FigureUiModel("benevoles", "160", "bénévoles"),
                 ),

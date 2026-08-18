@@ -11,6 +11,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import io.nicolaszurbuchen.yadlo.app.design.theme.YadloTheme
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
+import io.nicolaszurbuchen.yadlo.app.design.uimodel.FigureUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.home_figures_caveat
@@ -69,9 +70,9 @@ private fun published() =
         passageBody = "Tôt le matin, les paddles glissent sur une eau encore calme.",
         figures =
             listOf(
-                StoryFigureUiModel(id = "visiteurs", value = "6000", label = "visiteurs"),
-                StoryFigureUiModel(id = "benevoles", value = "160", label = "bénévoles"),
-                StoryFigureUiModel(id = "biere", value = "3200", label = "litres de bière"),
+                FigureUiModel(id = "visiteurs", value = "6000", label = "visiteurs"),
+                FigureUiModel(id = "benevoles", value = "160", label = "bénévoles"),
+                FigureUiModel(id = "biere", value = "3200", label = "litres de bière"),
             ),
         figuresCaveat = UiText.Resource(Res.string.home_figures_caveat),
     )

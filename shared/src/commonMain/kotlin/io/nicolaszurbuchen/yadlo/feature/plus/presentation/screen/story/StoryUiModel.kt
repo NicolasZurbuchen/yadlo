@@ -1,5 +1,6 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.story
 
+import io.nicolaszurbuchen.yadlo.app.design.uimodel.FigureUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 
 /**
@@ -14,13 +15,6 @@ data class StoryUiModel(
     val body: String?,
     val passageTitle: String?,
     val passageBody: String?,
-    val figures: List<StoryFigureUiModel>,
+    val figures: List<FigureUiModel>,
     val figuresCaveat: UiText?,
-)
-
-/** [value] is a String because some figures are ranges, and it is only ever printed beside [label]. */
-data class StoryFigureUiModel(
-    val id: String,
-    val value: String,
-    val label: String,
 )

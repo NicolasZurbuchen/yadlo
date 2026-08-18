@@ -1,5 +1,6 @@
 package io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home
 
+import io.nicolaszurbuchen.yadlo.app.design.uimodel.FigureUiModel
 import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SocialLinkUiModel
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.uimodel.AnnouncementUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
@@ -57,9 +58,3 @@ sealed interface HomeBlockUiModel {
         val items: List<SocialLinkUiModel>,
     ) : HomeBlockUiModel
 }
-
-data class FigureUiModel(
-    val id: String,
-    val value: String,
-    val label: String,
-)
