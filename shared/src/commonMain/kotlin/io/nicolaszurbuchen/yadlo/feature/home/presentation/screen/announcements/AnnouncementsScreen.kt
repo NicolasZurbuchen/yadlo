@@ -98,7 +98,10 @@ fun AnnouncementsScreen(
                 ) {
                     items(state.items, key = { it.id }) { item ->
                         AnnouncementCard(item = item, onClick = onAnnouncementClick)
-                        HorizontalDivider(color = MaterialTheme.appColors.borderSubtle)
+                        HorizontalDivider(
+                            color = MaterialTheme.appColors.borderSubtle,
+                            modifier = Modifier.padding(horizontal = MaterialTheme.spacing.md),
+                        )
                     }
                 }
             }

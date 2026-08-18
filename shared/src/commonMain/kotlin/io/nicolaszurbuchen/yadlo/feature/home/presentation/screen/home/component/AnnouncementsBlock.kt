@@ -1,12 +1,14 @@
 package io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.component
 
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
+import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.component.AnnouncementCard
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.HomeBlockUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
@@ -41,7 +43,13 @@ fun AnnouncementsBlock(
     ) {
         block.items.forEachIndexed { index, item ->
             if (index > 0) {
-                HorizontalDivider(color = MaterialTheme.appColors.borderSubtle)
+                // Inset, where the ripple is not: the rule is a mark between two rows and reads as
+                // one when it stops short of the border, while a tap that lights up anything less
+                // than the full row reads as a misfire.
+                HorizontalDivider(
+                    color = MaterialTheme.appColors.borderSubtle,
+                    modifier = Modifier.padding(horizontal = MaterialTheme.spacing.md),
+                )
             }
 
             AnnouncementCard(item = item, onClick = onAnnouncementClick)
