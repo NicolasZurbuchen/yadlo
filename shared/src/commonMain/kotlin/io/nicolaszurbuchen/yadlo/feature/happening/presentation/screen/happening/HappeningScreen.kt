@@ -48,7 +48,7 @@ import io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening
 import io.nicolaszurbuchen.yadlo.infra.ui.asString
 import org.jetbrains.compose.resources.stringResource
 import yadlo.shared.generated.resources.Res
-import yadlo.shared.generated.resources.happening_back
+import yadlo.shared.generated.resources.back
 import yadlo.shared.generated.resources.happening_missing
 import yadlo.shared.generated.resources.happening_section_good_to_know
 import yadlo.shared.generated.resources.happening_section_links
@@ -111,7 +111,7 @@ fun HappeningScreen(
                     IconButton(onClick = onBackClick) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(Res.string.happening_back),
+                            contentDescription = stringResource(Res.string.back),
                         )
                     }
                 },

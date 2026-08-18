@@ -4,20 +4,14 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
@@ -29,13 +23,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.rememberNavBackStack
+import io.nicolaszurbuchen.yadlo.app.design.component.YadloTopAppBar
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
-import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.ContentStatus
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.FestivalDay
 import io.nicolaszurbuchen.yadlo.common.content.domain.repository.ContentRepository
@@ -152,9 +145,11 @@ fun MainScaffold(modifier: Modifier = Modifier) {
             exit = slideOutVertically { -it },
             modifier = Modifier.align(Alignment.TopCenter),
         ) {
-            MainTopAppBar(
+            // Yadlo, and when. On every tab root, so the answer to "which weekend is this?" is
+            // never more than a glance away and no screen has to spend a line of its own saying it.
+            YadloTopAppBar(
                 title = ready?.bundle?.festival?.name.orEmpty(),
-                editionDates = ready?.bundle?.edition?.days?.let(::formatEditionDates).orEmpty(),
+                subtitle = ready?.bundle?.edition?.days?.let(::formatEditionDates),
                 modifier =
                     Modifier.onSizeChanged { size ->
                         chrome = chrome.copy(top = with(density) { size.height.toDp() })
@@ -197,61 +192,6 @@ private fun NavBackStack<NavKey>.popOne() {
 
 private fun NavBackStack<NavKey>.popToRoot() {
     while (size > 1) removeAt(size - 1)
-}
-
-/**
- * Yadlo, and when. On every tab root, so the answer to "which weekend is this?" is never more than
- * a glance away and no screen has to spend a line of its own saying it.
- *
- * **The bandeau blue, not the page ground.** Material's default container is `surface`, which is
- * white in light — so the bar and the screen under it were one undifferentiated field and the app
- * opened looking like nothing in particular. [io.nicolaszurbuchen.yadlo.app.design.theme.AppColors.primarySubtle]
- * is the blue from yadlo.ch and the app's quietest way of saying "this is the festival speaking";
- * it always carries dark ink, which AppColorTest holds rather than leaving as prose.
- *
- * The dates are numeric and Swiss-ordered rather than written out, for the same reason the annonce
- * dates are: a month name is the first thing that needs translating, and the language structure is
- * not decided yet. Revisit when it is.
- */
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun MainTopAppBar(
-    title: String,
-    editionDates: String,
-    modifier: Modifier = Modifier,
-) {
-    TopAppBar(
-        title = {
-            // The dates sit beside the name on the same baseline rather than across the bar: they
-            // are a subtitle to it, and pinned right they read as an unrelated status field.
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm),
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                Text(
-                    text = title,
-                    style = MaterialTheme.typography.headlineSmall,
-                    color = MaterialTheme.appColors.onPrimarySubtle,
-                    modifier = Modifier.alignByBaseline(),
-                )
-
-                Text(
-                    text = editionDates,
-                    style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.appColors.onPrimarySubtle,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.alignByBaseline(),
-                )
-            }
-        },
-        colors =
-            TopAppBarDefaults.topAppBarColors(
-                containerColor = MaterialTheme.appColors.primarySubtle,
-                scrolledContainerColor = MaterialTheme.appColors.primarySubtle,
-            ),
-        modifier = modifier,
-    )
 }
 
 /**

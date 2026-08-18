@@ -4,21 +4,12 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import io.nicolaszurbuchen.yadlo.app.design.component.YadloTopAppBar
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
-import org.jetbrains.compose.resources.stringResource
-import yadlo.shared.generated.resources.Res
-import yadlo.shared.generated.resources.plus_back
 
 /**
  * The chrome every screen behind a Plus row wears: a title and a way back. Nothing about the body.
@@ -33,8 +24,12 @@ import yadlo.shared.generated.resources.plus_back
  * does *not* scroll beneath them — a filter you have to scroll back up to reach is a filter that
  * gets used once, and putting it in the list means the reason someone opened the screen leaves it
  * the moment they start reading.
+ *
+ * It stays on the card ground rather than taking the bar's blue, which the Programme's filter block
+ * does take. The dietary chips carry six measured tints and three of them fall under 3:1 on that
+ * blue — a colour system already spent on the dish tags and the stand rows is not worth re-picking
+ * for one strip of chips, and the tinted card is a ground those tints were measured against.
  */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PlusScreenScaffold(
     title: String,
@@ -45,27 +40,8 @@ fun PlusScreenScaffold(
 ) {
     Scaffold(
         topBar = {
-            // The same ground as the bar above it, so the two read as one surface rather than as a
-            // bar with a strip stuck under it.
             Column(modifier = Modifier.fillMaxWidth().background(MaterialTheme.appColors.surface)) {
-                TopAppBar(
-                    title = {
-                        Text(
-                            text = title,
-                            // Set explicitly: TopAppBar defaults its title to titleLarge, which in
-                            // this project is the button-label role rather than a heading.
-                            style = MaterialTheme.typography.headlineSmall,
-                        )
-                    },
-                    navigationIcon = {
-                        IconButton(onClick = onBackClick) {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = stringResource(Res.string.plus_back),
-                            )
-                        }
-                    },
-                )
+                YadloTopAppBar(title = title, onBackClick = onBackClick)
 
                 underBar()
             }

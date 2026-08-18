@@ -8,6 +8,10 @@
     <string name="tab_mon_yadlo">Mon Yadlo</string>
     <string name="tab_plus">Plus</string>
 
+    <!-- One label for every back chevron in the app: they all say the same word, and four copies of
+         it are four places for it to stop saying the same word. -->
+    <string name="back">Retour</string>
+
     <string name="home_countdown_days_remaining">J-%1$s</string>
     <string name="home_hero_announced_kicker">Nouveau</string>
     <string name="home_hero_announced_title">La programmation %1$s est là</string>
@@ -23,7 +27,6 @@
     <string name="home_figures_caveat">Chiffres d'une édition précédente</string>
 
     <string name="announcements_title">Annonces</string>
-    <string name="announcements_back">Retour</string>
     <string name="announcements_empty">Aucune annonce pour le moment.</string>
 
     <!-- A Slot's live state and its price read the same on every screen that shows one. -->
@@ -50,11 +53,9 @@
     <string name="mon_yadlo_wishlist_empty">Garde les stands qui te font envie depuis leur fiche.</string>
 
     <string name="wishlist_title">À essayer</string>
-    <string name="wishlist_back">Retour</string>
     <string name="wishlist_empty">Tu n'as encore rien gardé. Les stands sont dans Plus › Nourriture &amp; boissons.</string>
 
     <!-- Plus — the root list. Group names and row titles are fixed; only the subtitles come from content. -->
-    <string name="plus_back">Retour</string>
     <string name="plus_group_on_site">Sur place</string>
     <string name="plus_entry_stands_food">Nourriture &amp; boissons</string>
     <string name="plus_entry_stands_makers">Créateurs</string>
@@ -165,7 +166,6 @@
     <string name="faq_title">Questions fréquentes</string>
     <string name="faq_empty">Aucune question n'a encore été publiée.</string>
 
-    <string name="happening_back">Retour</string>
     <string name="happening_missing">Cette fiche n'est plus disponible.</string>
     <string name="happening_section_when">Quand</string>
     <string name="happening_section_price">Tarifs</string>
