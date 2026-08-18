@@ -10,7 +10,7 @@ package io.nicolaszurbuchen.yadlo.app.design.uimodel
  *
  * [value] is a String because some figures are ranges, and it is only ever printed beside [label].
  */
-data class FigureUiModel(
+data class YadloFigureUiModel(
     val id: String,
     val value: String,
     val label: String,

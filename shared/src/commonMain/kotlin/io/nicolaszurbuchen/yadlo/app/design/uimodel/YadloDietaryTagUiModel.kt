@@ -10,8 +10,8 @@ import org.jetbrains.compose.resources.StringResource
  * the same mark says three different things depending on what it is attached to: *Végan* on a dish,
  * *100 % végan* on a truck that sells nothing else, *Options véganes* on one that sells some.
  */
-data class DietaryTagUiModel(
-    val mark: DietaryMarkUiModel,
+data class YadloDietaryTagUiModel(
+    val mark: YadloDietaryMarkUiModel,
     val label: StringResource,
 )
 
@@ -23,12 +23,12 @@ data class DietaryTagUiModel(
  * on a row that already carries a name, a price and a line of ingredients. Only the drawing drops
  * it — the filter still matches on everything the dish carries.
  */
-fun List<String>.toDietaryTags(): List<DietaryTagUiModel> {
+fun List<String>.toDietaryTags(): List<YadloDietaryTagUiModel> {
     val marks = marksInOrder()
 
     return marks
-        .filterNot { it == DietaryMarkUiModel.VEGETARIAN && DietaryMarkUiModel.VEGAN in marks }
-        .map { DietaryTagUiModel(mark = it, label = it.label) }
+        .filterNot { it == YadloDietaryMarkUiModel.VEGETARIAN && YadloDietaryMarkUiModel.VEGAN in marks }
+        .map { YadloDietaryTagUiModel(mark = it, label = it.label) }
 }
 
 /**
@@ -38,14 +38,14 @@ fun List<String>.toDietaryTags(): List<DietaryTagUiModel> {
  * A truck with one vegan dish and an otherwise meat-free carte is *options véganes* **and**
  * *100 % végétarien*, and those are two different answers to two different people.
  */
-fun Map<String, DietaryCoverage>.toDietaryTags(): List<DietaryTagUiModel> =
+fun Map<String, DietaryCoverage>.toDietaryTags(): List<YadloDietaryTagUiModel> =
     keys
         .toList()
         .marksInOrder()
         .filterNot { mark ->
-            mark == DietaryMarkUiModel.VEGETARIAN && this[DietaryMarkUiModel.VEGAN.id] == this[mark.id]
+            mark == YadloDietaryMarkUiModel.VEGETARIAN && this[YadloDietaryMarkUiModel.VEGAN.id] == this[mark.id]
         }.map { mark ->
-            DietaryTagUiModel(
+            YadloDietaryTagUiModel(
                 mark = mark,
                 label = if (getValue(mark.id) == DietaryCoverage.ALL) mark.allLabel else mark.someLabel,
             )
@@ -54,10 +54,10 @@ fun Map<String, DietaryCoverage>.toDietaryTags(): List<DietaryTagUiModel> =
 /**
  * Resolved and ordered by the enum rather than by the content, so the same two marks are never in
  * one order on a stand row and the other order on the dish it opens. An id this build has no answer
- * for simply drops — see [DietaryMarkUiModel.forId].
+ * for simply drops — see [YadloDietaryMarkUiModel.forId].
  */
-private fun List<String>.marksInOrder(): List<DietaryMarkUiModel> {
-    val marks = mapNotNull(DietaryMarkUiModel::forId).toSet()
+private fun List<String>.marksInOrder(): List<YadloDietaryMarkUiModel> {
+    val marks = mapNotNull(YadloDietaryMarkUiModel::forId).toSet()
 
-    return DietaryMarkUiModel.entries.filter { it in marks }
+    return YadloDietaryMarkUiModel.entries.filter { it in marks }
 }

@@ -31,9 +31,9 @@ import yadlo.shared.generated.resources.link_mark_mail
  * only thing conveying.
  *
  * Polarity — a ✓ or a ✕ on a fact — is deliberately **not** here. That is content about a thing
- * rather than a statement about a tap, and it has an enum of its own in [FactMarkUiModel].
+ * rather than a statement about a tap, and it has an enum of its own in [YadloFactMarkUiModel].
  */
-enum class LinkMarkUiModel(
+enum class YadloLinkMarkUiModel(
     val icon: ImageVector,
     val contentDescription: StringResource?,
 ) {

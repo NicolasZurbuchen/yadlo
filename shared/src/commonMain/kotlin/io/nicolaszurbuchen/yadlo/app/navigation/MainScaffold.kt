@@ -3,6 +3,7 @@ package io.nicolaszurbuchen.yadlo.app.navigation
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -15,6 +16,7 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
@@ -118,7 +120,9 @@ fun MainScaffold(modifier: Modifier = Modifier) {
     val density = LocalDensity.current
     var chrome by remember { mutableStateOf(TabChromeInsets()) }
 
-    Box(modifier = modifier.fillMaxSize()) {
+    // The ground the tabs are drawn on. A Scaffold painted this for free and a Box does not, so
+    // dropping the Scaffold left every tab falling through to the platform root's own white.
+    Box(modifier = modifier.fillMaxSize().background(MaterialTheme.appColors.background)) {
         // The graph owns the whole window at every depth. Nothing about its size depends on whether
         // the current tab is at its root, which is what stops the screen behind a push from being
         // re-measured while it is still on screen.
@@ -190,6 +194,12 @@ private fun NavBackStack<NavKey>.popToRoot() {
  * Yadlo, and when. On every tab root, so the answer to "which weekend is this?" is never more than
  * a glance away and no screen has to spend a line of its own saying it.
  *
+ * **The bandeau blue, not the page ground.** Material's default container is `surface`, which is
+ * white in light — so the bar and the screen under it were one undifferentiated field and the app
+ * opened looking like nothing in particular. [io.nicolaszurbuchen.yadlo.app.design.theme.AppColors.primarySubtle]
+ * is the blue from yadlo.ch and the app's quietest way of saying "this is the festival speaking";
+ * it always carries dark ink, which AppColorTest holds rather than leaving as prose.
+ *
  * The dates are numeric and Swiss-ordered rather than written out, for the same reason the annonce
  * dates are: a month name is the first thing that needs translating, and the language structure is
  * not decided yet. Revisit when it is.
@@ -212,20 +222,25 @@ private fun MainTopAppBar(
                 Text(
                     text = title,
                     style = MaterialTheme.typography.headlineSmall,
-                    color = MaterialTheme.appColors.textPrimary,
+                    color = MaterialTheme.appColors.onPrimarySubtle,
                     modifier = Modifier.alignByBaseline(),
                 )
 
                 Text(
                     text = editionDates,
                     style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.appColors.textSecondary,
+                    color = MaterialTheme.appColors.onPrimarySubtle,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier.alignByBaseline(),
                 )
             }
         },
+        colors =
+            TopAppBarDefaults.topAppBarColors(
+                containerColor = MaterialTheme.appColors.primarySubtle,
+                scrolledContainerColor = MaterialTheme.appColors.primarySubtle,
+            ),
         modifier = modifier,
     )
 }

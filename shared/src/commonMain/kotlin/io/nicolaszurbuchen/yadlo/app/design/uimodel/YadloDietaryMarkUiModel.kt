@@ -16,6 +16,7 @@ import io.nicolaszurbuchen.yadlo.app.design.theme.AmberPalette
 import io.nicolaszurbuchen.yadlo.app.design.theme.EmeraldPalette
 import io.nicolaszurbuchen.yadlo.app.design.theme.MagentaPalette
 import io.nicolaszurbuchen.yadlo.app.design.theme.SkyBluePalette
+import io.nicolaszurbuchen.yadlo.app.design.theme.SlatePalette
 import io.nicolaszurbuchen.yadlo.app.design.theme.VioletPalette
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import org.jetbrains.compose.resources.StringResource
@@ -61,7 +62,7 @@ import yadlo.shared.generated.resources.dietary_some_vegetarian
  * There is no `bio`. It was a claim about sourcing rather than about whether someone can eat the
  * thing, and it was the one mark the filter could not answer a question with.
  */
-enum class DietaryMarkUiModel(
+enum class YadloDietaryMarkUiModel(
     val id: String,
     val icon: ImageVector,
     /** On one dish. */
@@ -140,12 +141,26 @@ enum class DietaryMarkUiModel(
                 }
             }
 
+    /**
+     * The ink a chip filled with [tint] carries.
+     *
+     * Uniform per theme rather than per mark, unlike `CategoryColors`, and measured rather than
+     * assumed: the light tints are all deep enough to carry white — the closest is vegetarian at
+     * 4.9:1 — and the dark tints are all light enough to carry the near-black ground. That is a
+     * property of having picked one end of each ramp per theme rather than a coincidence, and
+     * DietaryMarkColorTest holds it.
+     */
+    val ink: Color
+        @Composable
+        @ReadOnlyComposable
+        get() = if (MaterialTheme.appColors.isDark) SlatePalette.slate950 else Color.White
+
     companion object {
         /**
          * Null for an id this build has no answer for. The content can publish a seventh mark before
          * the app has a glyph and a colour for it, and dropping one tag is a far better outcome than
          * a crash or an untinted glyph nobody can read.
          */
-        fun forId(id: String): DietaryMarkUiModel? = entries.firstOrNull { it.id == id }
+        fun forId(id: String): YadloDietaryMarkUiModel? = entries.firstOrNull { it.id == id }
     }
 }

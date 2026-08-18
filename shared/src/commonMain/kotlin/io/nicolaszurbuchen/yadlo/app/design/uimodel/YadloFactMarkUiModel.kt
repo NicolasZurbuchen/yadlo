@@ -25,7 +25,7 @@ import yadlo.shared.generated.resources.fact_mark_yes
  * fourth without deciding what it means.
  *
  * **Icons rather than the `✓` `✕` `ⓘ` characters they replace**, for the reasons
- * [LinkMarkUiModel] gives at length: identical rendering on both platforms, the row's own tint
+ * [YadloLinkMarkUiModel] gives at length: identical rendering on both platforms, the row's own tint
  * instead of a font's idea of the glyph, and a screen reader that says "coché" rather than "signe
  * de multiplication".
  *
@@ -35,7 +35,7 @@ import yadlo.shared.generated.resources.fact_mark_yes
  * which is which — but on a list that mixes the two, tinting is what makes the odd one out findable
  * without reading every line.
  */
-enum class FactMarkUiModel(
+enum class YadloFactMarkUiModel(
     val icon: ImageVector,
     val contentDescription: StringResource?,
 ) {
