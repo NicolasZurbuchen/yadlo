@@ -102,9 +102,18 @@ private val SCRIM = SlatePalette.slate950.copy(alpha = 0.6f)
 val LightAppColors =
     AppColors(
         isDark = false,
-        background = SlatePalette.slate50,
-        surface = Color.White,
-        surfaceRaised = SlatePalette.slate100,
+        // White is the page and every block on it is one step further into the blue. It ran the
+        // other way — a slate-tinted ground under white cards — which is Material's own elevation
+        // model and reads on a phone as a grey app with white boxes on it. The festival's colour is
+        // a blue, and a tinted card under the bandeau blue bar is the quietest place to spend it.
+        //
+        // The two steps are the size they always were: white → skyBlue50 is 1.07, the same as
+        // slate50 → white was, and skyBlue50 → skyBlue100 is 1.11 against slate100's 1.12. Nothing
+        // measured against these grounds moved, which is why the AppColorTest matrix still holds
+        // with the same roles.
+        background = Color.White,
+        surface = SkyBluePalette.skyBlue50,
+        surfaceRaised = SkyBluePalette.skyBlue100,
         borderSubtle = SlatePalette.slate200,
         // slate400 is the prettier hairline and it fails: 2.7:1 on white, under the 3:1 WCAG asks
         // of a control's own edge.
