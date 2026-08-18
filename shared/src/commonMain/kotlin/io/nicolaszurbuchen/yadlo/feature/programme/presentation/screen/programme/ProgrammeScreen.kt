@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.CircularProgressIndicator
@@ -14,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
+import io.nicolaszurbuchen.yadlo.app.navigation.LocalTabChromeInsets
 import io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme.component.CategoryChipRow
 import io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme.component.DayChipRow
 import io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme.component.ProgrammeEmptyMessage
@@ -42,7 +44,11 @@ fun ProgrammeScreen(
         return
     }
 
-    Column(modifier = modifier.fillMaxSize()) {
+    // The shell's bars are drawn over this screen rather than beside it. The header clears the top
+    // one here, and the list clears the bottom one in its own content padding.
+    val chrome = LocalTabChromeInsets.current
+
+    Column(modifier = modifier.fillMaxSize().padding(top = chrome.top)) {
         if (state.days.isNotEmpty()) {
             DayChipRow(days = state.days, onDayClick = onDayClick)
         }
@@ -65,7 +71,11 @@ fun ProgrammeScreen(
         }
 
         LazyColumn(
-            contentPadding = PaddingValues(vertical = MaterialTheme.spacing.sm),
+            contentPadding =
+                PaddingValues(
+                    top = MaterialTheme.spacing.sm,
+                    bottom = MaterialTheme.spacing.sm + chrome.bottom,
+                ),
             modifier = Modifier.fillMaxSize(),
         ) {
             itemsIndexed(state.rows, key = { _, row -> row.id }) { index, row ->

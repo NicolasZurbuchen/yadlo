@@ -8,8 +8,9 @@ ktlint_function_naming_ignore_when_annotated_with = Composable
 # Compose — disable too-rigid rules
 ktlint_standard_chain-method-continuation = disabled
 
-# Compose — theme and design system
-compose_allowed_composition_locals = LocalAppColors,LocalCategoryColors,LocalSpacing,LocalShimmerAlpha
+# Compose — theme and design system, plus the tab shell publishing how much of the window its bars
+# cover. All of them are things the shell or the theme provides once and every screen reads.
+compose_allowed_composition_locals = LocalAppColors,LocalCategoryColors,LocalSpacing,LocalShimmerAlpha,LocalTabChromeInsets
 
 # Compose — enforce M3 only
 compose_disallow_material2 = true

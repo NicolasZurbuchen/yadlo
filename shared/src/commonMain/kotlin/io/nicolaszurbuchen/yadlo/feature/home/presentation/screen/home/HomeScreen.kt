@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import io.nicolaszurbuchen.yadlo.app.design.component.YadloHero
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
+import io.nicolaszurbuchen.yadlo.app.navigation.tabContentPadding
 import io.nicolaszurbuchen.yadlo.common.content.presentation.component.SocialLinksRow
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.component.AnnouncementsBlock
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.component.CountdownBlock
@@ -42,7 +43,15 @@ fun HomeScreen(
 
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.lg),
-        contentPadding = PaddingValues(MaterialTheme.spacing.md),
+        // The shell's bars are drawn over this list rather than beside it, so their height is part
+        // of the padding — see tabContentPadding.
+        contentPadding =
+            tabContentPadding(
+                start = MaterialTheme.spacing.md,
+                top = MaterialTheme.spacing.md,
+                end = MaterialTheme.spacing.md,
+                bottom = MaterialTheme.spacing.md,
+            ),
         modifier = modifier.fillMaxSize(),
     ) {
         // The block type is the identity: a Phase never produces two blocks of the same kind, and

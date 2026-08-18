@@ -1,24 +1,31 @@
 package io.nicolaszurbuchen.yadlo.app.navigation
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavBackStack
@@ -106,49 +113,65 @@ fun MainScaffold(modifier: Modifier = Modifier) {
         tabNavigator.select(Tab.HOME)
     }
 
-    Scaffold(
-        topBar = {
-            // Same rule as the bottom bar: it belongs to the tab roots. A fiche is full-screen with
-            // its own collapsing toolbar, and two bars stacked is not a screen anyone designed.
-            if (isAtTabRoot) {
-                MainTopAppBar(
-                    title = ready?.bundle?.festival?.name.orEmpty(),
-                    editionDates = ready?.bundle?.edition?.days?.let(::formatEditionDates).orEmpty(),
-                )
-            }
-        },
-        bottomBar = {
-            // The bar belongs to the tab roots. A fiche is full-screen, with a back chevron
-            // instead — the prototypes show no bar on a detail screen.
-            if (isAtTabRoot) {
-                MainNavigationBar(
-                    selectedTab = selectedTab,
-                    onTabClick = { tab ->
-                        if (tab == selectedTab) {
-                            // Re-tapping the active tab returns to its root. The standard way out
-                            // of a deep stack without hunting for the back gesture.
-                            stacks.getValue(tab).popToRoot()
-                        } else {
-                            tabNavigator.select(tab)
-                        }
+    // Measured from the bars themselves rather than assumed from a Material token, and held across
+    // the frames they are hidden for. See [TabChromeInsets] for why it must not move.
+    val density = LocalDensity.current
+    var chrome by remember { mutableStateOf(TabChromeInsets()) }
+
+    Box(modifier = modifier.fillMaxSize()) {
+        // The graph owns the whole window at every depth. Nothing about its size depends on whether
+        // the current tab is at its root, which is what stops the screen behind a push from being
+        // re-measured while it is still on screen.
+        CompositionLocalProvider(LocalTabChromeInsets provides chrome) {
+            NavGraph(
+                entries = currentEntries,
+                onBack = { currentStack.popOne() },
+                modifier = Modifier.fillMaxSize(),
+            )
+        }
+
+        // Both bars belong to the tab roots — a fiche is full-screen with a back chevron instead,
+        // and the prototypes show no bar on a detail screen. They slide out rather than vanish, so
+        // the title still covers the status bar for as long as the screen under it is still there.
+        AnimatedVisibility(
+            visible = isAtTabRoot,
+            enter = slideInVertically { -it },
+            exit = slideOutVertically { -it },
+            modifier = Modifier.align(Alignment.TopCenter),
+        ) {
+            MainTopAppBar(
+                title = ready?.bundle?.festival?.name.orEmpty(),
+                editionDates = ready?.bundle?.edition?.days?.let(::formatEditionDates).orEmpty(),
+                modifier =
+                    Modifier.onSizeChanged { size ->
+                        chrome = chrome.copy(top = with(density) { size.height.toDp() })
                     },
-                )
-            }
-        },
-        // **Off the tab roots the shell keeps none of the window for itself.** Hiding the two bars
-        // is not enough: a Scaffold still hands its content the system-bar insets, so a detail
-        // screen was drawn under a status-bar-high strip of nothing and then added its own inset on
-        // top of it — which reads exactly like the shell's bar with the title taken out of it. Below
-        // a tab root the screen owns the whole window, and PlusDetailScaffold's own Scaffold applies
-        // the insets once, where the bar that has to clear them actually is.
-        contentWindowInsets = if (isAtTabRoot) ScaffoldDefaults.contentWindowInsets else WindowInsets(0),
-        modifier = modifier,
-    ) { contentPadding ->
-        NavGraph(
-            entries = currentEntries,
-            onBack = { currentStack.popOne() },
-            modifier = Modifier.padding(contentPadding),
-        )
+            )
+        }
+
+        AnimatedVisibility(
+            visible = isAtTabRoot,
+            enter = slideInVertically { it },
+            exit = slideOutVertically { it },
+            modifier = Modifier.align(Alignment.BottomCenter),
+        ) {
+            MainNavigationBar(
+                selectedTab = selectedTab,
+                onTabClick = { tab ->
+                    if (tab == selectedTab) {
+                        // Re-tapping the active tab returns to its root. The standard way out of a
+                        // deep stack without hunting for the back gesture.
+                        stacks.getValue(tab).popToRoot()
+                    } else {
+                        tabNavigator.select(tab)
+                    }
+                },
+                modifier =
+                    Modifier.onSizeChanged { size ->
+                        chrome = chrome.copy(bottom = with(density) { size.height.toDp() })
+                    },
+            )
+        }
     }
 }
 
