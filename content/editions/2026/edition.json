@@ -1335,7 +1335,8 @@
                 "marks": [
                   "vegan",
                   "vegetarien",
-                  "sans-lactose"
+                  "sans-lactose",
+                  "halal"
                 ],
                 "provenance": "unverified"
               },
@@ -1347,7 +1348,8 @@
                 },
                 "description": "Thym, sésame, labné maison, crudités.",
                 "marks": [
-                  "vegetarien"
+                  "vegetarien",
+                  "halal"
                 ],
                 "provenance": "unverified"
               },
@@ -1359,7 +1361,8 @@
                 },
                 "description": "Trio de fromages — mozzarella, fromage jaune, halloumi.",
                 "marks": [
-                  "vegetarien"
+                  "vegetarien",
+                  "halal"
                 ],
                 "provenance": "unverified"
               },
@@ -1370,7 +1373,9 @@
                   "currency": "CHF"
                 },
                 "description": "Viande de bœuf hachée, tomate, oignon, épices libanaises.",
-                "marks": [],
+                "marks": [
+                  "halal"
+                ],
                 "provenance": "unverified"
               }
             ]
@@ -1391,7 +1396,8 @@
                 "marks": [
                   "vegan",
                   "vegetarien",
-                  "sans-lactose"
+                  "sans-lactose",
+                  "halal"
                 ],
                 "provenance": "unverified"
               },
@@ -1403,7 +1409,8 @@
                 },
                 "description": "Poulet mariné, ail, crudités, cornichons.",
                 "marks": [
-                  "sans-lactose"
+                  "sans-lactose",
+                  "halal"
                 ],
                 "provenance": "unverified"
               },
@@ -1415,7 +1422,8 @@
                 },
                 "description": "Bœuf mariné, tahina, tomate, oignon au sumac.",
                 "marks": [
-                  "sans-lactose"
+                  "sans-lactose",
+                  "halal"
                 ],
                 "provenance": "unverified"
               }
@@ -1438,7 +1446,8 @@
                   "vegan",
                   "vegetarien",
                   "sans-lactose",
-                  "sans-gluten"
+                  "sans-gluten",
+                  "halal"
                 ],
                 "provenance": "unverified"
               },
@@ -1454,7 +1463,8 @@
                   "vegetarien",
                   "sans-lactose",
                   "sans-gluten",
-                  "piquant"
+                  "piquant",
+                  "halal"
                 ],
                 "provenance": "unverified"
               },
@@ -1468,7 +1478,8 @@
                 "marks": [
                   "vegan",
                   "vegetarien",
-                  "sans-lactose"
+                  "sans-lactose",
+                  "halal"
                 ],
                 "provenance": "unverified"
               },
@@ -1484,7 +1495,8 @@
                   "vegetarien",
                   "sans-lactose",
                   "sans-gluten",
-                  "piquant"
+                  "piquant",
+                  "halal"
                 ],
                 "provenance": "unverified"
               }
@@ -1504,7 +1516,8 @@
                 },
                 "description": "Pâte filo, pistache, noix, sirop de fleur d’oranger.",
                 "marks": [
-                  "vegetarien"
+                  "vegetarien",
+                  "halal"
                 ],
                 "provenance": "unverified"
               }
@@ -1525,7 +1538,8 @@
                 "description": "Yaourt battu, eau, sel.",
                 "marks": [
                   "vegetarien",
-                  "sans-gluten"
+                  "sans-gluten",
+                  "halal"
                 ],
                 "provenance": "unverified"
               },
@@ -1540,7 +1554,8 @@
                   "vegan",
                   "vegetarien",
                   "sans-lactose",
-                  "sans-gluten"
+                  "sans-gluten",
+                  "halal"
                 ],
                 "provenance": "unverified"
               }
