@@ -1,6 +1,6 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands
 
-import io.nicolaszurbuchen.yadlo.app.design.uimodel.DietaryTagUiModel
+import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloDietaryTagUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import org.jetbrains.compose.resources.StringResource
 import yadlo.shared.generated.resources.Res
@@ -61,5 +61,5 @@ data class StandUiModel(
     val id: String,
     val name: String,
     val offering: String?,
-    val dietary: List<DietaryTagUiModel>,
+    val dietary: List<YadloDietaryTagUiModel>,
 )

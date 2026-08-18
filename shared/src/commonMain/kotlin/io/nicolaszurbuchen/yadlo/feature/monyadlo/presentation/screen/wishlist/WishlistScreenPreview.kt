@@ -11,8 +11,8 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import io.nicolaszurbuchen.yadlo.app.design.theme.YadloTheme
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
-import io.nicolaszurbuchen.yadlo.app.design.uimodel.DietaryMarkUiModel
-import io.nicolaszurbuchen.yadlo.app.design.uimodel.DietaryTagUiModel
+import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloDietaryMarkUiModel
+import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloDietaryTagUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.dietary_all_dairy_free
@@ -66,9 +66,9 @@ private fun kept() =
                                 offering = "Cuisine végétale",
                                 dietary =
                                     listOf(
-                                        DietaryTagUiModel(DietaryMarkUiModel.VEGAN, Res.string.dietary_all_vegan),
-                                        DietaryTagUiModel(
-                                            DietaryMarkUiModel.DAIRY_FREE,
+                                        YadloDietaryTagUiModel(YadloDietaryMarkUiModel.VEGAN, Res.string.dietary_all_vegan),
+                                        YadloDietaryTagUiModel(
+                                            YadloDietaryMarkUiModel.DAIRY_FREE,
                                             Res.string.dietary_all_dairy_free,
                                         ),
                                     ),

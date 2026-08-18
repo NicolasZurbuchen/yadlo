@@ -1,6 +1,6 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.story
 
-import io.nicolaszurbuchen.yadlo.app.design.uimodel.FigureUiModel
+import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloFigureUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 
 /**
@@ -15,6 +15,6 @@ data class StoryUiModel(
     val body: String?,
     val passageTitle: String?,
     val passageBody: String?,
-    val figures: List<FigureUiModel>,
+    val figures: List<YadloFigureUiModel>,
     val figuresCaveat: UiText?,
 )

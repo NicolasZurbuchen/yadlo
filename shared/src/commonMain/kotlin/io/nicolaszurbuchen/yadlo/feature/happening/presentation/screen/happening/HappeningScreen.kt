@@ -36,8 +36,8 @@ import io.nicolaszurbuchen.yadlo.app.design.component.YadloLinkTile
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.app.design.theme.categoryColors
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
-import io.nicolaszurbuchen.yadlo.app.design.uimodel.FactMarkUiModel
-import io.nicolaszurbuchen.yadlo.app.design.uimodel.LinkMarkUiModel
+import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloFactMarkUiModel
+import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloLinkMarkUiModel
 import io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening.component.HappeningHeader
 import io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening.component.HappeningMenuGroupBlock
 import io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening.component.HappeningPriceBlock
@@ -244,7 +244,7 @@ fun HappeningScreen(
                                     if (booking.url != null) {
                                         YadloLinkTile(
                                             label = booking.label.asString(),
-                                            mark = LinkMarkUiModel.EXTERNAL,
+                                            mark = YadloLinkMarkUiModel.EXTERNAL,
                                             onClick = { onLinkClick(booking.url) },
                                         )
                                     } else {
@@ -266,7 +266,7 @@ fun HappeningScreen(
                                 modifier = Modifier.padding(horizontal = MaterialTheme.spacing.md),
                             ) {
                                 state.facts.forEach { fact ->
-                                    YadloFactRow(mark = FactMarkUiModel.CHECK, fact = fact.asString())
+                                    YadloFactRow(mark = YadloFactMarkUiModel.CHECK, fact = fact.asString())
                                 }
                             }
                         }
@@ -297,7 +297,7 @@ fun HappeningScreen(
                                 state.links.forEach { link ->
                                     YadloLinkTile(
                                         label = link.label.asString(),
-                                        mark = LinkMarkUiModel.EXTERNAL,
+                                        mark = YadloLinkMarkUiModel.EXTERNAL,
                                         onClick = { onLinkClick(link.url) },
                                     )
                                 }

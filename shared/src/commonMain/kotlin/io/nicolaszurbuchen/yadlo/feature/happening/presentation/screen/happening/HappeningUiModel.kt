@@ -1,6 +1,6 @@
 package io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening
 
-import io.nicolaszurbuchen.yadlo.app.design.uimodel.DietaryTagUiModel
+import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloDietaryTagUiModel
 import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotLiveStateUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 
@@ -27,7 +27,7 @@ data class HappeningUiModel(
     val description: String?,
     val tags: List<String>,
     /** What a Stand can feed you, derived from its menu. Empty for everything that is not one. */
-    val dietary: List<DietaryTagUiModel>,
+    val dietary: List<YadloDietaryTagUiModel>,
     val slots: List<HappeningSlotUiModel>,
     val price: HappeningPriceUiModel?,
     val booking: HappeningBookingUiModel?,
@@ -101,7 +101,7 @@ data class HappeningMenuItemUiModel(
     val name: String,
     val priceText: String?,
     val description: String?,
-    val dietary: List<DietaryTagUiModel>,
+    val dietary: List<YadloDietaryTagUiModel>,
 )
 
 data class HappeningLinkUiModel(

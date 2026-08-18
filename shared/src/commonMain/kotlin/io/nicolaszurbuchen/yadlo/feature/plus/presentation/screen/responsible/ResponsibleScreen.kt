@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import io.nicolaszurbuchen.yadlo.app.design.component.YadloLinkTile
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
-import io.nicolaszurbuchen.yadlo.app.design.uimodel.LinkMarkUiModel
+import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloLinkMarkUiModel
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusBodyText
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusDetailScaffold
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusSection
@@ -56,7 +56,7 @@ fun ResponsibleScreen(
                 section.links.forEach { link ->
                     YadloLinkTile(
                         label = link.label,
-                        mark = LinkMarkUiModel.EXTERNAL,
+                        mark = YadloLinkMarkUiModel.EXTERNAL,
                         onClick = { onLinkClick(link.url) },
                         sublabel = link.sublabel,
                     )

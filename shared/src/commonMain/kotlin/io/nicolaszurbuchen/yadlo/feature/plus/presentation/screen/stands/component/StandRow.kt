@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import io.nicolaszurbuchen.yadlo.app.design.component.YadloDietaryTags
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
-import io.nicolaszurbuchen.yadlo.app.design.uimodel.LinkMarkUiModel
+import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloLinkMarkUiModel
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands.StandUiModel
 
 /**
@@ -79,7 +79,7 @@ fun StandRow(
         }
 
         Icon(
-            imageVector = LinkMarkUiModel.DISCLOSURE.icon,
+            imageVector = YadloLinkMarkUiModel.DISCLOSURE.icon,
             contentDescription = null,
             tint = MaterialTheme.appColors.textTertiary,
             modifier = Modifier.size(MARK_SIZE),

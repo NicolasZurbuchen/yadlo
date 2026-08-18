@@ -11,8 +11,8 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import io.nicolaszurbuchen.yadlo.app.design.theme.YadloTheme
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
-import io.nicolaszurbuchen.yadlo.app.design.uimodel.DietaryMarkUiModel
-import io.nicolaszurbuchen.yadlo.app.design.uimodel.DietaryTagUiModel
+import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloDietaryMarkUiModel
+import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloDietaryTagUiModel
 import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotLiveStateUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import yadlo.shared.generated.resources.Res
@@ -161,9 +161,9 @@ private fun stand() =
         tags = listOf("Cuisine végétale"),
         dietary =
             listOf(
-                DietaryTagUiModel(DietaryMarkUiModel.VEGAN, Res.string.dietary_all_vegan),
-                DietaryTagUiModel(DietaryMarkUiModel.DAIRY_FREE, Res.string.dietary_all_dairy_free),
-                DietaryTagUiModel(DietaryMarkUiModel.GLUTEN_FREE, Res.string.dietary_some_gluten_free),
+                YadloDietaryTagUiModel(YadloDietaryMarkUiModel.VEGAN, Res.string.dietary_all_vegan),
+                YadloDietaryTagUiModel(YadloDietaryMarkUiModel.DAIRY_FREE, Res.string.dietary_all_dairy_free),
+                YadloDietaryTagUiModel(YadloDietaryMarkUiModel.GLUTEN_FREE, Res.string.dietary_some_gluten_free),
             ),
         menu =
             listOf(
@@ -180,9 +180,9 @@ private fun stand() =
                                 description = "Houmous, caviar d’aubergine, falafels, pain plat.",
                                 dietary =
                                     listOf(
-                                        DietaryTagUiModel(DietaryMarkUiModel.VEGAN, Res.string.dietary_mark_vegan),
-                                        DietaryTagUiModel(
-                                            DietaryMarkUiModel.DAIRY_FREE,
+                                        YadloDietaryTagUiModel(YadloDietaryMarkUiModel.VEGAN, Res.string.dietary_mark_vegan),
+                                        YadloDietaryTagUiModel(
+                                            YadloDietaryMarkUiModel.DAIRY_FREE,
                                             Res.string.dietary_mark_dairy_free,
                                         ),
                                     ),
@@ -193,13 +193,13 @@ private fun stand() =
                                 description = "Tofu suisse mijoté aux légumes de saison, riz.",
                                 dietary =
                                     listOf(
-                                        DietaryTagUiModel(DietaryMarkUiModel.VEGAN, Res.string.dietary_mark_vegan),
-                                        DietaryTagUiModel(
-                                            DietaryMarkUiModel.GLUTEN_FREE,
+                                        YadloDietaryTagUiModel(YadloDietaryMarkUiModel.VEGAN, Res.string.dietary_mark_vegan),
+                                        YadloDietaryTagUiModel(
+                                            YadloDietaryMarkUiModel.GLUTEN_FREE,
                                             Res.string.dietary_mark_gluten_free,
                                         ),
-                                        DietaryTagUiModel(
-                                            DietaryMarkUiModel.DAIRY_FREE,
+                                        YadloDietaryTagUiModel(
+                                            YadloDietaryMarkUiModel.DAIRY_FREE,
                                             Res.string.dietary_mark_dairy_free,
                                         ),
                                     ),

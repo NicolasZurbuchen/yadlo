@@ -3,7 +3,7 @@ package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.about
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import io.nicolaszurbuchen.yadlo.app.design.component.YadloLinkTile
-import io.nicolaszurbuchen.yadlo.app.design.uimodel.LinkMarkUiModel
+import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloLinkMarkUiModel
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusBodyText
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusDetailScaffold
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusSection
@@ -64,7 +64,7 @@ fun AboutScreen(
 
             YadloLinkTile(
                 label = stringResource(Res.string.about_author_name),
-                mark = LinkMarkUiModel.MAIL,
+                mark = YadloLinkMarkUiModel.MAIL,
                 onClick = { onEmailClick(address) },
                 sublabel = address,
             )

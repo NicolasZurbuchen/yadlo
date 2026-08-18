@@ -1,6 +1,6 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.access
 
-import io.nicolaszurbuchen.yadlo.app.design.uimodel.FactMarkUiModel
+import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloFactMarkUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 
 /**
@@ -36,7 +36,7 @@ data class AccessModeUiModel(
 data class AccessFactUiModel(
     val id: String,
     val text: String,
-    val mark: FactMarkUiModel,
+    val mark: YadloFactMarkUiModel,
 )
 
 /**

@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
-import io.nicolaszurbuchen.yadlo.app.design.uimodel.FigureUiModel
+import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloFigureUiModel
 
 /**
  * *Yadlo en chiffres*, two to a row, with the caveat the numbers owe the reader underneath.
@@ -41,7 +41,7 @@ import io.nicolaszurbuchen.yadlo.app.design.uimodel.FigureUiModel
  */
 @Composable
 fun YadloFigureGrid(
-    figures: List<FigureUiModel>,
+    figures: List<YadloFigureUiModel>,
     modifier: Modifier = Modifier,
     caveat: String? = null,
 ) {

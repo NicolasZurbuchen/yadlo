@@ -1,7 +1,7 @@
 package io.nicolaszurbuchen.yadlo.app.design.theme
 
 import androidx.compose.ui.graphics.Color
-import io.nicolaszurbuchen.yadlo.app.design.uimodel.DietaryMarkUiModel
+import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloDietaryMarkUiModel
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -14,7 +14,7 @@ import kotlin.test.assertTrue
  * smallest style the app has, so it is treated as the harder case and held to the same bar as the
  * glyph rather than being allowed to be the weak half.
  *
- * The tints are duplicated from [DietaryMarkUiModel.tint] rather than read from it, because that is
+ * The tints are duplicated from [YadloDietaryMarkUiModel.tint] rather than read from it, because that is
  * a `@Composable` getter and this is a plain unit test. Duplication is the price of measuring at all
  * — and a drift between the two lists is exactly what the second test catches.
  */
@@ -48,8 +48,8 @@ class DietaryMarkColorTest {
     fun everyMark_hasATintInBothThemes() {
         // The lists above are hand-kept, so a seventh mark added to the enum without a measured
         // colour fails here rather than shipping as an unmeasured one.
-        assertEquals(DietaryMarkUiModel.entries.toSet(), lightTints.keys)
-        assertEquals(DietaryMarkUiModel.entries.toSet(), darkTints.keys)
+        assertEquals(YadloDietaryMarkUiModel.entries.toSet(), lightTints.keys)
+        assertEquals(YadloDietaryMarkUiModel.entries.toSet(), darkTints.keys)
     }
 
     @Test
@@ -58,8 +58,8 @@ class DietaryMarkColorTest {
         // tagged vegetarian, and the two should read as related. The glyph is what separates them.
         // Asserting it keeps a later "let's make them distinct" from quietly breaking the idea.
         listOf(lightTints, darkTints).forEach { tints ->
-            val vegan = tints.getValue(DietaryMarkUiModel.VEGAN)
-            val vegetarian = tints.getValue(DietaryMarkUiModel.VEGETARIAN)
+            val vegan = tints.getValue(YadloDietaryMarkUiModel.VEGAN)
+            val vegetarian = tints.getValue(YadloDietaryMarkUiModel.VEGETARIAN)
 
             assertTrue(
                 perceptualDistance(vegan, vegetarian) < SAME_FAMILY_CEILING,
@@ -78,24 +78,24 @@ class DietaryMarkColorTest {
         // closer than 25. Between the two is where "related" stops and "different" starts.
         const val SAME_FAMILY_CEILING = 25.0
 
-        val lightTints: Map<DietaryMarkUiModel, Color> =
+        val lightTints: Map<YadloDietaryMarkUiModel, Color> =
             mapOf(
-                DietaryMarkUiModel.VEGAN to EmeraldPalette.emerald900,
-                DietaryMarkUiModel.VEGETARIAN to EmeraldPalette.emerald700,
-                DietaryMarkUiModel.GLUTEN_FREE to AmberPalette.amber800,
-                DietaryMarkUiModel.DAIRY_FREE to SkyBluePalette.skyBlue800,
-                DietaryMarkUiModel.HALAL to VioletPalette.violet800,
-                DietaryMarkUiModel.SPICY to MagentaPalette.magenta800,
+                YadloDietaryMarkUiModel.VEGAN to EmeraldPalette.emerald900,
+                YadloDietaryMarkUiModel.VEGETARIAN to EmeraldPalette.emerald700,
+                YadloDietaryMarkUiModel.GLUTEN_FREE to AmberPalette.amber800,
+                YadloDietaryMarkUiModel.DAIRY_FREE to SkyBluePalette.skyBlue800,
+                YadloDietaryMarkUiModel.HALAL to VioletPalette.violet800,
+                YadloDietaryMarkUiModel.SPICY to MagentaPalette.magenta800,
             )
 
-        val darkTints: Map<DietaryMarkUiModel, Color> =
+        val darkTints: Map<YadloDietaryMarkUiModel, Color> =
             mapOf(
-                DietaryMarkUiModel.VEGAN to EmeraldPalette.emerald300,
-                DietaryMarkUiModel.VEGETARIAN to EmeraldPalette.emerald500,
-                DietaryMarkUiModel.GLUTEN_FREE to AmberPalette.amber400,
-                DietaryMarkUiModel.DAIRY_FREE to SkyBluePalette.skyBlue400,
-                DietaryMarkUiModel.HALAL to VioletPalette.violet400,
-                DietaryMarkUiModel.SPICY to MagentaPalette.magenta400,
+                YadloDietaryMarkUiModel.VEGAN to EmeraldPalette.emerald300,
+                YadloDietaryMarkUiModel.VEGETARIAN to EmeraldPalette.emerald500,
+                YadloDietaryMarkUiModel.GLUTEN_FREE to AmberPalette.amber400,
+                YadloDietaryMarkUiModel.DAIRY_FREE to SkyBluePalette.skyBlue400,
+                YadloDietaryMarkUiModel.HALAL to VioletPalette.violet400,
+                YadloDietaryMarkUiModel.SPICY to MagentaPalette.magenta400,
             )
     }
 }

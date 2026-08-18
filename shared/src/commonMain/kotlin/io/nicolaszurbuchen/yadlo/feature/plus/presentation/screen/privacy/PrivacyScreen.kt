@@ -3,7 +3,7 @@ package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.privacy
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import io.nicolaszurbuchen.yadlo.app.design.component.YadloFactRow
-import io.nicolaszurbuchen.yadlo.app.design.uimodel.FactMarkUiModel
+import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloFactMarkUiModel
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusBodyText
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusDetailScaffold
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusSection
@@ -38,9 +38,9 @@ fun PrivacyScreen(
         PlusBodyText(text = stringResource(Res.string.privacy_body))
 
         PlusSection(title = stringResource(Res.string.privacy_section_facts)) {
-            YadloFactRow(mark = FactMarkUiModel.CHECK, fact = stringResource(Res.string.privacy_fact_no_account))
-            YadloFactRow(mark = FactMarkUiModel.CHECK, fact = stringResource(Res.string.privacy_fact_no_analytics))
-            YadloFactRow(mark = FactMarkUiModel.CHECK, fact = stringResource(Res.string.privacy_fact_plan_is_local))
+            YadloFactRow(mark = YadloFactMarkUiModel.CHECK, fact = stringResource(Res.string.privacy_fact_no_account))
+            YadloFactRow(mark = YadloFactMarkUiModel.CHECK, fact = stringResource(Res.string.privacy_fact_no_analytics))
+            YadloFactRow(mark = YadloFactMarkUiModel.CHECK, fact = stringResource(Res.string.privacy_fact_plan_is_local))
         }
     }
 }

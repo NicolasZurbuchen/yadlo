@@ -4,8 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import io.nicolaszurbuchen.yadlo.app.design.component.YadloFactRow
 import io.nicolaszurbuchen.yadlo.app.design.component.YadloLinkTile
-import io.nicolaszurbuchen.yadlo.app.design.uimodel.FactMarkUiModel
-import io.nicolaszurbuchen.yadlo.app.design.uimodel.LinkMarkUiModel
+import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloFactMarkUiModel
+import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloLinkMarkUiModel
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusBodyText
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusDetailScaffold
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusEmailTile
@@ -66,7 +66,7 @@ fun VolunteeringScreen(
 
         if (state.perks.isNotEmpty()) {
             PlusSection(title = stringResource(Res.string.volunteering_section_perks)) {
-                state.perks.forEach { YadloFactRow(mark = FactMarkUiModel.CHECK, fact = it) }
+                state.perks.forEach { YadloFactRow(mark = YadloFactMarkUiModel.CHECK, fact = it) }
             }
         }
 
@@ -75,7 +75,7 @@ fun VolunteeringScreen(
                 state.signupUrl?.let { url ->
                     YadloLinkTile(
                         label = stringResource(Res.string.volunteering_signup),
-                        mark = LinkMarkUiModel.EXTERNAL,
+                        mark = YadloLinkMarkUiModel.EXTERNAL,
                         onClick = { onSignupClick(url) },
                     )
                 }

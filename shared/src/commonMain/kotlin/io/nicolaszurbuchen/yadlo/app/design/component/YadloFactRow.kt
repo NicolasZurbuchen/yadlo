@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
-import io.nicolaszurbuchen.yadlo.app.design.uimodel.FactMarkUiModel
+import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloFactMarkUiModel
 import org.jetbrains.compose.resources.stringResource
 
 /**
@@ -28,13 +28,13 @@ import org.jetbrains.compose.resources.stringResource
  * **Facts must not look tappable**, the rule the fiche's own fact row was built on: a leading mark
  * on the page ground, never the card-with-chevron style that is reserved for navigation.
  *
- * The mark is tinted by what it means — see [FactMarkUiModel] — and never *only* by what it means.
+ * The mark is tinted by what it means — see [YadloFactMarkUiModel] — and never *only* by what it means.
  * Every coloured mark also carries a glyph and a content description, so the polarity survives a
  * greyscale screenshot, a colour-blind reader and a screen reader alike.
  */
 @Composable
 fun YadloFactRow(
-    mark: FactMarkUiModel,
+    mark: YadloFactMarkUiModel,
     fact: String,
     modifier: Modifier = Modifier,
 ) {

@@ -13,14 +13,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
-import io.nicolaszurbuchen.yadlo.app.design.uimodel.DietaryTagUiModel
+import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloDietaryTagUiModel
 import org.jetbrains.compose.resources.stringResource
 
 /**
  * What can be eaten here, said in glyphs and in words.
  *
  * On a stand row it is what the whole truck can feed you, on a dish it is what that dish is — the
- * wording is decided upstream, see [DietaryTagUiModel]. One component either way, because the two
+ * wording is decided upstream, see [YadloDietaryTagUiModel]. One component either way, because the two
  * appear one screen apart and a reader with a dietary requirement is following the same thread
  * through both.
  *
@@ -34,7 +34,7 @@ import org.jetbrains.compose.resources.stringResource
  */
 @Composable
 fun YadloDietaryTags(
-    tags: List<DietaryTagUiModel>,
+    tags: List<YadloDietaryTagUiModel>,
     modifier: Modifier = Modifier,
 ) {
     FlowRow(

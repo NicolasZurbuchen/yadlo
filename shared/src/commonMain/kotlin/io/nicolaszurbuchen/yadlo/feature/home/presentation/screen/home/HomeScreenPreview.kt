@@ -11,7 +11,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import io.nicolaszurbuchen.yadlo.app.design.theme.YadloTheme
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
-import io.nicolaszurbuchen.yadlo.app.design.uimodel.FigureUiModel
+import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloFigureUiModel
 import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SocialLinkUiModel
 import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.socialIconFor
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.uimodel.AnnouncementUiModel
@@ -87,10 +87,10 @@ private class HomeStackProvider : PreviewParameterProvider<HomeUiModel> {
             title = UiText.Resource(Res.string.home_figures_title),
             items =
                 listOf(
-                    FigureUiModel("visiteurs", "6000", "visiteurs"),
-                    FigureUiModel("heures-musique", "45", "heures de concerts"),
-                    FigureUiModel("litres-biere", "3200", "litres de bière"),
-                    FigureUiModel("benevoles", "160", "bénévoles"),
+                    YadloFigureUiModel("visiteurs", "6000", "visiteurs"),
+                    YadloFigureUiModel("heures-musique", "45", "heures de concerts"),
+                    YadloFigureUiModel("litres-biere", "3200", "litres de bière"),
+                    YadloFigureUiModel("benevoles", "160", "bénévoles"),
                 ),
             // The published figures are a past edition's, so the caveat is the normal case here
             // rather than the exceptional one — previewing it without would flatter the screen.
