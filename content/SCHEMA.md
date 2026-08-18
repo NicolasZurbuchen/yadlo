@@ -307,7 +307,8 @@ social          { id, name, url }[]
 links           { id, label, url }[]
 transports      { modes: Mode[], provenance }
 paiement        { headline, summary, methods: Method[], notes: {id, title, body, links: Link[]}[], provenance }
-besoin          { emergencyNumbers: {id, label, number}[], lostPropertyEmailId, provenance }
+besoin          { emergencyNumbers: {id, label, number}[], recognition: {id, text}[],
+                  lostPropertyEmailId, provenance }
 simpliquer      { hotstaff: {...}, partenaire: {...} }
 ```
 

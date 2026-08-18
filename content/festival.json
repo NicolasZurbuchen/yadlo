@@ -369,7 +369,13 @@
       }
     ],
     "lostPropertyEmailId": "hello",
-    "provenance": "unverified"
+    "provenance": "unverified",
+    "recognition": [
+      {
+        "id": "tshirts",
+        "text": "T-shirts Hot'Staff — il y en a 160 sur le site"
+      }
+    ]
   },
   "simpliquer": {
     "hotstaff": {
