@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import io.nicolaszurbuchen.yadlo.app.design.component.YadloSectionHeader
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
@@ -68,11 +69,7 @@ fun SectionBlock(
                         top = MaterialTheme.spacing.md,
                     ),
         ) {
-            Text(
-                text = title.asString(),
-                style = MaterialTheme.typography.headlineMedium,
-                color = MaterialTheme.appColors.textPrimary,
-            )
+            YadloSectionHeader(title = title.asString())
 
             if (actionLabel != null && onActionClick != null) {
                 Text(

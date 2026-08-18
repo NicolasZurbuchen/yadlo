@@ -8,6 +8,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import io.nicolaszurbuchen.yadlo.app.design.component.YadloSectionHeader
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.feature.monyadlo.presentation.screen.wishlist.WishlistGroupUiModel
@@ -25,10 +26,8 @@ fun WishlistGroupBlock(
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
-        Text(
-            text = group.name.uppercase(),
-            style = MaterialTheme.typography.headlineMedium,
-            color = MaterialTheme.appColors.textTertiary,
+        YadloSectionHeader(
+            title = group.name,
             modifier =
                 Modifier.padding(
                     horizontal = MaterialTheme.spacing.md,

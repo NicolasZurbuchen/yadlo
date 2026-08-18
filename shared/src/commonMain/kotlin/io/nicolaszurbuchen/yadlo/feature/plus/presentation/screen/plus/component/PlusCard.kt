@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import io.nicolaszurbuchen.yadlo.app.design.component.YadloSectionHeader
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.plus.PlusEntryUiModel
@@ -40,10 +41,8 @@ fun PlusCard(
     ) {
         // The header is inset from the card rather than flush with it, which is what makes the card
         // read as a block the header labels instead of a box the header is inside.
-        Text(
-            text = stringResource(group.id.title).uppercase(),
-            style = MaterialTheme.typography.headlineMedium,
-            color = MaterialTheme.appColors.textTertiary,
+        YadloSectionHeader(
+            title = stringResource(group.id.title),
             modifier = Modifier.padding(horizontal = MaterialTheme.spacing.sm),
         )
 
