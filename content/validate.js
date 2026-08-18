@@ -37,7 +37,14 @@ const KIND_CATEGORIES = {
 };
 
 const PROVENANCE = new Set(['confirmed', 'archived', 'unverified']);
-const MARKS = new Set(['végé', 'végan', 'sans gluten', 'sans lactose', 'piquant', 'bio']);
+// The dietary vocabulary, closed and slugged. Slugs rather than the French words they used to be,
+// because the app keys an icon and a colour off each one and "végan" is two byte sequences
+// depending on who typed it. The label a reader sees is the app's, the way a Category's colour is.
+//
+// 'bio' is gone: it is a claim about sourcing rather than about whether someone can eat the thing,
+// and it was the one mark the filter could not answer a question with. 'halal' replaces it, and
+// nothing carries it yet - see GAPS.md.
+const MARKS = new Set(['vegan', 'vegetarien', 'sans-gluten', 'sans-lactose', 'halal', 'piquant']);
 const LINK_TYPES = new Set(['spotify', 'instagram', 'website', 'soundcloud', 'bandcamp',
   'facebook', 'youtube', 'tiktok', 'beatport', 'appleMusic']);
 
@@ -176,7 +183,7 @@ const SHAPES = {
   artist: ['genres', 'links'],
   activity: ['genres', 'price', 'bookingRequired', 'bookingUrl', 'equipmentProvided',
     'suitability', 'supervised'],
-  stand: ['offering', 'marks', 'links', 'menu'],
+  stand: ['offering', 'links', 'menu'],
   image: ['src', 'credit'],
   link: ['type', 'url'],
   price: ['free', 'tiers', 'deposit', 'provenance'],
@@ -282,9 +289,6 @@ for (const [hid, h] of Object.entries(haps)) {
   }
   if (h.kind === 'artist' && (payload.links || []).length === 0)
     warns.push(`artist ${hid}: no links`);
-
-  for (const m of payload.marks || [])
-    if (!MARKS.has(m)) errors.push(`happening ${hid}: unknown stand mark "${m}"`);
 
   // Price is ONE shape for every activity, free or not. It used to be three mutually exclusive
   // ones - {free}, {amount,currency,per} and {tiers,deposit} - which meant the app had to sniff

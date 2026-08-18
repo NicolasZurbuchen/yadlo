@@ -86,29 +86,39 @@ closing figures, `fnb@yadlo.ch` in the contacts, and free bar drinks among the H
 These suppliers should end up in both places. Needed: the bar's name, where it stands, its hours,
 and what it pours at what price.
 
-## 2. Restauration — six stands in, four without a menu
+## 2. Restauration — six stands, six menus, none of them confirmed
 
 The festival does have a restauration page; it is simply not findable, which is why it was missed
-on the first pass. Six stands are now recorded:
+on the first pass. All six food stands now carry a menu with ingredients and dietary marks, so the
+filter on *Nourriture & boissons* has something to filter on. **Not one of those menus comes from
+the festival**, and they are unreliable in three different ways, which each group's `source` says:
 
-| Stand | Cuisine | Links | Menu |
-|---|---|---|---|
-| Vegan Fabrik | végétale, `végan` + `bio` | ✅ | 11 items, all prices **vendor-sourced** |
-| De l'Or Bokit | guadeloupéenne | ✅ | 4 bokits + 3 sauces, from their own carte |
-| Man'ouchy | libanaise | ✅ | ❌ — their site keeps the carte in PDFs |
-| Guliko | géorgienne | ❌ | ❌ |
-| Gyros Greek & La Focacceria | méditerranéenne | ❌ | ❌ |
-| Surf Shop | crêpes, gaufres, glaces | ❌ | ❌ |
+| Stand | Cuisine | Links | Menu | How reliable |
+|---|---|---|---|---|
+| Vegan Fabrik | végétale | ✅ | 11 items | Vendor's own list and a photo of their board |
+| De l'Or Bokit | guadeloupéenne | ✅ | 4 bokits + 3 sauces | Vendor's own published carte |
+| Man'ouchy | libanaise | ✅ | 14 items | **Reconstructed** from their restaurant carte |
+| Guliko | géorgienne | ❌ | 13 items | **Reconstructed** from the dishes they list, no prices published |
+| Gyros Greek & La Focacceria | méditerranéenne | ❌ | 9 items | **Plausible only** — nothing is published |
+| Surf Shop | crêpes, gaufres, glaces | ❌ | 8 items | **Plausible only** — nothing is published |
+
+The last four are the ones to put to the association first: they are readable, they are priced,
+and they are invented. Better a real carte with four dishes than a convincing one with fourteen.
 
 **Still needed:**
 
-1. **Menus for the four without one.** Man'ouchy's exists as a PDF — a link, or the plain text,
-   would do. The other three have nothing anywhere.
-2. **Opening hours for all six.** A Stand's Slots are its opening windows, and not one is
+1. **The real menus**, for all six. Man'ouchy's exists as a PDF on their own site — a link or the
+   plain text would do. Guliko lists its dishes but no prices. The other two publish nothing.
+2. **The dietary marks confirmed.** Every dish is now tagged `vegan`, `vegetarien`,
+   `sans-gluten`, `sans-lactose` or `piquant` from its ingredients, and those tags are what the
+   filter answers with. They are inferences, and a wrong one on a menu is worse than a wrong price.
+3. **Is anything halal?** `halal` is in the vocabulary and **nothing carries it**, deliberately:
+   it is the one mark that cannot be inferred from a list of ingredients, and it is the one a
+   reader would rely on for reasons a wrong answer does not repair. It needs the vendor to say so.
+4. **Opening hours for all six.** A Stand's Slots are its opening windows, and not one is
    published, so every stand currently has none. Are they simply open whenever the site is?
-3. **Prices confirmed for Yadlo.** Everything priced is marked `unverified` because none of it
-   comes from the festival — see below.
-4. **Links for Guliko, Gyros Greek & La Focacceria, and Surf Shop.**
+5. **Prices confirmed for Yadlo.** Everything priced is marked `unverified` — see below.
+6. **Links for Guliko, Gyros Greek & La Focacceria, and Surf Shop.**
 
 ### Why every price is `unverified`
 
