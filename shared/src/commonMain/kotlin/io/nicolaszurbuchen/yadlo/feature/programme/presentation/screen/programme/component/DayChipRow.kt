@@ -1,20 +1,15 @@
 package io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme.component
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.selection.selectable
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.semantics.Role
-import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
+import io.nicolaszurbuchen.yadlo.app.design.component.YadloFilterChip
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme.DayChipUiModel
 
@@ -26,6 +21,10 @@ import io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme
  *
  * Scrollable because three days is this edition's number, not the app's: the row must not clip if a
  * fourth is ever added or if the text size doubles.
+ *
+ * [YadloFilterChip] rather than a `Text` on a rounded background, which is what this used to be: it
+ * sat a few dp taller than the Category chips directly beneath it, which is the sort of difference
+ * nobody can name and everybody sees.
  */
 @Composable
 fun DayChipRow(
@@ -39,29 +38,13 @@ fun DayChipRow(
             modifier
                 .fillMaxWidth()
                 .horizontalScroll(rememberScrollState())
-                .padding(horizontal = MaterialTheme.spacing.md, vertical = MaterialTheme.spacing.sm),
+                .padding(horizontal = MaterialTheme.spacing.md, vertical = MaterialTheme.spacing.xs),
     ) {
         days.forEach { day ->
-            Text(
-                text = day.name,
-                style = MaterialTheme.typography.titleSmall,
-                color = if (day.isSelected) MaterialTheme.appColors.onPrimary else MaterialTheme.appColors.textSecondary,
-                modifier =
-                    Modifier
-                        .clip(MaterialTheme.shapes.small)
-                        .background(
-                            if (day.isSelected) {
-                                MaterialTheme.appColors.primary
-                            } else {
-                                MaterialTheme.appColors.surfaceRaised
-                            },
-                        )
-                        .selectable(
-                            selected = day.isSelected,
-                            role = Role.Tab,
-                            onClick = { onDayClick(day.id) },
-                        )
-                        .padding(horizontal = MaterialTheme.spacing.md, vertical = MaterialTheme.spacing.sm),
+            YadloFilterChip(
+                label = day.name,
+                isSelected = day.isSelected,
+                onClick = { onDayClick(day.id) },
             )
         }
     }

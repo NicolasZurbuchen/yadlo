@@ -5,13 +5,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.material3.FilterChip
-import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
+import io.nicolaszurbuchen.yadlo.app.design.component.YadloFilterChip
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands.StandChipUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.asString
@@ -23,7 +20,9 @@ import io.nicolaszurbuchen.yadlo.infra.ui.asString
  * nothing and a mark the content adds appears without an app release.
  *
  * Horizontally scrolling rather than wrapped, so the row keeps its height whatever the content
- * publishes. There are five chips today and the same layout survives fifteen.
+ * publishes. There are six chips today and the same layout survives fifteen.
+ *
+ * [YadloFilterChip], the same control the Programme filters with, glyph on the left.
  */
 @Composable
 fun StandMarkChips(
@@ -39,21 +38,10 @@ fun StandMarkChips(
                 .horizontalScroll(rememberScrollState()),
     ) {
         chips.forEach { chip ->
-            FilterChip(
-                selected = chip.isSelected,
+            YadloFilterChip(
+                label = chip.label.asString(),
+                isSelected = chip.isSelected,
                 onClick = { onMarkClick(chip.mark) },
-                label = {
-                    Text(
-                        text = chip.label.asString(),
-                        style = MaterialTheme.typography.labelSmall,
-                    )
-                },
-                colors =
-                    FilterChipDefaults.filterChipColors(
-                        selectedContainerColor = MaterialTheme.appColors.primary,
-                        selectedLabelColor = MaterialTheme.appColors.onPrimary,
-                        labelColor = MaterialTheme.appColors.textSecondary,
-                    ),
             )
         }
     }
