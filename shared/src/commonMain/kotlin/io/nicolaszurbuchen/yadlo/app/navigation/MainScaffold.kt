@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -126,7 +127,15 @@ fun MainScaffold(modifier: Modifier = Modifier) {
         // The graph owns the whole window at every depth. Nothing about its size depends on whether
         // the current tab is at its root, which is what stops the screen behind a push from being
         // re-measured while it is still on screen.
-        CompositionLocalProvider(LocalTabChromeInsets provides chrome) {
+        //
+        // LocalContentColor is the other thing the Scaffold used to hand down, through the Surface
+        // it wraps its content in. Material's ripple defaults to it, so with nothing providing it
+        // the four tabs fell back to foundation's plain black — a tap on an annonce lit up in a
+        // colour belonging to no theme, and in dark mode barely lit up at all.
+        CompositionLocalProvider(
+            LocalTabChromeInsets provides chrome,
+            LocalContentColor provides MaterialTheme.appColors.textPrimary,
+        ) {
             NavGraph(
                 entries = currentEntries,
                 onBack = { currentStack.popOne() },
