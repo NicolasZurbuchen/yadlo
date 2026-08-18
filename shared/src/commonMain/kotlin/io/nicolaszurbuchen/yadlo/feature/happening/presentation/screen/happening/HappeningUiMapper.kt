@@ -1,5 +1,6 @@
 package io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening
 
+import io.nicolaszurbuchen.yadlo.app.design.uimodel.toDietaryTags
 import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotLiveStateUiModel
 import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.slotLiveStateAt
 import io.nicolaszurbuchen.yadlo.common.time.FESTIVAL_TIME_ZONE
@@ -42,6 +43,7 @@ fun HappeningState.toUiModel(): HappeningUiModel {
             categoryLabel = "",
             description = null,
             tags = emptyList(),
+            dietary = emptyList(),
             slots = emptyList(),
             price = null,
             booking = null,
@@ -55,6 +57,7 @@ fun HappeningState.toUiModel(): HappeningUiModel {
 
     return blank.copy(
         title = loaded.name,
+        dietary = loaded.dietary.toDietaryTags(),
         categoryId = loaded.categoryId,
         // Written out above the title, in the Category's own colour but never only in it.
         categoryLabel = loaded.categoryName.uppercase(),
@@ -192,7 +195,7 @@ fun HappeningState.toUiModel(): HappeningUiModel {
                                 description = item.description,
                                 // An item's marks describe that item alone, so they are written
                                 // beside it rather than folded into the stand's own tags.
-                                marks = item.marks.joinToString(" · ").ifEmpty { null },
+                                dietary = item.marks.toDietaryTags(),
                             )
                         },
                 )

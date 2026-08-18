@@ -274,7 +274,6 @@ class HappeningExecutorTest {
                 images = emptyList(),
                 provenance = Provenance.CONFIRMED,
                 offering = "Frites",
-                marks = emptyList(),
                 links = emptyList(),
                 menu = emptyList(),
             )

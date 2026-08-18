@@ -9,6 +9,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import io.nicolaszurbuchen.yadlo.app.design.component.YadloDietaryTags
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.feature.monyadlo.presentation.screen.wishlist.WishlistStandUiModel
@@ -49,12 +50,8 @@ fun WishlistStandRow(
             )
         }
 
-        stand.marks?.let { marks ->
-            Text(
-                text = marks,
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.appColors.textTertiary,
-            )
+        if (stand.dietary.isNotEmpty()) {
+            YadloDietaryTags(tags = stand.dietary)
         }
     }
 }

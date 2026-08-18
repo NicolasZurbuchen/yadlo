@@ -107,12 +107,14 @@ class ObserveHappeningDetailUseCaseTest {
         }
 
     @Test
-    fun invoke_stand_leadsItsTagsWithTheOfferingThenTheMarksThatQualifyIt() =
+    fun invoke_stand_tagsItWithItsOfferingAndNothingElse() =
         runTest {
             useCase("vegan-fabrik").test {
                 repository.emitStatus(ready())
 
-                assertEquals(listOf("Cuisine végétale", "végan", "bio"), awaitItem()?.tags)
+                // What it can feed you is no longer a word in this list — it is derived from the
+                // menu and drawn with its own glyphs.
+                assertEquals(listOf("Cuisine végétale"), awaitItem()?.tags)
             }
         }
 
@@ -305,7 +307,6 @@ class ObserveHappeningDetailUseCaseTest {
                 images = emptyList(),
                 provenance = Provenance.CONFIRMED,
                 offering = "Cuisine végétale",
-                marks = listOf("végan", "bio"),
                 links = emptyList(),
                 menu =
                     listOf(

@@ -9,6 +9,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import io.nicolaszurbuchen.yadlo.app.design.component.YadloDietaryTags
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening.HappeningMenuGroupUiModel
@@ -80,15 +81,12 @@ fun HappeningMenuGroupBlock(
                     )
                 }
 
-                item.marks?.let { marks ->
-                    // Words, never pictograms: no legend to learn, it translates for the English
-                    // build, and it avoids symbols that mean "contains" in one country and "free
-                    // from" in another.
-                    Text(
-                        text = marks,
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.appColors.textTertiary,
-                    )
+                // A glyph and the word beside it, never the glyph alone: the picture is what is
+                // found while scanning a carte of fourteen dishes, and the word is what makes it
+                // safe to act on — no legend to learn, and no symbol that means "contains" in one
+                // country and "free from" in another.
+                if (item.dietary.isNotEmpty()) {
+                    YadloDietaryTags(tags = item.dietary)
                 }
             }
         }

@@ -194,7 +194,6 @@ class ObserveMonYadloContentUseCaseTest {
                 images = emptyList(),
                 provenance = Provenance.CONFIRMED,
                 offering = "Cuisine végétale",
-                marks = emptyList(),
                 links = emptyList(),
                 menu = emptyList(),
             )

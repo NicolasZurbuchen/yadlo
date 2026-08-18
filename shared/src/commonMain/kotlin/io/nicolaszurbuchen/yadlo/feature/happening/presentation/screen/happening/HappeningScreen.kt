@@ -30,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
+import io.nicolaszurbuchen.yadlo.app.design.component.YadloDietaryTags
 import io.nicolaszurbuchen.yadlo.app.design.component.YadloFactRow
 import io.nicolaszurbuchen.yadlo.app.design.component.YadloLinkTile
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
@@ -186,6 +187,15 @@ fun HappeningScreen(
                         item(key = "tags") {
                             HappeningTagRow(
                                 tags = state.tags,
+                                modifier = Modifier.padding(horizontal = MaterialTheme.spacing.md),
+                            )
+                        }
+                    }
+
+                    if (state.dietary.isNotEmpty()) {
+                        item(key = "dietary") {
+                            YadloDietaryTags(
+                                tags = state.dietary,
                                 modifier = Modifier.padding(horizontal = MaterialTheme.spacing.md),
                             )
                         }

@@ -1,6 +1,7 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase
 
 import io.nicolaszurbuchen.yadlo.common.content.domain.fake.FakeContentRepository
+import io.nicolaszurbuchen.yadlo.common.content.domain.model.DietaryCoverage
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.model.StandKind
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
@@ -59,47 +60,56 @@ class ObserveStandDirectoryUseCaseTest {
         }
 
     @Test
-    fun invoke_aStandsOwnMarks_areNotWidenedByItsMenu() =
+    fun invoke_aMarkEveryDishCarries_coversTheWholeStand() =
         runTest {
             val repository =
                 FakeContentRepository().apply {
                     emitStatus(
-                        ready(happenings = listOf(stand("de-lor-bokit", itemMarks = listOf("végé", "piquant")))),
+                        ready(
+                            happenings =
+                                listOf(
+                                    stand(
+                                        "vegan-fabrik",
+                                        itemMarks = listOf(listOf("vegan", "piquant"), listOf("vegan")),
+                                    ),
+                                ),
+                        ),
                     )
                 }
 
-            // The row shows this list. Widening it would turn "sells one vegan bokit" into "is
-            // vegan", which is the claim SCHEMA.md keeps the two levels apart to prevent.
-            assertTrue(directoryFrom(repository).stands.single().marks.isEmpty())
+            // Two different answers off one menu: everything here is vegan, one thing is hot.
+            assertEquals(
+                mapOf("vegan" to DietaryCoverage.ALL, "piquant" to DietaryCoverage.SOME),
+                directoryFrom(repository).stands.single().dietary,
+            )
         }
 
     @Test
-    fun invoke_aStandWithNoMarkOfItsOwn_isStillMatchedByOneOfItsDishes() =
+    fun invoke_oneUntaggedDish_isEnoughToMakeItAnOptionRatherThanTheWholeStand() =
         runTest {
             val repository =
                 FakeContentRepository().apply {
                     emitStatus(
-                        ready(happenings = listOf(stand("de-lor-bokit", itemMarks = listOf("végé", "piquant")))),
+                        ready(happenings = listOf(stand("vegan-fabrik", itemMarks = listOf(listOf("vegan"), emptyList())))),
                     )
                 }
 
-            // The filter answers "can I eat here", and one végé bokit answers it. A filter that hid
-            // this stand would be wrong about the only thing it was asked.
-            assertEquals(setOf("végé", "piquant"), directoryFrom(repository).stands.single().dietaryMatches)
+            // One forgotten drink is the difference between "100 % végan" and "options véganes",
+            // and being wrong in this direction is the safe one.
+            assertEquals(
+                mapOf("vegan" to DietaryCoverage.SOME),
+                directoryFrom(repository).stands.single().dietary,
+            )
         }
 
     @Test
-    fun invoke_aStandMarkedThroughout_matchesOnItsOwnMarks() =
+    fun invoke_aStandWithNoMenu_answersNothingRatherThanEverything() =
         runTest {
-            val repository =
-                FakeContentRepository().apply {
-                    emitStatus(ready(happenings = listOf(stand("vegan-fabrik", marks = listOf("végan", "bio")))))
-                }
+            val repository = FakeContentRepository().apply { emitStatus(ready(happenings = listOf(stand("guliko")))) }
 
-            val listing = directoryFrom(repository).stands.single()
-
-            assertEquals(listOf("végan", "bio"), listing.marks)
-            assertEquals(setOf("végan", "bio"), listing.dietaryMatches)
+            // Nothing published is not "all of it is vegan", and an empty menu read as ALL would
+            // make every unpublished stand match every chip.
+            assertTrue(directoryFrom(repository).stands.single().dietary.isEmpty())
         }
 
     @Test
@@ -111,8 +121,8 @@ class ObserveStandDirectoryUseCaseTest {
                         ready(
                             happenings =
                                 listOf(
-                                    stand("vegan-fabrik", marks = listOf("végan", "bio")),
-                                    stand("de-lor-bokit", itemMarks = listOf("végé")),
+                                    stand("vegan-fabrik", itemMarks = listOf(listOf("vegan", "sans-lactose"))),
+                                    stand("de-lor-bokit", itemMarks = listOf(listOf("vegetarien"), emptyList())),
                                     stand("guliko"),
                                 ),
                         ),
@@ -121,7 +131,10 @@ class ObserveStandDirectoryUseCaseTest {
 
             // Derived rather than declared, so a chip is never offered that matches nothing and a
             // mark the content adds appears without an app release.
-            assertEquals(listOf("végan", "bio", "végé"), directoryFrom(repository).marks)
+            assertEquals(
+                listOf("vegan", "sans-lactose", "vegetarien"),
+                directoryFrom(repository).marks,
+            )
         }
 
     @Test
@@ -133,17 +146,21 @@ class ObserveStandDirectoryUseCaseTest {
                         ready(
                             happenings =
                                 listOf(
-                                    stand("vegan-fabrik", marks = listOf("végan")),
-                                    stand("la-fanfrelucherie", category = CREATEURS, marks = listOf("bio")),
+                                    stand("vegan-fabrik", itemMarks = listOf(listOf("vegan"))),
+                                    stand(
+                                        "la-fanfrelucherie",
+                                        category = CREATEURS,
+                                        itemMarks = listOf(listOf("piquant")),
+                                    ),
                                 ),
                         ),
                     )
                 }
 
-            // Créateurs publishes no marks today, and the point of deriving them is that its chip
+            // Créateurs publishes no menu today, and the point of deriving the set is that its chip
             // row is then absent rather than offering a food mark that matches nothing here.
-            assertEquals(listOf("végan"), directoryFrom(repository, StandKind.FOOD).marks)
-            assertEquals(listOf("bio"), directoryFrom(repository, StandKind.MAKERS).marks)
+            assertEquals(listOf("vegan"), directoryFrom(repository, StandKind.FOOD).marks)
+            assertEquals(listOf("piquant"), directoryFrom(repository, StandKind.MAKERS).marks)
         }
 
     @Test
@@ -154,12 +171,15 @@ class ObserveStandDirectoryUseCaseTest {
                     emitStatus(
                         ready(
                             happenings =
-                                listOf(stand("a", marks = listOf("végé")), stand("b", marks = listOf("végé"))),
+                                listOf(
+                                    stand("a", itemMarks = listOf(listOf("vegetarien"))),
+                                    stand("b", itemMarks = listOf(listOf("vegetarien"))),
+                                ),
                         ),
                     )
                 }
 
-            assertEquals(listOf("végé"), directoryFrom(repository).marks)
+            assertEquals(listOf("vegetarien"), directoryFrom(repository).marks)
         }
 
     @Test

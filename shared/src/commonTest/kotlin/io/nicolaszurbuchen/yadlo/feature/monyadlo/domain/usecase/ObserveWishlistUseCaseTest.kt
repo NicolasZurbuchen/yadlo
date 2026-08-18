@@ -5,9 +5,11 @@ import io.nicolaszurbuchen.yadlo.common.content.domain.fake.FakeContentRepositor
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Category
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.ContentBundle
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.ContentStatus
+import io.nicolaszurbuchen.yadlo.common.content.domain.model.DietaryCoverage
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Edition
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Festival
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Happening
+import io.nicolaszurbuchen.yadlo.common.content.domain.model.MenuGroup
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Provenance
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Venue
 import io.nicolaszurbuchen.yadlo.common.plan.domain.fake.FakePlanRepository
@@ -73,7 +75,7 @@ class ObserveWishlistUseCaseTest {
                 val stand = awaitItem().single().stands.single()
 
                 assertEquals("Cuisine végétale", stand.offering)
-                assertEquals(listOf("végan", "bio"), stand.marks)
+                assertEquals(mapOf("vegan" to DietaryCoverage.ALL), stand.dietary)
             }
         }
 
@@ -110,7 +112,7 @@ class ObserveWishlistUseCaseTest {
     private fun ready(): ContentStatus.Ready {
         val veganFabrik =
             stand(id = "vegan-fabrik", name = "Vegan Fabrik", category = FOOD, offering = "Cuisine végétale")
-                .copy(marks = listOf("végan", "bio"))
+                .copy(menu = listOf(veganMenu()))
 
         return ContentStatus.Ready(
             bundle =
@@ -178,10 +180,28 @@ class ObserveWishlistUseCaseTest {
         images = emptyList(),
         provenance = Provenance.CONFIRMED,
         offering = offering,
-        marks = emptyList(),
         links = emptyList(),
         menu = emptyList(),
     )
+
+    // Every dish vegan, which is what makes the row say "100 % végan" rather than "options".
+    private fun veganMenu() =
+        MenuGroup(
+            id = "plats",
+            name = "Plats",
+            description = null,
+            source = null,
+            items =
+                listOf(
+                    MenuGroup.Item(
+                        name = "Ragoût de tofu",
+                        price = null,
+                        description = null,
+                        marks = listOf("vegan"),
+                        provenance = Provenance.UNVERIFIED,
+                    ),
+                ),
+        )
 
     private companion object {
         val MUSIQUE = Category(id = "musique", name = "Musique", order = 1)

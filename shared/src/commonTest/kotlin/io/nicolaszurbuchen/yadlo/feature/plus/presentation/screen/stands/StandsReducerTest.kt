@@ -1,5 +1,6 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands
 
+import io.nicolaszurbuchen.yadlo.common.content.domain.model.DietaryCoverage
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.model.StandDirectory
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.model.StandListing
 import kotlin.test.Test
@@ -29,26 +30,26 @@ class StandsReducerTest {
 
     @Test
     fun markSelected_replacesTheChipRatherThanAddingToIt() {
-        val result = with(reducer) { state(selectedMark = "végan").reduce(StandsMessage.MarkSelected("végé")) }
+        val result = with(reducer) { state(selectedMark = "vegan").reduce(StandsMessage.MarkSelected("vegetarien")) }
 
         // One mark at a time: two chips read as an intersection to whoever wrote them and a union
         // to whoever reads them, and on six stands the difference is one scroll.
-        assertEquals("végé", result.selectedMark)
+        assertEquals("vegetarien", result.selectedMark)
     }
 
     @Test
     fun markSelected_null_isTheChipThatClearsTheFilter() {
-        assertNull(with(reducer) { state(selectedMark = "végan").reduce(StandsMessage.MarkSelected(null)) }.selectedMark)
+        assertNull(with(reducer) { state(selectedMark = "vegan").reduce(StandsMessage.MarkSelected(null)) }.selectedMark)
     }
 
     @Test
     fun directoryUpdated_aRefreshLandsUnderTheReader_leavesTheirChipAndTheirHalfAlone() {
         val result =
-            with(reducer) { state(selectedMark = "végan").reduce(StandsMessage.DirectoryUpdated(directory())) }
+            with(reducer) { state(selectedMark = "vegan").reduce(StandsMessage.DirectoryUpdated(directory())) }
 
         // Widening back to everything because content moved would silently undo something the
         // reader did, on the screen where they are least likely to notice.
-        assertEquals("végan", result.selectedMark)
+        assertEquals("vegan", result.selectedMark)
         assertEquals(StandsKindUiModel.FOOD, result.kind)
     }
 
@@ -57,15 +58,14 @@ class StandsReducerTest {
 
     private fun directory() =
         StandDirectory(
-            marks = listOf("végan"),
+            marks = listOf("vegan"),
             stands =
                 listOf(
                     StandListing(
                         id = "vegan-fabrik",
                         name = "Vegan Fabrik",
                         offering = null,
-                        marks = listOf("végan"),
-                        dietaryMatches = setOf("végan"),
+                        dietary = mapOf("vegan" to DietaryCoverage.ALL),
                     ),
                 ),
         )

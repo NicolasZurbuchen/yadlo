@@ -74,8 +74,8 @@ internal fun stand(
     name: String = id,
     category: Category = RESTAURATION,
     offering: String? = null,
-    marks: List<String> = emptyList(),
-    itemMarks: List<String> = emptyList(),
+    /** One entry per dish. A stand's own answer is derived from these — see dietaryCoverage. */
+    itemMarks: List<List<String>> = emptyList(),
 ) = Happening.Stand(
     id = id,
     name = name,
@@ -84,7 +84,6 @@ internal fun stand(
     images = emptyList(),
     provenance = Provenance.CONFIRMED,
     offering = offering,
-    marks = marks,
     links = emptyList(),
     menu =
         if (itemMarks.isEmpty()) {
@@ -97,12 +96,12 @@ internal fun stand(
                     description = null,
                     source = null,
                     items =
-                        itemMarks.map { mark ->
+                        itemMarks.mapIndexed { index, marks ->
                             MenuGroup.Item(
-                                name = "Plat $mark",
+                                name = "Plat $index",
                                 price = null,
                                 description = null,
-                                marks = listOf(mark),
+                                marks = marks,
                                 provenance = Provenance.UNVERIFIED,
                             )
                         },

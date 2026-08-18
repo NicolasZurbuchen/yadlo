@@ -11,9 +11,17 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import io.nicolaszurbuchen.yadlo.app.design.theme.YadloTheme
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
+import io.nicolaszurbuchen.yadlo.app.design.uimodel.DietaryMarkUiModel
+import io.nicolaszurbuchen.yadlo.app.design.uimodel.DietaryTagUiModel
 import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotLiveStateUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import yadlo.shared.generated.resources.Res
+import yadlo.shared.generated.resources.dietary_all_dairy_free
+import yadlo.shared.generated.resources.dietary_all_vegan
+import yadlo.shared.generated.resources.dietary_mark_dairy_free
+import yadlo.shared.generated.resources.dietary_mark_gluten_free
+import yadlo.shared.generated.resources.dietary_mark_vegan
+import yadlo.shared.generated.resources.dietary_some_gluten_free
 import yadlo.shared.generated.resources.happening_booking_action
 import yadlo.shared.generated.resources.happening_fact_equipment_provided
 import yadlo.shared.generated.resources.happening_link_website
@@ -70,6 +78,7 @@ private fun blank(
     categoryLabel = "",
     description = null,
     tags = emptyList(),
+    dietary = emptyList(),
     slots = emptyList(),
     price = null,
     booking = null,
@@ -149,7 +158,13 @@ private fun stand() =
         categoryId = "restauration",
         categoryLabel = "RESTAURATION",
         description = "Une cuisine 100 % végétale qui prouve qu'on peut allier gourmandise, créativité et qualité.",
-        tags = listOf("Cuisine végétale", "végan", "bio"),
+        tags = listOf("Cuisine végétale"),
+        dietary =
+            listOf(
+                DietaryTagUiModel(DietaryMarkUiModel.VEGAN, Res.string.dietary_all_vegan),
+                DietaryTagUiModel(DietaryMarkUiModel.DAIRY_FREE, Res.string.dietary_all_dairy_free),
+                DietaryTagUiModel(DietaryMarkUiModel.GLUTEN_FREE, Res.string.dietary_some_gluten_free),
+            ),
         menu =
             listOf(
                 HappeningMenuGroupUiModel(
@@ -162,14 +177,32 @@ private fun stand() =
                             HappeningMenuItemUiModel(
                                 name = "Assiette de mezzés",
                                 priceText = "CHF 15",
-                                description = null,
-                                marks = null,
+                                description = "Houmous, caviar d’aubergine, falafels, pain plat.",
+                                dietary =
+                                    listOf(
+                                        DietaryTagUiModel(DietaryMarkUiModel.VEGAN, Res.string.dietary_mark_vegan),
+                                        DietaryTagUiModel(
+                                            DietaryMarkUiModel.DAIRY_FREE,
+                                            Res.string.dietary_mark_dairy_free,
+                                        ),
+                                    ),
                             ),
                             HappeningMenuItemUiModel(
                                 name = "Seitan à la cantonaise",
                                 priceText = "CHF 18",
-                                description = null,
-                                marks = "sans gluten",
+                                description = "Tofu suisse mijoté aux légumes de saison, riz.",
+                                dietary =
+                                    listOf(
+                                        DietaryTagUiModel(DietaryMarkUiModel.VEGAN, Res.string.dietary_mark_vegan),
+                                        DietaryTagUiModel(
+                                            DietaryMarkUiModel.GLUTEN_FREE,
+                                            Res.string.dietary_mark_gluten_free,
+                                        ),
+                                        DietaryTagUiModel(
+                                            DietaryMarkUiModel.DAIRY_FREE,
+                                            Res.string.dietary_mark_dairy_free,
+                                        ),
+                                    ),
                             ),
                         ),
                 ),

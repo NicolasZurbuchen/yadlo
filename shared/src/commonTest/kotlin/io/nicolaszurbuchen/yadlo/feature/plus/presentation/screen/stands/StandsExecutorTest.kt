@@ -80,7 +80,7 @@ class StandsExecutorTest {
         runTest {
             val repository = FakeContentRepository()
             val store = createStore(repository, StandsKindUiModel.FOOD)
-            repository.emitStatus(ready(happenings = listOf(stand("vegan-fabrik", marks = listOf("végan")))))
+            repository.emitStatus(ready(happenings = listOf(stand("vegan-fabrik", itemMarks = listOf(listOf("vegan"))))))
             testDispatcher.scheduler.runCurrent()
 
             store.accept(StandsIntent.MarkSelected("végan"))

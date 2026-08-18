@@ -37,6 +37,6 @@ class WishlistReducerTest {
         WishlistGroup(
             categoryId = "restauration",
             categoryName = "Restauration",
-            stands = listOf(WishlistStand(id = "guliko", name = "Guliko", offering = null, marks = emptyList())),
+            stands = listOf(WishlistStand(id = "guliko", name = "Guliko", offering = null, dietary = emptyMap())),
         )
 }

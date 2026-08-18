@@ -144,7 +144,6 @@ private fun HappeningDto.toDomain(categoriesById: Map<String, Category>): Happen
                 images = resolvedImages,
                 provenance = resolvedProvenance,
                 offering = payload.offering,
-                marks = payload.marks,
                 links = payload.links.map { it.toDomain() },
                 menu = payload.menu.map { it.toDomain(id) },
             )

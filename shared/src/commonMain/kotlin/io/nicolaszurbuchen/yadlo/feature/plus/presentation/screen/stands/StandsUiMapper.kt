@@ -1,5 +1,7 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands
 
+import io.nicolaszurbuchen.yadlo.app.design.uimodel.DietaryMarkUiModel
+import io.nicolaszurbuchen.yadlo.app.design.uimodel.toDietaryTags
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.stands_empty
@@ -20,15 +22,13 @@ fun StandsState.toUiModel(): StandsUiModel {
 
     val filtered =
         loaded.stands
-            .filter { stand -> selectedMark == null || selectedMark in stand.dietaryMatches }
+            .filter { stand -> selectedMark == null || selectedMark in stand.dietary }
             .map { stand ->
                 StandUiModel(
                     id = stand.id,
                     name = stand.name,
                     offering = stand.offering,
-                    // The fiche's separator, so a stand reads the same in all three places it
-                    // appears.
-                    marks = stand.marks.joinToString(" · ").ifEmpty { null },
+                    dietary = stand.dietary.toDietaryTags(),
                 )
             }
 
@@ -43,14 +43,17 @@ fun StandsState.toUiModel(): StandsUiModel {
                     isSelected = selectedMark == null,
                 ),
             ) +
-                loaded.marks.map { mark ->
-                    StandChipUiModel(
-                        // The content's own word, unchanged: `végé` and `sans gluten` are how the
-                        // festival writes them and how a menu board writes them.
-                        mark = mark,
-                        label = UiText.Raw(mark),
-                        isSelected = mark == selectedMark,
-                    )
+                // The app's word for the content's id, and the same word on every screen. A chip
+                // for a mark this build has no glyph for is dropped rather than labelled with a
+                // slug — see DietaryMarkUiModel.forId.
+                loaded.marks.mapNotNull { mark ->
+                    DietaryMarkUiModel.forId(mark)?.let {
+                        StandChipUiModel(
+                            mark = mark,
+                            label = UiText.Resource(it.label),
+                            isSelected = mark == selectedMark,
+                        )
+                    }
                 },
         stands = filtered,
         emptyMessage =

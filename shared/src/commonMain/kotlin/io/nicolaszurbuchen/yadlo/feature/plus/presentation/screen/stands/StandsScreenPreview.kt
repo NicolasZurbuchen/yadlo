@@ -11,8 +11,12 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import io.nicolaszurbuchen.yadlo.app.design.theme.YadloTheme
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
+import io.nicolaszurbuchen.yadlo.app.design.uimodel.DietaryMarkUiModel
+import io.nicolaszurbuchen.yadlo.app.design.uimodel.DietaryTagUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import yadlo.shared.generated.resources.Res
+import yadlo.shared.generated.resources.dietary_all_dairy_free
+import yadlo.shared.generated.resources.dietary_all_vegan
 import yadlo.shared.generated.resources.stands_filter_all
 import yadlo.shared.generated.resources.stands_no_match
 
@@ -94,7 +98,11 @@ private fun food() =
                     id = "vegan-fabrik",
                     name = "Vegan Fabrik",
                     offering = "Cuisine végétale",
-                    marks = "végan · bio",
+                    dietary =
+                        listOf(
+                            DietaryTagUiModel(DietaryMarkUiModel.VEGAN, Res.string.dietary_all_vegan),
+                            DietaryTagUiModel(DietaryMarkUiModel.DAIRY_FREE, Res.string.dietary_all_dairy_free),
+                        ),
                 ),
                 // Matched by the `végé` chip through one bokit, and showing no mark of its own —
                 // the case the stand/item distinction exists for.
@@ -102,9 +110,9 @@ private fun food() =
                     id = "de-lor-bokit",
                     name = "De l'Or Bokit",
                     offering = "Cuisine guadeloupéenne",
-                    marks = null,
+                    dietary = emptyList(),
                 ),
-                StandUiModel(id = "guliko", name = "Guliko", offering = "Cuisine géorgienne", marks = null),
+                StandUiModel(id = "guliko", name = "Guliko", offering = "Cuisine géorgienne", dietary = emptyList()),
             ),
     )
 
@@ -128,13 +136,13 @@ private fun makers() =
                     id = "la-fanfrelucherie",
                     name = "La Fanfrelucherie",
                     offering = "Costumes de seconde main",
-                    marks = null,
+                    dietary = emptyList(),
                 ),
                 StandUiModel(
                     id = "les-secrets-de-houna",
                     name = "Les Secrets de Houna",
                     offering = "Huiles précieuses et soins naturels",
-                    marks = null,
+                    dietary = emptyList(),
                 ),
             ),
     )
