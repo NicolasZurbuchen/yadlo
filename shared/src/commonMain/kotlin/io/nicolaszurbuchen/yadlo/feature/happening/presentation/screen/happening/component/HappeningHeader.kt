@@ -43,11 +43,20 @@ import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
  * needs no such thing — it is already the colour — and capping its soft falloff with a hard edge
  * would fight the only idea it has.
  *
- * **[tint] closes the Category's own colour over the whole image**, not merely over the toolbar
- * strip. The toolbar taking the colour on its own left a photograph showing through underneath it,
- * half-covered and half not; the veil is what makes the head arrive at the Category rather than at a
- * bar sitting on a picture. Driven by the screen because the same number drives the bar, and two
- * ramps that were meant to agree are two ramps that can stop agreeing.
+ * **[tint] closes the Category's own colour over the whole head**, photograph and blob alike, and
+ * **it is the only thing painting that colour while it is translucent.** The toolbar over it stays
+ * clear until this veil is already solid.
+ *
+ * That is not a preference, it is what alpha does. Two layers of one colour at `t` composite to
+ * `1 - (1 - t)²`, not to `t` — at `t = 0.5` the overlap reads 0.75 — so a bar tinted alongside the
+ * veil drew its own outline across the picture: the same hue, visibly heavier for exactly the height
+ * of the toolbar. Nothing about the two ramps could fix that while both were between 0 and 1 at the
+ * same time over the same pixels. One layer paints, then the other takes over once there is nothing
+ * left to see through.
+ *
+ * The veil covers the blob variant too, which it did not have to before the toolbar stopped tinting
+ * itself: with the bar now clear until the end, the header is the only thing that can carry the
+ * colour on a fiche that has no photograph.
  *
  * **Over a photograph both lines are [io.nicolaszurbuchen.yadlo.app.design.theme.AppColors.onScrim],
  * including the Category label.** The scrim's alpha was derived as the lowest at which white clears
@@ -113,7 +122,7 @@ fun HappeningHeader(
             Box(
                 modifier =
                     Modifier
-                        .fillMaxSize()
+                        .matchParentSize()
                         .background(
                             Brush.verticalGradient(
                                 0f to scrim,
@@ -123,9 +132,13 @@ fun HappeningHeader(
                             ),
                         ),
             )
+        }
 
-            Box(modifier = Modifier.fillMaxSize().background(category.fill.copy(alpha = tint)))
+        // matchParentSize rather than fillMaxSize: the blob variant is only as tall as its own
+        // title, and a child that fills would be measured against a list item's unbounded height.
+        Box(modifier = Modifier.matchParentSize().background(category.fill.copy(alpha = tint)))
 
+        if (imageUrl != null) {
             // Above the veil rather than under it, so it stays the same colour at every point of
             // the collapse instead of being painted over by its own hue.
             Box(

@@ -69,9 +69,11 @@ import yadlo.shared.generated.resources.wishlist_remove
  * Happening, so a Stand that publishes no menu and an Activity that costs nothing degrade the same
  * quiet way.
  *
- * **The Category's colour closes over the whole head, not just over the toolbar.** One number
- * drives both: the bar's container and the veil over the header take the same alpha, so what
- * arrives is a single block of colour rather than a tinted bar sitting on an untinted photograph.
+ * **The Category's colour closes over the whole head, not just over the toolbar**, and the header
+ * is what paints it. The bar stays clear until that veil is already solid, then takes over as the
+ * header leaves. Tinting both at once composited one colour twice — `1 - (1 - t)²` rather than `t` —
+ * which drew the toolbar's own outline across the photograph in the same hue. The handoff is
+ * invisible because it happens entirely over pixels that are already opaque Category colour.
  * It is tied to the scroll rather than switched at a threshold — a slow drag paints the colour on
  * slowly and a fling lands on it, where a threshold made the same journey a jump halfway through a
  * drag.
@@ -123,7 +125,10 @@ fun HappeningScreen(
 
     // The colour's own ramp, which is not the header's: see the note on the two constants.
     val tint = ((collapseProgress - TINT_FROM) / (TINT_FULL - TINT_FROM)).coerceIn(0f, 1f)
-    val barColor = category.fill.copy(alpha = tint)
+    val barColor =
+        category.fill.copy(
+            alpha = ((collapseProgress - BAR_TAKEOVER_FROM) / (1f - BAR_TAKEOVER_FROM)).coerceIn(0f, 1f),
+        )
     // Over a photograph the icons stand on the scrim, over the blob they stand on the page. Either
     // way they end on the Category's own ink, and they travel there as the colour arrives.
     val expandedInk =
@@ -369,6 +374,16 @@ private const val TINT_FROM = 0.35f
  * opaque — it reads as a photograph faintly showing through something meant to be solid.
  */
 private const val TINT_FULL = 0.8f
+
+/**
+ * Where the bar starts painting the colour itself, having left it to the header until then.
+ *
+ * Safely after [TINT_FULL], which is the whole point: over this stretch the header behind the bar is
+ * already solid Category colour, so the bar fading in over it changes nothing that can be seen. By
+ * the end of the travel the bar is opaque, which is exactly when the header stops covering it — the
+ * two are the same instant, and the ramp exists only so a frame's rounding cannot land between them.
+ */
+private const val BAR_TAKEOVER_FROM = 0.85f
 
 /**
  * The bar's title starts appearing only in the last 30% of the collapse, after the colour has
