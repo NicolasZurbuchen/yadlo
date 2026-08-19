@@ -150,8 +150,14 @@ provenance   Provenance
 ```
 
 `Image` is `{ src, credit }`. `credit` is usually null and exists because press photos carry a
-photographer's condition. A `src` is an absolute `https://` URL, or a path relative to wherever the
-file was fetched from — exactly like a relative `href` in a web page. There is no `imageBaseUrl`.
+photographer's condition. A `src` is an absolute `https://` URL, or a path relative to the **content
+root** — `shared/images/artists/alf.webp`, never `../../shared/…`. It is the published site's root
+rather than the file's own directory, so a path reads the same whichever file it is written in.
+There is no `imageBaseUrl`: the app already knows the address it fetched the bundle from, and
+declaring it again in the content would be the same fact written twice, free to drift.
+
+The picture bank lives at `shared/`, outside any edition, because a photo of an artist who plays two
+years running is one file rather than one per edition.
 
 #### `artist` payload
 
