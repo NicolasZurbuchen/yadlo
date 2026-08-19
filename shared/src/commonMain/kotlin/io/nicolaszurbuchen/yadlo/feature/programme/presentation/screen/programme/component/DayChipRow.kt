@@ -42,14 +42,14 @@ fun DayChipRow(
             modifier
                 .fillMaxWidth()
                 .horizontalScroll(rememberScrollState())
-                .padding(horizontal = MaterialTheme.spacing.md, vertical = MaterialTheme.spacing.xs),
+                .padding(start = MaterialTheme.spacing.md, end = MaterialTheme.spacing.md, bottom = MaterialTheme.spacing.xs),
     ) {
         days.forEach { day ->
             YadloFilterChip(
                 label = day.name,
                 isSelected = day.isSelected,
                 onClick = { onDayClick(day.id) },
-                container = MaterialTheme.appColors.background,
+                container = MaterialTheme.appColors.primarySubtle,
                 outline = MaterialTheme.appColors.onPrimarySubtle,
             )
         }

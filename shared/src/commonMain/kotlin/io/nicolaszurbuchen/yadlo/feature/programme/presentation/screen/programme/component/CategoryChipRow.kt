@@ -56,7 +56,7 @@ fun CategoryChipRow(
                 label = stringResource(Res.string.programme_categories_all),
                 isSelected = noneSelected,
                 onClick = onAllClick,
-                container = MaterialTheme.appColors.background,
+                container = MaterialTheme.appColors.primarySubtle,
                 outline = MaterialTheme.appColors.onPrimarySubtle,
             )
         }
@@ -70,7 +70,7 @@ fun CategoryChipRow(
                 onClick = { onCategoryClick(category.id) },
                 selectedFill = colors.fill,
                 selectedInk = colors.ink,
-                container = MaterialTheme.appColors.background,
+                container = MaterialTheme.appColors.primarySubtle,
                 outline = MaterialTheme.appColors.onPrimarySubtle,
                 // The dot says what the fill would say, while the chip is off. Once it is on, the
                 // whole chip is that colour and a second swatch inside it repeats the statement.

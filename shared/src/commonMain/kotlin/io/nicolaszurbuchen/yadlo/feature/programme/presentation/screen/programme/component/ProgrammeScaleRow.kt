@@ -42,7 +42,7 @@ fun ProgrammeScaleRow(
                     PaddingValues(
                         start = MaterialTheme.spacing.md + CATEGORY_MARK_SIZE + MaterialTheme.spacing.sm,
                         top = MaterialTheme.spacing.xs,
-                        end = MaterialTheme.spacing.md + CHEVRON_SIZE + MaterialTheme.spacing.sm,
+                        end = MaterialTheme.spacing.sm + CHEVRON_SIZE + MaterialTheme.spacing.sm,
                         bottom = MaterialTheme.spacing.xs,
                     ),
                 ),

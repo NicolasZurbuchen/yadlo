@@ -1,5 +1,6 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -62,7 +63,7 @@ fun StandsScreen(
                 StandMarkChips(
                     chips = state.chips,
                     onMarkClick = onMarkClick,
-                    modifier = Modifier.padding(vertical = MaterialTheme.spacing.sm),
+                    modifier = Modifier.padding(bottom = MaterialTheme.spacing.sm),
                 )
             }
         },

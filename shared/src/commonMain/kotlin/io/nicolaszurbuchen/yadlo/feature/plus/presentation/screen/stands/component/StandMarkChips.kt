@@ -67,7 +67,7 @@ fun StandMarkChips(
                 onClick = { onMarkClick(chip.mark) },
                 selectedFill = mark?.tint ?: MaterialTheme.appColors.primary,
                 selectedInk = mark?.ink ?: MaterialTheme.appColors.onPrimary,
-                container = MaterialTheme.appColors.background,
+                container = MaterialTheme.appColors.primarySubtle,
                 outline = MaterialTheme.appColors.onPrimarySubtle,
                 leadingIcon =
                     mark?.let {

@@ -67,7 +67,12 @@ fun SlotRow(
                 .fillMaxWidth()
                 .clickable { onClick(row.happeningId) }
                 .alpha(if (isOver) PAST_ALPHA else 1f)
-                .padding(horizontal = MaterialTheme.spacing.md, vertical = ROW_VERTICAL_PADDING),
+                .padding(
+                    start = MaterialTheme.spacing.md,
+                    top = ROW_VERTICAL_PADDING,
+                    end = MaterialTheme.spacing.sm,
+                    bottom = ROW_VERTICAL_PADDING,
+                ),
     ) {
         Column(
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xs),
