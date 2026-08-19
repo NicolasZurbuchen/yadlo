@@ -14,6 +14,7 @@ import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotLiveStateUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import yadlo.shared.generated.resources.Res
+import yadlo.shared.generated.resources.month_july
 import yadlo.shared.generated.resources.mon_yadlo_empty
 import yadlo.shared.generated.resources.slot_state_over
 import yadlo.shared.generated.resources.slot_state_running
@@ -56,7 +57,8 @@ private fun saturdayEvening() =
                 MonYadloDayUiModel(
                     id = "2026:fri",
                     name = "Vendredi",
-                    dateText = "10.07",
+                    dayNumber = "10",
+                    monthName = UiText.Resource(Res.string.month_july),
                     rows =
                         listOf(
                             row(
@@ -72,7 +74,8 @@ private fun saturdayEvening() =
                 MonYadloDayUiModel(
                     id = "2026:sat",
                     name = "Samedi",
-                    dateText = "11.07",
+                    dayNumber = "11",
+                    monthName = UiText.Resource(Res.string.month_july),
                     rows =
                         listOf(
                             row(

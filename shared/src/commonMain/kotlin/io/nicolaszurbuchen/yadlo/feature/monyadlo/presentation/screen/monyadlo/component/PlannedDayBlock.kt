@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.feature.monyadlo.presentation.screen.monyadlo.MonYadloDayUiModel
+import io.nicolaszurbuchen.yadlo.infra.ui.asString
 
 /**
  * One day of the Plan: the date on a rail down the left, its Slots scrolling past to the right.
@@ -24,8 +25,11 @@ import io.nicolaszurbuchen.yadlo.feature.monyadlo.presentation.screen.monyadlo.M
  * is visible the whole time you are reading the day it belongs to, which a header loses the moment
  * it scrolls off.
  *
- * The day name is written above the date because it is what someone thinks in — "le samedi" — and
- * the numeric date is what a poster and a bus timetable are written in.
+ * **The date is stacked, with the day itself the largest thing on the rail.** It was a weekday over
+ * `11.07`, both small, which made the rail a label rather than a landmark — and the rail's whole
+ * reason for existing is to be findable while you are reading the day it belongs to. The weekday
+ * stays on top because it is what someone thinks in ("le samedi"); the month goes underneath in
+ * words, which is what stops a bare 11 from being ambiguous the year the festival moves.
  */
 @Composable
 fun PlannedDayBlock(
@@ -35,17 +39,24 @@ fun PlannedDayBlock(
 ) {
     Row(modifier = modifier.fillMaxWidth().padding(horizontal = MaterialTheme.spacing.md)) {
         Column(
-            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xs),
+            // No arrangement of its own: the three lines are one date, and a gap between them makes
+            // them read as three separate facts about the same day.
             modifier = Modifier.width(RAIL_WIDTH).padding(top = MaterialTheme.spacing.sm),
         ) {
             Text(
                 text = day.name.uppercase(),
                 style = MaterialTheme.typography.titleSmall,
+                color = MaterialTheme.appColors.textSecondary,
+            )
+
+            Text(
+                text = day.dayNumber,
+                style = MaterialTheme.typography.displayMedium,
                 color = MaterialTheme.appColors.textPrimary,
             )
 
             Text(
-                text = day.dateText,
+                text = day.monthName.asString(),
                 style = MaterialTheme.typography.labelLarge,
                 color = MaterialTheme.appColors.textTertiary,
             )

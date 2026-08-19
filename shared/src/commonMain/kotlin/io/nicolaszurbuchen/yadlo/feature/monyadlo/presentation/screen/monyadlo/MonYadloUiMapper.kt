@@ -4,8 +4,9 @@ import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotLiveSta
 import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.slotLiveStateAt
 import io.nicolaszurbuchen.yadlo.common.time.FESTIVAL_TIME_ZONE
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
-import io.nicolaszurbuchen.yadlo.infra.ui.formatAsDayAndMonth
+import io.nicolaszurbuchen.yadlo.infra.ui.formatAsDayOfMonth
 import io.nicolaszurbuchen.yadlo.infra.ui.formatAsTimeOfDay
+import io.nicolaszurbuchen.yadlo.infra.ui.monthName
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.mon_yadlo_empty
 import yadlo.shared.generated.resources.slot_state_ending
@@ -37,7 +38,8 @@ fun MonYadloState.toUiModel(): MonYadloUiModel {
                 MonYadloDayUiModel(
                     id = day.id,
                     name = day.name,
-                    dateText = day.start.formatAsDayAndMonth(FESTIVAL_TIME_ZONE),
+                    dayNumber = day.start.formatAsDayOfMonth(FESTIVAL_TIME_ZONE),
+                    monthName = day.start.monthName(FESTIVAL_TIME_ZONE),
                     rows =
                         day.slots.map { slot ->
                             val state = slotLiveStateAt(now = now, start = slot.start, end = slot.end)

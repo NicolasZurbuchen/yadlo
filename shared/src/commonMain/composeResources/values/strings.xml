@@ -12,6 +12,22 @@
          it are four places for it to stop saying the same word. -->
     <string name="back">Retour</string>
 
+    <!-- Written out because Mon Yadlo's rail sets the day as the largest thing on it and needs the
+         month underneath in words. Resources rather than a formatter, so a second language is a
+         second values file rather than a code change. Lowercase: French does not capitalise them. -->
+    <string name="month_january">janvier</string>
+    <string name="month_february">février</string>
+    <string name="month_march">mars</string>
+    <string name="month_april">avril</string>
+    <string name="month_may">mai</string>
+    <string name="month_june">juin</string>
+    <string name="month_july">juillet</string>
+    <string name="month_august">août</string>
+    <string name="month_september">septembre</string>
+    <string name="month_october">octobre</string>
+    <string name="month_november">novembre</string>
+    <string name="month_december">décembre</string>
+
     <string name="home_countdown_days_remaining">J-%1$s</string>
     <string name="home_hero_announced_kicker">Nouveau</string>
     <string name="home_hero_announced_title">La programmation %1$s est là</string>
@@ -50,6 +66,10 @@
     <string name="mon_yadlo_empty">Rien dans ton programme pour l'instant. Ouvre le Programme et garde ce que tu ne veux pas manquer.</string>
     <string name="mon_yadlo_wishlist_title">À essayer</string>
     <string name="mon_yadlo_wishlist_empty">Garde les stands qui te font envie depuis leur fiche.</string>
+    <!-- Two strings rather than one with a (s), because French puts 1 in the singular and the app
+         never shows this at 0 — the empty line above says that case in words instead. -->
+    <string name="mon_yadlo_wishlist_subtitle_one">%1$s stand gardé · nourriture, boissons et boutiques</string>
+    <string name="mon_yadlo_wishlist_subtitle_other">%1$s stands gardés · nourriture, boissons et boutiques</string>
 
     <string name="wishlist_title">À essayer</string>
     <string name="wishlist_empty">Tu n'as encore rien gardé. Les stands sont dans Plus › Nourriture &amp; boissons.</string>

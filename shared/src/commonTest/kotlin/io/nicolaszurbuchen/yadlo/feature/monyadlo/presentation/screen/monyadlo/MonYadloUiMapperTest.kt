@@ -6,6 +6,7 @@ import io.nicolaszurbuchen.yadlo.feature.monyadlo.domain.model.PlannedDay
 import io.nicolaszurbuchen.yadlo.feature.monyadlo.domain.model.PlannedSlot
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import yadlo.shared.generated.resources.Res
+import yadlo.shared.generated.resources.month_july
 import yadlo.shared.generated.resources.mon_yadlo_empty
 import yadlo.shared.generated.resources.slot_state_ending
 import yadlo.shared.generated.resources.slot_state_over
@@ -57,11 +58,12 @@ class MonYadloUiMapperTest {
     // region the rail
 
     @Test
-    fun toUiModel_theRail_writesTheDayNameAndItsDateWithoutTheYear() {
+    fun toUiModel_theRail_writesTheDayNameTheDayAndTheMonth() {
         val day = state(content()).toUiModel().days.single()
 
         assertEquals("Samedi", day.name)
-        assertEquals("11.07", day.dateText)
+        assertEquals("11", day.dayNumber)
+        assertEquals(UiText.Resource(Res.string.month_july), day.monthName)
     }
 
     @Test
@@ -71,7 +73,8 @@ class MonYadloUiMapperTest {
         // from the Slot would file that set under a day the festival never programmed.
         val model = state(saturdayNightOnly()).toUiModel()
 
-        assertEquals("11.07", model.days.single().dateText)
+        assertEquals("11", model.days.single().dayNumber)
+        assertEquals(UiText.Resource(Res.string.month_july), model.days.single().monthName)
         assertEquals("01:00 – 02:30", model.days.single().rows.single().timeText)
     }
 

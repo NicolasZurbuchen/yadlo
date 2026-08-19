@@ -18,13 +18,17 @@ data class MonYadloUiModel(
 )
 
 /**
- * One day's block. [name] and [dateText] are both written on the rail — the name is what someone
- * thinks in ("samedi"), the date is what a poster and a bus timetable are written in.
+ * One day's block, as the three lines of its rail.
+ *
+ * [name] is what someone thinks in ("samedi"); [dayNumber] is what they look for when they already
+ * know which day it is and are scrolling to find it, which is why it is the largest thing on the
+ * rail; [monthName] is what stops a bare 11 from being ambiguous the year the festival moves.
  */
 data class MonYadloDayUiModel(
     val id: String,
     val name: String,
-    val dateText: String,
+    val dayNumber: String,
+    val monthName: UiText,
     val rows: List<MonYadloRowUiModel>,
 )
 
