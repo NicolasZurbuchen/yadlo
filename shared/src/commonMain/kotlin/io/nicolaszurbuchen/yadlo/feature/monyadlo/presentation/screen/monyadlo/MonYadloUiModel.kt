@@ -35,9 +35,12 @@ data class MonYadloDayUiModel(
 /**
  * One saved Slot.
  *
- * No bar and no price, unlike the Programme row it mirrors. The bar places a Slot against the whole
- * day's span, which is a question about a day you are choosing from rather than one you have already
- * chosen; the price is a decision that was made when the heart was tapped.
+ * No bar, unlike the Programme row it mirrors: the bar places a Slot against the whole day's span,
+ * which is a question about a day you are choosing from rather than one you have already chosen.
+ *
+ * The price is here, and was not. The argument against it was that the decision had been made when
+ * the heart was tapped — true of the decision, and not of the coins in your pocket. A Plan read on
+ * the site is a list of what you are about to do, and what two of them cost is part of that.
  *
  * No heart either: the row opens the fiche, which is the one screen that owns this Slot's heart.
  * Never two hearts for the same thing — DECISIONS.md § The heart is attached to what you are saving.
@@ -49,6 +52,7 @@ data class MonYadloRowUiModel(
     val categoryId: String,
     val categoryName: String,
     val timeText: String,
+    val priceText: UiText?,
     val stateLabel: UiText?,
     val state: SlotLiveStateUiModel,
 )

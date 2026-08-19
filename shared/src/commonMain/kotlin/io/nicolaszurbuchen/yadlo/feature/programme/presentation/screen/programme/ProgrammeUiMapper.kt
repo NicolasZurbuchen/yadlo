@@ -8,9 +8,9 @@ import io.nicolaszurbuchen.yadlo.infra.ui.formatAsTimeOfDay
 import io.nicolaszurbuchen.yadlo.infra.ui.formatMoney
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.price_free
+import yadlo.shared.generated.resources.price_from
 import yadlo.shared.generated.resources.programme_empty_filter
 import yadlo.shared.generated.resources.programme_empty_unpublished
-import yadlo.shared.generated.resources.programme_price_from
 import yadlo.shared.generated.resources.slot_state_ending
 import yadlo.shared.generated.resources.slot_state_over
 import yadlo.shared.generated.resources.slot_state_running
@@ -104,7 +104,7 @@ fun ProgrammeState.toUiModel(): ProgrammeUiModel {
                                 // the higher one prices a family out of something they can afford.
                                 price.tiers.size > 1 -> {
                                     UiText.Resource(
-                                        Res.string.programme_price_from,
+                                        Res.string.price_from,
                                         listOf(formatMoney(cheapest.amount.amount, cheapest.amount.currency)),
                                     )
                                 }

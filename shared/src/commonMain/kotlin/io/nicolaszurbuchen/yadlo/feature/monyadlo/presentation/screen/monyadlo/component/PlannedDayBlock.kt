@@ -46,7 +46,15 @@ fun PlannedDayBlock(
     onRowClick: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Row(modifier = modifier.fillMaxWidth().padding(horizontal = MaterialTheme.spacing.md)) {
+    Row(
+        // The rail is a column of its own, not a first word: without a gap the date and the row it
+        // labels read as one line that happens to start with a number.
+        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .padding(start = MaterialTheme.spacing.md, end = MaterialTheme.spacing.sm),
+    ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             // No arrangement of its own: the three lines are one date, and a gap between them makes

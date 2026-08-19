@@ -11,9 +11,9 @@ import io.nicolaszurbuchen.yadlo.feature.programme.domain.model.ProgrammeSlot
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.price_free
+import yadlo.shared.generated.resources.price_from
 import yadlo.shared.generated.resources.programme_empty_filter
 import yadlo.shared.generated.resources.programme_empty_unpublished
-import yadlo.shared.generated.resources.programme_price_from
 import yadlo.shared.generated.resources.slot_state_ending
 import yadlo.shared.generated.resources.slot_state_over
 import yadlo.shared.generated.resources.slot_state_running
@@ -158,7 +158,7 @@ class ProgrammeUiMapperTest {
         // family out of something they can afford.
         val row = state(selectedDayId = "2026:sat").toUiModel().rows.single { it.id == "2026:silent-sat" }
 
-        assertEquals(Res.string.programme_price_from, row.priceText.resourceId())
+        assertEquals(Res.string.price_from, row.priceText.resourceId())
         assertEquals(listOf("CHF 15"), (row.priceText as UiText.Resource).args)
     }
 

@@ -1,14 +1,14 @@
 package io.nicolaszurbuchen.yadlo.feature.monyadlo.presentation.screen.monyadlo
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -44,7 +44,9 @@ fun MonYadloScreen(
     }
 
     LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.lg),
+        // No arrangement of its own: the gaps here are not all the same size, and the rules between
+        // days have to sit in the middle of theirs rather than beside them.
+        //
         // The shell's bars are drawn over this list rather than beside it, so their height is part
         // of the padding — see tabContentPadding.
         contentPadding = tabContentPadding(top = MaterialTheme.spacing.md, bottom = MaterialTheme.spacing.md),
@@ -54,7 +56,12 @@ fun MonYadloScreen(
             WishlistTile(
                 count = state.wishlistCount,
                 onClick = onWishlistClick,
-                modifier = Modifier.padding(horizontal = MaterialTheme.spacing.md),
+                modifier =
+                    Modifier.padding(
+                        start = MaterialTheme.spacing.md,
+                        end = MaterialTheme.spacing.md,
+                        bottom = MaterialTheme.spacing.lg,
+                    ),
             )
         }
 
@@ -73,7 +80,17 @@ fun MonYadloScreen(
             }
         }
 
-        items(state.days, key = { it.id }) { day ->
+        itemsIndexed(state.days, key = { _, day -> day.id }) { index, day ->
+            // A rule between days and never around one of them, as between two Slots on the
+            // Programme. It runs the full width because what it separates is two whole blocks,
+            // rail included — an inset one would read as a rule between two rows of the second day.
+            if (index > 0) {
+                HorizontalDivider(
+                    color = MaterialTheme.appColors.borderSubtle,
+                    modifier = Modifier.padding(vertical = MaterialTheme.spacing.md),
+                )
+            }
+
             PlannedDayBlock(day = day, onRowClick = onSlotClick)
         }
     }

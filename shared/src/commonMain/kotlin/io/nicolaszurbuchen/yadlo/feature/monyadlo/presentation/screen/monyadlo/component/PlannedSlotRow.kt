@@ -11,6 +11,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,13 +28,19 @@ import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.common.content.presentation.component.SlotStatePill
 import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotLiveStateUiModel
 import io.nicolaszurbuchen.yadlo.feature.monyadlo.presentation.screen.monyadlo.MonYadloRowUiModel
+import io.nicolaszurbuchen.yadlo.infra.ui.asString
 
 /**
  * One saved Slot, in the Programme's row vocabulary — DECISIONS.md § Mon Yadlo layout.
  *
- * Two things the Programme's row has are gone. The **span bar** placed a Slot against the whole
- * day's axis, which answers "what else is on at four" — a question about a day you are choosing
- * from, not one you have already chosen. The **price** was decided when the heart was tapped.
+ * One thing the Programme's row has is gone: the **span bar**, which placed a Slot against the
+ * whole day's axis and answers "what else is on at four" — a question about a day you are choosing
+ * from, not one you have already chosen. The price stayed out for a while on the same reasoning and
+ * came back, because that reasoning was wrong: the decision was made when the heart was tapped, and
+ * the coins in your pocket were not.
+ *
+ * The chevron is centred over the row's whole height rather than pinned to its first line, as on the
+ * Programme, which is what makes it read as belonging to the row.
  *
  * Past rows dim and stay here too, and on this screen that is the point: by Sunday the Plan is
  * mostly what you went to.
@@ -64,7 +73,10 @@ fun PlannedSlotRow(
                     .background(category.fill),
         )
 
-        Column(verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xs)) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xs),
+            modifier = Modifier.weight(1f),
+        ) {
             FlowRow(
                 horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm),
                 verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xs),
@@ -97,10 +109,28 @@ fun PlannedSlotRow(
                 )
             }
         }
+
+        row.priceText?.let { price ->
+            Text(
+                text = price.asString(),
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.appColors.textSecondary,
+            )
+        }
+
+        Icon(
+            imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+            contentDescription = null,
+            tint = MaterialTheme.appColors.textTertiary,
+            modifier = Modifier.align(Alignment.CenterVertically).size(CHEVRON_SIZE),
+        )
     }
 }
 
 private val CATEGORY_MARK_SIZE = 10.dp
+
+/** The Programme's chevron, at the Programme's size, for the row it is a copy of. */
+private val CHEVRON_SIZE = 24.dp
 
 /**
  * Half of titleMedium's 24sp line box less half the mark, so the square centres on the *first* line

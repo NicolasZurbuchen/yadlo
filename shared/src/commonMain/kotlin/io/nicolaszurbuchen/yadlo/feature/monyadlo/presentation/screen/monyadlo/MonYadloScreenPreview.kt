@@ -128,6 +128,7 @@ private fun row(
     state: SlotLiveStateUiModel,
     categoryId: String = "musique",
     categoryName: String = "Musique",
+    priceText: UiText? = null,
 ) = MonYadloRowUiModel(
     id = id,
     happeningId = happeningId,
@@ -135,6 +136,7 @@ private fun row(
     categoryId = categoryId,
     categoryName = categoryName,
     timeText = timeText,
+    priceText = priceText,
     stateLabel = stateLabel,
     state = state,
 )

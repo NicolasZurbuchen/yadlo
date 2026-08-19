@@ -6,9 +6,12 @@ import io.nicolaszurbuchen.yadlo.common.time.FESTIVAL_TIME_ZONE
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import io.nicolaszurbuchen.yadlo.infra.ui.formatAsDayOfMonth
 import io.nicolaszurbuchen.yadlo.infra.ui.formatAsTimeOfDay
+import io.nicolaszurbuchen.yadlo.infra.ui.formatMoney
 import io.nicolaszurbuchen.yadlo.infra.ui.monthName
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.mon_yadlo_empty
+import yadlo.shared.generated.resources.price_free
+import yadlo.shared.generated.resources.price_from
 import yadlo.shared.generated.resources.slot_state_ending
 import yadlo.shared.generated.resources.slot_state_over
 import yadlo.shared.generated.resources.slot_state_running
@@ -53,6 +56,39 @@ fun MonYadloState.toUiModel(): MonYadloUiModel {
                                 timeText =
                                     "${slot.start.formatAsTimeOfDay(FESTIVAL_TIME_ZONE)} – " +
                                         slot.end.formatAsTimeOfDay(FESTIVAL_TIME_ZONE),
+                                // Written exactly as the Programme writes it, down to the "dès" on
+                                // a multi-tier price: the same Slot must not cost two things
+                                // depending on which screen it is read from.
+                                priceText =
+                                    slot.price?.let { price ->
+                                        val cheapest = price.tiers.minByOrNull { it.amount.amount }
+                                        when {
+                                            price.free || cheapest == null -> {
+                                                UiText.Resource(Res.string.price_free)
+                                            }
+
+                                            price.tiers.size > 1 -> {
+                                                UiText.Resource(
+                                                    Res.string.price_from,
+                                                    listOf(
+                                                        formatMoney(
+                                                            cheapest.amount.amount,
+                                                            cheapest.amount.currency,
+                                                        ),
+                                                    ),
+                                                )
+                                            }
+
+                                            else -> {
+                                                UiText.Raw(
+                                                    formatMoney(
+                                                        cheapest.amount.amount,
+                                                        cheapest.amount.currency,
+                                                    ),
+                                                )
+                                            }
+                                        }
+                                    },
                                 stateLabel =
                                     when (state) {
                                         SlotLiveStateUiModel.Upcoming -> {
