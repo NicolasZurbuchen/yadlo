@@ -33,10 +33,9 @@ import yadlo.shared.generated.resources.programme_categories_all
  * *Tout* is not a Category — it is the absence of a filter, which is why deselecting the last chip
  * lands back on it rather than on an empty list.
  *
- * On the chrome blue, so the label and the chip's edge are the ink that blue carries and the edge
- * stays drawn when the chip fills. The dot keeps its hue at whatever it measures there: it is a
- * swatch beside a word that already says the same thing, and hue is what tells two Categories apart
- * at arm's length. See [ProgrammeHeader].
+ * On the chrome blue, which the chip answers by filling itself with the page ground and drawing its
+ * edge in the ink the blue carries. That is what keeps the dot honest: it is a Category fill, chosen
+ * against the page, and it measures between 1.2:1 and 2.1:1 on the blue itself. See [ProgrammeHeader].
  */
 @Composable
 fun CategoryChipRow(
@@ -57,7 +56,7 @@ fun CategoryChipRow(
                 label = stringResource(Res.string.programme_categories_all),
                 isSelected = noneSelected,
                 onClick = onAllClick,
-                ink = MaterialTheme.appColors.onPrimarySubtle,
+                container = MaterialTheme.appColors.background,
                 outline = MaterialTheme.appColors.onPrimarySubtle,
             )
         }
@@ -71,7 +70,7 @@ fun CategoryChipRow(
                 onClick = { onCategoryClick(category.id) },
                 selectedFill = colors.fill,
                 selectedInk = colors.ink,
-                ink = MaterialTheme.appColors.onPrimarySubtle,
+                container = MaterialTheme.appColors.background,
                 outline = MaterialTheme.appColors.onPrimarySubtle,
                 // The dot says what the fill would say, while the chip is off. Once it is on, the
                 // whole chip is that colour and a second swatch inside it repeats the statement.

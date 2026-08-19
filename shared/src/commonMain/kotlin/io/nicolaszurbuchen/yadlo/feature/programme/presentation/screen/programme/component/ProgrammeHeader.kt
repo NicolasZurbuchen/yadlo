@@ -24,16 +24,16 @@ import io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme
  * gets used once — so they are the bottom of the toolbar rather than the top of the page. No rule
  * closes the block off any more; where the blue stops is where the chrome stops.
  *
- * **The chips are rebuilt for that ground rather than inherited onto it.** The page-ground roles do
- * not survive on #74AEE0 — the outline measures 1.6:1 and the label 2.4:1 — so an unselected chip
- * here takes the ink the blue carries, for its label and for its edge. A selected one is a solid
- * pill of the thing it stands for, edge and all, exactly as on the stands list: the fill measures
- * between 1.2:1 and 2.1:1 against this blue and the eye finds that boundary by hue rather than by
- * luminance, which is a fair trade for a selected state that reads as one thing instead of two.
+ * **The chips bring the page ground with them.** The page's own roles do not survive on #74AEE0 —
+ * the outline measures 1.6:1 and the label 2.4:1 — and the Category dot inside each one is a fill
+ * chosen against the page, measuring between 1.2:1 and 2.1:1 on this blue. Restating every colour
+ * for a fourth ground would have meant a second palette; filling the chip with the page ground and
+ * drawing its edge in the ink the blue carries means everything inside it is sitting on exactly the
+ * ground it was picked for, and only one line has to clear the chrome.
  *
- * The Category dot keeps its hue untouched at whatever it measures. It is a swatch beside a word
- * that already says the same thing, and what separates *enfants* gold from *musique* magenta at a
- * glance is the hue, not the luminance a contrast ratio measures.
+ * A selected chip is a solid pill of the thing it stands for, with no edge of its own — the same as
+ * on the stands list. Its boundary against the blue is the fill, which the eye finds by hue rather
+ * than by luminance; that is the trade for a selected state that reads as one thing instead of two.
  */
 @Composable
 fun ProgrammeHeader(

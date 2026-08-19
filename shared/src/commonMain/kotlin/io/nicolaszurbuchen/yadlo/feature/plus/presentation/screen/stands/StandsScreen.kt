@@ -57,14 +57,12 @@ fun StandsScreen(
             // One chip is *Tout* alone, which filters nothing and only takes up the room the first
             // stand should have. That is the Créateurs case exactly.
             if (state.chips.size > 1) {
+                // Vertical only. The horizontal inset belongs inside the scroll, where the chips
+                // can carry it past both screen edges — see StandMarkChips.
                 StandMarkChips(
                     chips = state.chips,
                     onMarkClick = onMarkClick,
-                    modifier =
-                        Modifier.padding(
-                            horizontal = MaterialTheme.spacing.md,
-                            vertical = MaterialTheme.spacing.sm,
-                        ),
+                    modifier = Modifier.padding(vertical = MaterialTheme.spacing.sm),
                 )
             }
         },

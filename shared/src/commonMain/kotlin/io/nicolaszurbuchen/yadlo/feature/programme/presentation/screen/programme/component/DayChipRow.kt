@@ -27,8 +27,8 @@ import io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme
  * sat a few dp taller than the Category chips directly beneath it, which is the sort of difference
  * nobody can name and everybody sees.
  *
- * The ink is the one the chrome blue carries, here and on the edge the chip keeps when it fills —
- * see [ProgrammeHeader] for why nothing on this ground can use the page's own roles.
+ * The chip brings the page ground with it and draws its edge in the ink the blue carries — see
+ * [ProgrammeHeader] for why a control on this ground cannot simply inherit the page's roles.
  */
 @Composable
 fun DayChipRow(
@@ -49,7 +49,7 @@ fun DayChipRow(
                 label = day.name,
                 isSelected = day.isSelected,
                 onClick = { onDayClick(day.id) },
-                ink = MaterialTheme.appColors.onPrimarySubtle,
+                container = MaterialTheme.appColors.background,
                 outline = MaterialTheme.appColors.onPrimarySubtle,
             )
         }

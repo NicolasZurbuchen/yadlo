@@ -4,6 +4,7 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Icon
@@ -33,8 +34,15 @@ import io.nicolaszurbuchen.yadlo.infra.ui.asString
  * than dissolving into its own background. *Tout* has no mark of its own and fills with the app's
  * primary.
  *
+ * **On the bar's blue, with the page ground brought inside each chip.** Three of the six tints fall
+ * under 3:1 on that blue, and they are already spent on the dish tags and the stand rows — so rather
+ * than re-picking a colour system for a fourth ground, the chip carries the ground its glyph was
+ * measured against and only its edge has to clear the chrome.
+ *
  * Horizontally scrolling rather than wrapped, so the row keeps its height whatever the content
- * publishes. There are seven chips today and the same layout survives fifteen.
+ * publishes. There are seven chips today and the same layout survives fifteen. The inset is inside
+ * the scroll rather than around it, so the chips run to both screen edges instead of stopping short
+ * of them — a row that scrolls but visibly cannot reach the edge looks broken rather than long.
  */
 @Composable
 fun StandMarkChips(
@@ -47,7 +55,8 @@ fun StandMarkChips(
         modifier =
             modifier
                 .fillMaxWidth()
-                .horizontalScroll(rememberScrollState()),
+                .horizontalScroll(rememberScrollState())
+                .padding(horizontal = MaterialTheme.spacing.md),
     ) {
         chips.forEach { chip ->
             val mark = chip.mark?.let(YadloDietaryMarkUiModel::forId)
@@ -58,6 +67,8 @@ fun StandMarkChips(
                 onClick = { onMarkClick(chip.mark) },
                 selectedFill = mark?.tint ?: MaterialTheme.appColors.primary,
                 selectedInk = mark?.ink ?: MaterialTheme.appColors.onPrimary,
+                container = MaterialTheme.appColors.background,
+                outline = MaterialTheme.appColors.onPrimarySubtle,
                 leadingIcon =
                     mark?.let {
                         {

@@ -25,9 +25,15 @@ import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
  * with the app's primary — the colour is the Category, and a selected *musique* chip that turned
  * blue would be saying something false. Everything else takes the defaults.
  *
- * [ink] and [outline] exist because the ground is no longer always the page. The Programme's filters
- * sit on the bandeau blue, where the page-ground roles do not survive: the outline measures 1.6:1
- * against it and the label 2.4:1. A chip on a coloured chrome passes the ink that chrome carries.
+ * [container] and [outline] exist because the ground is no longer always the page. A filter row on
+ * the bandeau blue cannot simply inherit the page's roles — the outline measures 1.6:1 against that
+ * blue and the label 2.4:1 — and it must not restate its colours either, because the glyph in a
+ * dietary chip and the dot in a Category chip are measured against the page grounds and three of the
+ * six dietary tints fall under 3:1 on the blue.
+ *
+ * So a chip on the chrome brings the page with it: [container] fills it with the page ground and
+ * [outline] draws the edge in the ink the chrome carries. Everything inside is then sitting on
+ * exactly the ground it was chosen for, and the edge is the only thing that has to clear the blue.
  *
  * A selected chip has no edge of its own anywhere in the app: the border takes the fill's colour, so
  * what you see is a solid pill of the thing you picked. That is deliberately true on the chrome blue
@@ -43,7 +49,7 @@ fun YadloFilterChip(
     modifier: Modifier = Modifier,
     selectedFill: Color = MaterialTheme.appColors.primary,
     selectedInk: Color = MaterialTheme.appColors.onPrimary,
-    ink: Color = MaterialTheme.appColors.textSecondary,
+    container: Color = Color.Transparent,
     outline: Color = MaterialTheme.appColors.borderStrong,
     leadingIcon: @Composable (() -> Unit)? = null,
 ) {
@@ -59,8 +65,8 @@ fun YadloFilterChip(
         leadingIcon = leadingIcon,
         colors =
             FilterChipDefaults.filterChipColors(
-                containerColor = Color.Transparent,
-                labelColor = ink,
+                containerColor = container,
+                labelColor = MaterialTheme.appColors.textSecondary,
                 selectedContainerColor = selectedFill,
                 selectedLabelColor = selectedInk,
                 selectedLeadingIconColor = selectedInk,
