@@ -34,10 +34,11 @@ import io.nicolaszurbuchen.yadlo.infra.ui.asString
  * than dissolving into its own background. *Tout* has no mark of its own and fills with the app's
  * primary.
  *
- * **On the bar's blue, with the page ground brought inside each chip.** Three of the six tints fall
- * under 3:1 on that blue, and they are already spent on the dish tags and the stand rows — so rather
- * than re-picking a colour system for a fourth ground, the chip carries the ground its glyph was
- * measured against and only its edge has to clear the chrome.
+ * **On the bar's blue, with the chip's edge in the ink that blue carries.** The glyphs are the one
+ * thing here still measured against the page grounds, where they are also spent on the dish tags and
+ * the stand rows: on this blue, vegetarian is 2.1:1, gluten-free 2.7:1 and dairy-free 2.8:1 against
+ * a 3:1 floor. Every one of them sits beside its own word, so what this costs is three marks reading
+ * quieter here than they do on a fiche — not a mark that cannot be read.
  *
  * Horizontally scrolling rather than wrapped, so the row keeps its height whatever the content
  * publishes. There are seven chips today and the same layout survives fifteen. The inset is inside

@@ -33,9 +33,9 @@ import yadlo.shared.generated.resources.programme_categories_all
  * *Tout* is not a Category — it is the absence of a filter, which is why deselecting the last chip
  * lands back on it rather than on an empty list.
  *
- * On the chrome blue, which the chip answers by filling itself with the page ground and drawing its
- * edge in the ink the blue carries. That is what keeps the dot honest: it is a Category fill, chosen
- * against the page, and it measures between 1.2:1 and 2.1:1 on the blue itself. See [ProgrammeHeader].
+ * On the chrome blue, with the chip's edge in the ink that blue carries. The dot is the one thing
+ * here still measured against the page — 1.2:1 to 2.1:1 against this ground — and it stays because
+ * it is a swatch beside a word that already says the same thing. See [ProgrammeHeader].
  */
 @Composable
 fun CategoryChipRow(

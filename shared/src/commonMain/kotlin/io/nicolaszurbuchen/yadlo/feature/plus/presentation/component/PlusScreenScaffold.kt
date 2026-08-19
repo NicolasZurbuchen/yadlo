@@ -25,10 +25,10 @@ import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
  * gets used once, and putting it in the list means the reason someone opened the screen leaves it
  * the moment they start reading.
  *
- * It sits on the bar's own blue, continuing it, the same way the Programme's filter block does. The
- * chips solve the ground rather than the ground accommodating the chips: three of the six dietary
- * tints fall under 3:1 on that blue, so each chip fills itself with the page ground and draws its
- * edge in the ink the blue carries — see [io.nicolaszurbuchen.yadlo.app.design.component.YadloFilterChip].
+ * It sits on the bar's own blue, continuing it, the same way the Programme's filter block does, and
+ * each chip draws its edge in the ink that blue carries — see
+ * [io.nicolaszurbuchen.yadlo.app.design.component.YadloFilterChip] for what that leaves the glyphs
+ * inside them measuring.
  */
 @Composable
 fun PlusScreenScaffold(

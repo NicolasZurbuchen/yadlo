@@ -27,8 +27,8 @@ import io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme
  * sat a few dp taller than the Category chips directly beneath it, which is the sort of difference
  * nobody can name and everybody sees.
  *
- * The chip brings the page ground with it and draws its edge in the ink the blue carries — see
- * [ProgrammeHeader] for why a control on this ground cannot simply inherit the page's roles.
+ * The chip is the chrome and draws its edge in the ink the blue carries — see [ProgrammeHeader] for
+ * why a control on this ground cannot inherit the page's roles.
  */
 @Composable
 fun DayChipRow(
