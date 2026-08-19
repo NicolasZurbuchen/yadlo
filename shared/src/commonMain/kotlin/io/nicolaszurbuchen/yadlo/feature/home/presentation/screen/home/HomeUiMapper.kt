@@ -1,5 +1,6 @@
 package io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home
 
+import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloFigureUiModel
 import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SocialLinkUiModel
 import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.socialIconFor
 import io.nicolaszurbuchen.yadlo.common.time.FESTIVAL_TIME_ZONE
@@ -94,7 +95,7 @@ fun HomeState.toUiModel(): HomeUiModel {
         } else {
             HomeBlockUiModel.Figures(
                 title = UiText.Resource(Res.string.home_figures_title),
-                items = loaded.figures.map { FigureUiModel(id = it.id, value = it.value, label = it.label) },
+                items = loaded.figures.map { YadloFigureUiModel(id = it.id, value = it.value, label = it.label) },
                 // Provenance earning its keep. The association has published closing figures once,
                 // so a block that waits for fresh ones would be empty for most of its life; showing
                 // them and saying where they came from is the honest version of the same block.

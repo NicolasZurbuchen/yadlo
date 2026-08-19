@@ -17,9 +17,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import io.nicolaszurbuchen.yadlo.app.design.component.YadloDietaryTags
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
-import io.nicolaszurbuchen.yadlo.app.design.uimodel.LinkMarkUiModel
+import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloLinkMarkUiModel
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands.StandUiModel
 
 /**
@@ -72,17 +73,13 @@ fun StandRow(
                 )
             }
 
-            stand.marks?.let {
-                Text(
-                    text = it,
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.appColors.textTertiary,
-                )
+            if (stand.dietary.isNotEmpty()) {
+                YadloDietaryTags(tags = stand.dietary)
             }
         }
 
         Icon(
-            imageVector = LinkMarkUiModel.DISCLOSURE.icon,
+            imageVector = YadloLinkMarkUiModel.DISCLOSURE.icon,
             contentDescription = null,
             tint = MaterialTheme.appColors.textTertiary,
             modifier = Modifier.size(MARK_SIZE),

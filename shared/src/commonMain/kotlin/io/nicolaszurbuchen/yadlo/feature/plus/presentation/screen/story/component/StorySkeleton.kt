@@ -46,7 +46,7 @@ fun StorySkeleton(modifier: Modifier = Modifier) {
         ) {
             Spacer(modifier = Modifier.width(HEADER_WIDTH).height(HEADER_HEIGHT).shimmerBlock())
 
-            // Two rows of two, which is the shape three figures take in FigureGrid — the odd one
+            // Two rows of two, which is the shape three figures take in YadloFigureGrid — the odd one
             // keeps its column and the empty cell beside it is drawn as nothing, exactly as there.
             repeat(FIGURE_ROWS) { rowIndex ->
                 Row(

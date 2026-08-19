@@ -40,7 +40,6 @@ data class HappeningDto(
     @Serializable
     data class StandDto(
         val offering: String? = null,
-        val marks: List<String> = emptyList(),
         val links: List<LinkDto> = emptyList(),
         val menu: List<MenuGroupDto> = emptyList(),
     )

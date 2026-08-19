@@ -10,6 +10,8 @@ import io.nicolaszurbuchen.yadlo.feature.happening.domain.model.HappeningDetail
 import io.nicolaszurbuchen.yadlo.feature.happening.domain.model.HappeningSlot
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import yadlo.shared.generated.resources.Res
+import yadlo.shared.generated.resources.dietary_mark_gluten_free
+import yadlo.shared.generated.resources.dietary_mark_vegetarian
 import yadlo.shared.generated.resources.happening_booking_action
 import yadlo.shared.generated.resources.happening_booking_required
 import yadlo.shared.generated.resources.happening_fact_equipment_not_provided
@@ -337,7 +339,7 @@ class HappeningUiMapperTest {
     fun toUiModel_menuItemWithNoMarks_carriesNoneRatherThanAnEmptyLine() {
         val model = state(detail(menu = listOf(plats()))).toUiModel()
 
-        assertNull(model.menu.single().items.first().marks)
+        assertTrue(model.menu.single().items.first().dietary.isEmpty())
     }
 
     @Test
@@ -346,7 +348,10 @@ class HappeningUiMapperTest {
 
         // Text, never pictograms: no legend to learn, and no symbol that means "contains" in one
         // country and "free from" in another.
-        assertEquals("végé · sans gluten", model.menu.single().items[1].marks)
+        assertEquals(
+            listOf(Res.string.dietary_mark_vegetarian, Res.string.dietary_mark_gluten_free),
+            model.menu.single().items[1].dietary.map { it.label },
+        )
     }
 
     @Test
@@ -419,6 +424,7 @@ class HappeningUiMapperTest {
         categoryName = categoryName,
         description = null,
         tags = tags,
+        dietary = emptyMap(),
         slots = slots,
         price = price,
         bookingUrl = bookingUrl,
@@ -473,7 +479,7 @@ class HappeningUiMapperTest {
                         name = "Seitan à la cantonaise",
                         price = Money(18.0, "CHF"),
                         description = "Riz, légumes croquants",
-                        marks = listOf("végé", "sans gluten"),
+                        marks = listOf("sans-gluten", "vegetarien"),
                         provenance = Provenance.UNVERIFIED,
                     ),
                 ),

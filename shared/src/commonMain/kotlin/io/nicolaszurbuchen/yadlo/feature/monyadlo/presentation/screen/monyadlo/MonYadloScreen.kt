@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
+import io.nicolaszurbuchen.yadlo.app.navigation.tabContentPadding
 import io.nicolaszurbuchen.yadlo.feature.monyadlo.presentation.screen.monyadlo.component.PlannedDayBlock
 import io.nicolaszurbuchen.yadlo.feature.monyadlo.presentation.screen.monyadlo.component.WishlistTile
 import io.nicolaszurbuchen.yadlo.infra.ui.asString
@@ -44,7 +45,9 @@ fun MonYadloScreen(
 
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.lg),
-        contentPadding = PaddingValues(vertical = MaterialTheme.spacing.md),
+        // The shell's bars are drawn over this list rather than beside it, so their height is part
+        // of the padding — see tabContentPadding.
+        contentPadding = tabContentPadding(top = MaterialTheme.spacing.md, bottom = MaterialTheme.spacing.md),
         modifier = modifier.fillMaxSize(),
     ) {
         item(key = "wishlist") {

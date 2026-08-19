@@ -67,6 +67,7 @@ class HappeningReducerTest {
             categoryName = "Musique",
             description = null,
             tags = emptyList(),
+            dietary = emptyMap(),
             slots = emptyList(),
             price = null,
             bookingUrl = null,

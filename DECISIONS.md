@@ -492,14 +492,21 @@ to write an email. The section, its DTO, its domain model, its use case and its 
 questions to ask the association stay in content/GAPS.md § 9, and the screen comes back when there
 are facts to put on it rather than a shape waiting for them.
 
-**One dietary filter, matching stand-or-dish.** SCHEMA.md keeps a Stand's marks and its Items' marks
-apart on purpose, and the distinction is real — but both answer "can I eat here", which is the only
-question a chip is asked. De l'Or Bokit carries no stand mark and sells one végé bokit; a filter
-that hid it would be wrong about the thing it was for. The row still shows only the Stand's own
-marks, so nothing claims a whole truck is vegan because one dish is. The chip set is derived from
-the listing rather than declared in Kotlin, so no chip is offered that matches nothing and a mark
-the content adds appears without a release. **One chip at a time**: two read as an intersection to
-whoever wrote them and a union to whoever reads them, and on eight stands the difference is a scroll.
+**One dietary filter, and a row that says how much of the truck it matched.** Marks used to sit at
+two authored levels — a Stand's, meaning "all of it is", and its Items', meaning "this one is" —
+and the filter matched on either while the row printed only the first. So a truck matched through
+its single végé bokit showed nothing at all under its name, which is the moment the reader most
+needed a word.
+
+Coverage is derived from the menu instead: a mark every dish carries reads `100 % végan`, one only
+some carry reads `options véganes`. Two authored levels could contradict each other and one content
+edit could make the Stand's level false; reading the menu cannot be wrong about the menu. A dish
+with no mark counts against every mark, because one forgotten drink is exactly the difference and
+being wrong in that direction is the safe one.
+
+The chip set is still derived from the listing rather than declared, so no chip is offered that
+matches nothing. **One chip at a time**: two read as an intersection to whoever wrote them and a
+union to whoever reads them, and on eight stands the difference is a scroll.
 
 **One gabarit for the text pages.** *Festival responsable* and *Réseaux sociaux* are a title, some
 prose and some links, and so is whatever the association publishes next — so they are one
@@ -778,9 +785,16 @@ the name and nothing can overflow into the price. An item with only a name and a
 complete item, which matters because that is the data most trucks will actually give.
 Groups make drinks and combo menus expressible without a special case.
 
-**Dietary information is text, not pictograms** — `végé`, `végan`, `sans gluten`,
-`sans lactose`, `piquant`. No legend to learn, it translates for the English build, and it
-avoids symbols that mean "contains" in one country and "free from" in another.
+**Dietary information is a glyph and the word beside it, never the glyph alone.** It was text only,
+for good reasons that turned out to be half the picture: no legend to learn, it translates for the
+English build, and it avoids symbols that mean "contains" in one country and "free from" in another.
+All still true — which is why the word never leaves. But a carte of fourteen dishes is scanned
+before it is read, and a line of small grey words is not scannable. The glyph is what is found; the
+word is what makes it safe to act on.
+
+The vocabulary is closed at six and lives in the app keyed by a content slug, the same arrangement
+Category colour uses: which marks exist is a content decision, what they look like is a design one
+made once against a measured palette.
 
 **Sourcing and allergens are facts, not tags.** "Viande et légumes de producteurs vaudois"
 and "Allergènes sur demande auprès du stand" belong in *Bon à savoir*. A festival truck will

@@ -47,8 +47,8 @@ class StandsStoreFactory(
 
         override fun executeIntent(intent: StandsIntent) {
             when (intent) {
-                is StandsIntent.MarkSelected -> {
-                    dispatch(StandsMessage.MarkSelected(intent.mark))
+                is StandsIntent.MarkToggled -> {
+                    dispatch(StandsMessage.MarkToggled(intent.mark))
                 }
 
                 is StandsIntent.StandClicked -> {
@@ -84,8 +84,17 @@ class StandsStoreFactory(
                     copy(directory = msg.directory)
                 }
 
-                is StandsMessage.MarkSelected -> {
-                    copy(selectedMark = msg.mark)
+                is StandsMessage.MarkToggled -> {
+                    // Null is *Tout*: it clears rather than toggling, which is what makes it the way
+                    // back to the whole list from any combination.
+                    copy(
+                        selectedMarks =
+                            when (msg.mark) {
+                                null -> emptySet()
+                                in selectedMarks -> selectedMarks - msg.mark
+                                else -> selectedMarks + msg.mark
+                            },
+                    )
                 }
             }
     }

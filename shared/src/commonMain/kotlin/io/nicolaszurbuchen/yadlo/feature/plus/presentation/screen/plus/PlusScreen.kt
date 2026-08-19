@@ -9,6 +9,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
+import io.nicolaszurbuchen.yadlo.app.navigation.tabContentPadding
 import io.nicolaszurbuchen.yadlo.common.content.presentation.component.SocialLinksRow
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.plus.component.PlusCard
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.plus.component.PlusSkeleton
@@ -38,11 +39,13 @@ fun PlusScreen(
 ) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.lg),
+        // The shell's bars are drawn over this list rather than beside it, so their height is part
+        // of the padding — see tabContentPadding.
         contentPadding =
-            PaddingValues(
+            tabContentPadding(
                 start = MaterialTheme.spacing.md,
-                end = MaterialTheme.spacing.md,
                 top = MaterialTheme.spacing.md,
+                end = MaterialTheme.spacing.md,
                 bottom = MaterialTheme.spacing.xl,
             ),
         modifier = modifier.fillMaxSize(),

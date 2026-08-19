@@ -30,12 +30,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
+import io.nicolaszurbuchen.yadlo.app.design.component.YadloDietaryTags
+import io.nicolaszurbuchen.yadlo.app.design.component.YadloFactRow
+import io.nicolaszurbuchen.yadlo.app.design.component.YadloLinkTile
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.app.design.theme.categoryColors
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
-import io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening.component.HappeningFactRow
+import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloFactMarkUiModel
+import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloLinkMarkUiModel
 import io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening.component.HappeningHeader
-import io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening.component.HappeningLinkRow
 import io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening.component.HappeningMenuGroupBlock
 import io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening.component.HappeningPriceBlock
 import io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening.component.HappeningSection
@@ -45,7 +48,7 @@ import io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening
 import io.nicolaszurbuchen.yadlo.infra.ui.asString
 import org.jetbrains.compose.resources.stringResource
 import yadlo.shared.generated.resources.Res
-import yadlo.shared.generated.resources.happening_back
+import yadlo.shared.generated.resources.back
 import yadlo.shared.generated.resources.happening_missing
 import yadlo.shared.generated.resources.happening_section_good_to_know
 import yadlo.shared.generated.resources.happening_section_links
@@ -108,7 +111,7 @@ fun HappeningScreen(
                     IconButton(onClick = onBackClick) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(Res.string.happening_back),
+                            contentDescription = stringResource(Res.string.back),
                         )
                     }
                 },
@@ -189,6 +192,15 @@ fun HappeningScreen(
                         }
                     }
 
+                    if (state.dietary.isNotEmpty()) {
+                        item(key = "dietary") {
+                            YadloDietaryTags(
+                                tags = state.dietary,
+                                modifier = Modifier.padding(horizontal = MaterialTheme.spacing.md),
+                            )
+                        }
+                    }
+
                     state.description?.let { description ->
                         item(key = "description") {
                             Text(
@@ -230,10 +242,10 @@ fun HappeningScreen(
                                     // A booking with a page is a link out; one without is a fact
                                     // there is nothing to do about, so it must not look tappable.
                                     if (booking.url != null) {
-                                        HappeningLinkRow(
-                                            label = booking.label,
-                                            url = booking.url,
-                                            onClick = onLinkClick,
+                                        YadloLinkTile(
+                                            label = booking.label.asString(),
+                                            mark = YadloLinkMarkUiModel.EXTERNAL,
+                                            onClick = { onLinkClick(booking.url) },
                                         )
                                     } else {
                                         Text(
@@ -254,7 +266,7 @@ fun HappeningScreen(
                                 modifier = Modifier.padding(horizontal = MaterialTheme.spacing.md),
                             ) {
                                 state.facts.forEach { fact ->
-                                    HappeningFactRow(fact = fact)
+                                    YadloFactRow(mark = YadloFactMarkUiModel.CHECK, fact = fact.asString())
                                 }
                             }
                         }
@@ -283,10 +295,10 @@ fun HappeningScreen(
                                 modifier = Modifier.padding(horizontal = MaterialTheme.spacing.md),
                             ) {
                                 state.links.forEach { link ->
-                                    HappeningLinkRow(
-                                        label = link.label,
-                                        url = link.url,
-                                        onClick = onLinkClick,
+                                    YadloLinkTile(
+                                        label = link.label.asString(),
+                                        mark = YadloLinkMarkUiModel.EXTERNAL,
+                                        onClick = { onLinkClick(link.url) },
                                     )
                                 }
                             }

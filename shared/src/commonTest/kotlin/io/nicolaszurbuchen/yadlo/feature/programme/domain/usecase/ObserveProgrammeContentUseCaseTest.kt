@@ -281,7 +281,6 @@ class ObserveProgrammeContentUseCaseTest {
                     images = emptyList(),
                     provenance = Provenance.CONFIRMED,
                     offering = null,
-                    marks = emptyList(),
                     links = emptyList(),
                     menu = emptyList(),
                 ),

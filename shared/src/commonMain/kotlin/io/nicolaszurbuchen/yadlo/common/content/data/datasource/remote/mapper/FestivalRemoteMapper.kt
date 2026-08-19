@@ -144,6 +144,7 @@ private fun PaymentDto.toDomain(): Payment =
 
 private fun AssistanceDto.toDomain(): Assistance =
     Assistance(
+        recognition = recognition.map { Assistance.Recognition(id = it.id, text = it.text) },
         emergencyNumbers =
             emergencyNumbers.map {
                 Assistance.EmergencyNumber(id = it.id, label = it.label, number = it.number)

@@ -1,5 +1,6 @@
 package io.nicolaszurbuchen.yadlo.feature.happening.domain.model
 
+import io.nicolaszurbuchen.yadlo.common.content.domain.model.DietaryCoverage
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Link
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.MenuGroup
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Price
@@ -33,6 +34,12 @@ data class HappeningDetail(
     val categoryName: String,
     val description: String?,
     val tags: List<String>,
+    /**
+     * What a Stand can feed you, derived from its menu. Not folded into [tags] because these carry a
+     * glyph and a colour of their own and are read by someone who cannot eat what they get wrong —
+     * a word in a row of genres is not that.
+     */
+    val dietary: Map<String, DietaryCoverage>,
     val slots: List<HappeningSlot>,
     val price: Price?,
     val bookingUrl: String?,

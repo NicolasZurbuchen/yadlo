@@ -5,10 +5,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import io.nicolaszurbuchen.yadlo.app.design.component.YadloLinkTile
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
-import io.nicolaszurbuchen.yadlo.app.design.uimodel.LinkMarkUiModel
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusDetailScaffold
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusEmailTile
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusSection
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.contact.component.ContactSkeleton
 import org.jetbrains.compose.resources.stringResource
@@ -27,11 +26,8 @@ import yadlo.shared.generated.resources.plus_entry_contact
  * All nine addresses are listed under the labels the association wrote. Reducing them to four
  * concerns would be guessing at how a committee divides its work.
  *
- * **The name of whoever is behind an address goes on the tile.** Writing to *Programmation musicale*
- * is writing into a role; writing to Jeremy B. is writing to somebody, and for a committee of
- * volunteers that difference is most of whether a reply happens. It sits under the label with the
- * address, because the label is what a reader scans and the name is what they read once they have
- * stopped.
+ * The tile is [PlusEmailTile], shared with *Devenir Hot'Staff*: whichever screen a reader reaches
+ * an address through, it names the concern, whoever is behind it, and where the mail goes.
  *
  * Recruiting used to open from here and now has its own row on the tab — see
  * [io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.volunteering.VolunteeringScreen].
@@ -53,12 +49,7 @@ fun ContactScreen(
         if (state.emails.isNotEmpty()) {
             PlusSection(title = stringResource(Res.string.contact_section_emails)) {
                 state.emails.forEach { email ->
-                    YadloLinkTile(
-                        label = email.label,
-                        mark = LinkMarkUiModel.MAIL,
-                        onClick = { onEmailClick(email.address) },
-                        sublabel = listOfNotNull(email.responsible, email.address).joinToString(SUBLABEL_SEPARATOR),
-                    )
+                    PlusEmailTile(email = email, onClick = onEmailClick)
                 }
             }
         }
@@ -75,7 +66,3 @@ fun ContactScreen(
         }
     }
 }
-
-// A middle dot rather than a dash: the two halves are a person and an address, not a phrase and its
-// continuation, and a hyphen between "Jeremy B." and "musique@yadlo.ch" reads as part of the address.
-private const val SUBLABEL_SEPARATOR = " · "

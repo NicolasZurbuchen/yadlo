@@ -67,6 +67,7 @@ class ObserveAssistanceGuideUseCaseTest {
             copy(
                 assistance =
                     Assistance(
+                        recognition = emptyList(),
                         emergencyNumbers =
                             listOf(
                                 Assistance.EmergencyNumber(id = "urgences", label = "Urgences", number = "112"),

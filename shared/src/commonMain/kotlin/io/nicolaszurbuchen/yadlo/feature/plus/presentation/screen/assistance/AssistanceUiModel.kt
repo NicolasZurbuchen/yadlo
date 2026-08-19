@@ -12,6 +12,8 @@ import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 data class AssistanceUiModel(
     val isLoading: Boolean,
     val numbers: List<EmergencyNumberUiModel>,
+    /** How to tell who works here. Empty until the content says, and the section goes with it. */
+    val recognition: List<String>,
     val lostPropertyEmail: String?,
     val emptyMessage: UiText?,
 )

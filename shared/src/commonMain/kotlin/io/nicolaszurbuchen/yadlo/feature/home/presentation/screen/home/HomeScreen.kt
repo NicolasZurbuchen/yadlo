@@ -11,13 +11,15 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import io.nicolaszurbuchen.yadlo.app.design.component.YadloHero
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
+import io.nicolaszurbuchen.yadlo.app.navigation.tabContentPadding
 import io.nicolaszurbuchen.yadlo.common.content.presentation.component.SocialLinksRow
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.component.AnnouncementsBlock
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.component.CountdownBlock
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.component.FiguresBlock
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.component.HeroBlock
-import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.component.ThankYouBlock
+import io.nicolaszurbuchen.yadlo.infra.ui.asString
 
 /**
  * Accueil renders the block stack it is handed, in the order it is handed. Which blocks a Phase
@@ -41,7 +43,15 @@ fun HomeScreen(
 
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.lg),
-        contentPadding = PaddingValues(MaterialTheme.spacing.md),
+        // The shell's bars are drawn over this list rather than beside it, so their height is part
+        // of the padding — see tabContentPadding.
+        contentPadding =
+            tabContentPadding(
+                start = MaterialTheme.spacing.md,
+                top = MaterialTheme.spacing.md,
+                end = MaterialTheme.spacing.md,
+                bottom = MaterialTheme.spacing.md,
+            ),
         modifier = modifier.fillMaxSize(),
     ) {
         // The block type is the identity: a Phase never produces two blocks of the same kind, and
@@ -57,7 +67,7 @@ fun HomeScreen(
                 }
 
                 is HomeBlockUiModel.ThankYou -> {
-                    ThankYouBlock(block = block)
+                    YadloHero(title = block.title.asString(), body = block.body.asString())
                 }
 
                 is HomeBlockUiModel.Figures -> {

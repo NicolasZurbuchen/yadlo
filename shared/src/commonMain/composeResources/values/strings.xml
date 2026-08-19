@@ -8,6 +8,10 @@
     <string name="tab_mon_yadlo">Mon Yadlo</string>
     <string name="tab_plus">Plus</string>
 
+    <!-- One label for every back chevron in the app: they all say the same word, and four copies of
+         it are four places for it to stop saying the same word. -->
+    <string name="back">Retour</string>
+
     <string name="home_countdown_days_remaining">J-%1$s</string>
     <string name="home_hero_announced_kicker">Nouveau</string>
     <string name="home_hero_announced_title">La programmation %1$s est là</string>
@@ -23,7 +27,6 @@
     <string name="home_figures_caveat">Chiffres d'une édition précédente</string>
 
     <string name="announcements_title">Annonces</string>
-    <string name="announcements_back">Retour</string>
     <string name="announcements_empty">Aucune annonce pour le moment.</string>
 
     <!-- A Slot's live state and its price read the same on every screen that shows one. -->
@@ -50,11 +53,9 @@
     <string name="mon_yadlo_wishlist_empty">Garde les stands qui te font envie depuis leur fiche.</string>
 
     <string name="wishlist_title">À essayer</string>
-    <string name="wishlist_back">Retour</string>
     <string name="wishlist_empty">Tu n'as encore rien gardé. Les stands sont dans Plus › Nourriture &amp; boissons.</string>
 
     <!-- Plus — the root list. Group names and row titles are fixed; only the subtitles come from content. -->
-    <string name="plus_back">Retour</string>
     <string name="plus_group_on_site">Sur place</string>
     <string name="plus_entry_stands_food">Nourriture &amp; boissons</string>
     <string name="plus_entry_stands_makers">Créateurs</string>
@@ -121,6 +122,27 @@
     <string name="stands_no_match">Aucun stand ne porte cette mention.</string>
     <string name="stands_empty">Les stands ne sont pas encore publiés.</string>
 
+    <string name="dietary_mark_vegan">Végan</string>
+    <string name="dietary_mark_vegetarian">Végétarien</string>
+    <string name="dietary_mark_gluten_free">Sans gluten</string>
+    <string name="dietary_mark_dairy_free">Sans lactose</string>
+    <string name="dietary_mark_halal">Halal</string>
+    <string name="dietary_mark_spicy">Piquant</string>
+
+    <string name="dietary_all_vegan">100 % végan</string>
+    <string name="dietary_all_vegetarian">100 % végétarien</string>
+    <string name="dietary_all_gluten_free">Tout sans gluten</string>
+    <string name="dietary_all_dairy_free">Tout sans lactose</string>
+    <string name="dietary_all_halal">Tout halal</string>
+    <string name="dietary_all_spicy">Tout est piquant</string>
+
+    <string name="dietary_some_vegan">Options véganes</string>
+    <string name="dietary_some_vegetarian">Options végétariennes</string>
+    <string name="dietary_some_gluten_free">Options sans gluten</string>
+    <string name="dietary_some_dairy_free">Options sans lactose</string>
+    <string name="dietary_some_halal">Options halal</string>
+    <string name="dietary_some_spicy">Plats piquants</string>
+
     <string name="payment_title">Paiement</string>
     <string name="payment_section_accepted">Accepté partout</string>
 
@@ -136,6 +158,7 @@
 
     <string name="assistance_title">En cas de besoin</string>
     <string name="assistance_section_emergency">Urgence vitale</string>
+    <string name="assistance_section_recognition">Reconnaître l'équipe</string>
     <string name="assistance_section_lost">Objets trouvés</string>
     <string name="assistance_lost_body">Pendant le festival, au poste de secours. Après, écrivez-nous.</string>
     <string name="assistance_empty">Les numéros ne sont pas encore publiés.</string>
@@ -143,7 +166,6 @@
     <string name="faq_title">Questions fréquentes</string>
     <string name="faq_empty">Aucune question n'a encore été publiée.</string>
 
-    <string name="happening_back">Retour</string>
     <string name="happening_missing">Cette fiche n'est plus disponible.</string>
     <string name="happening_section_when">Quand</string>
     <string name="happening_section_price">Tarifs</string>

@@ -19,7 +19,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
-import io.nicolaszurbuchen.yadlo.app.design.uimodel.LinkMarkUiModel
+import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloLinkMarkUiModel
 import org.jetbrains.compose.resources.stringResource
 
 /**
@@ -31,7 +31,7 @@ import org.jetbrains.compose.resources.stringResource
  *
  * **The trailing mark says where the tap goes**, which is the whole reason facts and links look
  * different. On a beach with one bar of signal that difference is what tells someone whether tapping
- * is about to cost them a page load — see [LinkMarkUiModel].
+ * is about to cost them a page load — see [YadloLinkMarkUiModel].
  *
  * [sublabel] is where the label alone would be a guess — *PDF · MBC* under a line number, the
  * address under *Écrivez-nous*.
@@ -43,7 +43,7 @@ import org.jetbrains.compose.resources.stringResource
 @Composable
 fun YadloLinkTile(
     label: String,
-    mark: LinkMarkUiModel,
+    mark: YadloLinkMarkUiModel,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     sublabel: String? = null,

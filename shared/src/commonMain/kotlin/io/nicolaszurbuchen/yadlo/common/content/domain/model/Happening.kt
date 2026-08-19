@@ -53,8 +53,9 @@ sealed class Happening {
     ) : Happening()
 
     /**
-     * [marks] describe the whole stand — Vegan Fabrik is végan and bio because everything it sells
-     * is — and must never be repeated on its items.
+     * **No marks of its own.** What a Stand can feed you is derived from its menu — see
+     * [dietaryCoverage] — because a list authored here beside the lists on its items was two
+     * levels that could contradict each other, and could not say "has a vegan option" at all.
      */
     data class Stand(
         override val id: String,
@@ -64,7 +65,6 @@ sealed class Happening {
         override val images: List<Image>,
         override val provenance: Provenance,
         val offering: String?,
-        val marks: List<String>,
         val links: List<Link>,
         val menu: List<MenuGroup>,
     ) : Happening()

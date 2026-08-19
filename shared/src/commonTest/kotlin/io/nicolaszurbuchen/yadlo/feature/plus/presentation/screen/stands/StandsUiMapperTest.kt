@@ -1,9 +1,15 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands
 
+import io.nicolaszurbuchen.yadlo.common.content.domain.model.DietaryCoverage
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.model.StandDirectory
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.model.StandListing
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import yadlo.shared.generated.resources.Res
+import yadlo.shared.generated.resources.dietary_all_dairy_free
+import yadlo.shared.generated.resources.dietary_all_vegan
+import yadlo.shared.generated.resources.dietary_mark_vegan
+import yadlo.shared.generated.resources.dietary_mark_vegetarian
+import yadlo.shared.generated.resources.dietary_some_vegetarian
 import yadlo.shared.generated.resources.stands_empty
 import yadlo.shared.generated.resources.stands_filter_all
 import yadlo.shared.generated.resources.stands_no_match
@@ -45,7 +51,7 @@ class StandsUiMapperTest {
 
     @Test
     fun toUiModel_aFilterThatMatchesNothing_saysSomethingTheReaderCanActOn() {
-        val model = state(selectedMark = "sans lactose").toUiModel()
+        val model = state(setOf("halal")).toUiModel()
 
         // Two different empties. Only one of them is the reader's to fix, and telling them the
         // stands are unpublished when they have simply over-filtered would be a lie.
@@ -62,10 +68,9 @@ class StandsUiMapperTest {
     }
 
     @Test
-    fun toUiModel_theChips_areTheContentsOwnWords() {
-        // `végé` and `sans gluten` are how the festival writes them and how a menu board writes
-        // them. Prettifying either would be inventing a vocabulary the stands do not use.
-        assertEquals(listOf(null, "végan", "bio", "végé"), state().toUiModel().chips.map { it.mark })
+    fun toUiModel_aChipCarriesTheContentsSlugEvenThoughItShowsTheAppsWord() {
+        // The slug is what the filter compares against, so it has to survive the label lookup.
+        assertEquals(listOf(null, "vegan", "vegetarien"), state().toUiModel().chips.map { it.mark })
     }
 
     @Test
@@ -83,9 +88,9 @@ class StandsUiMapperTest {
 
     @Test
     fun toUiModel_aSelectedChip_isTheOnlyOneMarkedSo() {
-        val model = state(selectedMark = "végé").toUiModel()
+        val model = state(setOf("vegetarien")).toUiModel()
 
-        assertEquals(listOf("végé"), model.chips.filter { it.isSelected }.map { it.mark })
+        assertEquals(listOf("vegetarien"), model.chips.filter { it.isSelected }.map { it.mark })
     }
 
     @Test
@@ -95,26 +100,77 @@ class StandsUiMapperTest {
 
     @Test
     fun toUiModel_filteringByAMarkOnlyOneDishCarries_keepsTheStand() {
-        // De l'Or Bokit carries no stand mark and sells one végé bokit. "Can I eat here" is
+        // De l'Or Bokit sells one végé bokit and nothing else vegetarian. "Can I eat here" is
         // answered yes, which is the only question the chip was asked.
-        assertEquals(listOf("de-lor-bokit"), state(selectedMark = "végé").toUiModel().stands.map { it.id })
+        assertEquals(
+            listOf("de-lor-bokit"),
+            state(setOf("vegetarien")).toUiModel().stands.map { it.id },
+        )
     }
 
     @Test
-    fun toUiModel_aStandMatchedThroughItsMenu_stillShowsOnlyItsOwnMarks() {
-        // Widening the line would turn "sells one vegan bokit" into "is vegan", which is exactly
-        // the claim the stand/item split exists to prevent.
-        assertNull(state(selectedMark = "végé").toUiModel().stands.single().marks)
+    fun toUiModel_aStandMatchedThroughOneDish_saysSoRatherThanClaimingTheWholeTruck() {
+        // The difference between "sells one vegan bokit" and "is vegan", which is the whole reason
+        // the coverage is derived rather than authored.
+        assertEquals(
+            listOf(Res.string.dietary_some_vegetarian),
+            state(setOf("vegetarien")).toUiModel().stands.single().dietary.map { it.label },
+        )
     }
 
     @Test
-    fun toUiModel_marks_readAsOneLineWithTheFichesSeparator() {
-        assertEquals("végan · bio", state().toUiModel().stands.first().marks)
+    fun toUiModel_aStandWhereEveryDishCarriesTheMark_saysTheWholeTruck() {
+        assertEquals(
+            listOf(Res.string.dietary_all_vegan, Res.string.dietary_all_dairy_free),
+            state().toUiModel().stands.first().dietary.map { it.label },
+        )
     }
 
     @Test
-    fun toUiModel_aStandWithNoMarks_writesNothingRatherThanAnEmptyLine() {
-        assertNull(state().toUiModel().stands.last().marks)
+    fun toUiModel_aStandWithNothingToSay_saysNothingRatherThanAnEmptyRow() {
+        assertTrue(state().toUiModel().stands.last().dietary.isEmpty())
+    }
+
+    @Test
+    fun toUiModel_aChip_isLabelledInTheAppsWordsRatherThanTheContentsSlug() {
+        // The slug is a lookup key; "Sans gluten" is what a reader is offered.
+        assertEquals(
+            listOf(Res.string.stands_filter_all, Res.string.dietary_mark_vegan, Res.string.dietary_mark_vegetarian),
+            state().toUiModel().chips.map { (it.label as UiText.Resource).id },
+        )
+    }
+
+    @Test
+    fun toUiModel_aMarkThisBuildHasNoGlyphFor_losesItsChipRatherThanShowingASlug() {
+        val state = StandsState(kind = StandsKindUiModel.FOOD, directory = directory(marks = listOf("sans-noix")))
+
+        assertEquals(listOf(Res.string.stands_filter_all), state.toUiModel().chips.map { (it.label as UiText.Resource).id })
+    }
+
+    @Test
+    fun toUiModel_twoMarks_keepOnlyTheStandsThatCarryBoth() {
+        // The whole reason the set is an AND. Vegan Fabrik is vegan and De l'Or Bokit has a
+        // vegetarian dish; neither is both, so both go. Showing the merely-vegan one to someone who
+        // also needs gluten-free is pointing them at food they cannot eat.
+        val model = state(setOf("vegan", "vegetarien")).toUiModel()
+
+        assertEquals(emptyList(), model.stands.map { it.id })
+        assertEquals(Res.string.stands_no_match, (model.emptyMessage as UiText.Resource).id)
+    }
+
+    @Test
+    fun toUiModel_twoMarksOneStandCarriesBothOf_keepsIt() {
+        val model = state(setOf("vegan", "sans-lactose")).toUiModel()
+
+        assertEquals(listOf("vegan-fabrik"), model.stands.map { it.id })
+    }
+
+    @Test
+    fun toUiModel_bothChipsRead_asSelected() {
+        val selected = state(setOf("vegan", "vegetarien")).toUiModel().chips.filter { it.isSelected }
+
+        // Multi-select is only usable if the row shows which ones are on.
+        assertEquals(listOf("vegan", "vegetarien"), selected.map { it.mark })
     }
 
     @Test
@@ -122,24 +178,24 @@ class StandsUiMapperTest {
         assertNull(state().toUiModel().emptyMessage)
     }
 
-    private fun state(selectedMark: String? = null) =
-        StandsState(kind = StandsKindUiModel.FOOD, directory = directory(), selectedMark = selectedMark)
+    private fun state(selectedMarks: Set<String> = emptySet()) =
+        StandsState(kind = StandsKindUiModel.FOOD, directory = directory(), selectedMarks = selectedMarks)
 
-    private fun directory() =
+    private fun directory(marks: List<String> = listOf("vegan", "vegetarien")) =
         StandDirectory(
-            marks = listOf("végan", "bio", "végé"),
+            marks = marks,
             stands =
                 listOf(
                     listing(
                         id = "vegan-fabrik",
                         offering = "Cuisine végétale",
-                        marks = listOf("végan", "bio"),
-                        dietaryMatches = setOf("végan", "bio"),
+                        dietary =
+                            mapOf("vegan" to DietaryCoverage.ALL, "sans-lactose" to DietaryCoverage.ALL),
                     ),
                     listing(
                         id = "de-lor-bokit",
                         offering = "Cuisine guadeloupéenne",
-                        dietaryMatches = setOf("végé"),
+                        dietary = mapOf("vegetarien" to DietaryCoverage.SOME),
                     ),
                     listing(id = "guliko", offering = "Cuisine géorgienne"),
                 ),
@@ -148,13 +204,11 @@ class StandsUiMapperTest {
     private fun listing(
         id: String,
         offering: String? = null,
-        marks: List<String> = emptyList(),
-        dietaryMatches: Set<String> = emptySet(),
+        dietary: Map<String, DietaryCoverage> = emptyMap(),
     ) = StandListing(
         id = id,
         name = id,
         offering = offering,
-        marks = marks,
-        dietaryMatches = dietaryMatches,
+        dietary = dietary,
     )
 }

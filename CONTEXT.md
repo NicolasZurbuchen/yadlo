@@ -96,20 +96,24 @@ neither. The most valuable content in the app, and the one thing that exists now
 _Avoid_: Carte, price list, offering
 
 **Mark**:
-A short dietary or preparation note — végé, végan, sans gluten, sans lactose, piquant, bio.
-Always written out, never a pictogram.
+A dietary note on one Item, out of a closed set of six — `vegan`, `vegetarien`, `sans-gluten`,
+`sans-lactose`, `halal`, `piquant`. Content carries the slug; the app supplies the word a reader
+sees, its glyph and its colour. Always written out beside the glyph, never the glyph alone.
 
-A Mark sits at one of two levels, and the level is the meaning:
+**A Mark belongs to a dish and only to a dish.** A Stand's own answer is *Coverage*, derived from
+its menu.
+_Avoid_: Tag, label, icon, allergen
 
-- **On the Stand**, it describes the whole stand. Vegan Fabrik is `végan` and `bio` because
-  everything it sells is.
-- **On an Item**, it describes only that item. De l'Or Bokit carries no Mark, but its `Le Végé`
-  is `végé` — feta, so vegetarian and not vegan.
+**Coverage**:
+How much of a Stand a Mark covers — all of what it sells, or only some of it. `100 % végan` versus
+`options véganes`.
 
 This is what separates "this stand is entirely vegan" from "this stand has a vegan option", which
-is the actual question someone is asking when they scan a row of food stands. A stand-level Mark
-must never be repeated on every one of its items.
-_Avoid_: Tag, label, icon, allergen
+is the actual question someone is asking when they scan a row of food stands. It is **derived**,
+never authored: a Stand that carried its own list of Marks beside its Items' lists was two levels
+that could contradict each other, and one content edit adding a non-vegan dish would have made the
+Stand's list quietly false. A dish with no Mark counts against every one of them.
+_Avoid_: Stand mark, stand-level mark
 
 ### How things are grouped
 

@@ -1,5 +1,7 @@
 package io.nicolaszurbuchen.yadlo.feature.monyadlo.domain.model
 
+import io.nicolaszurbuchen.yadlo.common.content.domain.model.DietaryCoverage
+
 /**
  * One Stand on the Wishlist.
  *
@@ -7,12 +9,13 @@ package io.nicolaszurbuchen.yadlo.feature.monyadlo.domain.model
  * closes before the festival does is unknown, and "ouvert maintenant" is too good a claim to make on
  * data nobody has.
  *
- * [offering] and [marks] are what the row shows under the name: "Cuisine végétale", then `végan` and
- * `bio`. They describe the whole stand, which is the unit that gets saved.
+ * [offering] and [dietary] are what the row shows under the name: "Cuisine végétale", then what the
+ * stand can feed you, derived from its menu. Both describe the whole stand, which is the unit that
+ * gets saved.
  */
 data class WishlistStand(
     val id: String,
     val name: String,
     val offering: String?,
-    val marks: List<String>,
+    val dietary: Map<String, DietaryCoverage>,
 )

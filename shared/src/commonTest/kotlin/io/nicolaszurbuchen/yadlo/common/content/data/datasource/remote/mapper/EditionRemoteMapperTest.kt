@@ -211,8 +211,7 @@ class EditionRemoteMapperTest {
 
         val stand = dto.toDomain().happenings.single() as Happening.Stand
 
-        assertEquals(listOf("végan", "bio"), stand.marks)
-        assertEquals(listOf("végé"), stand.menu.single().items.single().marks)
+        assertEquals(listOf("vegan"), stand.menu.single().items.single().marks)
     }
 
     @Test
@@ -442,7 +441,6 @@ private fun standDto(): HappeningDto =
         stand =
             HappeningDto.StandDto(
                 offering = "Cuisine végétale",
-                marks = listOf("végan", "bio"),
                 menu =
                     listOf(
                         MenuGroupDto(
@@ -455,7 +453,7 @@ private fun standDto(): HappeningDto =
                                     MenuGroupDto.ItemDto(
                                         name = "Le Végé",
                                         price = MoneyDto(amount = 15.0, currency = "CHF"),
-                                        marks = listOf("végé"),
+                                        marks = listOf("vegan"),
                                         provenance = "unverified",
                                     ),
                                 ),

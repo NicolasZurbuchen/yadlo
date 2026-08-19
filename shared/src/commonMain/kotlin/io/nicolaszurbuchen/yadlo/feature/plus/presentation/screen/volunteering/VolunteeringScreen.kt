@@ -4,10 +4,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import io.nicolaszurbuchen.yadlo.app.design.component.YadloFactRow
 import io.nicolaszurbuchen.yadlo.app.design.component.YadloLinkTile
-import io.nicolaszurbuchen.yadlo.app.design.uimodel.FactMarkUiModel
-import io.nicolaszurbuchen.yadlo.app.design.uimodel.LinkMarkUiModel
+import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloFactMarkUiModel
+import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloLinkMarkUiModel
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusBodyText
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusDetailScaffold
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusEmailTile
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusSection
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.volunteering.component.VolunteeringSkeleton
 import org.jetbrains.compose.resources.stringResource
@@ -31,6 +32,10 @@ import yadlo.shared.generated.resources.volunteering_signup
  * **The two actions sit under a heading of their own.** They were left bare at the foot of the page
  * and read as loose ends rather than as the point of it — every other block on this screen announces
  * itself, and the one the reader is meant to act on was the one that did not.
+ *
+ * The address is offered as [io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusEmailTile]
+ * draws it on *Nous écrire* — the concern, whoever is behind it, and where the mail goes. A bare
+ * `staff@yadlo.ch` on the one screen actively recruiting looked like something pasted in.
  *
  * The signup link leaves for the association's own recruitment site. There is no form here and
  * there will not be one — their pipeline keeps receiving its applications instead of a personal
@@ -61,7 +66,7 @@ fun VolunteeringScreen(
 
         if (state.perks.isNotEmpty()) {
             PlusSection(title = stringResource(Res.string.volunteering_section_perks)) {
-                state.perks.forEach { YadloFactRow(mark = FactMarkUiModel.CHECK, fact = it) }
+                state.perks.forEach { YadloFactRow(mark = YadloFactMarkUiModel.CHECK, fact = it) }
             }
         }
 
@@ -70,17 +75,13 @@ fun VolunteeringScreen(
                 state.signupUrl?.let { url ->
                     YadloLinkTile(
                         label = stringResource(Res.string.volunteering_signup),
-                        mark = LinkMarkUiModel.EXTERNAL,
+                        mark = YadloLinkMarkUiModel.EXTERNAL,
                         onClick = { onSignupClick(url) },
                     )
                 }
 
-                state.email?.let { address ->
-                    YadloLinkTile(
-                        label = address,
-                        mark = LinkMarkUiModel.MAIL,
-                        onClick = { onEmailClick(address) },
-                    )
+                state.email?.let { email ->
+                    PlusEmailTile(email = email, onClick = onEmailClick)
                 }
             }
         }

@@ -1,5 +1,6 @@
 package io.nicolaszurbuchen.yadlo.feature.monyadlo.presentation.screen.wishlist
 
+import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloDietaryTagUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 
 /**
@@ -24,9 +25,9 @@ data class WishlistGroupUiModel(
 /**
  * One Stand.
  *
- * [offering] answers what someone walking the row is asking — "Cuisine libanaise" — and [marks]
- * qualify it. They are joined into one string here rather than kept as a list, because they read as
- * one line under the name and the row has no reason to lay them out individually.
+ * [offering] answers what someone walking the row is asking — "Cuisine libanaise" — and [dietary]
+ * says what can be eaten here, derived from the menu: whether a mark covers everything the stand
+ * sells or only part of it.
  *
  * No hours and no live state — DECISIONS.md § No opening times on the Wishlist. Whether stands close
  * before the festival does is unknown, and "ouvert maintenant" is too good a claim to invent.
@@ -35,5 +36,5 @@ data class WishlistStandUiModel(
     val id: String,
     val name: String,
     val offering: String?,
-    val marks: String?,
+    val dietary: List<YadloDietaryTagUiModel>,
 )

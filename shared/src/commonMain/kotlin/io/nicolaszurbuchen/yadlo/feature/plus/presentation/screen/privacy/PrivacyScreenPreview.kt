@@ -23,7 +23,7 @@ private fun PrivacyScreenPreview() {
 
 /**
  * The dark half, and on this screen it is the marks that need looking at: three green ✓ in a column
- * is the app's largest single use of the new [io.nicolaszurbuchen.yadlo.app.design.uimodel.FactMarkUiModel]
+ * is the app's largest single use of the new [io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloFactMarkUiModel]
  * tint, and a green chosen against a white page is exactly the sort that quietly disappears into a
  * dark one.
  */

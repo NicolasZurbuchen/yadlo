@@ -1,15 +1,11 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.story
 
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
+import io.nicolaszurbuchen.yadlo.app.design.component.YadloFigureGrid
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusBodyText
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusDetailScaffold
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusSection
-import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.story.component.FigureGrid
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.story.component.StorySkeleton
 import io.nicolaszurbuchen.yadlo.infra.ui.asString
 import org.jetbrains.compose.resources.stringResource
@@ -50,16 +46,7 @@ fun StoryScreen(
 
         if (state.figures.isNotEmpty()) {
             PlusSection(title = stringResource(Res.string.home_figures_title)) {
-                FigureGrid(figures = state.figures)
-
-                state.figuresCaveat?.let {
-                    Text(
-                        text = it.asString(),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.appColors.textTertiary,
-                        modifier = Modifier.fillMaxWidth(),
-                    )
-                }
+                YadloFigureGrid(figures = state.figures, caveat = state.figuresCaveat?.asString())
             }
         }
     }

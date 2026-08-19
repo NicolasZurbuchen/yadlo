@@ -1,5 +1,7 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.contact
 
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.uimodel.PlusEmailUiModel
+
 fun ContactState.toUiModel(): ContactUiModel {
     val loaded =
         router ?: return ContactUiModel(
@@ -14,7 +16,7 @@ fun ContactState.toUiModel(): ContactUiModel {
         // guessing at their internal division of labour, and a directory is what they published.
         emails =
             loaded.emails.map {
-                ContactEmailUiModel(
+                PlusEmailUiModel(
                     id = it.id,
                     label = it.label,
                     responsible = it.responsible,

@@ -30,11 +30,7 @@ class ObserveVolunteeringOfferUseCase(
                         body = volunteering.body,
                         perks = volunteering.perks,
                         signupUrl = volunteering.signupUrl,
-                        email =
-                            festival.contact
-                                ?.emails
-                                ?.firstOrNull { it.id == volunteering.contactEmailId }
-                                ?.address,
+                        email = festival.contact?.emails?.firstOrNull { it.id == volunteering.contactEmailId },
                     )
                 }
             }

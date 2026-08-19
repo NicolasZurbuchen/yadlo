@@ -8,7 +8,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
+import io.nicolaszurbuchen.yadlo.app.design.component.YadloSectionHeader
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
 
 /**
@@ -34,11 +34,7 @@ fun PlusSection(
         modifier = modifier.fillMaxWidth(),
     ) {
         title?.let {
-            Text(
-                text = it.uppercase(),
-                style = MaterialTheme.typography.headlineMedium,
-                color = MaterialTheme.appColors.textTertiary,
-            )
+            YadloSectionHeader(title = it)
         }
 
         content()

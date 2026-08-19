@@ -1,5 +1,7 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.volunteering
 
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.uimodel.PlusEmailUiModel
+
 fun VolunteeringState.toUiModel(): VolunteeringUiModel {
     val loaded =
         offer ?: return VolunteeringUiModel(
@@ -17,6 +19,14 @@ fun VolunteeringState.toUiModel(): VolunteeringUiModel {
         body = loaded.body,
         perks = loaded.perks,
         signupUrl = loaded.signupUrl,
-        email = loaded.email,
+        email =
+            loaded.email?.let {
+                PlusEmailUiModel(
+                    id = it.id,
+                    label = it.label,
+                    responsible = it.responsible,
+                    address = it.address,
+                )
+            },
     )
 }

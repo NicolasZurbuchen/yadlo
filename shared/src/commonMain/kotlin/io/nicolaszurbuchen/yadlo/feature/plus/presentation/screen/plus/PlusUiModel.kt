@@ -18,7 +18,7 @@ import androidx.compose.material.icons.outlined.Schedule
 import androidx.compose.material.icons.outlined.Storefront
 import androidx.compose.material.icons.outlined.VolunteerActivism
 import androidx.compose.ui.graphics.vector.ImageVector
-import io.nicolaszurbuchen.yadlo.app.design.uimodel.LinkMarkUiModel
+import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloLinkMarkUiModel
 import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SocialLinkUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import org.jetbrains.compose.resources.StringResource
@@ -94,7 +94,7 @@ enum class PlusGroupIdUiModel(
 enum class PlusEntryUiModel(
     val title: StringResource,
     val icon: ImageVector,
-    val mark: LinkMarkUiModel = LinkMarkUiModel.DISCLOSURE,
+    val mark: YadloLinkMarkUiModel = YadloLinkMarkUiModel.DISCLOSURE,
 ) {
     STANDS_FOOD(Res.string.plus_entry_stands_food, Icons.Outlined.Restaurant),
     STANDS_MAKERS(Res.string.plus_entry_stands_makers, Icons.Outlined.Storefront),
@@ -115,9 +115,9 @@ enum class PlusEntryUiModel(
      */
     VOLUNTEERING(Res.string.plus_entry_volunteering, Icons.Outlined.VolunteerActivism),
     CONTACT(Res.string.plus_entry_contact, Icons.Outlined.MailOutline),
-    NEWSLETTER(Res.string.plus_entry_newsletter, Icons.AutoMirrored.Outlined.Send, LinkMarkUiModel.EXTERNAL),
+    NEWSLETTER(Res.string.plus_entry_newsletter, Icons.AutoMirrored.Outlined.Send, YadloLinkMarkUiModel.EXTERNAL),
     ABOUT(Res.string.plus_entry_about, Icons.Outlined.Info),
-    REPORT(Res.string.plus_entry_report, Icons.Outlined.Flag, LinkMarkUiModel.MAIL),
+    REPORT(Res.string.plus_entry_report, Icons.Outlined.Flag, YadloLinkMarkUiModel.MAIL),
     PRIVACY(Res.string.plus_entry_privacy, Icons.Outlined.Lock),
 }
 

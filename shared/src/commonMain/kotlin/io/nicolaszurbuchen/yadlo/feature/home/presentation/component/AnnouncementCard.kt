@@ -25,6 +25,11 @@ import io.nicolaszurbuchen.yadlo.feature.home.presentation.uimodel.AnnouncementU
  * No card of its own: it sits inside a block that is already a surface, and a card within a card is
  * two borders saying one thing. A card with no URL is not clickable and carries no affordance,
  * which is story 85 read literally — plainly untappable beats a tap that does nothing.
+ *
+ * **It pads itself, and its container does not.** The ripple and the rules between annonces have to
+ * reach the edge of whatever holds the row — a tap that lights up a strip 16dp short of the border
+ * looks like a misfire. So the inset lives here, where it is inside the touch target rather than
+ * around it.
  */
 @Composable
 fun AnnouncementCard(
@@ -43,7 +48,7 @@ fun AnnouncementCard(
                         Modifier
                     },
                 )
-                .padding(vertical = MaterialTheme.spacing.sm),
+                .padding(horizontal = MaterialTheme.spacing.md, vertical = MaterialTheme.spacing.md),
     ) {
         Column(modifier = Modifier.weight(1f)) {
             Text(

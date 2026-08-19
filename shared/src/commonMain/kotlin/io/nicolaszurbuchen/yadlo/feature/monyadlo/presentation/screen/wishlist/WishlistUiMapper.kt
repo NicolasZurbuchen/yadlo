@@ -1,5 +1,6 @@
 package io.nicolaszurbuchen.yadlo.feature.monyadlo.presentation.screen.wishlist
 
+import io.nicolaszurbuchen.yadlo.app.design.uimodel.toDietaryTags
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.wishlist_empty
@@ -27,8 +28,7 @@ fun WishlistState.toUiModel(): WishlistUiModel {
                                 id = stand.id,
                                 name = stand.name,
                                 offering = stand.offering,
-                                // The fiche's separator, so a stand reads the same in both places.
-                                marks = stand.marks.joinToString(" · ").ifEmpty { null },
+                                dietary = stand.dietary.toDietaryTags(),
                             )
                         },
                 )

@@ -1,9 +1,12 @@
 package io.nicolaszurbuchen.yadlo.feature.monyadlo.presentation.screen.wishlist
 
+import io.nicolaszurbuchen.yadlo.common.content.domain.model.DietaryCoverage
 import io.nicolaszurbuchen.yadlo.feature.monyadlo.domain.model.WishlistGroup
 import io.nicolaszurbuchen.yadlo.feature.monyadlo.domain.model.WishlistStand
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import yadlo.shared.generated.resources.Res
+import yadlo.shared.generated.resources.dietary_all_vegan
+import yadlo.shared.generated.resources.dietary_some_spicy
 import yadlo.shared.generated.resources.wishlist_empty
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -43,17 +46,21 @@ class WishlistUiMapperTest {
     }
 
     @Test
-    fun toUiModel_marks_readAsOneLineWithTheFichesSeparator() {
+    fun toUiModel_coverage_choosesBetweenTheWholeStandAndAnOption() {
         val stand = WishlistState(groups = listOf(food())).toUiModel().groups.single().stands.first()
 
-        assertEquals("végan · bio", stand.marks)
+        // The same mark, two wordings: everything here is vegan, only some of it is hot.
+        assertEquals(
+            listOf(Res.string.dietary_all_vegan, Res.string.dietary_some_spicy),
+            stand.dietary.map { it.label },
+        )
     }
 
     @Test
-    fun toUiModel_aStandWithNoMarks_writesNothingRatherThanAnEmptyLine() {
+    fun toUiModel_aStandWithNothingToSay_saysNothingRatherThanAnEmptyRow() {
         val stand = WishlistState(groups = listOf(food())).toUiModel().groups.single().stands.last()
 
-        assertNull(stand.marks)
+        assertTrue(stand.dietary.isEmpty())
         assertNull(stand.offering)
     }
 
@@ -75,9 +82,10 @@ class WishlistUiMapperTest {
                         id = "vegan-fabrik",
                         name = "Vegan Fabrik",
                         offering = "Cuisine végétale",
-                        marks = listOf("végan", "bio"),
+                        dietary =
+                            mapOf("vegan" to DietaryCoverage.ALL, "piquant" to DietaryCoverage.SOME),
                     ),
-                    WishlistStand(id = "guliko", name = "Guliko", offering = null, marks = emptyList()),
+                    WishlistStand(id = "guliko", name = "Guliko", offering = null, dietary = emptyMap()),
                 ),
         )
 
@@ -91,7 +99,7 @@ class WishlistUiMapperTest {
                         id = "la-fanfrelucherie",
                         name = "La Fanfrelucherie",
                         offering = "Accessoires",
-                        marks = emptyList(),
+                        dietary = emptyMap(),
                     ),
                 ),
         )

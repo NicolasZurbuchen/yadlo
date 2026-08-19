@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import io.nicolaszurbuchen.yadlo.app.design.component.YadloSectionHeader
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.partners.PartnerTierUiModel
@@ -44,11 +45,7 @@ fun PartnerTierBlock(
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm),
         modifier = modifier.fillMaxWidth(),
     ) {
-        Text(
-            text = tier.name.uppercase(),
-            style = MaterialTheme.typography.headlineMedium,
-            color = MaterialTheme.appColors.textTertiary,
-        )
+        YadloSectionHeader(title = tier.name)
 
         tier.members.chunked(COLUMNS).forEach { rowMembers ->
             Row(

@@ -11,7 +11,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import io.nicolaszurbuchen.yadlo.app.design.theme.YadloTheme
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
-import io.nicolaszurbuchen.yadlo.app.design.uimodel.FactMarkUiModel
+import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloFactMarkUiModel
 
 /**
  * The skeleton, then the 2026 page whole. All three section shapes are in it: facts with links
@@ -119,7 +119,7 @@ private fun published() =
                             AccessFactUiModel(
                                 id = "places",
                                 text = "Places limitées, et la distance jusqu'au site varie beaucoup",
-                                mark = FactMarkUiModel.INFO,
+                                mark = YadloFactMarkUiModel.INFO,
                             ),
                             fact("reservees", "Deux places réservées près de l'entrée"),
                         ),
@@ -162,4 +162,4 @@ private fun published() =
 private fun fact(
     id: String,
     text: String,
-) = AccessFactUiModel(id = id, text = text, mark = FactMarkUiModel.CHECK)
+) = AccessFactUiModel(id = id, text = text, mark = YadloFactMarkUiModel.CHECK)

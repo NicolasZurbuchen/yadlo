@@ -1,6 +1,6 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.access
 
-import io.nicolaszurbuchen.yadlo.app.design.uimodel.FactMarkUiModel
+import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloFactMarkUiModel
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.InfoLink
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Provenance
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Transport
@@ -128,7 +128,7 @@ class AccessUiMapperTest {
         // Both are true and they are not the same kind of true: one is what the site offers, the
         // other is what will go wrong. In a paragraph they weigh the same.
         assertEquals(
-            listOf(FactMarkUiModel.INFO, FactMarkUiModel.CHECK),
+            listOf(YadloFactMarkUiModel.INFO, YadloFactMarkUiModel.CHECK),
             state.toUiModel().modes.single().facts.map { it.mark },
         )
     }
@@ -157,7 +157,7 @@ class AccessUiMapperTest {
 
         // A way of getting here that does not exist is left out of the content rather than
         // published as a ✕, so this screen has two marks where paiement has three.
-        assertTrue(state.toUiModel().modes.single().facts.none { it.mark == FactMarkUiModel.CROSS })
+        assertTrue(state.toUiModel().modes.single().facts.none { it.mark == YadloFactMarkUiModel.CROSS })
     }
 
     private fun loaded() = AccessState(hasLoaded = true, transport = transport(notes = true)).toUiModel()

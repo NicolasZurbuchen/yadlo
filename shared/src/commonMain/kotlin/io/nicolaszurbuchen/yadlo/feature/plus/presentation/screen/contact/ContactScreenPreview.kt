@@ -11,6 +11,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import io.nicolaszurbuchen.yadlo.app.design.theme.YadloTheme
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.uimodel.PlusEmailUiModel
 
 /**
  * The skeleton and the directory. `hello@` is kept in the published state on purpose: it is the one
@@ -54,19 +55,19 @@ private fun published() =
         isLoading = false,
         emails =
             listOf(
-                ContactEmailUiModel(
+                PlusEmailUiModel(
                     id = "hello",
                     label = "Informations générales",
                     responsible = null,
                     address = "hello@yadlo.ch",
                 ),
-                ContactEmailUiModel(
+                PlusEmailUiModel(
                     id = "musique",
                     label = "Programmation musicale",
                     responsible = "Jeremy B.",
                     address = "musique@yadlo.ch",
                 ),
-                ContactEmailUiModel(
+                PlusEmailUiModel(
                     id = "foodtrucks",
                     label = "Food trucks",
                     responsible = "Jeremy R.",

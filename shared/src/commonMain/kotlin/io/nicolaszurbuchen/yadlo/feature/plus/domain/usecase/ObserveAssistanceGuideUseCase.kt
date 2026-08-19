@@ -26,6 +26,7 @@ class ObserveAssistanceGuideUseCase(
                 festival.assistance?.let { assistance ->
                     AssistanceGuide(
                         numbers = assistance.emergencyNumbers,
+                        recognition = assistance.recognition,
                         lostPropertyEmail =
                             festival.contact
                                 ?.emails

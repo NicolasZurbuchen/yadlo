@@ -3,6 +3,7 @@ package io.nicolaszurbuchen.yadlo.feature.happening.domain.usecase
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.ContentBundle
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.ContentStatus
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Happening
+import io.nicolaszurbuchen.yadlo.common.content.domain.model.dietaryCoverage
 import io.nicolaszurbuchen.yadlo.common.content.domain.repository.ContentRepository
 import io.nicolaszurbuchen.yadlo.common.plan.domain.model.SavedItem
 import io.nicolaszurbuchen.yadlo.common.plan.domain.model.SavedKind
@@ -74,12 +75,12 @@ class ObserveHappeningDetailUseCase(
 
                     is Happening.Activity -> happening.genres
 
-                    // The offering first, because it is the one every stand has: "Cuisine
-                    // libanaise" answers what someone walking the row is asking, and the marks
-                    // qualify it. A Stand's marks describe everything it sells, so they are
-                    // written as they are authored — `végan` here means the whole truck.
-                    is Happening.Stand -> listOfNotNull(happening.offering) + happening.marks
+                    // The offering alone: "Cuisine libanaise" answers what someone walking the row
+                    // is asking. What the stand can feed you is no longer a word in this list —
+                    // it is derived from the menu and drawn with its own glyphs, below.
+                    is Happening.Stand -> listOfNotNull(happening.offering)
                 },
+            dietary = stand?.dietaryCoverage().orEmpty(),
             slots = slots,
             price = activity?.price,
             bookingUrl = activity?.bookingUrl,

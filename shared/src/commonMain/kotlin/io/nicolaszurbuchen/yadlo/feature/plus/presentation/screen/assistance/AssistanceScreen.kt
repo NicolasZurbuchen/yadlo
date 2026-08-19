@@ -1,13 +1,17 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.assistance
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import io.nicolaszurbuchen.yadlo.app.design.component.YadloFactRow
 import io.nicolaszurbuchen.yadlo.app.design.component.YadloLinkTile
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
-import io.nicolaszurbuchen.yadlo.app.design.uimodel.LinkMarkUiModel
+import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloFactMarkUiModel
+import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloLinkMarkUiModel
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusBodyText
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusDetailScaffold
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusSection
@@ -18,15 +22,24 @@ import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.assistance_lost_body
 import yadlo.shared.generated.resources.assistance_section_emergency
 import yadlo.shared.generated.resources.assistance_section_lost
+import yadlo.shared.generated.resources.assistance_section_recognition
 import yadlo.shared.generated.resources.assistance_title
 
 /**
  * *En cas de besoin* — the numbers first, then where a lost bag goes.
  *
- * **The screen is currently its most reliable half, and says nothing more.** The prototype put a
- * first aid post, a children's meeting point and how to recognise a volunteer under these numbers;
- * none of it is published, and inventing any of it here is the one place in the app where being
- * wrong has a cost worth naming. What is left is true without anyone's confirmation.
+ * **It says only what the content stands behind.** The prototype put a first aid post and a
+ * children's meeting point under these numbers as well; neither is published, and inventing them
+ * here is the one place in the app where being wrong has a cost worth naming. *Reconnaître
+ * l'équipe* is here because the content now carries it, not because the shape wanted filling.
+ *
+ * A rule between numbers rather than spacing alone: four large figures in one stack read as one
+ * block, and the point of the screen is that each is a different call.
+ *
+ * The numbers get a column of their own so that nothing sits between a rule and the row it closes.
+ * The section's own spacing was pushing the rules 8dp clear of the rows on either side, which left
+ * a tap lighting up a strip floating between two lines. The row pads itself instead, inside its
+ * touch target, so the ripple runs the row's full height and stops exactly where the rule is.
  */
 @Composable
 fun AssistanceScreen(
@@ -53,8 +66,22 @@ fun AssistanceScreen(
 
         if (state.numbers.isNotEmpty()) {
             PlusSection(title = stringResource(Res.string.assistance_section_emergency)) {
-                state.numbers.forEach { number ->
-                    EmergencyNumberRow(number = number, onClick = onNumberClick)
+                Column(modifier = Modifier.fillMaxWidth()) {
+                    state.numbers.forEachIndexed { index, number ->
+                        if (index > 0) {
+                            HorizontalDivider(color = MaterialTheme.appColors.borderSubtle)
+                        }
+
+                        EmergencyNumberRow(number = number, onClick = onNumberClick)
+                    }
+                }
+            }
+        }
+
+        if (state.recognition.isNotEmpty()) {
+            PlusSection(title = stringResource(Res.string.assistance_section_recognition)) {
+                state.recognition.forEach {
+                    YadloFactRow(mark = YadloFactMarkUiModel.CHECK, fact = it)
                 }
             }
         }
@@ -65,7 +92,7 @@ fun AssistanceScreen(
 
                 YadloLinkTile(
                     label = email,
-                    mark = LinkMarkUiModel.MAIL,
+                    mark = YadloLinkMarkUiModel.MAIL,
                     onClick = { onLostPropertyClick(email) },
                 )
             }

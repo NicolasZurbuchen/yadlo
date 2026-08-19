@@ -11,8 +11,12 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import io.nicolaszurbuchen.yadlo.app.design.theme.YadloTheme
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
+import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloDietaryMarkUiModel
+import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloDietaryTagUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import yadlo.shared.generated.resources.Res
+import yadlo.shared.generated.resources.dietary_all_dairy_free
+import yadlo.shared.generated.resources.dietary_all_vegan
 import yadlo.shared.generated.resources.wishlist_empty
 
 /**
@@ -60,13 +64,20 @@ private fun kept() =
                                 id = "vegan-fabrik",
                                 name = "Vegan Fabrik",
                                 offering = "Cuisine végétale",
-                                marks = "végan · bio",
+                                dietary =
+                                    listOf(
+                                        YadloDietaryTagUiModel(YadloDietaryMarkUiModel.VEGAN, Res.string.dietary_all_vegan),
+                                        YadloDietaryTagUiModel(
+                                            YadloDietaryMarkUiModel.DAIRY_FREE,
+                                            Res.string.dietary_all_dairy_free,
+                                        ),
+                                    ),
                             ),
                             WishlistStandUiModel(
                                 id = "guliko",
                                 name = "Guliko",
                                 offering = "Cuisine géorgienne",
-                                marks = null,
+                                dietary = emptyList(),
                             ),
                         ),
                 ),
@@ -79,7 +90,7 @@ private fun kept() =
                                 id = "la-fanfrelucherie",
                                 name = "La Fanfrelucherie",
                                 offering = null,
-                                marks = null,
+                                dietary = emptyList(),
                             ),
                         ),
                 ),

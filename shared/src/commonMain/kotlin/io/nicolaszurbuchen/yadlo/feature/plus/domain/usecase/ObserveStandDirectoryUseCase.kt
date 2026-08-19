@@ -2,6 +2,7 @@ package io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase
 
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.ContentStatus
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Happening
+import io.nicolaszurbuchen.yadlo.common.content.domain.model.dietaryCoverage
 import io.nicolaszurbuchen.yadlo.common.content.domain.repository.ContentRepository
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.model.StandDirectory
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.model.StandKind
@@ -13,15 +14,11 @@ import kotlinx.coroutines.flow.map
 /**
  * One half of the stands — the food trucks and the bar, or the makers.
  *
- * **A stand matches a dietary mark if it carries it or any of its dishes does.** SCHEMA.md keeps the
- * two levels apart on purpose — a Stand mark means all of it is, an Item mark means that dish is —
- * and the difference is exactly what someone scanning a row of trucks is asking about. But they are
- * asking one question, "can I eat here", and both levels answer it. De l'Or Bokit carries no stand
- * mark and sells a `végé` bokit; a filter that hid it would be wrong about the only thing it was
- * asked.
- *
- * The row still shows only the Stand's own marks, so nothing claims the whole truck is vegan
- * because one dish is.
+ * **A stand matches a mark if any of its dishes carries it.** "Can I eat here" is one question, and
+ * a truck with a single vegan bokit answers it. What the row then *says* is the difference between
+ * covering everything it sells and covering part of it — see
+ * [io.nicolaszurbuchen.yadlo.common.content.domain.model.dietaryCoverage] — so a stand the filter
+ * matched always explains itself rather than leaving the reader to open the menu and find out.
  *
  * Stands keep the order the content lists them in, which is the same rule the Wishlist and the
  * Programme follow.
@@ -43,14 +40,7 @@ class ObserveStandDirectoryUseCase(
                                 id = stand.id,
                                 name = stand.name,
                                 offering = stand.offering,
-                                marks = stand.marks,
-                                dietaryMatches =
-                                    (
-                                        stand.marks +
-                                            stand.menu.flatMap { group ->
-                                                group.items.flatMap { it.marks }
-                                            }
-                                    ).toSet(),
+                                dietary = stand.dietaryCoverage(),
                             )
                         }
 
@@ -58,7 +48,7 @@ class ObserveStandDirectoryUseCase(
                     stands = stands,
                     // Offered in the order they were first met walking the list, so the chips read
                     // the way the stands do rather than alphabetically against them.
-                    marks = stands.flatMap { it.dietaryMatches }.distinct(),
+                    marks = stands.flatMap { it.dietary.keys }.distinct(),
                 )
             }
 }

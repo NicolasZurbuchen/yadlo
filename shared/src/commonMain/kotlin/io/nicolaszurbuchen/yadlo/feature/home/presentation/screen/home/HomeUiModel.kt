@@ -1,5 +1,6 @@
 package io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home
 
+import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloFigureUiModel
 import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SocialLinkUiModel
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.uimodel.AnnouncementUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
@@ -37,7 +38,7 @@ sealed interface HomeBlockUiModel {
 
     data class Figures(
         val title: UiText,
-        val items: List<FigureUiModel>,
+        val items: List<YadloFigureUiModel>,
         /** Null when every figure is confirmed; the caveat Provenance owes the reader otherwise. */
         val caveat: UiText?,
     ) : HomeBlockUiModel
@@ -57,9 +58,3 @@ sealed interface HomeBlockUiModel {
         val items: List<SocialLinkUiModel>,
     ) : HomeBlockUiModel
 }
-
-data class FigureUiModel(
-    val id: String,
-    val value: String,
-    val label: String,
-)

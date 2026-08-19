@@ -3,6 +3,7 @@ package io.nicolaszurbuchen.yadlo.feature.monyadlo.domain.usecase
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.ContentBundle
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.ContentStatus
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Happening
+import io.nicolaszurbuchen.yadlo.common.content.domain.model.dietaryCoverage
 import io.nicolaszurbuchen.yadlo.common.content.domain.repository.ContentRepository
 import io.nicolaszurbuchen.yadlo.common.plan.domain.model.SavedItem
 import io.nicolaszurbuchen.yadlo.common.plan.domain.model.SavedKind
@@ -57,7 +58,7 @@ class ObserveWishlistUseCase(
                                 id = stand.id,
                                 name = stand.name,
                                 offering = stand.offering,
-                                marks = stand.marks,
+                                dietary = stand.dietaryCoverage(),
                             )
                         },
                 )

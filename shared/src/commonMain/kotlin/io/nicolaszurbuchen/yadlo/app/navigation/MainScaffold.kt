@@ -1,31 +1,34 @@
 package io.nicolaszurbuchen.yadlo.app.navigation
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.rememberNavBackStack
+import io.nicolaszurbuchen.yadlo.app.design.component.YadloTopAppBar
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
-import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.ContentStatus
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.FestivalDay
 import io.nicolaszurbuchen.yadlo.common.content.domain.repository.ContentRepository
@@ -106,49 +109,77 @@ fun MainScaffold(modifier: Modifier = Modifier) {
         tabNavigator.select(Tab.HOME)
     }
 
-    Scaffold(
-        topBar = {
-            // Same rule as the bottom bar: it belongs to the tab roots. A fiche is full-screen with
-            // its own collapsing toolbar, and two bars stacked is not a screen anyone designed.
-            if (isAtTabRoot) {
-                MainTopAppBar(
-                    title = ready?.bundle?.festival?.name.orEmpty(),
-                    editionDates = ready?.bundle?.edition?.days?.let(::formatEditionDates).orEmpty(),
-                )
-            }
-        },
-        bottomBar = {
-            // The bar belongs to the tab roots. A fiche is full-screen, with a back chevron
-            // instead — the prototypes show no bar on a detail screen.
-            if (isAtTabRoot) {
-                MainNavigationBar(
-                    selectedTab = selectedTab,
-                    onTabClick = { tab ->
-                        if (tab == selectedTab) {
-                            // Re-tapping the active tab returns to its root. The standard way out
-                            // of a deep stack without hunting for the back gesture.
-                            stacks.getValue(tab).popToRoot()
-                        } else {
-                            tabNavigator.select(tab)
-                        }
+    // Measured from the bars themselves rather than assumed from a Material token, and held across
+    // the frames they are hidden for. See [TabChromeInsets] for why it must not move.
+    val density = LocalDensity.current
+    var chrome by remember { mutableStateOf(TabChromeInsets()) }
+
+    // The ground the tabs are drawn on. A Scaffold painted this for free and a Box does not, so
+    // dropping the Scaffold left every tab falling through to the platform root's own white.
+    Box(modifier = modifier.fillMaxSize().background(MaterialTheme.appColors.background)) {
+        // The graph owns the whole window at every depth. Nothing about its size depends on whether
+        // the current tab is at its root, which is what stops the screen behind a push from being
+        // re-measured while it is still on screen.
+        //
+        // LocalContentColor is the other thing the Scaffold used to hand down, through the Surface
+        // it wraps its content in. Material's ripple defaults to it, so with nothing providing it
+        // the four tabs fell back to foundation's plain black — a tap on an annonce lit up in a
+        // colour belonging to no theme, and in dark mode barely lit up at all.
+        CompositionLocalProvider(
+            LocalTabChromeInsets provides chrome,
+            LocalContentColor provides MaterialTheme.appColors.textPrimary,
+        ) {
+            NavGraph(
+                entries = currentEntries,
+                onBack = { currentStack.popOne() },
+                modifier = Modifier.fillMaxSize(),
+            )
+        }
+
+        // Both bars belong to the tab roots — a fiche is full-screen with a back chevron instead,
+        // and the prototypes show no bar on a detail screen. They slide out rather than vanish, so
+        // the title still covers the status bar for as long as the screen under it is still there.
+        AnimatedVisibility(
+            visible = isAtTabRoot,
+            enter = slideInVertically { -it },
+            exit = slideOutVertically { -it },
+            modifier = Modifier.align(Alignment.TopCenter),
+        ) {
+            // Yadlo, and when. On every tab root, so the answer to "which weekend is this?" is
+            // never more than a glance away and no screen has to spend a line of its own saying it.
+            YadloTopAppBar(
+                title = ready?.bundle?.festival?.name.orEmpty(),
+                subtitle = ready?.bundle?.edition?.days?.let(::formatEditionDates),
+                modifier =
+                    Modifier.onSizeChanged { size ->
+                        chrome = chrome.copy(top = with(density) { size.height.toDp() })
                     },
-                )
-            }
-        },
-        // **Off the tab roots the shell keeps none of the window for itself.** Hiding the two bars
-        // is not enough: a Scaffold still hands its content the system-bar insets, so a detail
-        // screen was drawn under a status-bar-high strip of nothing and then added its own inset on
-        // top of it — which reads exactly like the shell's bar with the title taken out of it. Below
-        // a tab root the screen owns the whole window, and PlusDetailScaffold's own Scaffold applies
-        // the insets once, where the bar that has to clear them actually is.
-        contentWindowInsets = if (isAtTabRoot) ScaffoldDefaults.contentWindowInsets else WindowInsets(0),
-        modifier = modifier,
-    ) { contentPadding ->
-        NavGraph(
-            entries = currentEntries,
-            onBack = { currentStack.popOne() },
-            modifier = Modifier.padding(contentPadding),
-        )
+            )
+        }
+
+        AnimatedVisibility(
+            visible = isAtTabRoot,
+            enter = slideInVertically { it },
+            exit = slideOutVertically { it },
+            modifier = Modifier.align(Alignment.BottomCenter),
+        ) {
+            MainNavigationBar(
+                selectedTab = selectedTab,
+                onTabClick = { tab ->
+                    if (tab == selectedTab) {
+                        // Re-tapping the active tab returns to its root. The standard way out of a
+                        // deep stack without hunting for the back gesture.
+                        stacks.getValue(tab).popToRoot()
+                    } else {
+                        tabNavigator.select(tab)
+                    }
+                },
+                modifier =
+                    Modifier.onSizeChanged { size ->
+                        chrome = chrome.copy(bottom = with(density) { size.height.toDp() })
+                    },
+            )
+        }
     }
 }
 
@@ -161,50 +192,6 @@ private fun NavBackStack<NavKey>.popOne() {
 
 private fun NavBackStack<NavKey>.popToRoot() {
     while (size > 1) removeAt(size - 1)
-}
-
-/**
- * Yadlo, and when. On every tab root, so the answer to "which weekend is this?" is never more than
- * a glance away and no screen has to spend a line of its own saying it.
- *
- * The dates are numeric and Swiss-ordered rather than written out, for the same reason the annonce
- * dates are: a month name is the first thing that needs translating, and the language structure is
- * not decided yet. Revisit when it is.
- */
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun MainTopAppBar(
-    title: String,
-    editionDates: String,
-    modifier: Modifier = Modifier,
-) {
-    TopAppBar(
-        title = {
-            // The dates sit beside the name on the same baseline rather than across the bar: they
-            // are a subtitle to it, and pinned right they read as an unrelated status field.
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm),
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                Text(
-                    text = title,
-                    style = MaterialTheme.typography.headlineSmall,
-                    color = MaterialTheme.appColors.textPrimary,
-                    modifier = Modifier.alignByBaseline(),
-                )
-
-                Text(
-                    text = editionDates,
-                    style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.appColors.textSecondary,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.alignByBaseline(),
-                )
-            }
-        },
-        modifier = modifier,
-    )
 }
 
 /**
