@@ -80,7 +80,12 @@
       "name": "DJ ALF",
       "category": "musique",
       "description": "Elliot Guyot, étudiant à HEC Lausanne devenu une figure des nuits vaudoises. Résident hebdomadaire du MAD Club et du D! Club, il a joué au Montreux Jazz, au Venoge et à Caribana, ainsi qu'au Flow à Paris. Un répertoire volontairement large — house, reggaeton, afrobeat et throwbacks des années 2010 — résumé par sa devise : « Bangers Only ».",
-      "images": [],
+      "images": [
+        {
+          "src": "shared/images/artists/alf.webp",
+          "credit": null
+        }
+      ],
       "provenance": "confirmed",
       "artist": {
         "genres": [
@@ -118,7 +123,12 @@
       "name": "CÆSURE",
       "category": "musique",
       "description": "Guitare acoustique et production électro. Son premier EP, « J'essaie », est sorti le 10 juillet 2026 : six titres, dont « Souvenir » et « Rêve de star » en collaboration avec Andy Wheelr.",
-      "images": [],
+      "images": [
+        {
+          "src": "shared/images/artists/caesure.webp",
+          "credit": null
+        }
+      ],
       "provenance": "confirmed",
       "artist": {
         "genres": [
@@ -147,7 +157,12 @@
       "name": "Diggin'",
       "category": "musique",
       "description": "Groupe d'indie-soul né à Lausanne en 2020, porté par Dany Cerone à la guitare et Julien Portenguen au chant, en collectif évolutif de quatre à six musiciens — avec notamment Gabriel Scheder à la batterie et Simon Palluel à la basse. Influencé par Nick Hakim, Skinshape et Yellow Days, le groupe mêle influences rétro et modernité lo-fi. Après une série d'EP en 2023 et 2024, le premier album « New, Again » marque un tournant en 2025 : artiste Radar RTS, deux années consécutives au Cully Jazz et au Montreux Jazz. Le deuxième album « Viewpoints » vient de sortir, accompagné d'une tournée 2026.",
-      "images": [],
+      "images": [
+        {
+          "src": "shared/images/artists/diggin.webp",
+          "credit": null
+        }
+      ],
       "provenance": "confirmed",
       "artist": {
         "genres": [
@@ -179,7 +194,12 @@
       "name": "AMC",
       "category": "musique",
       "description": "Son style a rapidement capté l'attention de la scène, avec le soutien d'artistes reconnus comme Mau P ou Cloonee. En 2024, il sort son premier titre sur le label Nervous Records, étape majeure de son ascension dans la musique électronique.",
-      "images": [],
+      "images": [
+        {
+          "src": "shared/images/artists/amc.webp",
+          "credit": null
+        }
+      ],
       "provenance": "confirmed",
       "artist": {
         "genres": [
@@ -203,7 +223,12 @@
       "name": "JAYJAY",
       "category": "musique",
       "description": "DJ house vaudois, lié au Collectif 52 et aux scènes de Morges et de Lausanne.",
-      "images": [],
+      "images": [
+        {
+          "src": "shared/images/artists/jayjay.webp",
+          "credit": null
+        }
+      ],
       "provenance": "confirmed",
       "artist": {
         "genres": [
@@ -223,7 +248,12 @@
       "name": "Carlos Willengton",
       "category": "musique",
       "description": "Il a joué ses premiers sets à l'époque où seuls les vinyles tournaient. Sa collection s'est étoffée en même temps que son métier, jusqu'à devenir DJ professionnel. Il se produit aujourd'hui dans le monde entier avec des sets 100 % vinyles et une maîtrise absolue des platines.",
-      "images": [],
+      "images": [
+        {
+          "src": "shared/images/artists/carlos-willenghton.webp",
+          "credit": null
+        }
+      ],
       "provenance": "confirmed",
       "artist": {
         "genres": [
@@ -252,7 +282,12 @@
       "name": "Thalassothérapie",
       "category": "musique",
       "description": "Une odyssée musicale qui traverse les décennies et les frontières, entre reprises inattendues et trésors cachés venus des quatre coins du globe. Parfois doux et relaxant, parfois un peu fou : un mix éclectique qui surprend à chaque instant.",
-      "images": [],
+      "images": [
+        {
+          "src": "shared/images/artists/thalassotherapie.webp",
+          "credit": null
+        }
+      ],
       "provenance": "confirmed",
       "artist": {
         "genres": [
@@ -272,7 +307,12 @@
       "name": "Dubside",
       "category": "musique",
       "description": "Collectif de trois amis d'enfance originaires de Préverenges et Denges. Portés depuis toujours par une passion commune pour la musique électronique et sa culture, ils ont construit au fil des années une identité sonore forte et authentique, en mixant à deux ou à trois derrière les platines, chacun son tour — une approche rare qui les distingue des formats B2B classiques.",
-      "images": [],
+      "images": [
+        {
+          "src": "shared/images/artists/dubside.webp",
+          "credit": null
+        }
+      ],
       "provenance": "confirmed",
       "artist": {
         "genres": [
@@ -296,7 +336,12 @@
       "name": "Gauthier Quenis",
       "category": "musique",
       "description": "DJ et producteur, membre du Collectif 52.",
-      "images": [],
+      "images": [
+        {
+          "src": "shared/images/artists/gauthier.webp",
+          "credit": null
+        }
+      ],
       "provenance": "confirmed",
       "artist": {
         "genres": [
@@ -316,7 +361,12 @@
       "name": "Refaire le monde",
       "category": "musique",
       "description": "Indie pop et alt rock. Après les albums « Enough » (2024) et « September » (2025), le groupe a sorti l'EP « Polaroids » en 2026.",
-      "images": [],
+      "images": [
+        {
+          "src": "shared/images/artists/refaire-le-monde.webp",
+          "credit": null
+        }
+      ],
       "provenance": "confirmed",
       "artist": {
         "genres": [
@@ -341,7 +391,12 @@
       "name": "Albert Chinet",
       "category": "musique",
       "description": "Après avoir performé en solo, puis en trio pendant des années, il propose désormais une formation à quatre : batterie, guitares électrique et acoustique, basse et synthés. Entre dérision et mise à nu, Albert Chinet ne choisit pas — il offre un spectacle total, humain et profondément vibrant.",
-      "images": [],
+      "images": [
+        {
+          "src": "shared/images/artists/albert-chinet.webp",
+          "credit": null
+        }
+      ],
       "provenance": "confirmed",
       "artist": {
         "genres": [
@@ -366,7 +421,24 @@
       "name": "Léman Records",
       "category": "musique",
       "description": "Label lancé en 2023 par l'ancien collectif Limited Brothers, actif depuis plus de dix ans. Avant tout des amis de longue date réunis par le même goût des grooves rares et des disques poussiéreux. Leurs résidences ont accueilli des sélectionneurs acclamés — Mark Grusane, Volcov, Alexander Nut, Fredfades, Alton Miller — et leur sélection de joyaux soulful et de sons plus profonds apporte des vibrations lumineuses sur le dancefloor.",
-      "images": [],
+      "images": [
+        {
+          "src": "shared/images/artists/leman-records.webp",
+          "credit": null
+        },
+        {
+          "src": "shared/images/artists/leman-records-1.webp",
+          "credit": null
+        },
+        {
+          "src": "shared/images/artists/leman-records-2.webp",
+          "credit": null
+        },
+        {
+          "src": "shared/images/artists/leman-records-3.webp",
+          "credit": null
+        }
+      ],
       "provenance": "confirmed",
       "artist": {
         "genres": [
@@ -398,7 +470,12 @@
       "name": "Tree House",
       "category": "musique",
       "description": "Collectif musical vaudois — « Tree House Music Collective » — que l'on retrouve en club comme en festival.",
-      "images": [],
+      "images": [
+        {
+          "src": "shared/images/artists/treehouse.webp",
+          "credit": null
+        }
+      ],
       "provenance": "confirmed",
       "artist": {
         "genres": [
@@ -419,7 +496,12 @@
       "name": "Silent Party",
       "category": "silent",
       "description": "Trois ambiances, un seul dancefloor et des centaines de casques illuminés. Choisissez votre musique, changez de canal — vert, bleu ou rouge — au gré de vos envies. L'expérience immersive du samedi soir à Yadlo.",
-      "images": [],
+      "images": [
+        {
+          "src": "shared/images/activities/silent.webp",
+          "credit": null
+        }
+      ],
       "provenance": "confirmed",
       "activity": {
         "genres": [
@@ -705,7 +787,12 @@
       "name": "GladiaSUP",
       "category": "eau",
       "description": "Parcours d'obstacles sur stand-up paddle, matériel inclus. Venez défier vos amis ou le chronomètre pour tenter de remporter le gros lot.",
-      "images": [],
+      "images": [
+        {
+          "src": "shared/images/activities/gladia-sup.webp",
+          "credit": null
+        }
+      ],
       "provenance": "confirmed",
       "activity": {
         "genres": [],
@@ -818,7 +905,12 @@
       "name": "Yoga",
       "category": "eau",
       "description": "Cours de yoga matinal sur la plage, sans inscription, tous niveaux bienvenus. Venez avec votre tapis — s'il vous reste de l'énergie après la Silent Party.",
-      "images": [],
+      "images": [
+        {
+          "src": "shared/images/activities/yoga.webp",
+          "credit": null
+        }
+      ],
       "provenance": "confirmed",
       "activity": {
         "genres": [],

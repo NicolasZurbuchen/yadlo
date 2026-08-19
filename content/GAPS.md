@@ -281,39 +281,42 @@ Three whole artists missing and one on the wrong day is not drift, it is a page 
 working copy of the programme lives somewhere else — a spreadsheet, a Notion page, the Instagram
 drafts — that is the thing the app should be fed from.
 
-## 7. Images — the fields exist, nothing fills them
+## 7. Images — the artists are done, the stands are not
 
-**36/36 happenings have no image and 33/33 partners have no logo.** The fields are in place, so
-this is now purely a matter of supplying files.
+**16/38 happenings now carry a photo: all thirteen artists, and three activities** — GladiaSUP, la
+Silent Party and le yoga. They were taken from the association's own channels, cleaned, cropped to
+one size and converted to WebP. **22 remain**: every stand, and every activity but those three.
+
+**All 39 partner logos are in the picture bank and none of them is referenced yet.** The files are
+there under `shared/logos/`; `logo` is still `null` on every partner, so the validator reports each
+file as unreferenced. That is a wiring job rather than a content gap — eleven of the filenames do
+not match their partner id (`arenaz-automobile` against `arenaz`, `morges` against `morges-region`,
+`volta` against `volt-a`), so the mapping wants an eye rather than a loop.
 
 | Field | On | Shape |
 |---|---|---|
 | `images` | every happening — artist, activity, stand | `[{ "src": …, "credit": … }]`, empty when unknown |
 | `logo` | every partner | a single `src`, or `null` |
 
-**A `src` is either an absolute `https://` URL, or a path relative to the edition's
-`imageBaseUrl`.** That field is `null` today because hosting is not settled, and while it is null
-only absolute URLs are accepted — the validator says so rather than letting a relative path sit
-there resolving against nothing. Setting `imageBaseUrl` once turns every path short and lets the
-whole image set move host by editing one line.
+**A `src` is either an absolute `https://` URL, or a path relative to the content root** —
+`shared/images/artists/alf.webp`. There is no `imageBaseUrl`: the app already knows the address it
+fetched the bundle from, and declaring it again in the content would be the same fact written twice.
+The picture bank lives under `shared/` rather than under an edition because a photo of an artist who
+plays two years running is one file, not two.
 
 **Photos and logos are deliberately different fields.** A photo gets cropped into a collapsing
 toolbar behind a scrim; a logo must never be cropped, tinted or bled to an edge. Same data type,
 opposite handling, so they do not share a name.
 
-`credit` exists because press photos usually carry a photographer's condition. It is optional and
-`null` today.
+`credit` exists because press photos usually carry a photographer's condition. It is `null` on all
+nineteen files currently in the bank, none of which arrived with one.
 
-**What is needed:**
+**What is still needed:**
 
-- **One photo per artist.** `/artistes` carries press photos as page assets — `AMC.jpg`,
-  `AlbertChinet_PhotoPresse.jpg`, `Carlos.JPG`, `dubside.jpg` — so the association holds proper
-  kits. The fiche puts this behind a collapsing toolbar, making it the most visible gap after the
-  food trucks.
-- **One photo per activity and per stand.** The stand list is the screen where a photo does most
-  work: people choose food by looking at it.
-- **A logo per partner.** These already exist on `/partenaires`, as images with no text — the
-  same reason the names had to be supplied by hand.
+- **One photo per stand.** The stand list is the screen where a photo does most work: people choose
+  food by looking at it, and this is now the largest remaining hole.
+- **One photo per activity**, for the ten that have none.
+- **The partner logos wired up**, which is a mapping rather than an ask.
 
 ## ✅ Resolved — every Slot now has a start and an end
 
