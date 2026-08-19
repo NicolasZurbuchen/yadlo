@@ -706,10 +706,17 @@ Party is the same template plus the booking row; a ground activity is the water 
 different colour; the children's corner is covered by the same shape.
 
 - **Collapsing toolbar.** The hero photo carries the title; on scroll the title rises into
-  the bar and the bar takes the category colour. **Continuously, not at a threshold** — the
-  tint is the proportion of the header that has gone under the bar, so a slow drag paints it
-  on slowly and a fling lands on it. A threshold turned the same journey into a jump halfway
-  through a drag, which reads as a fault rather than as an effect.
+  the bar and **the category colour closes over the whole head**, bar and photograph
+  together, from one number. Tinting only the bar left a colour strip sitting on an untinted
+  picture, which is a bar over a photo rather than a head arriving at a colour.
+  **Continuously, not at a threshold**, so a slow drag paints it on slowly and a fling lands
+  on it. It starts a third of the way in — a photograph that dissolves the moment a thumb
+  moves reads as fragile — and reaches full opacity with a fifth of the travel still to go,
+  because the tail of a linear ramp is a picture faintly showing through something meant to
+  be solid, which looks broken rather than gradual.
+  **A rule in the category colour closes the hero at rest.** Sitting still at the top of a
+  fiche, nothing said which category it was: the bar is transparent, the label is written in
+  the scrim's ink, and the colour did not arrive until something was scrolled.
   The radial blob this originally specified as sitting *over* the photograph is now what
   stands in *for* it: over an image it was one more thing between the reader and the picture,
   and the fiches that have no picture are the ones that needed it.
@@ -779,12 +786,22 @@ pill, measured against the same tick. Mon Yadlo will be the third. The strings m
 `slot_state_*` and `price_free` are named after what they describe rather than after the first
 screen that happened to need them.
 
-**The heart is attached to what you are saving, and the whole row is the target.** For a
-Slot that is the date row; for a Stand, which has no dates, it is the button in the bar.
-There is never more than one heart for the same thing on a screen, never a selection dialog,
-and removing is the same heart tapped again. This replaces the earlier "hearts toggle, rows
-navigate" rule: people expect to tap the row, and a fiche's date row has nowhere to navigate
-to anyway.
+**The heart is attached to what you are saving. The heart is also the only target.** For a
+Slot that is the mark on the date row; for a Stand, which has no dates, it is the button in the
+bar. There is never more than one heart for the same thing on a screen, never a selection dialog,
+and removing is the same heart tapped again.
+
+*The whole row was the target, and that is reversed.* The argument for it was sound — people expect
+to tap a row, and a fiche's date row has nowhere to navigate to — but a row that is tappable has to
+look tappable, and what made it look so was a card that stayed lit under a kept Slot. That was the
+part that read wrong. A card under a row is the language of *selected*, so the fiche looked as
+though it had a current date row rather than a kept one, and the meaning the ground was carrying
+was already carried by the mark at the end of the line. Removing it takes the ambiguity and the
+inset with it: the date now starts on the same left edge as every other line on the screen.
+
+The mark keeps its disc, filled with the accent when kept and a ring when not. It is now a control
+rather than a badge, which is also why it names its own action — the row used to say what a tap
+would do, and the row no longer takes one.
 
 **One table for both buckets, with the bucket written into the row.** `SavedEntry(id, kind,
 edition_id)` holds a Slot id under `SLOT` and a Happening id under `STAND`. The two id spaces could

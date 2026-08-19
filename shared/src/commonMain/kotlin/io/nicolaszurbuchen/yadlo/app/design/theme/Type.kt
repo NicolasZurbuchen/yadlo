@@ -86,7 +86,8 @@ val AppTypography
                     lineHeight = 16.sp,
                     letterSpacing = 2.sp,
                 ),
-            // Screen titles — Accueil, Programme, Mon Yadlo, Plus
+            // Screen titles — Accueil, Programme, Mon Yadlo, Plus — and a fiche's own title where
+            // it is the screen title rather than a label on a bar: the name over the hero image
             headlineLarge =
                 TextStyle(
                     fontFamily = BarlowSemiCondensedFamily,
@@ -104,7 +105,8 @@ val AppTypography
                     lineHeight = 20.sp,
                     letterSpacing = 1.5.sp,
                 ),
-            // A fiche's title — the artist, activity or stand name in the collapsing toolbar
+            // A fiche's title once it has risen into the collapsing toolbar, where it is one line
+            // of chrome beside a back arrow rather than the largest thing on the screen
             headlineSmall =
                 TextStyle(
                     fontFamily = BarlowSemiCondensedFamily,

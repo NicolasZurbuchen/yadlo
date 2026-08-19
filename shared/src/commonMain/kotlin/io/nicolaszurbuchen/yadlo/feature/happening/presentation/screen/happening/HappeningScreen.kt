@@ -69,12 +69,19 @@ import yadlo.shared.generated.resources.wishlist_remove
  * Happening, so a Stand that publishes no menu and an Activity that costs nothing degrade the same
  * quiet way.
  *
- * **The toolbar is transparent over the header and arrives at the Category colour exactly as the
- * header leaves.** It is tied to the scroll rather than switched at a threshold: the tint is the
- * proportion of the header that has gone under the bar, so a slow drag paints the colour on slowly
- * and a fling lands on it. A threshold made the same journey a jump, and a jump in the middle of a
- * drag reads as something having gone wrong. The bar's own title fades in over the last stretch
- * alone, because until then the header is still carrying it and two copies of one title crossing
+ * **The Category's colour closes over the whole head, not just over the toolbar.** One number
+ * drives both: the bar's container and the veil over the header take the same alpha, so what
+ * arrives is a single block of colour rather than a tinted bar sitting on an untinted photograph.
+ * It is tied to the scroll rather than switched at a threshold — a slow drag paints the colour on
+ * slowly and a fling lands on it, where a threshold made the same journey a jump halfway through a
+ * drag.
+ *
+ * **It starts late and finishes early**, both deliberately. Nothing happens for the first third of
+ * the header's travel, because a photograph that starts dissolving the moment a thumb moves reads as
+ * fragile; and full opacity is reached with a little of the header still to go, because the last
+ * few percent of a linear ramp are a photograph showing faintly through a colour that is supposed to
+ * be solid — which was the state that looked broken rather than gradual. The bar's own title fades
+ * in later still, since until then the header is carrying it and two copies of one title crossing
  * each other looks like a bug.
  *
  * The status bar is not tinted with it — that is a system-window concern the app shell has not taken
@@ -114,12 +121,14 @@ fun HappeningScreen(
         }
     }
 
-    val barColor = category.fill.copy(alpha = collapseProgress)
+    // The colour's own ramp, which is not the header's: see the note on the two constants.
+    val tint = ((collapseProgress - TINT_FROM) / (TINT_FULL - TINT_FROM)).coerceIn(0f, 1f)
+    val barColor = category.fill.copy(alpha = tint)
     // Over a photograph the icons stand on the scrim, over the blob they stand on the page. Either
     // way they end on the Category's own ink, and they travel there as the colour arrives.
     val expandedInk =
         if (state.imageUrl != null) MaterialTheme.appColors.onScrim else MaterialTheme.appColors.textPrimary
-    val barInk = lerp(expandedInk, category.ink, collapseProgress)
+    val barInk = lerp(expandedInk, category.ink, tint)
     val barTitleAlpha = ((collapseProgress - TITLE_FADE_FROM) / (1f - TITLE_FADE_FROM)).coerceIn(0f, 1f)
 
     Scaffold(
@@ -208,6 +217,7 @@ fun HappeningScreen(
                             categoryId = state.categoryId,
                             categoryLabel = state.categoryLabel,
                             title = state.title,
+                            tint = tint,
                             modifier = Modifier.onSizeChanged { headerHeightPx = it.height },
                         )
                     }
@@ -347,7 +357,22 @@ fun HappeningScreen(
 private val TOP_BAR_HEIGHT = 64.dp
 
 /**
- * The bar's title starts appearing only in the last 40% of the collapse. Earlier and it overlaps the
- * header's own copy of the title while both are still legible; later and it snaps in.
+ * Where the Category's colour starts arriving, as a fraction of the header's travel. Late enough
+ * that a small scroll leaves the photograph alone — the first third of the journey is the part a
+ * thumb does by accident.
  */
-private const val TITLE_FADE_FROM = 0.6f
+private const val TINT_FROM = 0.35f
+
+/**
+ * And where it is fully arrived, with a fifth of the travel still to go. The alternative is a linear
+ * ramp that is still 5% transparent when the image is all but gone, which does not read as nearly
+ * opaque — it reads as a photograph faintly showing through something meant to be solid.
+ */
+private const val TINT_FULL = 0.8f
+
+/**
+ * The bar's title starts appearing only in the last 30% of the collapse, after the colour has
+ * arrived. Earlier and it overlaps the header's own copy of the title while both are still legible;
+ * later and it snaps in.
+ */
+private const val TITLE_FADE_FROM = 0.7f

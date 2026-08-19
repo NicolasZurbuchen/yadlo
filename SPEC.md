@@ -609,9 +609,11 @@ the only place the answer lives.
 
 ### Interaction rules
 
-- **The heart is attached to what you are saving, and the whole row is the target.** Slot →
-  date row. Stand → button in the bar. Never two hearts for one thing on a screen. Never a
-  selection dialog.
+- **The heart is attached to what you are saving, and the heart is the only target.** Slot →
+  the mark on the date row. Stand → button in the bar. Never two hearts for one thing on a
+  screen. Never a selection dialog. *The whole row was the target until the fiche was built
+  against real content: making a row tappable meant lighting a kept one, and a lit row reads
+  as selected rather than as kept.*
 - **Lists compare, cards separate.** Programme and Mon Yadlo use rows; stand lists and
   grouped Plus entries use cards. Measured: cards cost +32% vertical space in Programme.
 - **Facts must not look tappable.** Card-with-chevron is reserved for navigation; `↗` marks

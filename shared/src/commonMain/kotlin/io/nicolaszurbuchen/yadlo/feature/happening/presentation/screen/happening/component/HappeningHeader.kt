@@ -36,12 +36,25 @@ import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
  * none. The words sit in the same place either way, so a fiche with a photo and a fiche without do
  * not read as two different screens.
  *
+ * **A rule in the Category's colour closes the hero, and only the hero.** Sitting still at the top
+ * of a fiche, a photograph says nothing about which Category it belongs to: the toolbar is
+ * transparent, the label is written in the scrim's ink, and the colour does not arrive until
+ * something is scrolled. The rule is the one place the Category is stated at rest. The blob variant
+ * needs no such thing — it is already the colour — and capping its soft falloff with a hard edge
+ * would fight the only idea it has.
+ *
+ * **[tint] closes the Category's own colour over the whole image**, not merely over the toolbar
+ * strip. The toolbar taking the colour on its own left a photograph showing through underneath it,
+ * half-covered and half not; the veil is what makes the head arrive at the Category rather than at a
+ * bar sitting on a picture. Driven by the screen because the same number drives the bar, and two
+ * ramps that were meant to agree are two ramps that can stop agreeing.
+ *
  * **Over a photograph both lines are [io.nicolaszurbuchen.yadlo.app.design.theme.AppColors.onScrim],
  * including the Category label.** The scrim's alpha was derived as the lowest at which white clears
  * 4.5:1 over a *white* photograph, which is the worst case an image can present; a Category fill has
  * no such guarantee, because the fills were measured against the app's own grounds and never against
  * a photograph nobody has seen. Colour is not lost as a carrier — the Category is written out in
- * words, and the toolbar above takes its fill as the header scrolls away.
+ * words, it closes over the image on scroll, and the rule states it at rest.
  *
  * The Category colour is also what fills the frame until the image arrives, so a fiche opened with
  * no signal is the same colour as the bar it collapses into rather than a grey rectangle.
@@ -52,6 +65,7 @@ fun HappeningHeader(
     categoryId: String,
     categoryLabel: String,
     title: String,
+    tint: Float,
     modifier: Modifier = Modifier,
 ) {
     val category = MaterialTheme.categoryColors.forId(categoryId)
@@ -109,11 +123,32 @@ fun HappeningHeader(
                             ),
                         ),
             )
+
+            Box(modifier = Modifier.fillMaxSize().background(category.fill.copy(alpha = tint)))
+
+            // Above the veil rather than under it, so it stays the same colour at every point of
+            // the collapse instead of being painted over by its own hue.
+            Box(
+                modifier =
+                    Modifier
+                        .align(Alignment.BottomCenter)
+                        .fillMaxWidth()
+                        .height(CATEGORY_RULE_HEIGHT)
+                        .background(category.fill),
+            )
         }
 
         Column(
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xs),
-            modifier = Modifier.padding(horizontal = MaterialTheme.spacing.md, vertical = MaterialTheme.spacing.lg),
+            modifier =
+                Modifier.padding(
+                    start = MaterialTheme.spacing.md,
+                    top = MaterialTheme.spacing.lg,
+                    end = MaterialTheme.spacing.md,
+                    // Tighter than the top, so the name sits down on the rule rather than floating
+                    // in the middle of the photograph's lower third.
+                    bottom = MaterialTheme.spacing.md,
+                ),
         ) {
             Text(
                 text = categoryLabel,
@@ -123,7 +158,9 @@ fun HappeningHeader(
 
             Text(
                 text = title,
-                style = MaterialTheme.typography.headlineSmall,
+                // The screen-title size rather than the toolbar's: at rest this *is* the screen's
+                // title, and the 22sp the bar carries it at looked like a caption on a photograph.
+                style = MaterialTheme.typography.headlineLarge,
                 color = if (imageUrl != null) MaterialTheme.appColors.onScrim else MaterialTheme.appColors.textPrimary,
             )
         }
@@ -141,6 +178,13 @@ private val HERO_HEIGHT = 280.dp
  * words still have to clear a toolbar and a status bar that are drawn on top of it.
  */
 private val BLOB_HEADER_MIN_HEIGHT = 200.dp
+
+/**
+ * Thicker than a divider and thinner than a band. A hairline of `eau` blue against a photograph of
+ * the lake is not a statement of anything; three points reads as deliberate at arm's length in
+ * sunlight, which is the only place it has to work.
+ */
+private val CATEGORY_RULE_HEIGHT = 3.dp
 
 /** The clear band, as fractions of the header's height. Wide enough to be the photograph's subject. */
 private const val SCRIM_CLEAR_FROM = 0.3f
