@@ -387,7 +387,11 @@ content/
   editions/
     2026/edition.json  frozen: programme, activités, stands, menus, prix,
                                horaires, partenaires, chiffres
-    2026/images/
+    2026/images/       only what depicts this edition and no other — the affiche
+  shared/              the picture bank, spanning every edition
+    images/            artists/ · activities/ · stands/
+    logos/             one per partner
+  README.md            what this directory is, for whoever edits it next
   SCHEMA.md            every field, its nullability, and every closed value set
   GAPS.md              what is still missing, to put in front of the association
   validate.js          gates the deploy
