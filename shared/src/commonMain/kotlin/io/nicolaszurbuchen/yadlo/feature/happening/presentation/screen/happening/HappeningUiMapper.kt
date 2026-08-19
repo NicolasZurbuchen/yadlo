@@ -5,8 +5,10 @@ import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotLiveSta
 import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.slotLiveStateAt
 import io.nicolaszurbuchen.yadlo.common.time.FESTIVAL_TIME_ZONE
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
+import io.nicolaszurbuchen.yadlo.infra.ui.formatAsDayOfMonth
 import io.nicolaszurbuchen.yadlo.infra.ui.formatAsTimeOfDay
 import io.nicolaszurbuchen.yadlo.infra.ui.formatMoney
+import io.nicolaszurbuchen.yadlo.infra.ui.monthName
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.happening_booking_action
 import yadlo.shared.generated.resources.happening_booking_required
@@ -39,6 +41,7 @@ fun HappeningState.toUiModel(): HappeningUiModel {
             title = "",
             categoryId = "",
             categoryLabel = "",
+            imageUrl = null,
             description = null,
             tags = emptyList(),
             dietary = emptyList(),
@@ -55,6 +58,7 @@ fun HappeningState.toUiModel(): HappeningUiModel {
 
     return blank.copy(
         title = loaded.name,
+        imageUrl = loaded.imageUrl,
         dietary = loaded.dietary.toDietaryTags(),
         categoryId = loaded.categoryId,
         // Written out above the title, in the Category's own colour but never only in it.
@@ -68,6 +72,10 @@ fun HappeningState.toUiModel(): HappeningUiModel {
                 HappeningSlotUiModel(
                     id = slot.id,
                     dayName = slot.dayName,
+                    // Off the FestivalDay's own opening instant, never off the Slot's start: the
+                    // Silent Party runs to 02:00 and its row says samedi, not dimanche.
+                    dayNumber = slot.dayStart.formatAsDayOfMonth(FESTIVAL_TIME_ZONE),
+                    monthName = slot.dayStart.monthName(FESTIVAL_TIME_ZONE),
                     timeText =
                         "${slot.start.formatAsTimeOfDay(FESTIVAL_TIME_ZONE)} – " +
                             slot.end.formatAsTimeOfDay(FESTIVAL_TIME_ZONE),

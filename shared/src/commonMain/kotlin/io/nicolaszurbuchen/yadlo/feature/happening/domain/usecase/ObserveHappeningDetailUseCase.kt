@@ -54,6 +54,7 @@ class ObserveHappeningDetailUseCase(
                     HappeningSlot(
                         id = it.id,
                         dayName = it.day.name,
+                        dayStart = it.day.start,
                         start = it.start,
                         end = it.end,
                         planned = it.id in plannedSlotIds,
@@ -68,6 +69,9 @@ class ObserveHappeningDetailUseCase(
             name = happening.name,
             categoryId = happening.category.id,
             categoryName = happening.category.name,
+            // The first image or none. Which one is the lead photograph is an authoring decision
+            // made by the order they are written in, not one the app should be re-deciding.
+            imageUrl = happening.images.firstOrNull()?.url,
             description = happening.description,
             tags =
                 when (happening) {

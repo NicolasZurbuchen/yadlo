@@ -1,13 +1,13 @@
 package io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening
 
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
@@ -24,12 +24,17 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.lerp
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
 import io.nicolaszurbuchen.yadlo.app.design.component.YadloDietaryTags
 import io.nicolaszurbuchen.yadlo.app.design.component.YadloFactRow
 import io.nicolaszurbuchen.yadlo.app.design.component.YadloLinkTile
@@ -64,10 +69,17 @@ import yadlo.shared.generated.resources.wishlist_remove
  * Happening, so a Stand that publishes no menu and an Activity that costs nothing degrade the same
  * quiet way.
  *
- * The toolbar is transparent over the header and takes the Category colour once the title has
- * scrolled under it, which is the collapse the prototype describes. The title rises into the bar at
- * the same moment. The status bar is not tinted with it — that is a system-window concern the app
- * shell has not taken on yet, and doing it from one screen would leave the other four inconsistent.
+ * **The toolbar is transparent over the header and arrives at the Category colour exactly as the
+ * header leaves.** It is tied to the scroll rather than switched at a threshold: the tint is the
+ * proportion of the header that has gone under the bar, so a slow drag paints the colour on slowly
+ * and a fling lands on it. A threshold made the same journey a jump, and a jump in the middle of a
+ * drag reads as something having gone wrong. The bar's own title fades in over the last stretch
+ * alone, because until then the header is still carrying it and two copies of one title crossing
+ * each other looks like a bug.
+ *
+ * The status bar is not tinted with it — that is a system-window concern the app shell has not taken
+ * on yet, and doing it from one screen would leave the other four inconsistent. The header runs
+ * underneath it regardless, which is what puts the photograph against the top of the screen.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -81,19 +93,34 @@ fun HappeningScreen(
 ) {
     val listState = rememberLazyListState()
     val category = MaterialTheme.categoryColors.forId(state.categoryId)
+    val density = LocalDensity.current
 
-    // The header is the first item, so "the title has gone under the bar" is exactly "we are no
-    // longer looking at the top of item zero".
-    val isCollapsed by remember {
+    // The header is item zero, so how much of it is left is exactly how far item zero has scrolled.
+    // Measured rather than assumed: it is a fixed 280dp with a photograph behind it, and as tall as
+    // its own title without one.
+    var headerHeightPx by remember { mutableIntStateOf(0) }
+    val barBottomPx = WindowInsets.statusBars.getTop(density) + with(density) { TOP_BAR_HEIGHT.roundToPx() }
+
+    val collapseProgress by remember(barBottomPx) {
         derivedStateOf {
-            listState.firstVisibleItemIndex > 0 ||
-                listState.firstVisibleItemScrollOffset > COLLAPSE_THRESHOLD_PX
+            // What the header has to give before the bar is standing on the content below it.
+            val travel = headerHeightPx - barBottomPx
+
+            when {
+                listState.firstVisibleItemIndex > 0 -> 1f
+                headerHeightPx == 0 || travel <= 0 -> 0f
+                else -> (listState.firstVisibleItemScrollOffset.toFloat() / travel).coerceIn(0f, 1f)
+            }
         }
     }
 
-    val barColor by animateColorAsState(if (isCollapsed) category.fill else Color.Transparent)
-    val barTitleAlpha by animateFloatAsState(if (isCollapsed) 1f else 0f)
-    val barInk = if (isCollapsed) category.ink else MaterialTheme.appColors.textPrimary
+    val barColor = category.fill.copy(alpha = collapseProgress)
+    // Over a photograph the icons stand on the scrim, over the blob they stand on the page. Either
+    // way they end on the Category's own ink, and they travel there as the colour arrives.
+    val expandedInk =
+        if (state.imageUrl != null) MaterialTheme.appColors.onScrim else MaterialTheme.appColors.textPrimary
+    val barInk = lerp(expandedInk, category.ink, collapseProgress)
+    val barTitleAlpha = ((collapseProgress - TITLE_FADE_FROM) / (1f - TITLE_FADE_FROM)).coerceIn(0f, 1f)
 
     Scaffold(
         topBar = {
@@ -170,16 +197,18 @@ fun HappeningScreen(
                     state = listState,
                     verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.lg),
                     contentPadding = PaddingValues(bottom = MaterialTheme.spacing.xxl),
-                    // The header runs under the transparent bar on purpose, so the blob and the
-                    // Category label start at the top of the screen rather than below a gap.
+                    // The list runs under the transparent bar on purpose, so the photograph
+                    // starts at the top of the screen rather than below a gap. Nothing else needs
+                    // the inset: the header's own words are anchored to its bottom edge.
                     modifier = Modifier.fillMaxSize(),
                 ) {
                     item(key = "header") {
                         HappeningHeader(
+                            imageUrl = state.imageUrl,
                             categoryId = state.categoryId,
                             categoryLabel = state.categoryLabel,
                             title = state.title,
-                            modifier = Modifier.padding(top = contentPadding.calculateTopPadding()),
+                            modifier = Modifier.onSizeChanged { headerHeightPx = it.height },
                         )
                     }
 
@@ -311,8 +340,14 @@ fun HappeningScreen(
 }
 
 /**
- * A third of the header's minimum height in pixels at a typical density — far enough into the scroll
- * that a thumb resting on the list does not flicker the bar, close enough that the bar has taken its
- * colour before the title would otherwise slide under it unannounced.
+ * Material's own container height for a small top app bar. Written out because the collapse needs
+ * the number rather than the bar, and asking the bar would mean measuring a composable that is drawn
+ * above the one whose height decides when it changes colour.
  */
-private const val COLLAPSE_THRESHOLD_PX = 140
+private val TOP_BAR_HEIGHT = 64.dp
+
+/**
+ * The bar's title starts appearing only in the last 40% of the collapse. Earlier and it overlaps the
+ * header's own copy of the title while both are still legible; later and it snaps in.
+ */
+private const val TITLE_FADE_FROM = 0.6f
