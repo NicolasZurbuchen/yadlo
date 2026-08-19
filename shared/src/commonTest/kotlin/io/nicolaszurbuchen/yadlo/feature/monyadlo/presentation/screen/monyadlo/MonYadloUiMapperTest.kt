@@ -10,7 +10,6 @@ import yadlo.shared.generated.resources.mon_yadlo_empty
 import yadlo.shared.generated.resources.slot_state_ending
 import yadlo.shared.generated.resources.slot_state_over
 import yadlo.shared.generated.resources.slot_state_running
-import yadlo.shared.generated.resources.slot_state_starts_in_hours
 import yadlo.shared.generated.resources.slot_state_starts_in_minutes
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -131,13 +130,11 @@ class MonYadloUiMapperTest {
     }
 
     @Test
-    fun toUiModel_rowStartingLaterToday_countsInWholeHours() {
-        val model = state(content(), now = Instant.parse("2026-07-11T18:20:00+02:00")).toUiModel()
+    fun toUiModel_rowAMinuteOutsideTheWindow_saysNothingYet() {
+        // 19:29 against a 20:30 downbeat — one minute past the hour the countdown opens at.
+        val model = state(content(), now = Instant.parse("2026-07-11T19:29:00+02:00")).toUiModel()
 
-        assertEquals(
-            UiText.Resource(Res.string.slot_state_starts_in_hours, listOf("2")),
-            model.days.single().rows.single().stateLabel,
-        )
+        assertNull(model.days.single().rows.single().stateLabel)
     }
 
     @Test

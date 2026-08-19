@@ -578,12 +578,15 @@ festival and useless for a control you are watching — so the clock carries a `
 that a store collects alongside its ticker. A jump is not time passing. Nothing emits on it in
 release, so the collectors are subscriptions that never fire.
 
-**Countdowns only inside a four-hour window.** Beyond that the day header and the start time
-already say everything; "dans 26h" is noise. The published prototype counts down from thirty
-minutes; four hours is the later and wider decision, and the layout it was tested against is
-unchanged by which one wins. Inside the window it is written in whole hours until the last
-one, then in whole minutes, floored — at 3h50 the answer someone wants is "not for a while",
-and rounding it up to four would cross back out of the window itself.
+**Countdowns only inside a one-hour window.** Beyond that the day header and the start time
+already say everything; "dans 26h" is noise. It was four hours, which put `dans 4h` in a pill —
+the loudest thing the row has — directly above the start time saying the same thing more
+precisely, so most of a Saturday afternoon was shouting a fact nobody needed. Inside an hour
+the number changes what you do next: it is the difference between finishing your drink and
+leaving now. The published prototype counts down from thirty minutes, which is narrower still;
+an hour is the point where "should I start walking" becomes a real question on a site you
+cross in ten minutes. Written in whole minutes throughout, and never "dans 0 min" — under a
+minute out it still has not started, and one is the smallest true thing to say.
 
 **The `se termine` warning starts at twenty minutes**, from the prototype, and writes out how
 long is left. Long enough to be worth walking for, short enough that it is not the state half

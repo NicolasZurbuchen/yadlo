@@ -500,7 +500,7 @@ opens on Programme then.
 **Programme** — layout B2: one chronological list per day, no calendar column, no "now"
 line. Each row carries live state as a text pill (`dans 15 min` / `en cours` / `se termine` /
 `terminé`), a raised progress bar while running, and dims when past. Past rows are never
-collapsed. Countdowns appear only within a four-hour window.
+collapsed. Countdowns appear only within a one-hour window.
 
 **Mon Yadlo** — the rail variant: date pinned left, items scrolling past, time written once
 as a range, same row vocabulary as Programme. Timeline plus one full-width Wishlist tile.
@@ -721,7 +721,7 @@ coverage rules quietly stop meaning anything.
    every boundary: OFF_SEASON with an edition file but no slots; the flip to ANNOUNCED on
    publish; J-7; midnight on day one; 11:00 the morning after; six weeks later. Plus timezone
    cases: a device in another timezone must derive the same phase.
-2. **Live state of a Slot** — upcoming / running / ending / finished, the four-hour countdown
+2. **Live state of a Slot** — upcoming / running / ending / finished, the one-hour countdown
    window, and the midnight-crossing case (a 23:30–01:30 set belongs to Friday).
 3. **FestivalDay assignment** — the case that will break with any naive date formatter.
 4. **Plan and Wishlist** — a saved Slot lands on the timeline; a saved Stand lands on the

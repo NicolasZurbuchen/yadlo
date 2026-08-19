@@ -30,7 +30,6 @@
     <string name="announcements_empty">Aucune annonce pour le moment.</string>
 
     <!-- A Slot's live state and its price read the same on every screen that shows one. -->
-    <string name="slot_state_starts_in_hours">dans %1$sh</string>
     <string name="slot_state_starts_in_minutes">dans %1$s min</string>
     <string name="slot_state_running">en cours</string>
     <string name="slot_state_ending">se termine · %1$s min</string>

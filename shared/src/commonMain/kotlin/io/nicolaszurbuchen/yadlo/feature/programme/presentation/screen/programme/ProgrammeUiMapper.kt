@@ -14,10 +14,8 @@ import yadlo.shared.generated.resources.programme_price_from
 import yadlo.shared.generated.resources.slot_state_ending
 import yadlo.shared.generated.resources.slot_state_over
 import yadlo.shared.generated.resources.slot_state_running
-import yadlo.shared.generated.resources.slot_state_starts_in_hours
 import yadlo.shared.generated.resources.slot_state_starts_in_minutes
 import kotlin.time.Duration
-import kotlin.time.Duration.Companion.hours
 
 /**
  * One day's Slots, in order, each carrying its own state against the clock and its own place on the
@@ -123,22 +121,14 @@ fun ProgrammeState.toUiModel(): ProgrammeUiModel {
                             }
 
                             is SlotLiveStateUiModel.StartingSoon -> {
-                                if (state.startsIn >= 1.hours) {
-                                    // Floored: at 3h50 the answer someone wants is "not for a
-                                    // while", and rounding it up to four crosses back out of the
-                                    // window the countdown is only shown inside.
-                                    UiText.Resource(
-                                        Res.string.slot_state_starts_in_hours,
-                                        listOf(state.startsIn.inWholeHours.toString()),
-                                    )
-                                } else {
-                                    // Never "dans 0 min": under a minute out it still has not
-                                    // started, and one is the smallest true thing to say.
-                                    UiText.Resource(
-                                        Res.string.slot_state_starts_in_minutes,
-                                        listOf(state.startsIn.inWholeMinutes.coerceAtLeast(1).toString()),
-                                    )
-                                }
+                                // Always minutes, because the window is an hour: an hours branch
+                                // could only ever fire on the single instant the window opens.
+                                // Never "dans 0 min" either — under a minute out it still has not
+                                // started, and one is the smallest true thing to say.
+                                UiText.Resource(
+                                    Res.string.slot_state_starts_in_minutes,
+                                    listOf(state.startsIn.inWholeMinutes.coerceAtLeast(1).toString()),
+                                )
                             }
 
                             is SlotLiveStateUiModel.Running -> {
