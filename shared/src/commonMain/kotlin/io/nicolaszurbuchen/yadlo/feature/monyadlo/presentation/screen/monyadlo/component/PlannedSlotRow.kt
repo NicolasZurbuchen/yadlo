@@ -5,8 +5,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -42,15 +40,14 @@ import io.nicolaszurbuchen.yadlo.infra.ui.asString
  * The chevron is centred over the row's whole height rather than pinned to its first line, as on the
  * Programme, which is what makes it read as belonging to the row.
  *
- * **Three lines, one job each**, the Programme's arrangement exactly: Category and price on the
- * first, the name alone on the second, time and live state together on the third. The name and the
- * pill and the price were competing for one line, which holds for `AMC` and breaks for a five-word
- * artist name.
+ * **Three lines with a right-hand column down two of them**, the Programme's arrangement exactly:
+ * the Category with the live state answering it, the name with what it costs, and the time alone.
+ * Left is what the thing is, right is what to do about it. The name and the pill and the price were
+ * competing for one line, which holds for `AMC` and breaks for a five-word artist name.
  *
  * Past rows dim and stay here too, and on this screen that is the point: by Sunday the Plan is
  * mostly what you went to.
  */
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun PlannedSlotRow(
     row: MonYadloRowUiModel,
@@ -95,36 +92,39 @@ fun PlannedSlotRow(
                     modifier = Modifier.weight(1f),
                 )
 
+                row.stateLabel?.let { label ->
+                    SlotStatePill(label = label, state = row.state)
+                }
+            }
+
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm),
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                // Baselines rather than tops or centres: a name long enough to wrap should still
+                // have its price beside its first line, not floating halfway down two.
+                Text(
+                    text = row.name,
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.appColors.textPrimary,
+                    modifier = Modifier.weight(1f).alignByBaseline(),
+                )
+
                 row.priceText?.let { price ->
                     Text(
                         text = price.asString(),
                         style = MaterialTheme.typography.labelLarge,
                         color = MaterialTheme.appColors.textSecondary,
+                        modifier = Modifier.alignByBaseline(),
                     )
                 }
             }
 
             Text(
-                text = row.name,
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.appColors.textPrimary,
+                text = row.timeText,
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.appColors.textSecondary,
             )
-
-            FlowRow(
-                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm),
-                verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xs),
-                itemVerticalAlignment = Alignment.CenterVertically,
-            ) {
-                Text(
-                    text = row.timeText,
-                    style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.appColors.textSecondary,
-                )
-
-                row.stateLabel?.let { label ->
-                    SlotStatePill(label = label, state = row.state)
-                }
-            }
         }
 
         Icon(

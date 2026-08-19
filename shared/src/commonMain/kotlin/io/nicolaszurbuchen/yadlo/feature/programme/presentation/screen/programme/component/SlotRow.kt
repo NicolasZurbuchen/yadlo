@@ -5,8 +5,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -37,11 +35,17 @@ import io.nicolaszurbuchen.yadlo.infra.ui.asString
  * shared left edge and as little furniture between neighbours as possible. Cards were measured at
  * +32% vertical space on the Saturday and separate exactly what this screen is for comparing.
  *
- * **Three lines, one job each.** The Category and the price sit on the first, the name has the
- * second to itself, and the time and the live state share the third — which is the pairing that was
- * always implied, since the pill only ever qualifies the time. It was two lines with the name, the
- * pill and the price competing for the first: fine for `AMC`, and a five-word artist name pushed the
- * price off the end of the row or squeezed the pill into a column two characters wide.
+ * **Three lines, and a right-hand column down two of them.** The Category names the first line and
+ * the live state answers it on the right; the name has the second, with what it costs on the right
+ * of that; the time has the third to itself. Everything on the left is what the thing *is* and
+ * everything on the right is what to do about it, which is the reading order someone scanning a
+ * Saturday actually uses.
+ *
+ * It was one line with the name, the pill and the price competing for it. That holds for `AMC` and
+ * breaks for a five-word artist name: the price gets pushed off the end of the row or the pill is
+ * squeezed into a column two characters wide, and neither failure shows until the content is real.
+ * Both are weighted against their own line now, so a long name takes a second line and the price
+ * stays where it was.
  *
  * The Category label is text-coloured rather than tinted the way it is on a fiche. The dot beside it
  * is already the colour, and the fills were chosen to sit beside each other rather than to be
@@ -57,7 +61,6 @@ import io.nicolaszurbuchen.yadlo.infra.ui.asString
  * [ProgrammeScaleRow] carries the same inset, so the three readings at the top of the list sit over
  * the positions they describe.
  */
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun SlotRow(
     row: SlotRowUiModel,
@@ -110,39 +113,39 @@ fun SlotRow(
                     modifier = Modifier.weight(1f),
                 )
 
+                row.stateLabel?.let { label ->
+                    SlotStatePill(label = label, state = row.state)
+                }
+            }
+
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm),
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                // Baselines rather than tops or centres: a name long enough to wrap should still
+                // have its price beside its first line, not floating halfway down two.
+                Text(
+                    text = row.name,
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.appColors.textPrimary,
+                    modifier = Modifier.weight(1f).alignByBaseline(),
+                )
+
                 row.priceText?.let { price ->
                     Text(
                         text = price.asString(),
                         style = MaterialTheme.typography.labelLarge,
                         color = MaterialTheme.appColors.textSecondary,
+                        modifier = Modifier.alignByBaseline(),
                     )
                 }
             }
 
             Text(
-                text = row.name,
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.appColors.textPrimary,
+                text = row.timeText,
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.appColors.textSecondary,
             )
-
-            // A FlowRow rather than a Row: at the largest text sizes `16:00 – 18:00` and
-            // `se termine · 12 min` do not fit side by side, and the pill dropping under the time
-            // it qualifies is the right way for that to fail.
-            FlowRow(
-                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm),
-                verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xs),
-                itemVerticalAlignment = Alignment.CenterVertically,
-            ) {
-                Text(
-                    text = row.timeText,
-                    style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.appColors.textSecondary,
-                )
-
-                row.stateLabel?.let { label ->
-                    SlotStatePill(label = label, state = row.state)
-                }
-            }
 
             SlotTimeBar(
                 barStart = row.barStart,
