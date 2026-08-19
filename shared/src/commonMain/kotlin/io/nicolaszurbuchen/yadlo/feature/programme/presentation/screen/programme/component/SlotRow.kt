@@ -37,15 +37,25 @@ import io.nicolaszurbuchen.yadlo.infra.ui.asString
  * shared left edge and as little furniture between neighbours as possible. Cards were measured at
  * +32% vertical space on the Saturday and separate exactly what this screen is for comparing.
  *
+ * **Three lines, one job each.** The Category and the price sit on the first, the name has the
+ * second to itself, and the time and the live state share the third — which is the pairing that was
+ * always implied, since the pill only ever qualifies the time. It was two lines with the name, the
+ * pill and the price competing for the first: fine for `AMC`, and a five-word artist name pushed the
+ * price off the end of the row or squeezed the pill into a column two characters wide.
+ *
+ * The Category label is text-coloured rather than tinted the way it is on a fiche. The dot beside it
+ * is already the colour, and the fills were chosen to sit beside each other rather than to be
+ * written with — `enfants` gold measures 1.9:1 on the light page.
+ *
  * Past rows dim and stay — bar included. By 21:00 on the Saturday that is most of the list, and
  * that is accepted: reading what has already happened is part of reading the day you are in.
  *
- * **The bar spans the row's text, not the row.** It ran the full width, from under the Category
- * mark to under the chevron, which put the axis's zero and its end at different x's from everything
- * above them and made both look like furniture on the timeline. The mark and the chevron are columns
- * of their own now, one either side, and the axis is what is between them.
- * [ProgrammeScaleRow] carries both insets, so the three readings at the top of the list sit over the
- * positions they describe.
+ * **The bar spans the row's text, not the row.** It ran the full width, under the chevron included,
+ * which put the axis's end at a different x from everything above it. The chevron is a column of its
+ * own now and the axis stops where it starts; on the left there is nothing to clear any more, since
+ * the Category mark moved onto the first line and the text runs to the row's own edge.
+ * [ProgrammeScaleRow] carries the same inset, so the three readings at the top of the list sit over
+ * the positions they describe.
  */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -78,53 +88,27 @@ fun SlotRow(
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xs),
             modifier = Modifier.weight(1f),
         ) {
-            Row(horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm)) {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm),
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth(),
+            ) {
                 Box(
                     modifier =
                         Modifier
-                            .padding(top = MARK_TOP_OFFSET)
                             .size(CATEGORY_MARK_SIZE)
                             .clip(MaterialTheme.shapes.extraSmall)
                             .background(category.fill),
                 )
 
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xs),
+                // The Category written out beside the mark that colours it. Colour is never the
+                // only carrier: in July sun, on a phone, it is the word that survives.
+                Text(
+                    text = row.categoryName.uppercase(),
+                    style = MaterialTheme.typography.displaySmall,
+                    color = MaterialTheme.appColors.textTertiary,
                     modifier = Modifier.weight(1f),
-                ) {
-                    FlowRow(
-                        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm),
-                        verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xs),
-                        itemVerticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        Text(
-                            text = row.name,
-                            style = MaterialTheme.typography.titleMedium,
-                            color = MaterialTheme.appColors.textPrimary,
-                        )
-
-                        row.stateLabel?.let { label ->
-                            SlotStatePill(label = label, state = row.state)
-                        }
-                    }
-
-                    Row(horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xs)) {
-                        Text(
-                            text = row.timeText,
-                            style = MaterialTheme.typography.labelLarge,
-                            color = MaterialTheme.appColors.textSecondary,
-                        )
-
-                        // The Category written out, beside the mark that colours it. Colour is
-                        // never the only carrier: in July sun, on a phone, it is the word that
-                        // survives.
-                        Text(
-                            text = "· ${row.categoryName}",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.appColors.textTertiary,
-                        )
-                    }
-                }
+                )
 
                 row.priceText?.let { price ->
                     Text(
@@ -135,12 +119,36 @@ fun SlotRow(
                 }
             }
 
+            Text(
+                text = row.name,
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.appColors.textPrimary,
+            )
+
+            // A FlowRow rather than a Row: at the largest text sizes `16:00 – 18:00` and
+            // `se termine · 12 min` do not fit side by side, and the pill dropping under the time
+            // it qualifies is the right way for that to fail.
+            FlowRow(
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm),
+                verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xs),
+                itemVerticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    text = row.timeText,
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.appColors.textSecondary,
+                )
+
+                row.stateLabel?.let { label ->
+                    SlotStatePill(label = label, state = row.state)
+                }
+            }
+
             SlotTimeBar(
                 barStart = row.barStart,
                 barEnd = row.barEnd,
                 categoryFill = category.fill,
                 state = row.state,
-                modifier = Modifier.padding(start = CATEGORY_MARK_SIZE + MaterialTheme.spacing.sm),
             )
         }
 
@@ -155,8 +163,7 @@ fun SlotRow(
     }
 }
 
-/** Internal because [ProgrammeScaleRow] insets by it too — the axis has to start at one x. */
-internal val CATEGORY_MARK_SIZE = 10.dp
+private val CATEGORY_MARK_SIZE = 10.dp
 
 /**
  * Between `sm` and `md`, which the scale skips. Eight was too tight for a row carrying a name, a
@@ -173,12 +180,6 @@ private val ROW_VERTICAL_PADDING = 12.dp
  * Internal because [ProgrammeScaleRow] insets by it too: the axis ends where this column starts.
  */
 internal val CHEVRON_SIZE = 24.dp
-
-/**
- * Half of titleMedium's 24sp line box less half the mark, so the square centres on the *first* line
- * of the name rather than floating at the top edge of one that wraps to two.
- */
-private val MARK_TOP_OFFSET = 7.dp
 
 /** The prototype's 0.42, rounded. Low enough to recede, high enough to still be read. */
 private const val PAST_ALPHA = 0.45f

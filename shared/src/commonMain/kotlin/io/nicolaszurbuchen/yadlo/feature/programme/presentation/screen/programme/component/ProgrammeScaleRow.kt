@@ -24,9 +24,10 @@ import io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme
  * page: there is no dim step that clears 4.5:1 on that ground — the tertiary role measures 2.4:1 —
  * and three times nobody can read is worse than three times that are not quieter than the chips.
  *
- * It carries [SlotRow]'s own insets — the Category mark on the left, the chevron on the right — so
- * the readings sit over the positions they describe. A scale offset from the axis it labels is worse
- * than no scale: it does not fail to answer the question, it answers it wrongly.
+ * It carries [SlotRow]'s own inset — the chevron on the right, and nothing on the left, where the
+ * bar now runs to the row's own edge — so the readings sit over the positions they describe. A scale
+ * offset from the axis it labels is worse than no scale: it does not fail to answer the question, it
+ * answers it wrongly.
  */
 @Composable
 fun ProgrammeScaleRow(
@@ -40,7 +41,7 @@ fun ProgrammeScaleRow(
                 .fillMaxWidth()
                 .padding(
                     PaddingValues(
-                        start = MaterialTheme.spacing.md + CATEGORY_MARK_SIZE + MaterialTheme.spacing.sm,
+                        start = MaterialTheme.spacing.md,
                         top = MaterialTheme.spacing.xs,
                         end = MaterialTheme.spacing.sm + CHEVRON_SIZE + MaterialTheme.spacing.sm,
                         bottom = MaterialTheme.spacing.xs,
