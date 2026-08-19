@@ -3,6 +3,19 @@ package io.nicolaszurbuchen.yadlo.infra.ui
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.number
 import kotlinx.datetime.toLocalDateTime
+import yadlo.shared.generated.resources.Res
+import yadlo.shared.generated.resources.month_april
+import yadlo.shared.generated.resources.month_august
+import yadlo.shared.generated.resources.month_december
+import yadlo.shared.generated.resources.month_february
+import yadlo.shared.generated.resources.month_january
+import yadlo.shared.generated.resources.month_july
+import yadlo.shared.generated.resources.month_june
+import yadlo.shared.generated.resources.month_march
+import yadlo.shared.generated.resources.month_may
+import yadlo.shared.generated.resources.month_november
+import yadlo.shared.generated.resources.month_october
+import yadlo.shared.generated.resources.month_september
 import kotlin.time.Instant
 
 /**
@@ -24,17 +37,38 @@ fun Instant.formatAsShortDate(zone: TimeZone): String {
 }
 
 /**
- * `11.07` — the same numeric ordering as [formatAsShortDate] with the year dropped.
+ * `11` — the day alone, unpadded.
  *
- * For Mon Yadlo's rail, where the date is written once per day beside its rows and the year is the
- * one part of it nobody is reading: a Plan only ever holds the edition on screen, so three rails
- * repeating `2026` say nothing three times.
+ * For Mon Yadlo's rail, where it is set at statistic size with the weekday above it and the month
+ * below, so nothing around it needs a separator to be told apart from it. Unpadded because a leading
+ * zero is noise at 36sp, and there is no column of these to keep aligned — one per day block.
  */
-fun Instant.formatAsDayAndMonth(zone: TimeZone): String {
-    val date = toLocalDateTime(zone).date
+fun Instant.formatAsDayOfMonth(zone: TimeZone): String = toLocalDateTime(zone).day.toString()
 
-    return "${date.day.toString().padStart(2, '0')}.${date.month.number.toString().padStart(2, '0')}"
-}
+/**
+ * `juillet` — the month written out, as a [UiText] rather than a string.
+ *
+ * The one date part in the app that cannot be formatted, only translated, which is why every other
+ * date here is numeric. It is a resource lookup rather than a formatter for exactly that reason: a
+ * second language becomes a second values file instead of a code change.
+ */
+fun Instant.monthName(zone: TimeZone): UiText = UiText.Resource(MONTH_NAMES[toLocalDateTime(zone).month.number - 1])
+
+private val MONTH_NAMES =
+    listOf(
+        Res.string.month_january,
+        Res.string.month_february,
+        Res.string.month_march,
+        Res.string.month_april,
+        Res.string.month_may,
+        Res.string.month_june,
+        Res.string.month_july,
+        Res.string.month_august,
+        Res.string.month_september,
+        Res.string.month_october,
+        Res.string.month_november,
+        Res.string.month_december,
+    )
 
 /**
  * `16:00` — 24-hour, zero-padded on both halves.

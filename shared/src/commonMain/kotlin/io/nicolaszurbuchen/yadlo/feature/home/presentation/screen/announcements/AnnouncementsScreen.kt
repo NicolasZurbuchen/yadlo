@@ -1,7 +1,6 @@
 package io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.announcements
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -70,9 +69,10 @@ fun AnnouncementsScreen(
 
             else -> {
                 LazyColumn(
-                    // Vertical only: the rows reach the screen edges so their ripple and the rules
-                    // between them do too, and each row carries its own horizontal inset.
-                    contentPadding = PaddingValues(vertical = MaterialTheme.spacing.md),
+                    // No padding of its own on either axis. The rows reach the screen edges so
+                    // their ripple and the rules between them do too, and each one already pads
+                    // itself top and bottom — adding the list's own on top of that put a 32dp gap
+                    // under the bar and left the first annonce looking like it had been forgotten.
                     modifier = Modifier.fillMaxSize().padding(contentPadding),
                 ) {
                     items(state.items, key = { it.id }) { item ->

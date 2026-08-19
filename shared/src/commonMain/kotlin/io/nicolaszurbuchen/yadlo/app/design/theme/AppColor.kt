@@ -71,17 +71,35 @@ data class AppColors(
     val live: Color,
     val onLive: Color,
     /**
-     * The warning ramp behind both time-pressure pills: `dans 15 min` draws it as text on the page
-     * ground, `se termine` fills with it.
+     * `dans 45 min`, drawn as text on the page ground — the heads-up half of time pressure.
      *
-     * One amber ramp rather than the prototype's amber-then-coral, because the coral was never part
-     * of the perceptual-separation measurement the five Category hues were chosen by, and a red
-     * pill beside a `musique` magenta dot is the collision DECISIONS.md § Open already flags for the
-     * accent. Outlined against filled separates the two states, and the pill is written out either
-     * way — the colour is never carrying it alone.
+     * Amber, because a countdown is a caution: nothing is being lost yet, and the pill is telling
+     * you how long you have rather than that you are out of it. It has to be legible as ink on all
+     * three grounds, which is what keeps it at the deep end of the ramp in light.
      */
     val warning: Color,
     val onWarning: Color,
+    /**
+     * `se termine` — the fill under the one pill on the screen asking for something to be *done*.
+     *
+     * A role of its own rather than the amber above it, because the two are not the same fact at two
+     * distances: one says how long you have, the other says you are nearly out. Sharing a hue made
+     * the second read as more of the first. Orange-red is the prototype's coral, refused once on the
+     * grounds it had never been part of the perceptual-separation measurement the Category hues were
+     * chosen by; it has been measured since — 112 and 119 from [live], the pair that appears on
+     * adjacent rows, and 54 to 59 from [warning], the pair that has to be told apart at a glance.
+     * 24 and 18 from `musique` is the closest it comes to anything, which is why the pill is still
+     * written out in words.
+     *
+     * **The same colour in both themes, carrying dark ink in both** — like [accent], and unlike every
+     * surface role here. A signal is not a ground: it is not being read *against* the theme, it is
+     * interrupting it, and the vivid step is the only one on this ramp that both looks urgent and
+     * holds text. Its own boundary against a light page is 2.5:1, which is under the non-text floor
+     * and is accepted for the same reason an `enfants` chip's amber fill is: the pill is a word on a
+     * colour, not a control, and the word inside it measures 6.4:1.
+     */
+    val urgent: Color,
+    val onUrgent: Color,
     /** Tints a ✓ read as a judgement. The same emerald as [live]: one green in the app to learn. */
     val positive: Color,
     /** Tints a ✕. Deep enough on the magenta ramp to clear the grounds and the `musique` dot. */
@@ -135,8 +153,12 @@ val LightAppColors =
         // rather than to be written on.
         live = EmeraldPalette.emerald800,
         onLive = Color.White,
+        // Deep enough to be written with, which is all this role does in light: it is the ink of
+        // `dans 45 min` on three grounds and never a fill of its own.
         warning = AmberPalette.amber800,
         onWarning = Color.White,
+        urgent = OrangePalette.orange600,
+        onUrgent = SlatePalette.slate950,
         positive = EmeraldPalette.emerald800,
         negative = MagentaPalette.magenta800,
         scrim = SCRIM,
@@ -179,6 +201,11 @@ val DarkAppColors =
         onLive = SlatePalette.slate950,
         warning = AmberPalette.amber400,
         onWarning = SlatePalette.slate950,
+        // The one role that does not swap ends. orange600 fails as ink on surfaceRaised at 4.0:1,
+        // which would matter if this were ever written with — it is not, it is only ever filled, and
+        // a signal that changed colour with the theme would be a different signal.
+        urgent = OrangePalette.orange600,
+        onUrgent = SlatePalette.slate950,
         positive = EmeraldPalette.emerald400,
         negative = MagentaPalette.magenta400,
         scrim = SCRIM,

@@ -23,7 +23,6 @@ import yadlo.shared.generated.resources.price_free
 import yadlo.shared.generated.resources.slot_state_ending
 import yadlo.shared.generated.resources.slot_state_over
 import yadlo.shared.generated.resources.slot_state_running
-import yadlo.shared.generated.resources.slot_state_starts_in_hours
 import yadlo.shared.generated.resources.slot_state_starts_in_minutes
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -131,10 +130,13 @@ class HappeningUiMapperTest {
     }
 
     @Test
-    fun toUiModel_slotStartingLaterToday_countsInWholeHours() {
-        val model = state(detail(slots = listOf(saturdayFourToSix())), now = Instant.parse("2026-07-11T13:10:00+02:00")).toUiModel()
+    fun toUiModel_slotAMinuteOutsideTheWindow_saysNothingYet() {
+        // 14:59 against a 16:00 downbeat — one minute past the hour the countdown opens at. The
+        // boundary is worth a test of its own because it is the only thing separating a pill from
+        // no pill on a row whose start time has not changed.
+        val model = state(detail(slots = listOf(saturdayFourToSix())), now = Instant.parse("2026-07-11T14:59:00+02:00")).toUiModel()
 
-        assertEquals(UiText.Resource(Res.string.slot_state_starts_in_hours, listOf("2")), model.slots.single().stateLabel)
+        assertNull(model.slots.single().stateLabel)
     }
 
     @Test

@@ -1,7 +1,6 @@
 package io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel
 
 import kotlin.time.Duration
-import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Instant
 
@@ -71,14 +70,18 @@ fun slotLiveStateAt(
 }
 
 /**
- * Four hours — DECISIONS.md § Countdowns only inside a four-hour window. Beyond it the day header
- * and the start time already say everything, and "dans 26h" is noise.
+ * One hour — DECISIONS.md § Countdowns only inside a one-hour window.
  *
- * The published prototype counts down from thirty minutes instead. That is the narrower of the two
- * and the prose is the later decision, so the window is the prose's; what the prototype settled is
- * the layout, which is unchanged either way.
+ * It was four, which put `dans 4h` on a row whose start time is written directly underneath it. A
+ * countdown in hours says nothing the clock does not, and it says it in a pill — the loudest thing
+ * the row has — so most of the Saturday afternoon was shouting a fact nobody needed. Inside an hour
+ * the number changes what you do next: it is the difference between finishing your drink and
+ * leaving now.
+ *
+ * The published prototype counts down from thirty minutes, which is narrower still. An hour is the
+ * point where "should I start walking" becomes a real question on a site you cross in ten minutes.
  */
-private val COUNTDOWN_WINDOW = 4.hours
+private val COUNTDOWN_WINDOW = 60.minutes
 
 /**
  * Twenty minutes, from the prototype. Long enough to be worth walking for, short enough that it is

@@ -25,10 +25,10 @@ import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
  * gets used once, and putting it in the list means the reason someone opened the screen leaves it
  * the moment they start reading.
  *
- * It stays on the card ground rather than taking the bar's blue, which the Programme's filter block
- * does take. The dietary chips carry six measured tints and three of them fall under 3:1 on that
- * blue — a colour system already spent on the dish tags and the stand rows is not worth re-picking
- * for one strip of chips, and the tinted card is a ground those tints were measured against.
+ * It sits on the bar's own blue, continuing it, the same way the Programme's filter block does, and
+ * each chip draws its edge in the ink that blue carries — see
+ * [io.nicolaszurbuchen.yadlo.app.design.component.YadloFilterChip] for what that leaves the glyphs
+ * inside them measuring.
  */
 @Composable
 fun PlusScreenScaffold(
@@ -40,7 +40,7 @@ fun PlusScreenScaffold(
 ) {
     Scaffold(
         topBar = {
-            Column(modifier = Modifier.fillMaxWidth().background(MaterialTheme.appColors.surface)) {
+            Column(modifier = Modifier.fillMaxWidth().background(MaterialTheme.appColors.primarySubtle)) {
                 YadloTopAppBar(title = title, onBackClick = onBackClick)
 
                 underBar()

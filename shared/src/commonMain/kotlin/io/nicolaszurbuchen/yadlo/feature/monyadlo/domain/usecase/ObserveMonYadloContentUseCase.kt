@@ -72,6 +72,9 @@ class ObserveMonYadloContentUseCase(
                                         categoryName = slot.happening.category.name,
                                         start = slot.start,
                                         end = slot.end,
+                                        // The variant test stays in the layer allowed to ask it,
+                                        // as on the Programme: only an Activity has a price.
+                                        price = (slot.happening as? Happening.Activity)?.price,
                                     )
                                 },
                         )

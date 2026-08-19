@@ -1,5 +1,8 @@
 package io.nicolaszurbuchen.yadlo.feature.monyadlo.presentation.screen.monyadlo
 
+import io.nicolaszurbuchen.yadlo.common.content.domain.model.Money
+import io.nicolaszurbuchen.yadlo.common.content.domain.model.Price
+import io.nicolaszurbuchen.yadlo.common.content.domain.model.Provenance
 import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotLiveStateUiModel
 import io.nicolaszurbuchen.yadlo.feature.monyadlo.domain.model.MonYadloContent
 import io.nicolaszurbuchen.yadlo.feature.monyadlo.domain.model.PlannedDay
@@ -7,10 +10,12 @@ import io.nicolaszurbuchen.yadlo.feature.monyadlo.domain.model.PlannedSlot
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.mon_yadlo_empty
+import yadlo.shared.generated.resources.month_july
+import yadlo.shared.generated.resources.price_free
+import yadlo.shared.generated.resources.price_from
 import yadlo.shared.generated.resources.slot_state_ending
 import yadlo.shared.generated.resources.slot_state_over
 import yadlo.shared.generated.resources.slot_state_running
-import yadlo.shared.generated.resources.slot_state_starts_in_hours
 import yadlo.shared.generated.resources.slot_state_starts_in_minutes
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -58,11 +63,12 @@ class MonYadloUiMapperTest {
     // region the rail
 
     @Test
-    fun toUiModel_theRail_writesTheDayNameAndItsDateWithoutTheYear() {
+    fun toUiModel_theRail_writesTheDayNameTheDayAndTheMonth() {
         val day = state(content()).toUiModel().days.single()
 
         assertEquals("Samedi", day.name)
-        assertEquals("11.07", day.dateText)
+        assertEquals("11", day.dayNumber)
+        assertEquals(UiText.Resource(Res.string.month_july), day.monthName)
     }
 
     @Test
@@ -72,7 +78,8 @@ class MonYadloUiMapperTest {
         // from the Slot would file that set under a day the festival never programmed.
         val model = state(saturdayNightOnly()).toUiModel()
 
-        assertEquals("11.07", model.days.single().dateText)
+        assertEquals("11", model.days.single().dayNumber)
+        assertEquals(UiText.Resource(Res.string.month_july), model.days.single().monthName)
         assertEquals("01:00 – 02:30", model.days.single().rows.single().timeText)
     }
 
@@ -131,13 +138,11 @@ class MonYadloUiMapperTest {
     }
 
     @Test
-    fun toUiModel_rowStartingLaterToday_countsInWholeHours() {
-        val model = state(content(), now = Instant.parse("2026-07-11T18:20:00+02:00")).toUiModel()
+    fun toUiModel_rowAMinuteOutsideTheWindow_saysNothingYet() {
+        // 19:29 against a 20:30 downbeat — one minute past the hour the countdown opens at.
+        val model = state(content(), now = Instant.parse("2026-07-11T19:29:00+02:00")).toUiModel()
 
-        assertEquals(
-            UiText.Resource(Res.string.slot_state_starts_in_hours, listOf("2")),
-            model.days.single().rows.single().stateLabel,
-        )
+        assertNull(model.days.single().rows.single().stateLabel)
     }
 
     @Test
@@ -158,15 +163,58 @@ class MonYadloUiMapperTest {
 
     // endregion
 
+    // region the price
+
+    @Test
+    fun toUiModel_anArtist_hasNoPriceAtAll() {
+        // Not "free": the festival charges nothing for a concert and does not price it either, and
+        // a row saying Gratuit where nothing was ever sold invents a statement.
+        assertNull(state(content()).toUiModel().days.single().rows.single().priceText)
+    }
+
+    @Test
+    fun toUiModel_aFreeActivity_saysSoRatherThanShowingNothing() {
+        val row = state(content(price = free())).toUiModel().days.single().rows.single()
+
+        assertEquals(Res.string.price_free, (row.priceText as UiText.Resource).id)
+    }
+
+    @Test
+    fun toUiModel_anActivityWithSeveralTariffs_leadsWithTheLowest() {
+        // The Programme's rule, asserted here as well because a Plan is read on the site with the
+        // same coins in the same pocket: a row showing only the adult price prices a family out of
+        // something they can afford.
+        val row = state(content(price = twoTiers())).toUiModel().days.single().rows.single()
+
+        assertEquals(Res.string.price_from, (row.priceText as UiText.Resource).id)
+        assertEquals(listOf("CHF 15"), (row.priceText as UiText.Resource).args)
+    }
+
+    // endregion
+
+    private fun free() = Price(free = true, tiers = emptyList(), deposit = null, provenance = Provenance.CONFIRMED)
+
+    private fun twoTiers() =
+        Price(
+            free = false,
+            tiers =
+                listOf(
+                    Price.Tier(label = "Adulte", amount = Money(25.0, "CHF"), per = null),
+                    Price.Tier(label = "Moins de 16 ans", amount = Money(15.0, "CHF"), per = null),
+                ),
+            deposit = null,
+            provenance = Provenance.CONFIRMED,
+        )
+
     private fun state(
         content: MonYadloContent,
         now: Instant = NOW,
     ) = MonYadloState(now = now, content = content)
 
-    private fun content() =
+    private fun content(price: Price? = null) =
         MonYadloContent(
             wishlistCount = 2,
-            days = listOf(saturday()),
+            days = listOf(saturday(price = price)),
         )
 
     private fun twoDays() =
@@ -188,6 +236,7 @@ class MonYadloUiMapperTest {
                                     categoryName = "Musique",
                                     start = Instant.parse("2026-07-10T17:00:00+02:00"),
                                     end = Instant.parse("2026-07-10T18:30:00+02:00"),
+                                    price = null,
                                 ),
                             ),
                     ),
@@ -214,13 +263,14 @@ class MonYadloUiMapperTest {
                                     categoryName = "Silent Party",
                                     start = Instant.parse("2026-07-12T01:00:00+02:00"),
                                     end = Instant.parse("2026-07-12T02:30:00+02:00"),
+                                    price = null,
                                 ),
                             ),
                     ),
                 ),
         )
 
-    private fun saturday() =
+    private fun saturday(price: Price? = null) =
         PlannedDay(
             id = "2026:sat",
             name = "Samedi",
@@ -235,6 +285,7 @@ class MonYadloUiMapperTest {
                         categoryName = "Musique",
                         start = Instant.parse("2026-07-11T20:30:00+02:00"),
                         end = Instant.parse("2026-07-11T22:00:00+02:00"),
+                        price = price,
                     ),
                 ),
         )

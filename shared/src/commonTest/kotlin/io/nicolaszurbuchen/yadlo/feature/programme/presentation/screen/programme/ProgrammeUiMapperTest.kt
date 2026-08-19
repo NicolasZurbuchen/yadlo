@@ -11,13 +11,12 @@ import io.nicolaszurbuchen.yadlo.feature.programme.domain.model.ProgrammeSlot
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.price_free
+import yadlo.shared.generated.resources.price_from
 import yadlo.shared.generated.resources.programme_empty_filter
 import yadlo.shared.generated.resources.programme_empty_unpublished
-import yadlo.shared.generated.resources.programme_price_from
 import yadlo.shared.generated.resources.slot_state_ending
 import yadlo.shared.generated.resources.slot_state_over
 import yadlo.shared.generated.resources.slot_state_running
-import yadlo.shared.generated.resources.slot_state_starts_in_hours
 import yadlo.shared.generated.resources.slot_state_starts_in_minutes
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -159,7 +158,7 @@ class ProgrammeUiMapperTest {
         // family out of something they can afford.
         val row = state(selectedDayId = "2026:sat").toUiModel().rows.single { it.id == "2026:silent-sat" }
 
-        assertEquals(Res.string.programme_price_from, row.priceText.resourceId())
+        assertEquals(Res.string.price_from, row.priceText.resourceId())
         assertEquals(listOf("CHF 15"), (row.priceText as UiText.Resource).args)
     }
 
@@ -175,8 +174,8 @@ class ProgrammeUiMapperTest {
     // region live state
 
     @Test
-    fun toUiModel_moreThanFourHoursOut_saysNothing() {
-        // Beyond the window the start time already says everything, and "dans 26h" is noise.
+    fun toUiModel_hoursOut_saysNothing() {
+        // Beyond the window the start time already says everything, and "dans 5h" is noise.
         val row = rowAt(Instant.parse("2026-07-11T11:00:00+02:00"), "2026:dubside-sat")
 
         assertEquals(SlotLiveStateUiModel.Upcoming, row.state)
@@ -184,12 +183,13 @@ class ProgrammeUiMapperTest {
     }
 
     @Test
-    fun toUiModel_insideTheWindowButHoursOut_countsInWholeHours() {
-        val row = rowAt(Instant.parse("2026-07-11T13:30:00+02:00"), "2026:dubside-sat")
+    fun toUiModel_aMinuteOutsideTheWindow_saysNothingYet() {
+        // 14:59 against a 16:00 downbeat. The boundary is the only thing separating a pill from no
+        // pill on a row whose start time has not changed, so it is asserted rather than inferred.
+        val row = rowAt(Instant.parse("2026-07-11T14:59:00+02:00"), "2026:dubside-sat")
 
-        assertEquals(Res.string.slot_state_starts_in_hours, row.stateLabel.resourceId())
-        // Floored: at 2h30 the answer someone wants is "not for a while".
-        assertEquals(listOf("2"), (row.stateLabel as UiText.Resource).args)
+        assertEquals(SlotLiveStateUiModel.Upcoming, row.state)
+        assertNull(row.stateLabel)
     }
 
     @Test

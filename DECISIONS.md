@@ -354,13 +354,31 @@ the beach at Préverenges is public, so the morning yoga runs from 10:00 on a da
 at 12:00 and still has to sit on the axis. It is measured over every Slot of the day rather
 than the filtered ones, so tapping a chip never rescales what two rows are being compared on.
 
-**The live-state pills use one amber ramp, not the prototype's amber-then-coral.** Green
-fills `en cours`, amber outlines `dans 15 min` and fills `se termine`, and `terminé` is plain
-tertiary text on a dimmed row — four states over two colour roles plus three treatments, so
-they stay apart for a reader who cannot separate green from amber. The coral the prototype
-reaches for was never part of the perceptual-separation measurement the five Category hues
-were chosen by, and a red pill beside a `musique` magenta dot is the same collision § Open
-already flags for the accent. The words carry the state either way.
+**The live-state pills use two warm ramps, not the prototype's amber-then-coral and not the one
+ramp that replaced it.** Green fills `en cours`, amber outlines `dans 45 min`, orange-red fills
+`se termine`, and `terminé` is plain tertiary text on a dimmed row — four states over three
+colour roles plus three treatments, so they stay apart for a reader who cannot separate one hue
+from another.
+
+The single-ramp version argued that the two warm pills were the same fact at two distances. They
+are not. `dans 45 min` is a caution — nothing is being lost yet, and the pill is telling you how
+long you have — and amber is the colour of a caution. `se termine` is the last chance to walk
+over there, the only pill on the screen asking for something to be *done*, and in amber it read
+as more of the first rather than as a different thing.
+
+The coral was refused once on the grounds that it had never been part of the
+perceptual-separation measurement the five Category hues were chosen by. That was a reason to
+measure it, not to refuse it, and it has been: 112 and 119 from `live`, the pair that appears on
+adjacent rows, and 54 to 59 from amber, the pair that now has to be told apart at a glance. 24
+and 18 from `musique` is the closest it comes to anything, which is why the pill is still
+written out in words.
+
+`urgent` is the one role in the theme that does not swap ends between light and dark, and the one
+that carries dark ink in both. A signal is not a ground — it is not read *against* the theme, it
+interrupts it — and the vivid step is the only one on the ramp that both looks urgent and holds
+text. Its own boundary against a light page is 2.5:1, under the non-text floor, accepted for the
+same reason an `enfants` chip's amber fill is: the pill is a word on a colour rather than a
+control, and the word inside it measures 6.4:1.
 
 **Sorting is dropped from v1.** The prototype offers Heure / A–Z / Prix; § Open below already
 called it a candidate for deletion, and building it would have meant a permanent row of
@@ -570,12 +588,15 @@ festival and useless for a control you are watching — so the clock carries a `
 that a store collects alongside its ticker. A jump is not time passing. Nothing emits on it in
 release, so the collectors are subscriptions that never fire.
 
-**Countdowns only inside a four-hour window.** Beyond that the day header and the start time
-already say everything; "dans 26h" is noise. The published prototype counts down from thirty
-minutes; four hours is the later and wider decision, and the layout it was tested against is
-unchanged by which one wins. Inside the window it is written in whole hours until the last
-one, then in whole minutes, floored — at 3h50 the answer someone wants is "not for a while",
-and rounding it up to four would cross back out of the window itself.
+**Countdowns only inside a one-hour window.** Beyond that the day header and the start time
+already say everything; "dans 26h" is noise. It was four hours, which put `dans 4h` in a pill —
+the loudest thing the row has — directly above the start time saying the same thing more
+precisely, so most of a Saturday afternoon was shouting a fact nobody needed. Inside an hour
+the number changes what you do next: it is the difference between finishing your drink and
+leaving now. The published prototype counts down from thirty minutes, which is narrower still;
+an hour is the point where "should I start walking" becomes a real question on a site you
+cross in ten minutes. Written in whole minutes throughout, and never "dans 0 min" — under a
+minute out it still has not started, and one is the smallest true thing to say.
 
 **The `se termine` warning starts at twenty minutes**, from the prototype, and writes out how
 long is left. Long enough to be worth walking for, short enough that it is not the state half

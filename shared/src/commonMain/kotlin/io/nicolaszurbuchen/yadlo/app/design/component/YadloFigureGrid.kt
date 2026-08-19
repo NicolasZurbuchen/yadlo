@@ -33,6 +33,11 @@ import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloFigureUiModel
  * vertical scroll and a nested lazy container in an infinite-height parent is a crash rather than a
  * layout. The count is three, so the cost of not being lazy is nothing.
  *
+ * **The numbers are ink, not primary.** They were the app's blue, which made three statistics look
+ * like three links; and set at 36sp they were the loudest blue on a screen where the blue already
+ * means chrome. Ink in both themes — near-white on the dark ground, near-black on the light one —
+ * which is what "white" means for a role that has to survive being read on paper.
+ *
  * [caveat] is shown rather than hidden. The association has published closing figures exactly once,
  * so a block that waited for confirmed ones would be empty for most of its life — naming where these
  * came from is what makes showing them honest. It is set apart from the last row of labels, because
@@ -63,7 +68,7 @@ fun YadloFigureGrid(
                         Text(
                             text = figure.value,
                             style = MaterialTheme.typography.displayMedium,
-                            color = MaterialTheme.appColors.primary,
+                            color = MaterialTheme.appColors.textPrimary,
                         )
 
                         Text(

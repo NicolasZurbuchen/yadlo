@@ -24,15 +24,15 @@ import io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme
  * gets used once — so they are the bottom of the toolbar rather than the top of the page. No rule
  * closes the block off any more; where the blue stops is where the chrome stops.
  *
- * **The chips are rebuilt for that ground rather than inherited onto it.** The page-ground roles do
- * not survive on #74AEE0 — the outline measures 1.6:1 and the label 2.4:1 — so every chip here takes
- * the ink the blue carries, for its label and for a drawn edge it keeps even when filled. That edge
- * is the part that matters: a Category fill measures between 1.2:1 and 2.1:1 against this blue, so a
- * selected chip in Material's borderless style would have no visible boundary at all.
+ * **The chips are the chrome, wearing its ink.** The page's own roles do not survive on #74AEE0 —
+ * the outline measures 1.6:1 and the label 2.4:1 — so both rows draw their edge and their label in
+ * the ink the blue carries. The Category dot does not follow: it is a fill chosen against the page
+ * and measures 1.2:1 to 2.1:1 here. It is a swatch beside a word that already says the same thing,
+ * so the cost is a quieter dot rather than a lost one.
  *
- * The Category dot keeps its hue untouched at whatever it measures. It is a swatch beside a word
- * that already says the same thing, and what separates *enfants* gold from *musique* magenta at a
- * glance is the hue, not the luminance a contrast ratio measures.
+ * A selected chip is a solid pill of the thing it stands for, with no edge of its own — the same as
+ * on the stands list. Its boundary against the blue is the fill, which the eye finds by hue rather
+ * than by luminance; that is the trade for a selected state that reads as one thing instead of two.
  */
 @Composable
 fun ProgrammeHeader(

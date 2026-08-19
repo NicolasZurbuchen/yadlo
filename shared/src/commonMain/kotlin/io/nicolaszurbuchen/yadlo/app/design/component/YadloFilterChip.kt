@@ -25,15 +25,24 @@ import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
  * with the app's primary — the colour is the Category, and a selected *musique* chip that turned
  * blue would be saying something false. Everything else takes the defaults.
  *
- * [ink] and [outline] exist because the ground is no longer always the page. The Programme's filters
- * sit on the bandeau blue, where the page-ground roles do not survive: the outline measures 1.6:1
- * against it and the label 2.4:1. A chip on a coloured chrome passes the ink that chrome carries.
+ * [container] and [outline] exist because the ground is no longer always the page. A filter row on
+ * the bandeau blue cannot inherit the page's roles: the outline measures 1.6:1 against that blue and
+ * the label 2.4:1. Both rows on the chrome pass the ink the blue carries as their [outline], and
+ * their own ground as [container], so the chip is the chrome and its edge is the one thing on it
+ * that clears the chrome.
  *
- * [selectedOutline] defaults to the fill, which is the borderless Material look and the right one on
- * the page. On the chrome it becomes the same drawn edge the unselected chip has, because a filled
- * chip's boundary is otherwise the fill itself — and a Category fill on that blue is between 1.2:1
- * and 2.1:1, so the control would have no visible edge at all. The outline gives it one without
- * touching the hue, which is the part that carries the meaning.
+ * What that leaves on the chrome is the [leadingIcon]. The Category dot and the dietary glyph are
+ * both chosen against the *page* grounds, and on the blue the dot measures 1.2:1 to 2.1:1 and three
+ * of the six dietary tints fall under the 3:1 floor. They are redundant with the label beside them
+ * — nothing here is carried by colour alone — so this is a mark reading quieter than it does
+ * elsewhere rather than a mark nobody can read. An earlier version filled [container] with the page
+ * ground instead, which fixed the numbers and turned the row into white pills on blue.
+ *
+ * A selected chip has no edge of its own anywhere in the app: the border takes the fill's colour, so
+ * what you see is a solid pill of the thing you picked. That is deliberately true on the chrome blue
+ * as well, where the fill measures between 1.2:1 and 2.1:1 against the ground — a boundary the eye
+ * finds by hue rather than by luminance. The alternative was a drawn edge on every selected chip,
+ * which reads as a second state on top of the first and made a filter row look like a toolbar.
  */
 @Composable
 fun YadloFilterChip(
@@ -43,9 +52,8 @@ fun YadloFilterChip(
     modifier: Modifier = Modifier,
     selectedFill: Color = MaterialTheme.appColors.primary,
     selectedInk: Color = MaterialTheme.appColors.onPrimary,
-    ink: Color = MaterialTheme.appColors.textSecondary,
+    container: Color = Color.Transparent,
     outline: Color = MaterialTheme.appColors.borderStrong,
-    selectedOutline: Color = selectedFill,
     leadingIcon: @Composable (() -> Unit)? = null,
 ) {
     FilterChip(
@@ -60,8 +68,8 @@ fun YadloFilterChip(
         leadingIcon = leadingIcon,
         colors =
             FilterChipDefaults.filterChipColors(
-                containerColor = Color.Transparent,
-                labelColor = ink,
+                containerColor = container,
+                labelColor = MaterialTheme.appColors.textSecondary,
                 selectedContainerColor = selectedFill,
                 selectedLabelColor = selectedInk,
                 selectedLeadingIconColor = selectedInk,
@@ -71,7 +79,7 @@ fun YadloFilterChip(
                 enabled = true,
                 selected = isSelected,
                 borderColor = outline,
-                selectedBorderColor = selectedOutline,
+                selectedBorderColor = selectedFill,
             ),
         modifier = modifier,
     )

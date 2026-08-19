@@ -1,6 +1,7 @@
 package io.nicolaszurbuchen.yadlo.feature.home.presentation.component
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -38,6 +39,9 @@ fun AnnouncementCard(
     modifier: Modifier = Modifier,
 ) {
     Row(
+        // The icon sat against the last word of the body. It qualifies the whole card rather than
+        // that word, and at nothing they read as one line.
+        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md),
         modifier =
             modifier
                 .fillMaxWidth()

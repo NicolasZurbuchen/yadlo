@@ -12,6 +12,22 @@
          it are four places for it to stop saying the same word. -->
     <string name="back">Retour</string>
 
+    <!-- Written out because Mon Yadlo's rail sets the day as the largest thing on it and needs the
+         month underneath in words. Resources rather than a formatter, so a second language is a
+         second values file rather than a code change. Lowercase: French does not capitalise them. -->
+    <string name="month_january">janvier</string>
+    <string name="month_february">février</string>
+    <string name="month_march">mars</string>
+    <string name="month_april">avril</string>
+    <string name="month_may">mai</string>
+    <string name="month_june">juin</string>
+    <string name="month_july">juillet</string>
+    <string name="month_august">août</string>
+    <string name="month_september">septembre</string>
+    <string name="month_october">octobre</string>
+    <string name="month_november">novembre</string>
+    <string name="month_december">décembre</string>
+
     <string name="home_countdown_days_remaining">J-%1$s</string>
     <string name="home_hero_announced_kicker">Nouveau</string>
     <string name="home_hero_announced_title">La programmation %1$s est là</string>
@@ -30,12 +46,12 @@
     <string name="announcements_empty">Aucune annonce pour le moment.</string>
 
     <!-- A Slot's live state and its price read the same on every screen that shows one. -->
-    <string name="slot_state_starts_in_hours">dans %1$sh</string>
     <string name="slot_state_starts_in_minutes">dans %1$s min</string>
     <string name="slot_state_running">en cours</string>
     <string name="slot_state_ending">se termine · %1$s min</string>
     <string name="slot_state_over">terminé</string>
     <string name="price_free">Gratuit</string>
+    <string name="price_from">dès %1$s</string>
 
     <!-- One heart, two verbs: a Slot goes on the Plan, a Stand on the Wishlist. -->
     <string name="plan_add">Ajouter à mon programme</string>
@@ -44,13 +60,16 @@
     <string name="wishlist_remove">Retirer de ma liste à essayer</string>
 
     <string name="programme_categories_all">Tout</string>
-    <string name="programme_price_from">dès %1$s</string>
     <string name="programme_empty_filter">Aucune activité ne correspond à ce filtre.</string>
     <string name="programme_empty_unpublished">Le programme n'est pas encore publié.</string>
 
     <string name="mon_yadlo_empty">Rien dans ton programme pour l'instant. Ouvre le Programme et garde ce que tu ne veux pas manquer.</string>
     <string name="mon_yadlo_wishlist_title">À essayer</string>
     <string name="mon_yadlo_wishlist_empty">Garde les stands qui te font envie depuis leur fiche.</string>
+    <!-- Two strings rather than one with a (s), because French puts 1 in the singular and the app
+         never shows this at 0 — the empty line above says that case in words instead. -->
+    <string name="mon_yadlo_wishlist_subtitle_one">%1$s stand gardé · nourriture, boissons et boutiques</string>
+    <string name="mon_yadlo_wishlist_subtitle_other">%1$s stands gardés · nourriture, boissons et boutiques</string>
 
     <string name="wishlist_title">À essayer</string>
     <string name="wishlist_empty">Tu n'as encore rien gardé. Les stands sont dans Plus › Nourriture &amp; boissons.</string>

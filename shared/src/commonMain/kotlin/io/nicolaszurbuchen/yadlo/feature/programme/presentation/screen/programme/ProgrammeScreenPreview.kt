@@ -15,9 +15,9 @@ import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotLiveSta
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.price_free
+import yadlo.shared.generated.resources.price_from
 import yadlo.shared.generated.resources.programme_empty_filter
 import yadlo.shared.generated.resources.programme_empty_unpublished
-import yadlo.shared.generated.resources.programme_price_from
 import yadlo.shared.generated.resources.slot_state_ending
 import yadlo.shared.generated.resources.slot_state_over
 import yadlo.shared.generated.resources.slot_state_running
@@ -147,7 +147,7 @@ private class ProgrammeStateProvider : PreviewParameterProvider<ProgrammeUiModel
                 timeText = "20:00 – 02:00",
                 // Two tiers, so the row shows the one that lets a family in rather than the adult
                 // price — CHF 25 adulte, CHF 15 moins de 16 ans.
-                priceText = UiText.Resource(Res.string.programme_price_from, listOf("CHF 15")),
+                priceText = UiText.Resource(Res.string.price_from, listOf("CHF 15")),
                 stateLabel = null,
                 state = SlotLiveStateUiModel.Upcoming,
                 barStart = 0.588f,

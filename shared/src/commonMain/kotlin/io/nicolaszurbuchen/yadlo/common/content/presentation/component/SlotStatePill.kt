@@ -20,8 +20,12 @@ import io.nicolaszurbuchen.yadlo.infra.ui.asString
  * `dans 15 min` · `en cours` · `se termine · 12 min` · `terminé`.
  *
  * Filled while something is happening or about to stop, outlined while it is only coming, and plain
- * once it is done — three treatments over two colour roles, so that the four states stay apart for
- * a reader who cannot separate green from amber. The words are the primary carrier either way.
+ * once it is done — three treatments over three colour roles, so that the four states stay apart for
+ * a reader who cannot separate one hue from another. The words are the primary carrier either way.
+ *
+ * `dans 45 min` and `se termine` are amber and orange rather than one ramp at two treatments. They
+ * are not the same fact at two distances: the first says how long you have, the second says you are
+ * nearly out of it, and sharing a hue made the second read as more of the first.
  */
 @Composable
 fun SlotStatePill(
@@ -32,14 +36,14 @@ fun SlotStatePill(
     val fill =
         when (state) {
             is SlotLiveStateUiModel.Running -> MaterialTheme.appColors.live
-            is SlotLiveStateUiModel.Ending -> MaterialTheme.appColors.warning
+            is SlotLiveStateUiModel.Ending -> MaterialTheme.appColors.urgent
             else -> Color.Transparent
         }
 
     val ink =
         when (state) {
             is SlotLiveStateUiModel.Running -> MaterialTheme.appColors.onLive
-            is SlotLiveStateUiModel.Ending -> MaterialTheme.appColors.onWarning
+            is SlotLiveStateUiModel.Ending -> MaterialTheme.appColors.onUrgent
             is SlotLiveStateUiModel.StartingSoon -> MaterialTheme.appColors.warning
             else -> MaterialTheme.appColors.textTertiary
         }
