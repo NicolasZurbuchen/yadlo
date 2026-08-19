@@ -40,10 +40,12 @@ import io.nicolaszurbuchen.yadlo.infra.ui.asString
  * Past rows dim and stay — bar included. By 21:00 on the Saturday that is most of the list, and
  * that is accepted: reading what has already happened is part of reading the day you are in.
  *
- * **The bar starts where the name does, not where the row does.** It ran the full width from under
- * the Category mark, which put the axis's zero at a different x from every piece of text above it
- * and made the mark look like part of the timeline. [ProgrammeScaleRow] carries the same inset, so
- * the three readings at the top of the list sit over the positions they describe.
+ * **The bar spans the row's text, not the row.** It ran the full width, from under the Category
+ * mark to under the chevron, which put the axis's zero and its end at different x's from everything
+ * above them and made both look like furniture on the timeline. The mark and the chevron are columns
+ * of their own now, one either side, and the axis is what is between them.
+ * [ProgrammeScaleRow] carries both insets, so the three readings at the top of the list sit over the
+ * positions they describe.
  */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -55,8 +57,11 @@ fun SlotRow(
     val category = MaterialTheme.categoryColors.forId(row.categoryId)
     val isOver = row.state is SlotLiveStateUiModel.Over
 
-    Column(
-        verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xs),
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm),
+        // The chevron is the whole height of the row and centred in it, which is what makes it read
+        // as belonging to the row rather than to the first line of it.
+        verticalAlignment = Alignment.CenterVertically,
         modifier =
             modifier
                 .fillMaxWidth()
@@ -64,77 +69,83 @@ fun SlotRow(
                 .alpha(if (isOver) PAST_ALPHA else 1f)
                 .padding(horizontal = MaterialTheme.spacing.md, vertical = ROW_VERTICAL_PADDING),
     ) {
-        Row(horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm)) {
-            Box(
-                modifier =
-                    Modifier
-                        .padding(top = MARK_TOP_OFFSET)
-                        .size(CATEGORY_MARK_SIZE)
-                        .clip(MaterialTheme.shapes.extraSmall)
-                        .background(category.fill),
-            )
+        Column(
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xs),
+            modifier = Modifier.weight(1f),
+        ) {
+            Row(horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm)) {
+                Box(
+                    modifier =
+                        Modifier
+                            .padding(top = MARK_TOP_OFFSET)
+                            .size(CATEGORY_MARK_SIZE)
+                            .clip(MaterialTheme.shapes.extraSmall)
+                            .background(category.fill),
+                )
 
-            Column(
-                verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xs),
-                modifier = Modifier.weight(1f),
-            ) {
-                FlowRow(
-                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm),
+                Column(
                     verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xs),
-                    itemVerticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.weight(1f),
                 ) {
-                    Text(
-                        text = row.name,
-                        style = MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.appColors.textPrimary,
-                    )
+                    FlowRow(
+                        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm),
+                        verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xs),
+                        itemVerticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Text(
+                            text = row.name,
+                            style = MaterialTheme.typography.titleMedium,
+                            color = MaterialTheme.appColors.textPrimary,
+                        )
 
-                    row.stateLabel?.let { label ->
-                        SlotStatePill(label = label, state = row.state)
+                        row.stateLabel?.let { label ->
+                            SlotStatePill(label = label, state = row.state)
+                        }
+                    }
+
+                    Row(horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xs)) {
+                        Text(
+                            text = row.timeText,
+                            style = MaterialTheme.typography.labelLarge,
+                            color = MaterialTheme.appColors.textSecondary,
+                        )
+
+                        // The Category written out, beside the mark that colours it. Colour is
+                        // never the only carrier: in July sun, on a phone, it is the word that
+                        // survives.
+                        Text(
+                            text = "· ${row.categoryName}",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.appColors.textTertiary,
+                        )
                     }
                 }
 
-                Row(horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xs)) {
+                row.priceText?.let { price ->
                     Text(
-                        text = row.timeText,
+                        text = price.asString(),
                         style = MaterialTheme.typography.labelLarge,
                         color = MaterialTheme.appColors.textSecondary,
-                    )
-
-                    // The Category written out, beside the mark that colours it. Colour is never
-                    // the only carrier: in July sun, on a phone, it is the word that survives.
-                    Text(
-                        text = "· ${row.categoryName}",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.appColors.textTertiary,
                     )
                 }
             }
 
-            row.priceText?.let { price ->
-                Text(
-                    text = price.asString(),
-                    style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.appColors.textSecondary,
-                )
-            }
-
-            // The row already opens the fiche; the chevron says so before it is tapped. Every other
-            // list in the app that leads somewhere carries one, and this was the one that did not.
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                contentDescription = null,
-                tint = MaterialTheme.appColors.textTertiary,
-                modifier = Modifier.padding(top = CHEVRON_TOP_OFFSET).size(CHEVRON_SIZE),
+            SlotTimeBar(
+                barStart = row.barStart,
+                barEnd = row.barEnd,
+                categoryFill = category.fill,
+                state = row.state,
+                modifier = Modifier.padding(start = CATEGORY_MARK_SIZE + MaterialTheme.spacing.sm),
             )
         }
 
-        SlotTimeBar(
-            barStart = row.barStart,
-            barEnd = row.barEnd,
-            categoryFill = category.fill,
-            state = row.state,
-            modifier = Modifier.padding(start = CATEGORY_MARK_SIZE + MaterialTheme.spacing.sm),
+        // The row already opens the fiche; the chevron says so before it is tapped. Every other list
+        // in the app that leads somewhere carries one, and this was the one that did not.
+        Icon(
+            imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+            contentDescription = null,
+            tint = MaterialTheme.appColors.textTertiary,
+            modifier = Modifier.size(CHEVRON_SIZE),
         )
     }
 }
@@ -149,11 +160,14 @@ internal val CATEGORY_MARK_SIZE = 10.dp
  */
 private val ROW_VERTICAL_PADDING = 12.dp
 
-/** Smaller than Material's 24dp default, so the chevron reads as punctuation and not as an action. */
-private val CHEVRON_SIZE = 20.dp
-
-/** Half of titleMedium's 24sp line box less half the chevron, for the reason [MARK_TOP_OFFSET] gives. */
-private val CHEVRON_TOP_OFFSET = 2.dp
+/**
+ * Material's default, unlike every other icon in the app, which is cut to its label's line height.
+ * This one has no label beside it — it is a column of its own, the height of the row — and at 20dp
+ * it read as something that had been left over rather than as the edge of the row.
+ *
+ * Internal because [ProgrammeScaleRow] insets by it too: the axis ends where this column starts.
+ */
+internal val CHEVRON_SIZE = 24.dp
 
 /**
  * Half of titleMedium's 24sp line box less half the mark, so the square centres on the *first* line
