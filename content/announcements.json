@@ -2,12 +2,102 @@
   "schemaVersion": 1,
   "announcements": [
     {
+      "id": "dates-2026",
+      "publishedAt": "2026-01-20T10:00:00+01:00",
+      "editionId": "2026",
+      "title": "Yadlo revient les 10, 11 et 12 juillet",
+      "body": "Trois jours au bord du lac, à Préverenges. Entrée libre, comme toujours.",
+      "url": null,
+      "provenance": "unverified"
+    },
+    {
+      "id": "benevoles-2026",
+      "publishedAt": "2026-03-09T09:00:00+01:00",
+      "editionId": "2026",
+      "title": "On cherche des Hot'Staff",
+      "body": "Quelques heures suffisent. Bar, entrée, montage, rangement — il y a de la place pour tout le monde.",
+      "url": "https://www.yadlo.ch/",
+      "provenance": "unverified"
+    },
+    {
+      "id": "premiers-noms-2026",
+      "publishedAt": "2026-04-14T17:00:00+02:00",
+      "editionId": "2026",
+      "title": "Les premiers noms sont là",
+      "body": "Le reste de la programmation arrive avant l'été.",
+      "url": "https://www.instagram.com/yadlo_ch/",
+      "provenance": "unverified"
+    },
+    {
+      "id": "silent-2026",
+      "publishedAt": "2026-05-05T18:30:00+02:00",
+      "editionId": "2026",
+      "title": "La Silent Party revient le samedi",
+      "body": "Deux canaux, casques fournis, jusqu'au bout de la nuit.",
+      "url": null,
+      "provenance": "unverified"
+    },
+    {
+      "id": "bus-pyjama-2026",
+      "publishedAt": "2026-05-26T12:00:00+02:00",
+      "editionId": "2026",
+      "title": "Le bus pyjama roule à nouveau",
+      "body": "Retour sur Lausanne et Morges après la dernière scène, vendredi et samedi.",
+      "url": null,
+      "provenance": "unverified"
+    },
+    {
       "id": "programme-2026",
       "publishedAt": "2026-06-02T12:00:00+02:00",
       "editionId": "2026",
       "title": "Le programme complet est en ligne",
       "body": "Concerts, activités nautiques, coin enfant et jeux.",
       "url": null,
+      "provenance": "unverified"
+    },
+    {
+      "id": "stands-2026",
+      "publishedAt": "2026-06-19T11:00:00+02:00",
+      "editionId": "2026",
+      "title": "Six stands de nourriture cette année",
+      "body": "Végane, libanais, antillais, géorgien, grec, et de quoi grignoter sur la plage.",
+      "url": null,
+      "provenance": "unverified"
+    },
+    {
+      "id": "meteo-2026",
+      "publishedAt": "2026-07-09T19:00:00+02:00",
+      "editionId": "2026",
+      "title": "On annonce du beau",
+      "body": "Prends quand même une petite laine pour la nuit — au bord de l'eau, ça tombe vite.",
+      "url": null,
+      "provenance": "unverified"
+    },
+    {
+      "id": "ouverture-2026",
+      "publishedAt": "2026-07-10T16:00:00+02:00",
+      "editionId": "2026",
+      "title": "C'est ouvert",
+      "body": "Le site est ouvert. Première scène à 17:00.",
+      "url": null,
+      "provenance": "unverified"
+    },
+    {
+      "id": "parking-2026",
+      "publishedAt": "2026-07-11T14:20:00+02:00",
+      "editionId": "2026",
+      "title": "Le parking est plein",
+      "body": "Viens en bus, en train ou à vélo. La ligne 701 s'arrête à deux minutes à pied.",
+      "url": null,
+      "provenance": "unverified"
+    },
+    {
+      "id": "objets-trouves-2026",
+      "publishedAt": "2026-07-14T10:00:00+02:00",
+      "editionId": "2026",
+      "title": "Objets trouvés",
+      "body": "Une veste, deux paires de lunettes et beaucoup de gourdes nous attendent. Écris-nous.",
+      "url": "https://www.yadlo.ch/",
       "provenance": "unverified"
     },
     {
