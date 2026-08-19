@@ -18,7 +18,6 @@ import io.nicolaszurbuchen.yadlo.common.content.presentation.component.SocialLin
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.component.AnnouncementsBlock
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.component.CountdownBlock
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.component.FiguresBlock
-import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.component.HeroBlock
 import io.nicolaszurbuchen.yadlo.infra.ui.asString
 
 /**
@@ -63,7 +62,12 @@ fun HomeScreen(
                 }
 
                 is HomeBlockUiModel.Hero -> {
-                    HeroBlock(block = block, onClick = onHeroClick)
+                    YadloHero(
+                        title = block.title.asString(),
+                        kicker = block.kicker.asString(),
+                        body = block.body.asString(),
+                        onClick = onHeroClick,
+                    )
                 }
 
                 is HomeBlockUiModel.ThankYou -> {
