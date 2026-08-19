@@ -11,6 +11,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -36,6 +39,11 @@ import io.nicolaszurbuchen.yadlo.infra.ui.asString
  *
  * Past rows dim and stay — bar included. By 21:00 on the Saturday that is most of the list, and
  * that is accepted: reading what has already happened is part of reading the day you are in.
+ *
+ * **The bar starts where the name does, not where the row does.** It ran the full width from under
+ * the Category mark, which put the axis's zero at a different x from every piece of text above it
+ * and made the mark look like part of the timeline. [ProgrammeScaleRow] carries the same inset, so
+ * the three readings at the top of the list sit over the positions they describe.
  */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -54,7 +62,7 @@ fun SlotRow(
                 .fillMaxWidth()
                 .clickable { onClick(row.happeningId) }
                 .alpha(if (isOver) PAST_ALPHA else 1f)
-                .padding(horizontal = MaterialTheme.spacing.md, vertical = MaterialTheme.spacing.sm),
+                .padding(horizontal = MaterialTheme.spacing.md, vertical = ROW_VERTICAL_PADDING),
     ) {
         Row(horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm)) {
             Box(
@@ -110,6 +118,15 @@ fun SlotRow(
                     color = MaterialTheme.appColors.textSecondary,
                 )
             }
+
+            // The row already opens the fiche; the chevron says so before it is tapped. Every other
+            // list in the app that leads somewhere carries one, and this was the one that did not.
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                contentDescription = null,
+                tint = MaterialTheme.appColors.textTertiary,
+                modifier = Modifier.padding(top = CHEVRON_TOP_OFFSET).size(CHEVRON_SIZE),
+            )
         }
 
         SlotTimeBar(
@@ -117,11 +134,26 @@ fun SlotRow(
             barEnd = row.barEnd,
             categoryFill = category.fill,
             state = row.state,
+            modifier = Modifier.padding(start = CATEGORY_MARK_SIZE + MaterialTheme.spacing.sm),
         )
     }
 }
 
-private val CATEGORY_MARK_SIZE = 10.dp
+/** Internal because [ProgrammeScaleRow] insets by it too — the axis has to start at one x. */
+internal val CATEGORY_MARK_SIZE = 10.dp
+
+/**
+ * Between `sm` and `md`, which the scale skips. Eight was too tight for a row carrying a name, a
+ * pill, a time, a Category and a bar; sixteen is a third again as much scrolling on a list of fifty
+ * for air nobody asked for that much of.
+ */
+private val ROW_VERTICAL_PADDING = 12.dp
+
+/** Smaller than Material's 24dp default, so the chevron reads as punctuation and not as an action. */
+private val CHEVRON_SIZE = 20.dp
+
+/** Half of titleMedium's 24sp line box less half the chevron, for the reason [MARK_TOP_OFFSET] gives. */
+private val CHEVRON_TOP_OFFSET = 2.dp
 
 /**
  * Half of titleMedium's 24sp line box less half the mark, so the square centres on the *first* line

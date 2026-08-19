@@ -51,7 +51,6 @@ fun DayChipRow(
                 onClick = { onDayClick(day.id) },
                 ink = MaterialTheme.appColors.onPrimarySubtle,
                 outline = MaterialTheme.appColors.onPrimarySubtle,
-                selectedOutline = MaterialTheme.appColors.onPrimarySubtle,
             )
         }
     }
