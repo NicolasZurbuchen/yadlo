@@ -54,9 +54,14 @@ import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
  * same time over the same pixels. One layer paints, then the other takes over once there is nothing
  * left to see through.
  *
- * The veil covers the blob variant too, which it did not have to before the toolbar stopped tinting
- * itself: with the bar now clear until the end, the header is the only thing that can carry the
- * colour on a fiche that has no photograph.
+ * The veil covers the blob variant too, which it did not have to while the toolbar tinted itself:
+ * with the bar now clear until the end, the header is the only thing that can carry the colour on a
+ * fiche that has no photograph.
+ *
+ * **The words are under the veil rather than on it.** Drawn on top they outlived the thing they were
+ * captioning — the head went solid Category colour and the title stayed sitting on it, at the same
+ * moment the toolbar was fading in a second copy of the same word, so the fiche showed its title
+ * twice in two sizes. What closes over a photograph has to close over what is written on it.
  *
  * **Over a photograph both lines are [io.nicolaszurbuchen.yadlo.app.design.theme.AppColors.onScrim],
  * including the Category label.** The scrim's alpha was derived as the lowest at which white clears
@@ -134,23 +139,6 @@ fun HappeningHeader(
             )
         }
 
-        // matchParentSize rather than fillMaxSize: the blob variant is only as tall as its own
-        // title, and a child that fills would be measured against a list item's unbounded height.
-        Box(modifier = Modifier.matchParentSize().background(category.fill.copy(alpha = tint)))
-
-        if (imageUrl != null) {
-            // Above the veil rather than under it, so it stays the same colour at every point of
-            // the collapse instead of being painted over by its own hue.
-            Box(
-                modifier =
-                    Modifier
-                        .align(Alignment.BottomCenter)
-                        .fillMaxWidth()
-                        .height(CATEGORY_RULE_HEIGHT)
-                        .background(category.fill),
-            )
-        }
-
         Column(
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xs),
             modifier =
@@ -175,6 +163,24 @@ fun HappeningHeader(
                 // title, and the 22sp the bar carries it at looked like a caption on a photograph.
                 style = MaterialTheme.typography.headlineLarge,
                 color = if (imageUrl != null) MaterialTheme.appColors.onScrim else MaterialTheme.appColors.textPrimary,
+            )
+        }
+
+        // Last, so it closes over the words as well as over the picture. matchParentSize rather than
+        // fillMaxSize: the blob variant is only as tall as its own title, and a child that fills
+        // would be measured against a list item's unbounded height.
+        Box(modifier = Modifier.matchParentSize().background(category.fill.copy(alpha = tint)))
+
+        if (imageUrl != null) {
+            // Above the veil rather than under it, so it stays the same colour at every point of
+            // the collapse instead of being painted over by its own hue.
+            Box(
+                modifier =
+                    Modifier
+                        .align(Alignment.BottomCenter)
+                        .fillMaxWidth()
+                        .height(CATEGORY_RULE_HEIGHT)
+                        .background(category.fill),
             )
         }
     }

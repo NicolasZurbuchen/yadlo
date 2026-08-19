@@ -386,8 +386,11 @@ private const val TINT_FULL = 0.8f
 private const val BAR_TAKEOVER_FROM = 0.85f
 
 /**
- * The bar's title starts appearing only in the last 30% of the collapse, after the colour has
- * arrived. Earlier and it overlaps the header's own copy of the title while both are still legible;
- * later and it snaps in.
+ * The bar's title starts appearing only once the header's own copy has gone under the veil, which is
+ * at [TINT_FULL] exactly — the two are never both on screen. A fiche showing its title twice, in two
+ * sizes ten points apart, is the one thing about this collapse a reader would call a bug.
+ *
+ * It fades in over solid Category colour rather than over the photograph, because the veil is opaque
+ * by then and the bar's own container has not started yet.
  */
-private const val TITLE_FADE_FROM = 0.7f
+private const val TITLE_FADE_FROM = TINT_FULL
