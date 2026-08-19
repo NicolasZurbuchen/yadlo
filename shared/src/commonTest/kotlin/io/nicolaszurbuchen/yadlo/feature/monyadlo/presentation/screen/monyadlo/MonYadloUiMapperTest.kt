@@ -6,8 +6,8 @@ import io.nicolaszurbuchen.yadlo.feature.monyadlo.domain.model.PlannedDay
 import io.nicolaszurbuchen.yadlo.feature.monyadlo.domain.model.PlannedSlot
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import yadlo.shared.generated.resources.Res
-import yadlo.shared.generated.resources.month_july
 import yadlo.shared.generated.resources.mon_yadlo_empty
+import yadlo.shared.generated.resources.month_july
 import yadlo.shared.generated.resources.slot_state_ending
 import yadlo.shared.generated.resources.slot_state_over
 import yadlo.shared.generated.resources.slot_state_running

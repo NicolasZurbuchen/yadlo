@@ -14,8 +14,8 @@ import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotLiveStateUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import yadlo.shared.generated.resources.Res
-import yadlo.shared.generated.resources.month_july
 import yadlo.shared.generated.resources.mon_yadlo_empty
+import yadlo.shared.generated.resources.month_july
 import yadlo.shared.generated.resources.slot_state_over
 import yadlo.shared.generated.resources.slot_state_running
 
