@@ -82,12 +82,17 @@ fun MonYadloScreen(
 
         itemsIndexed(state.days, key = { _, day -> day.id }) { index, day ->
             // A rule between days and never around one of them, as between two Slots on the
-            // Programme. It runs the full width because what it separates is two whole blocks,
-            // rail included — an inset one would read as a rule between two rows of the second day.
+            // Programme. Inset to the width of the tile above it rather than run to the screen
+            // edges: everything on this screen is a block held off the margin, and a rule that
+            // reaches further than the things it separates reads as a divider of the page.
             if (index > 0) {
                 HorizontalDivider(
                     color = MaterialTheme.appColors.borderSubtle,
-                    modifier = Modifier.padding(vertical = MaterialTheme.spacing.md),
+                    modifier =
+                        Modifier.padding(
+                            horizontal = MaterialTheme.spacing.md,
+                            vertical = MaterialTheme.spacing.md,
+                        ),
                 )
             }
 
