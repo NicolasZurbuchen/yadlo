@@ -100,6 +100,29 @@ object AmberPalette {
     val amber50 = Color(0xFFFFF6E6)
 }
 
+/**
+ * The one warm that is not a Category. Generated the same way as the rest — an even OKLab ramp at a
+ * fixed hue — but on the Amber ladder's lightness steps rather than around an anchor of its own,
+ * because it exists to replace amber in one role and has to sit where amber sat.
+ *
+ * Orange runs out of gamut above L 0.7 where gold does not, so the top of this ramp desaturates into
+ * a salmon rather than staying vivid. That is the honest shape of the hue, and the steps this ramp
+ * is actually used at are all below the fold.
+ */
+object OrangePalette {
+    val orange950 = Color(0xFF571802)
+    val orange900 = Color(0xFF7A2504)
+    val orange800 = Color(0xFFA63508)
+    val orange700 = Color(0xFFD7470E)
+    val orange600 = Color(0xFFFD6635)
+    val orange500 = Color(0xFFFDA489)
+    val orange400 = Color(0xFFFEBBA6)
+    val orange300 = Color(0xFFFED1C3)
+    val orange200 = Color(0xFFFFE4DB)
+    val orange100 = Color(0xFFFFF0EB)
+    val orange50 = Color(0xFFFFF7F4)
+}
+
 object VioletPalette {
     val violet950 = Color(0xFF290E48)
     val violet900 = Color(0xFF3D1965)

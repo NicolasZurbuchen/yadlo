@@ -354,13 +354,21 @@ the beach at Préverenges is public, so the morning yoga runs from 10:00 on a da
 at 12:00 and still has to sit on the axis. It is measured over every Slot of the day rather
 than the filtered ones, so tapping a chip never rescales what two rows are being compared on.
 
-**The live-state pills use one amber ramp, not the prototype's amber-then-coral.** Green
-fills `en cours`, amber outlines `dans 15 min` and fills `se termine`, and `terminé` is plain
-tertiary text on a dimmed row — four states over two colour roles plus three treatments, so
-they stay apart for a reader who cannot separate green from amber. The coral the prototype
-reaches for was never part of the perceptual-separation measurement the five Category hues
-were chosen by, and a red pill beside a `musique` magenta dot is the same collision § Open
-already flags for the accent. The words carry the state either way.
+**The live-state pills use one orange-red ramp, not the prototype's amber-then-coral and not
+the amber that replaced it.** Green fills `en cours`, orange-red outlines `dans 45 min` and
+fills `se termine`, and `terminé` is plain tertiary text on a dimmed row — four states over two
+colour roles plus three treatments, so they stay apart for a reader who cannot separate green
+from red. One ramp rather than two, because the two pills are the same fact at two distances.
+
+Amber held the role first, on the grounds that the prototype's coral had never been part of the
+perceptual-separation measurement the five Category hues were chosen by. That was a reason to
+measure it, not a reason to refuse it, and it has been measured: 96 from `live` in light and 85
+in dark, which is the separation that matters because those two are the pair that appear on
+adjacent rows; 31 and 25 from `musique`, which is closer than any Category pair and is why the
+pill is still written out in words. What decided it in the end was not the number — amber is the
+colour of a caution sign, and `se termine` is not a caution. It is the last chance to walk over
+there, and the only pill on the screen asking for something to be done about it. Gold beside a
+gold `enfants` dot was also spending one hue on two unrelated things.
 
 **Sorting is dropped from v1.** The prototype offers Heure / A–Z / Prix; § Open below already
 called it a candidate for deletion, and building it would have meant a permanent row of

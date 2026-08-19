@@ -71,14 +71,20 @@ data class AppColors(
     val live: Color,
     val onLive: Color,
     /**
-     * The warning ramp behind both time-pressure pills: `dans 15 min` draws it as text on the page
+     * The warning ramp behind both time-pressure pills: `dans 45 min` draws it as text on the page
      * ground, `se termine` fills with it.
      *
-     * One amber ramp rather than the prototype's amber-then-coral, because the coral was never part
-     * of the perceptual-separation measurement the five Category hues were chosen by, and a red
-     * pill beside a `musique` magenta dot is the collision DECISIONS.md § Open already flags for the
-     * accent. Outlined against filled separates the two states, and the pill is written out either
-     * way — the colour is never carrying it alone.
+     * **Orange-red, not the amber it was.** Amber is the colour of a caution sign, and `se termine`
+     * is not a caution — it is the last chance to walk over there, and the one pill on the screen
+     * that is asking for something to be done about it. Gold beside a gold `enfants` dot was also
+     * saying two unrelated things in one hue.
+     *
+     * The prototype's coral was rejected for this once, on the grounds that it was never part of
+     * the perceptual-separation measurement the Category hues were chosen by. It has been measured
+     * now: 96 from `live` in light and 85 in dark — the separation that actually matters, since
+     * those two are the pair that appear on adjacent rows — and 31 and 25 from `musique`, which is
+     * closer than any Category pair and is why the pill is still written out in words. Outlined
+     * against filled separates the two states; the colour never carries either alone.
      */
     val warning: Color,
     val onWarning: Color,
@@ -135,7 +141,10 @@ val LightAppColors =
         // rather than to be written on.
         live = EmeraldPalette.emerald800,
         onLive = Color.White,
-        warning = AmberPalette.amber800,
+        // Deep enough to be written with as well as filled: it is the ink of `dans 45 min` on
+        // three grounds before it is the ground of `se termine`. orange700 is the prettier fill and
+        // carries white at 4.38:1, which is under the bar on the one role that has to hold text.
+        warning = OrangePalette.orange800,
         onWarning = Color.White,
         positive = EmeraldPalette.emerald800,
         negative = MagentaPalette.magenta800,
@@ -177,7 +186,10 @@ val DarkAppColors =
         // read as anything against a dark ground, whether they are being written on or written in.
         live = EmeraldPalette.emerald400,
         onLive = SlatePalette.slate950,
-        warning = AmberPalette.amber400,
+        // orange600 is the vivid one and it fails as text on surfaceRaised at 4.0:1. The ramp
+        // desaturates as it lifts — that is orange rather than a choice — so the dark half of this
+        // role is a warm coral, which is the same shape the amber and magenta roles take in dark.
+        warning = OrangePalette.orange500,
         onWarning = SlatePalette.slate950,
         positive = EmeraldPalette.emerald400,
         negative = MagentaPalette.magenta400,
