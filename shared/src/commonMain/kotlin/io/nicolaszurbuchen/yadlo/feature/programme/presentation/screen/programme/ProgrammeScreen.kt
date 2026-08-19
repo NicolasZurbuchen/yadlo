@@ -62,11 +62,10 @@ fun ProgrammeScreen(
         }
 
         LazyColumn(
-            contentPadding =
-                PaddingValues(
-                    top = MaterialTheme.spacing.sm,
-                    bottom = MaterialTheme.spacing.sm + chrome.bottom,
-                ),
+            // Nothing of its own but the bar it has to clear. Each row already pads itself top and
+            // bottom, and the list's own on top of that put a visible gap under the filter block
+            // and left the first Slot looking detached from the chrome that filters it.
+            contentPadding = PaddingValues(bottom = chrome.bottom),
             modifier = Modifier.fillMaxSize(),
         ) {
             itemsIndexed(state.rows, key = { _, row -> row.id }) { index, row ->
