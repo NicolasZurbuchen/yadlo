@@ -420,3 +420,24 @@ Worth knowing before back-filling: a past edition does **not** need to be comple
 having. A line-up and a poster is already more than exists anywhere today. `provenance:
 "archived"` is there precisely for this — data taken from a past edition's record rather than
 confirmed fresh.
+
+## 10. Annonces — ten of the thirteen are invented
+
+`announcements.json` was carrying three annonces, which is not enough to see what the list looks
+like when it is a list. Ten more were written so the feed scrolls and the *Toutes* screen has a
+reason to exist.
+
+**Every one of them is fiction**, marked `provenance: "unverified"` like the three that were
+already there. They are plausible rather than arbitrary — dates announced in January, a call for
+Hot'Staff in March, first names in April, the bus pyjama in May, a full parking on the Saturday
+afternoon — but nothing in them was published by the association, and the app does not currently
+show provenance on an annonce the way it does on a price.
+
+**These must be deleted or replaced before the app is put in front of anyone.** They are the one
+piece of invented content that reads as if the association said it, which is a different thing
+from a guessed price: a wrong price is wrong, and a wrong annonce is somebody else's voice.
+
+What is worth keeping from them is the shape. Between them they cover every case the screen has to
+survive: an annonce with a URL and one without, one that is a single sentence, one pushed *during*
+the festival as a correction (`parking-2026`, 14:20 on the Saturday), and a run long enough that
+Accueil's two-item summary is visibly a summary.
