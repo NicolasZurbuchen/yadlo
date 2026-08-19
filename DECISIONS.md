@@ -706,9 +706,20 @@ Party is the same template plus the booking row; a ground activity is the water 
 different colour; the children's corner is covered by the same shape.
 
 - **Collapsing toolbar.** The hero photo carries the title; on scroll the title rises into
-  the bar, the bar and the status bar take the category colour, and a veil closes over the
-  image. The category colour arrives as a radial blob anchored bottom-right rather than a
-  wash over the whole photograph.
+  the bar and **the category colour closes over the whole head**, bar and photograph
+  together, from one number. Tinting only the bar left a colour strip sitting on an untinted
+  picture, which is a bar over a photo rather than a head arriving at a colour.
+  **Continuously, not at a threshold**, so a slow drag paints it on slowly and a fling lands
+  on it. It starts a third of the way in — a photograph that dissolves the moment a thumb
+  moves reads as fragile — and reaches full opacity with a fifth of the travel still to go,
+  because the tail of a linear ramp is a picture faintly showing through something meant to
+  be solid, which looks broken rather than gradual.
+  **A rule in the category colour closes the hero at rest.** Sitting still at the top of a
+  fiche, nothing said which category it was: the bar is transparent, the label is written in
+  the scrim's ink, and the colour did not arrive until something was scrolled.
+  The radial blob this originally specified as sitting *over* the photograph is now what
+  stands in *for* it: over an image it was one more thing between the reader and the picture,
+  and the fiches that have no picture are the ones that needed it.
 - **The category is written, never only coloured** — `Musique`, `Sur l'eau`, `Sur terre`,
   `Enfants`, `Silent Party`, `Nourriture` — as the label above the title. Colour alone is
   not an accessible carrier of meaning.
@@ -722,15 +733,25 @@ different colour; the children's corner is covered by the same shape.
   card-with-chevron style is reserved for things that navigate; an outward arrow marks a
   link that leaves the app.
 
-**The fiche shipped without its photograph, on purpose.** The template above describes a
-collapsing toolbar over a hero image, and it still does — but not one of the 38 Happenings in the
-2026 content carries an image, and `imageBaseUrl` is `null` because hosting is not settled
-(content/GAPS.md § Images). Building the image layer now would have meant an untested remote path
-drawing nothing on every fiche in the app, against a Coil3 disk cache CLAUDE.md already flags as
-unverified. What shipped is the half that has something to draw: the Category colour as a radial
-blob anchored bottom-right, which was always specified as sitting *over* the photograph rather than
-being derived from it. The photo slides in behind it the day the press images are hosted, and
-nothing else about the head has to move.
+**The photograph arrived, and it brought two decisions with it.** Sixteen of the 38 Happenings now
+carry an image — all thirteen artists and three activities — so the head of the fiche is the hero
+the template always described. The other twenty-two keep the Category blob that stood in for it, and
+the words sit at the same insets on both, so a fiche with a photograph and a fiche without do not
+read as two different screens. There is no `imageBaseUrl`: a src is a path relative to the content
+root, resolved once at the data boundary against the address the bundle was fetched from.
+
+**Over a photograph the Category label is written in the scrim's ink, not in the Category's colour.**
+This is the one place the rule "the Category is written *and* coloured" gives up the colour, and it
+gives it up because the ground stopped being ours. The scrim's alpha was derived as the lowest at
+which white clears 4.5:1 over a *white* photograph, which is the worst case an image can present; a
+Category fill carries no such guarantee, because the five fills were measured against the app's own
+grounds and never against a picture nobody has seen. `enfants` gold on a bright sky is the failure,
+and it is not a hypothetical — the water and beach photographs are the bright ones. Nothing is lost
+that mattered: the Category is still written out, and the toolbar takes its fill as the header goes.
+
+**The Category colour is also the ground the image loads onto**, rather than a grey placeholder. A
+fiche opened with no signal is then the same colour as the bar it collapses into, which is a page
+that looks unfinished rather than one that looks broken.
 
 **The round icon actions are not built yet either, and for different reasons.** Share needs a
 platform share sheet and map needs a geo intent — two expect/actual pairs that belong with the
@@ -765,12 +786,22 @@ pill, measured against the same tick. Mon Yadlo will be the third. The strings m
 `slot_state_*` and `price_free` are named after what they describe rather than after the first
 screen that happened to need them.
 
-**The heart is attached to what you are saving, and the whole row is the target.** For a
-Slot that is the date row; for a Stand, which has no dates, it is the button in the bar.
-There is never more than one heart for the same thing on a screen, never a selection dialog,
-and removing is the same heart tapped again. This replaces the earlier "hearts toggle, rows
-navigate" rule: people expect to tap the row, and a fiche's date row has nowhere to navigate
-to anyway.
+**The heart is attached to what you are saving. The heart is also the only target.** For a
+Slot that is the mark on the date row; for a Stand, which has no dates, it is the button in the
+bar. There is never more than one heart for the same thing on a screen, never a selection dialog,
+and removing is the same heart tapped again.
+
+*The whole row was the target, and that is reversed.* The argument for it was sound — people expect
+to tap a row, and a fiche's date row has nowhere to navigate to — but a row that is tappable has to
+look tappable, and what made it look so was a card that stayed lit under a kept Slot. That was the
+part that read wrong. A card under a row is the language of *selected*, so the fiche looked as
+though it had a current date row rather than a kept one, and the meaning the ground was carrying
+was already carried by the mark at the end of the line. Removing it takes the ambiguity and the
+inset with it: the date now starts on the same left edge as every other line on the screen.
+
+The mark keeps its disc, filled with the accent when kept and a ring when not. It is now a control
+rather than a badge, which is also why it names its own action — the row used to say what a tap
+would do, and the row no longer takes one.
 
 **One table for both buckets, with the bucket written into the row.** `SavedEntry(id, kind,
 edition_id)` holds a Slot id under `SLOT` and a Happening id under `STAND`. The two id spaces could

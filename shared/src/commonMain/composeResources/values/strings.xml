@@ -191,6 +191,9 @@
     <string name="happening_section_menu">Au menu</string>
     <string name="happening_section_good_to_know">Bon à savoir</string>
     <string name="happening_section_links">Liens</string>
+    <!-- A date row under Quand: weekday, day, month. A resource rather than a concatenation because
+         the order of the three is what changes with the language, not the words. -->
+    <string name="happening_slot_date">%1$s %2$s %3$s</string>
     <string name="happening_price_deposit">Caution %1$s</string>
     <string name="happening_booking_action">Réserver</string>
     <string name="happening_booking_required">Réservation obligatoire</string>

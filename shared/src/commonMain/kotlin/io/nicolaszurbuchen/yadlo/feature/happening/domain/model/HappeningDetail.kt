@@ -32,6 +32,12 @@ data class HappeningDetail(
     val name: String,
     val categoryId: String,
     val categoryName: String,
+    /**
+     * The first of the Happening's images, already absolute. One rather than the list, because the
+     * fiche has one place to put a photograph: a gallery is a screen nobody has asked for, and
+     * Léman Records' four would otherwise arrive somewhere with room for one.
+     */
+    val imageUrl: String?,
     val description: String?,
     val tags: List<String>,
     /**

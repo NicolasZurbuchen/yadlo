@@ -19,6 +19,7 @@ import yadlo.shared.generated.resources.happening_fact_equipment_provided
 import yadlo.shared.generated.resources.happening_fact_supervised
 import yadlo.shared.generated.resources.happening_link_website
 import yadlo.shared.generated.resources.happening_price_deposit
+import yadlo.shared.generated.resources.month_july
 import yadlo.shared.generated.resources.price_free
 import yadlo.shared.generated.resources.slot_state_ending
 import yadlo.shared.generated.resources.slot_state_over
@@ -95,6 +96,17 @@ class HappeningUiMapperTest {
 
         assertEquals("Samedi", model.slots.single().dayName)
         assertEquals("16:00 – 18:00", model.slots.single().timeText)
+    }
+
+    @Test
+    fun toUiModel_slotRow_datesTheRowFromTheFestivalDayRatherThanFromTheSlot() {
+        // The one case that separates the two: a set that runs past midnight belongs to the evening
+        // it started, and dating the row off its own start would print the morning after.
+        val model = state(detail(slots = listOf(saturdayLate()))).toUiModel()
+
+        assertEquals("Samedi", model.slots.single().dayName)
+        assertEquals("11", model.slots.single().dayNumber)
+        assertEquals(UiText.Resource(Res.string.month_july), model.slots.single().monthName)
     }
 
     @Test
@@ -408,6 +420,7 @@ class HappeningUiMapperTest {
     private fun detail(
         categoryId: String = "musique",
         categoryName: String = "Musique",
+        imageUrl: String? = null,
         tags: List<String> = emptyList(),
         slots: List<HappeningSlot> = emptyList(),
         price: Price? = null,
@@ -424,6 +437,7 @@ class HappeningUiMapperTest {
         name = "Dubside",
         categoryId = categoryId,
         categoryName = categoryName,
+        imageUrl = imageUrl,
         description = null,
         tags = tags,
         dietary = emptyMap(),
@@ -443,9 +457,21 @@ class HappeningUiMapperTest {
         HappeningSlot(
             id = "2026:dubside-sat",
             dayName = "Samedi",
+            dayStart = Instant.parse("2026-07-11T12:00:00+02:00"),
             start = Instant.parse("2026-07-11T16:00:00+02:00"),
             end = Instant.parse("2026-07-11T18:00:00+02:00"),
             planned = planned,
+        )
+
+    /** Starts on the Saturday and ends on the Sunday, which is the Saturday as far as a fiche goes. */
+    private fun saturdayLate() =
+        HappeningSlot(
+            id = "2026:silent-party-sat",
+            dayName = "Samedi",
+            dayStart = Instant.parse("2026-07-11T12:00:00+02:00"),
+            start = Instant.parse("2026-07-12T01:00:00+02:00"),
+            end = Instant.parse("2026-07-12T02:30:00+02:00"),
+            planned = false,
         )
 
     private fun free() = Price(free = true, tiers = emptyList(), deposit = null, provenance = Provenance.CONFIRMED)

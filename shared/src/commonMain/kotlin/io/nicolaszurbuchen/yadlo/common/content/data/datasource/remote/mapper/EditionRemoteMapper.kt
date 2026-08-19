@@ -30,6 +30,7 @@ import io.nicolaszurbuchen.yadlo.common.content.domain.model.Slot
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Venue
 import io.nicolaszurbuchen.yadlo.common.error.AppError
 import io.nicolaszurbuchen.yadlo.common.error.AppException
+import io.nicolaszurbuchen.yadlo.infra.network.CONTENT_BASE_URL
 
 private const val KIND_ARTIST = "artist"
 private const val KIND_ACTIVITY = "activity"
@@ -245,11 +246,25 @@ private fun FigureDto.toDomain(): Figure =
         provenance = provenance.toProvenanceEnum("figure[$id].provenance"),
     )
 
+/**
+ * The content authors a path relative to the content root — `shared/images/artists/alf.webp` — and
+ * the domain hands out something an image loader can fetch. The join happens here, at the same
+ * boundary that resolves every other reference in the bundle, so nothing above the data layer has to
+ * know the content is published anywhere in particular.
+ *
+ * Relative to the *root* rather than to the file that carried it: `edition.json` sits two directories
+ * down, and a path resolved against its own location would point inside `editions/2026/` while
+ * `validate.js` and the picture bank both mean the root. An absolute src is left alone, which is what
+ * lets one photograph come from somewhere else without a schema change.
+ */
 private fun ImageDto.toDomain(): Image =
     Image(
-        url = src,
+        url = if (src.startsWith(ABSOLUTE_PREFIX)) src else CONTENT_BASE_URL + src,
         credit = credit,
     )
+
+/** `http://` is rejected by the validator, so https is the only absolute form that can arrive. */
+private const val ABSOLUTE_PREFIX = "https://"
 
 private fun LinkDto.toDomain(): Link =
     Link(

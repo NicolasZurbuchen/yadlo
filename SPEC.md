@@ -463,10 +463,14 @@ whose id does not carry the current edition prefix are dropped explicitly.
 - Images remote and disk-cached; only app chrome, category icons and **every image on the splash
   screen** are bundled. The splash is the one absolute exception — see § Screens.
 - **Image references are relative by default.** Every Happening carries `images: [{src, credit}]`
-  and every partner a `logo`; a `src` is either an absolute `https://` URL or a path resolved
-  against the edition's `imageBaseUrl`. Relative is the intended form — it moves the whole image
-  set to a new host by editing one field, which matters while hosting is unsettled. `credit` is
-  there because press photos usually carry a photographer's condition.
+  and every partner a `logo`; a `src` is either an absolute `https://` URL or a path relative to
+  the **content root** — `shared/images/artists/alf.webp`. Relative is the intended form, and there
+  is no `imageBaseUrl` to resolve it against: the app already knows the address it fetched the
+  bundle from, so the base is written once in the client rather than in every edition. The join
+  happens at the data boundary, beside every other reference the bundle resolves. `credit` is there
+  because press photos usually carry a photographer's condition.
+- **The picture bank is shared, not per-edition.** It lives at `shared/`, outside `editions/`,
+  because an artist who plays two years running is one photograph rather than one per edition.
 - **A photo and a logo are separate fields, not one image field.** A photo is cropped into a
   collapsing toolbar behind a scrim; a logo must never be cropped, tinted or bled to an edge.
   Sharing a field name is what leads to a sponsor's logo being rendered like a press shot.
@@ -513,16 +517,19 @@ as a range, same row vocabulary as Programme. Timeline plus one full-width Wishl
 > to what you are saving. Nothing here can add: both empty states point outward, at the Programme
 > and at Plus.
 
-**Fiches** — one template for Artist, Activity and Stand: collapsing toolbar over a photo
-(category colour as a radial blob bottom-right, title rising into the bar on scroll, status
-bar taking the colour), written category label, attribute-only tags, sections. Round icon
-actions in the bar. Silent Party = same template + booking row.
+**Fiches** — one template for Artist, Activity and Stand: collapsing toolbar over a photo (title
+rising into the bar on scroll as the bar takes the category colour, continuously rather than at a
+threshold; the category colour as a radial blob where there is no photo; status bar taking the
+colour), written category label, attribute-only tags, sections. Round icon actions in the bar.
+Silent Party = same template + booking row.
 
-> **What shipped, and what the fiche is still missing.** The template, the head, the date rows with
-> their live-state pills and their hearts, the tiered price with its deposit, the menu, the facts and
-> the links are built, as is the Stand's single heart in the bar. The photograph is not — no
-> Happening in the 2026 content has one — nor are the share and map actions, nor the status-bar tint.
-> Each is deferred for its own reason, recorded in DECISIONS.md § One fiche template for everything.
+> **What shipped, and what the fiche is still missing.** The template, the head, the hero
+> photograph and its continuous collapse, the date rows with their live-state pills and their
+> hearts, the tiered price with its deposit, the menu, the facts and the links are built, as is the
+> Stand's single heart in the bar. Twenty-two Happenings still have no photograph and fall back to
+> the Category blob (content/GAPS.md § 7). The share and map actions are not built, nor is the
+> status-bar tint. Each is deferred for its own reason, recorded in DECISIONS.md § One fiche
+> template for everything.
 
 **Plus** — iOS-style grouped list, four cards: *Sur place* · *Le festival* · *S'impliquer* ·
 *L'application*. Payment is the third row of the tab. Lost property, first aid, children and
@@ -602,9 +609,11 @@ the only place the answer lives.
 
 ### Interaction rules
 
-- **The heart is attached to what you are saving, and the whole row is the target.** Slot →
-  date row. Stand → button in the bar. Never two hearts for one thing on a screen. Never a
-  selection dialog.
+- **The heart is attached to what you are saving, and the heart is the only target.** Slot →
+  the mark on the date row. Stand → button in the bar. Never two hearts for one thing on a
+  screen. Never a selection dialog. *The whole row was the target until the fiche was built
+  against real content: making a row tappable meant lighting a kept one, and a lit row reads
+  as selected rather than as kept.*
 - **Lists compare, cards separate.** Programme and Mon Yadlo use rows; stand lists and
   grouped Plus entries use cards. Measured: cards cost +32% vertical space in Programme.
 - **Facts must not look tappable.** Card-with-chevron is reserved for navigation; `↗` marks

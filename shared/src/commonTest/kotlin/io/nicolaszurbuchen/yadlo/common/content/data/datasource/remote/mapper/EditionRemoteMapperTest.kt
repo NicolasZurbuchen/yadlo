@@ -19,6 +19,7 @@ import io.nicolaszurbuchen.yadlo.common.content.domain.model.Money
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Provenance
 import io.nicolaszurbuchen.yadlo.common.error.AppError
 import io.nicolaszurbuchen.yadlo.common.error.AppException
+import io.nicolaszurbuchen.yadlo.infra.network.CONTENT_BASE_URL
 import kotlinx.serialization.json.Json
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -224,13 +225,24 @@ class EditionRemoteMapperTest {
     }
 
     @Test
-    fun toDomain_image_renamesSrcToUrl() {
-        val dto = editionDto(happenings = listOf(artistDto().copy(images = listOf(ImageDto(src = "a.jpg", credit = "Photo: X")))))
+    fun toDomain_image_resolvesTheContentsRelativePathIntoAnAddress() {
+        val src = "shared/images/artists/alf.webp"
+        val dto = editionDto(happenings = listOf(artistDto().copy(images = listOf(ImageDto(src = src, credit = "Photo: X")))))
 
         val image = dto.toDomain().happenings.single().images.single()
 
-        assertEquals("a.jpg", image.url)
+        assertEquals(CONTENT_BASE_URL + src, image.url)
         assertEquals("Photo: X", image.credit)
+    }
+
+    @Test
+    fun toDomain_absoluteImage_isLeftWhereItIs() {
+        // The escape hatch for one photograph hosted somewhere else, which must not have the base
+        // prepended to it and turned into an address that resolves nowhere.
+        val src = "https://example.org/alf.webp"
+        val dto = editionDto(happenings = listOf(artistDto().copy(images = listOf(ImageDto(src = src, credit = null)))))
+
+        assertEquals(src, dto.toDomain().happenings.single().images.single().url)
     }
 
     @Test

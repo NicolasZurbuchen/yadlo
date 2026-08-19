@@ -26,6 +26,7 @@ import yadlo.shared.generated.resources.happening_booking_action
 import yadlo.shared.generated.resources.happening_fact_equipment_provided
 import yadlo.shared.generated.resources.happening_link_website
 import yadlo.shared.generated.resources.happening_price_deposit
+import yadlo.shared.generated.resources.month_july
 import yadlo.shared.generated.resources.slot_state_running
 
 /**
@@ -76,6 +77,7 @@ private fun blank(
     title = "",
     categoryId = "",
     categoryLabel = "",
+    imageUrl = null,
     description = null,
     tags = emptyList(),
     dietary = emptyList(),
@@ -93,6 +95,10 @@ private fun artist() =
         title = "DJ ALF",
         categoryId = "musique",
         categoryLabel = "MUSIQUE",
+        // A real published address, so the preview stands on the Category fill the header falls back
+        // to rather than on a hole. Nothing is fetched here — the tooling has no network — which is
+        // exactly the state a visitor with no signal sees.
+        imageUrl = "https://nicolaszurbuchen.github.io/yadlo/shared/images/artists/alf.webp",
         description =
             "Résident hebdomadaire du MAD Club et du D! Club, il a joué au Montreux Jazz, au Venoge " +
                 "et à Caribana. Un répertoire volontairement large, résumé par sa devise : « Bangers Only ».",
@@ -102,6 +108,8 @@ private fun artist() =
                 HappeningSlotUiModel(
                     id = "2026:dj-alf-fri",
                     dayName = "Vendredi",
+                    dayNumber = "10",
+                    monthName = UiText.Resource(Res.string.month_july),
                     timeText = "17:00 – 18:30",
                     stateLabel = UiText.Resource(Res.string.slot_state_running),
                     state = SlotLiveStateUiModel.Running(progress = 0.4f),
@@ -128,6 +136,8 @@ private fun activity() =
                 HappeningSlotUiModel(
                     id = "2026:silent-party-sat",
                     dayName = "Samedi",
+                    dayNumber = "11",
+                    monthName = UiText.Resource(Res.string.month_july),
                     timeText = "21:00 – 02:00",
                     stateLabel = null,
                     state = SlotLiveStateUiModel.Upcoming,

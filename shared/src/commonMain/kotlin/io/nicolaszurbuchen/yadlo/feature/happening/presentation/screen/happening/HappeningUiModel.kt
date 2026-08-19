@@ -24,6 +24,12 @@ data class HappeningUiModel(
     val title: String,
     val categoryId: String,
     val categoryLabel: String,
+    /**
+     * The photograph behind the title, or null for the twenty-two Happenings that have none. Its
+     * nullness is a layout instruction like [wishlisted]'s: with one, the head of the fiche is an
+     * image under a scrim; without, it is the Category's own colour.
+     */
+    val imageUrl: String?,
     val description: String?,
     val tags: List<String>,
     /** What a Stand can feed you, derived from its menu. Empty for everything that is not one. */
@@ -49,6 +55,13 @@ data class HappeningUiModel(
 data class HappeningSlotUiModel(
     val id: String,
     val dayName: String,
+    /**
+     * The day and month the row writes after [dayName] — *samedi 10 juillet*. Split in two because
+     * only one of them can be formatted: the number is a number in any language and the month is a
+     * word that has to be looked up, which is why [monthName] is a [UiText] and this is not.
+     */
+    val dayNumber: String,
+    val monthName: UiText,
     val timeText: String,
     val stateLabel: UiText?,
     val state: SlotLiveStateUiModel,
