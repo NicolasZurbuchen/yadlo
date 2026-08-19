@@ -1,5 +1,6 @@
 package io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -30,6 +31,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
@@ -85,6 +87,14 @@ import yadlo.shared.generated.resources.wishlist_remove
  * be solid — which was the state that looked broken rather than gradual. The bar's own title fades
  * in later still, since until then the header is carrying it and two copies of one title crossing
  * each other looks like a bug.
+ *
+ * **The bar's ground is drawn here rather than handed to [TopAppBar].** Material3 runs its own
+ * container colour through `animateColorAsState` with a spring, which is right for a colour that
+ * changes at a threshold and wrong for one that is already a function of the scroll: on a fling the
+ * spring cannot keep up, so the bar stayed part-transparent for a few hundred milliseconds after the
+ * header had stopped covering it and the page showed through. Slowly, or stopped, the spring caught
+ * up and nothing was visible — which is exactly the shape of the bug. The container is transparent
+ * and the colour is a background modifier, so it is the scroll position and nothing else.
  *
  * The status bar is not tinted with it — that is a system-window concern the app shell has not taken
  * on yet, and doing it from one screen would leave the other four inconsistent. The header runs
@@ -174,11 +184,13 @@ fun HappeningScreen(
                 },
                 colors =
                     TopAppBarDefaults.topAppBarColors(
-                        containerColor = barColor,
-                        scrolledContainerColor = barColor,
+                        containerColor = Color.Transparent,
+                        scrolledContainerColor = Color.Transparent,
                         navigationIconContentColor = barInk,
                         titleContentColor = barInk,
+                        actionIconContentColor = barInk,
                     ),
+                modifier = Modifier.background(barColor),
             )
         },
         modifier = modifier,
