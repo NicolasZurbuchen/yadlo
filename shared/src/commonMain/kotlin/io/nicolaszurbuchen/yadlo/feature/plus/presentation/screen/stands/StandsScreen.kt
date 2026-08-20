@@ -6,8 +6,10 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -79,16 +81,20 @@ fun StandsScreen(
                 )
             }
         } else {
-            LazyColumn(
-                // Wider than the gap between two rows was, because these are cards with a
-                // photograph at the top of each: at 8dp the picture of one stand sat close enough
-                // to the dietary line of the one above it to read as part of the same object.
-                verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md),
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(COLUMNS),
+                // Equal and tight both ways, which is what makes a grid read as a grid: the eye
+                // follows the rows, and a gutter wider than the gap between two rows would turn
+                // two columns back into two lists.
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm),
+                verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm),
                 contentPadding = PaddingValues(MaterialTheme.spacing.md),
                 modifier = Modifier.fillMaxSize().padding(contentPadding),
             ) {
                 state.emptyMessage?.let { message ->
-                    item(key = EMPTY_KEY) {
+                    // Across both columns. A sentence explaining why the list is empty, set in one
+                    // half of the screen with a hole beside it, reads as a card that failed.
+                    item(key = EMPTY_KEY, span = { GridItemSpan(maxLineSpan) }) {
                         Text(
                             text = message.asString(),
                             style = MaterialTheme.typography.bodyLarge,
@@ -108,3 +114,8 @@ fun StandsScreen(
 }
 
 private const val EMPTY_KEY = "empty"
+
+// Two, and fixed rather than adaptive. Every phone this app targets is between 320 and 430dp wide,
+// where a minimum-width grid would give two columns anyway and a tablet is not a target — an
+// adaptive count would be machinery answering a question nobody is asking yet.
+private const val COLUMNS = 2

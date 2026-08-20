@@ -48,6 +48,13 @@ import yadlo.shared.generated.resources.img_placeholder
  * The dietary band is absent rather than empty when nothing is published, which is every Stand on
  * *Créateurs* and one of the six on *Nourriture & boissons* — a rule under a name with nothing
  * below it reads as content that failed to load.
+ *
+ * **It is drawn two to a row.** Nothing here is sized for that — the picture is a ratio, the name
+ * and the offering wrap, the marks flow — so the card takes whatever width the grid hands it and
+ * the only visible cost is that two cards in a row end at different heights when one carries a
+ * dietary band and the other does not. That is the honest result of laying out cards whose content
+ * genuinely differs, and it is what `LazyVerticalGrid` does: a line's items are measured
+ * independently and aligned to its top.
  */
 @Composable
 fun StandCard(
