@@ -26,6 +26,7 @@ import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.app.design.theme.categoryColors
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.common.content.presentation.component.SlotStatePill
+import io.nicolaszurbuchen.yadlo.common.content.presentation.component.SlotTimeBar
 import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotLiveStateUiModel
 import io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme.SlotRowUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.asString
@@ -68,8 +69,8 @@ import io.nicolaszurbuchen.yadlo.infra.ui.asString
  * which put the axis's end at a different x from everything above it. The chevron is a column of its
  * own now and the axis stops where it starts; on the left there is nothing to clear any more, since
  * the Category mark moved onto the first line and the text runs to the row's own edge.
- * [ProgrammeScaleRow] carries the same inset, so the three readings at the top of the list sit over
- * the positions they describe.
+ * [ProgrammeHeader] pads its scale by the same numbers, so the three readings at the top of the
+ * list sit over the positions they describe.
  */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable

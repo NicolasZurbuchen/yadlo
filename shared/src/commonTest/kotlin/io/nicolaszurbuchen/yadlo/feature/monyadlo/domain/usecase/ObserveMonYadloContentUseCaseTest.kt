@@ -69,6 +69,25 @@ class ObserveMonYadloContentUseCaseTest {
         }
 
     @Test
+    fun invoke_aDaysWindow_isMeasuredOverEverythingProgrammedOnItRatherThanOverWhatWasSaved() =
+        runTest {
+            planRepository.emitSaved(listOf(savedSlot("2026:caesure-sat")))
+
+            useCase().test {
+                contentRepository.emitStatus(ready())
+
+                val saturday = awaitItem().days.single()
+
+                // One 20:30 set is saved, and the day still opens at 10:00 because that is when the
+                // first thing on it starts. A Plan scaled to what you happened to keep would put the
+                // same Slot at a different point on the Programme and on this screen, and the axis
+                // is the one thing the two have to agree on.
+                assertEquals(Instant.parse("2026-07-11T10:00:00+02:00"), saturday.windowStart)
+                assertEquals(Instant.parse("2026-07-12T02:00:00+02:00"), saturday.windowEnd)
+            }
+        }
+
+    @Test
     fun invoke_aDayWithNothingSavedOnIt_isAbsentRatherThanEmpty() =
         runTest {
             planRepository.emitSaved(listOf(savedSlot("2026:caesure-sat")))
@@ -232,6 +251,10 @@ class ObserveMonYadloContentUseCaseTest {
                                     slot("2026:dj-alf-fri", djAlf, FRIDAY, "17:00", "2026-07-10T18:30:00+02:00"),
                                     slot("2026:yoga-sat", yoga, SATURDAY, "20:30", "2026-07-11T22:00:00+02:00"),
                                     slot("2026:caesure-sat", caesure, SATURDAY, "20:30", "2026-07-11T21:30:00+02:00"),
+                                    // Never saved by any test, and there to be ignored by the join
+                                    // and counted by the window: the beach is public, so the
+                                    // morning yoga runs before the site opens at 12:00.
+                                    slot("2026:sunrise-sat", yoga, SATURDAY, "10:00", "2026-07-11T11:00:00+02:00"),
                                 ),
                             partners = emptyList(),
                             figures = emptyList(),

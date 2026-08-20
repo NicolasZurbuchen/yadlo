@@ -12,6 +12,8 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import io.nicolaszurbuchen.yadlo.app.design.theme.YadloTheme
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotLiveStateUiModel
+import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotScaleUiModel
+import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotSegmentUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.mon_yadlo_empty
@@ -29,7 +31,13 @@ import yadlo.shared.generated.resources.slot_state_running
 private class MonYadloStateProvider : PreviewParameterProvider<MonYadloUiModel> {
     override val values =
         sequenceOf(
-            MonYadloUiModel(isLoading = true, days = emptyList(), wishlistCount = 0, emptyMessage = null),
+            MonYadloUiModel(
+                isLoading = true,
+                scale = null,
+                days = emptyList(),
+                wishlistCount = 0,
+                emptyMessage = null,
+            ),
             saturdayEvening(),
             nothingSavedYet(),
         )
@@ -50,6 +58,9 @@ private fun MonYadloScreenPreview(
 private fun saturdayEvening() =
     MonYadloUiModel(
         isLoading = false,
+        // The three days laid over one another: 12:00 is the earliest any of them opens and 03:00
+        // the latest any of them closes, so Friday's 17:00 set starts a third of the way in.
+        scale = SlotScaleUiModel(startText = "12:00", middleText = "19:30", endText = "03:00"),
         wishlistCount = 3,
         emptyMessage = null,
         days =
@@ -68,6 +79,8 @@ private fun saturdayEvening() =
                                 timeText = "17:00 – 18:30",
                                 stateLabel = UiText.Resource(Res.string.slot_state_over),
                                 state = SlotLiveStateUiModel.Over,
+                                barStart = 0.333f,
+                                barEnd = 0.433f,
                             ),
                         ),
                 ),
@@ -87,6 +100,8 @@ private fun saturdayEvening() =
                                 timeText = "14:00 – 17:00",
                                 stateLabel = UiText.Resource(Res.string.slot_state_over),
                                 state = SlotLiveStateUiModel.Over,
+                                barStart = 0.133f,
+                                barEnd = 0.333f,
                             ),
                             row(
                                 id = "2026:caesure-sat",
@@ -95,6 +110,8 @@ private fun saturdayEvening() =
                                 timeText = "20:30 – 22:00",
                                 stateLabel = UiText.Resource(Res.string.slot_state_running),
                                 state = SlotLiveStateUiModel.Running(progress = 0.35f),
+                                barStart = 0.567f,
+                                barEnd = 0.667f,
                             ),
                             row(
                                 id = "2026:silent-party-sat",
@@ -105,6 +122,8 @@ private fun saturdayEvening() =
                                 timeText = "22:00 – 02:00",
                                 stateLabel = null,
                                 state = SlotLiveStateUiModel.Upcoming,
+                                barStart = 0.667f,
+                                barEnd = 0.933f,
                             ),
                         ),
                 ),
@@ -114,6 +133,8 @@ private fun saturdayEvening() =
 private fun nothingSavedYet() =
     MonYadloUiModel(
         isLoading = false,
+        // No days, so no axis: a scale over nothing describes nothing.
+        scale = null,
         days = emptyList(),
         wishlistCount = 0,
         emptyMessage = UiText.Resource(Res.string.mon_yadlo_empty),
@@ -126,6 +147,8 @@ private fun row(
     timeText: String,
     stateLabel: UiText?,
     state: SlotLiveStateUiModel,
+    barStart: Float,
+    barEnd: Float,
     categoryId: String = "musique",
     categoryName: String = "Musique",
     priceText: UiText? = null,
@@ -135,8 +158,14 @@ private fun row(
     name = name,
     categoryId = categoryId,
     categoryName = categoryName,
-    timeText = timeText,
     priceText = priceText,
     stateLabel = stateLabel,
-    state = state,
+    slot =
+        SlotSegmentUiModel(
+            id = id,
+            timeText = timeText,
+            state = state,
+            barStart = barStart,
+            barEnd = barEnd,
+        ),
 )

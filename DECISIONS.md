@@ -471,6 +471,46 @@ came from testing three shapes: rows with sticky day headers (829px), rail with 
 buys a permanently visible date; the cards cost 16% and bought spacing. The Wishlist screen
 uses rows for the same reason.
 
+**Mon Yadlo's bars share one axis across the days, and the scale sits in the chrome.** *Reversed:
+the rows carried no bar at all.* The argument against was that a bar places a Slot against the whole
+day's span, which is a question about a day you are choosing from rather than one you have chosen.
+Half right — you are not choosing any more, but on the Sunday afternoon "how much of this is left,
+and what have I got after it" is exactly what a Plan is open for. It is the same argument the price
+lost: the decision was made when the heart was tapped, and the coins in your pocket were not.
+
+**The scale had to go in the chrome, and that is what forced the axis.** The rail takes the left of
+every row here, so a scale drawn inside a day block would be inset past 96dp of date column and
+would have to be repeated three times. In the chrome it is written once, on the app bar's own blue,
+continuing it exactly as the Programme's filter block does. But a single scale above three days is
+only telling the truth if every bar under it means the same thing — so every Slot is measured as a
+*clock* reading counted from its own day's midnight, and the axis is the union of the three days'
+windows: 12:00 to 03:00 for 2026.
+
+Friday opens at 16:00, so its bars start a quarter of the way in. That is not wasted space, it is
+the true statement that Friday starts later — and it is the thing this axis buys that a per-day one
+cannot: three days you can compare at a glance, which is what someone reading a Plan on the Saturday
+morning is actually doing.
+
+**It is deliberately not the Programme's axis**, which is one day wide and starts at that day's own
+first hour, so the same Slot sits at a different x on the two screens. That is the accepted cost. The
+two answer different questions — the Programme compares Slots inside one day, a Plan compares the
+days — and the alternative was three scales, or one scale that is wrong for two days out of three.
+
+Each day's window is still measured over **every** Slot the edition programmes on it, never over the
+ones that were saved, which is the Programme's rule unchanged. A Plan scaled to what you happened to
+keep would move its own bars every time you saved something.
+
+**The Wishlist tile is a hero, not a Plus row.** *Reversed.* On Plus that shape is right, because a
+Plus row is one of eight and its leading icon is what tells them apart in a column. Here it is the
+only thing above the timeline and it is the entire other half of the tab, so a row-shaped block made
+the screen read as a list that happens to start with a link. The hero is what the app already uses
+for "the answer, before the page that supports it" — and *À essayer · trois stands gardés* is that
+shape, on the treatment Accueil gives the one block it wants you to tap.
+
+The fork-and-knife goes with it, and that is the cost: it tied this to *Nourriture & boissons* in
+Plus, which the words still do. A hero has no icon slot, and adding one for a single caller would
+make every other hero in the app answer a question it does not have.
+
 **The Wishlist tile sits above the timeline, not below it.** *À essayer* is the half you consult
 standing on the site, hungry, and by the Sunday the half above it would be three days of finished
 rows to scroll past first. Putting it first costs one tile of vertical space on the screen someone

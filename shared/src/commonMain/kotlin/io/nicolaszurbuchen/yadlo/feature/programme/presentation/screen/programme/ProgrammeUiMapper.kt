@@ -1,6 +1,7 @@
 package io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme
 
 import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotLiveStateUiModel
+import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotScaleUiModel
 import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotSegmentUiModel
 import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.loudestState
 import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.slotLiveStateAt
@@ -188,7 +189,7 @@ fun ProgrammeState.toUiModel(): ProgrammeUiModel {
         categories = categories,
         scale =
             if (hasAxis && axisStart != null && axisEnd != null && rows.isNotEmpty()) {
-                ProgrammeScaleUiModel(
+                SlotScaleUiModel(
                     startText = axisStart.formatAsTimeOfDay(FESTIVAL_TIME_ZONE),
                     middleText = (axisStart + axisSpan / 2).formatAsTimeOfDay(FESTIVAL_TIME_ZONE),
                     endText = axisEnd.formatAsTimeOfDay(FESTIVAL_TIME_ZONE),

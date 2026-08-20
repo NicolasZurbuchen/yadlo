@@ -12,6 +12,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import io.nicolaszurbuchen.yadlo.app.design.theme.YadloTheme
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotLiveStateUiModel
+import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotScaleUiModel
 import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotSegmentUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import yadlo.shared.generated.resources.Res
@@ -48,7 +49,7 @@ private class ProgrammeStateProvider : PreviewParameterProvider<ProgrammeUiModel
                 isLoading = false,
                 days = days(),
                 categories = categories(),
-                scale = ProgrammeScaleUiModel(startText = "10:00", middleText = "18:00", endText = "03:00"),
+                scale = SlotScaleUiModel(startText = "10:00", middleText = "18:00", endText = "03:00"),
                 rows = saturdayAtQuarterToFour(),
                 emptyMessage = null,
             ),

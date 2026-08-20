@@ -39,6 +39,9 @@ import io.nicolaszurbuchen.yadlo.infra.ui.asString
  *
  * The weekday is cut to three letters, which is what lets the rail be narrow — a rail sized for
  * `VENDREDI` was 84dp of mostly nothing on the two days whose names are shorter.
+ *
+ * [RAIL_WIDTH] is internal because it is half of where the bars begin, and the scale written once in
+ * the chrome has to start at the same place — see MonYadloScreen.
  */
 @Composable
 fun PlannedDayBlock(
@@ -104,7 +107,7 @@ fun PlannedDayBlock(
  * this with room. A month the festival has never run in — `septembre` is the longest French one —
  * wraps rather than clips, which is the right way for a constant like this to be wrong.
  */
-private val RAIL_WIDTH = 64.dp
+internal val RAIL_WIDTH = 64.dp
 
 /** Enough to tell `VEN` from `SAM` from `DIM`, which is all three of them. */
 private const val WEEKDAY_LETTERS = 3

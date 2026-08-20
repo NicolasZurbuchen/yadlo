@@ -1,6 +1,7 @@
 package io.nicolaszurbuchen.yadlo.infra.ui
 
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.atStartOfDayIn
 import kotlinx.datetime.number
 import kotlinx.datetime.toLocalDateTime
 import yadlo.shared.generated.resources.Res
@@ -44,6 +45,20 @@ fun Instant.formatAsShortDate(zone: TimeZone): String {
  * zero is noise at 36sp, and there is no column of these to keep aligned — one per day block.
  */
 fun Instant.formatAsDayOfMonth(zone: TimeZone): String = toLocalDateTime(zone).day.toString()
+
+/**
+ * Midnight at the head of the calendar day this instant falls on, in [zone].
+ *
+ * A fixed point to measure clock times against when two of them belong to different days. Mon Yadlo
+ * draws three FestivalDays on one axis, and 16:00 on the Friday only sits left of 18:00 on the
+ * Sunday if both are counted from their own day's midnight — subtracting one instant from the other
+ * would measure two days of real time.
+ *
+ * A FestivalDay is a window and can run past midnight, so this is never a substitute for it: it is
+ * the day's *calendar* head, used to place a clock reading, and nothing decides which day something
+ * belongs to by calling it.
+ */
+fun Instant.startOfDayIn(zone: TimeZone): Instant = toLocalDateTime(zone).date.atStartOfDayIn(zone)
 
 /**
  * `juillet` — the month written out, as a [UiText] rather than a string.
