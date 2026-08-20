@@ -908,6 +908,56 @@ destination whose identity is the thing you tapped from. The ten ids are resolve
 shared with the footer, so the two rows cannot disagree about what Instagram looks like, and a
 platform the app ships no mark for still renders, under its name.
 
+**A partner's logo sits on white, in both themes.** These marks were drawn for print and for a white
+website, and the app has no curated dark-theme set for them — it will not get one either, because
+thirty-nine of them belong to thirty-nine companies who each own their own and none has supplied a
+variant. A fixed white card is the single ground every logo in the bank is already correct against.
+
+The consequence is that nothing on the card may take a theme role: a hairline in `borderSubtle` is
+invisible on white in dark, and a name in `textPrimary` would be near-white text on a white card. The
+card is a fixed ground, so its edge and its ink are fixed with it — `slate200` and `slate700`, which
+is what the light theme puts on white anyway and clears 8.25:1. The edge exists for the *light*
+theme, where the page behind is `Color.White` too and without it the cards would not read as objects.
+
+A wall of white cards on a near-black page is the visible cost, and it is why the screen has a dark
+preview. The alternative — tinting each logo to the theme — would be altering thirty-nine
+trademarks, which is the one thing this screen may not do.
+
+**A logo is normalised by area, not fitted to its cell.** `ContentScale.Fit` gives every logo the
+largest size that stays inside the box, which sounds fair and is not: the bank runs from 0.83 (Volt-A,
+all but square) to 6.38 (VSM, six times wider than tall), so Fit hands the square one the full height
+of the cell and the wide one a sixth of it. In a three-column cell that is 3136 square points against
+1214, and the square company reads as almost three times the sponsor — on the one screen in the app
+drawn for someone other than the visitor.
+
+So each logo is scaled to cover the same *area* instead. Normalising the cell to height 1 makes its
+width and its area both its aspect ratio; a logo takes `box² / ratio` when it is wide enough to be
+width-bound and `ratio` when it is height-bound; scaling by `s` scales area by `s²`, so the factor is
+the square root of the ratio between the area wanted and the area Fit would give. The target is 0.35
+of the cell, which is the one number tuned rather than derived — it is where the areas actually meet
+across the bank without making every logo smaller than the card it sits in.
+
+It only ever shrinks, and that is the honest limit: a logo wider than the cell cannot reach the
+target area because there is nowhere to grow, so the factor is capped at 1 and VSM and Von Auw stay
+lighter than the other thirty-seven. Growing them would mean a taller cell for every tier, which
+spends a screen of scroll on two logos. The rule is applied as a draw-time `scale` rather than a
+smaller layout box, so the size Coil is asked for never changes when the ratio becomes known.
+
+**The top three tiers are drawn two across, the rest three.** The tier order is the hierarchy the
+sponsors paid into, and this is that hierarchy said in the one other language a layout has: a
+*Sponsor général* gets a card half again as wide and a third taller than a *Partenaire*. Counted from
+the top rather than matched by tier id — the statement is "the top of the hierarchy gets more room",
+not "these three slugs are special", so a tier that gets renamed or a fourth that gets added does not
+silently lose or gain a column. The cell height follows the column count rather than being passed
+beside it: a wider card in the same 72dp band is a letterbox, and every logo in the bank would end up
+width-bound inside it.
+
+**SVG is decoded, because seven of the thirty-nine logos are SVG.** Coil ships no decoder for it, so
+without `coil-svg` those seven load as nothing at all — and which format a sponsor's logo arrives in
+is the sponsor's decision, not one the app gets to make. A vector is also the right thing to be
+given: these are drawn at two sizes across the grid and a logo is exactly the kind of mark that shows
+its pixels when scaled.
+
 **The live-state vocabulary moved to `common/content/presentation` when the fiche arrived.** It was
 written inside the Programme's screen package with a note saying it would move up a layer for its
 second caller and not before. The fiche is that caller: a visitor who taps `en cours` on the list

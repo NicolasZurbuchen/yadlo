@@ -5,6 +5,7 @@ import coil3.PlatformContext
 import coil3.disk.DiskCache
 import coil3.network.ktor3.KtorNetworkFetcherFactory
 import coil3.request.CachePolicy
+import coil3.svg.SvgDecoder
 import io.ktor.client.HttpClient
 
 /**
@@ -21,13 +22,22 @@ import io.ktor.client.HttpClient
  *
  * Sharing [httpClient] rather than letting Coil build its own is what puts image requests through
  * the same engine, timeouts and logging as the content fetch.
+ *
+ * **SVG is decoded here because seven of the thirty-nine partner logos are SVG.** Coil ships no
+ * decoder for it by default, so without this they load as nothing at all — and which format a
+ * sponsor's logo arrives in is the sponsor's decision, not one the app gets to make. A vector is
+ * also the right thing to be given: these are drawn at a handful of sizes across the partners grid
+ * and a logo is exactly the kind of mark that shows its pixels when scaled.
  */
 fun createImageLoader(
     context: PlatformContext,
     httpClient: HttpClient,
 ): ImageLoader =
     ImageLoader.Builder(context)
-        .components { add(KtorNetworkFetcherFactory(httpClient = { httpClient })) }
+        .components {
+            add(KtorNetworkFetcherFactory(httpClient = { httpClient }))
+            add(SvgDecoder.Factory())
+        }
         .diskCache {
             DiskCache.Builder()
                 .directory(imageCacheDirectory(platformCacheDirectory(context)))
