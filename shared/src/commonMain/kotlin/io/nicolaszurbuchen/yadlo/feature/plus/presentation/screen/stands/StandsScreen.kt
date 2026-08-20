@@ -6,10 +6,10 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.GridItemSpan
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
+import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -81,20 +81,20 @@ fun StandsScreen(
                 )
             }
         } else {
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(COLUMNS),
-                // Equal and tight both ways, which is what makes a grid read as a grid: the eye
-                // follows the rows, and a gutter wider than the gap between two rows would turn
-                // two columns back into two lists.
+            LazyVerticalStaggeredGrid(
+                columns = StaggeredGridCells.Fixed(COLUMNS),
+                // Equal and tight both ways, which is what makes a grid read as a grid rather than
+                // as two lists: a gutter wider than the gap between two cards separates the columns
+                // more than it separates the cards inside one.
                 horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm),
-                verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm),
+                verticalItemSpacing = MaterialTheme.spacing.sm,
                 contentPadding = PaddingValues(MaterialTheme.spacing.md),
                 modifier = Modifier.fillMaxSize().padding(contentPadding),
             ) {
                 state.emptyMessage?.let { message ->
                     // Across both columns. A sentence explaining why the list is empty, set in one
                     // half of the screen with a hole beside it, reads as a card that failed.
-                    item(key = EMPTY_KEY, span = { GridItemSpan(maxLineSpan) }) {
+                    item(key = EMPTY_KEY, span = StaggeredGridItemSpan.FullLine) {
                         Text(
                             text = message.asString(),
                             style = MaterialTheme.typography.bodyLarge,

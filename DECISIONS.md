@@ -1048,20 +1048,29 @@ you open *À essayer* standing on the site, to find the stall you kept among for
 is matching a picture to a thing in front of you. It also means a Stand looks the same on the screen
 it was saved from and the screen it was saved to.
 
-**Two to a row, on all three screens. Being tried rather than concluded.** A full-width card is
-mostly photograph, and eight of them is a scroll of roughly three screens to see a list the whole
-of which would fit on one and a half. Two columns halve that and turn the lists into something
-scanned at a glance rather than paged through, which is what a browse list is for. What it costs is
-real: at half a phone's width the offering line wraps where it did not, and two cards in a row end
-at different heights whenever one carries a dietary band and the other does not — `LazyVerticalGrid`
-measures a line's items independently and aligns them to its top, so there is no equal-height
-behaviour to lean on. Equalising it would mean reserving a fixed number of lines for the name and
-the marks, which buys a tidy grid by putting blank space under every short card.
+**Two columns, and they are staggered.** A full-width card is mostly photograph, and eight of them
+is a scroll of roughly three screens to see a list that would nearly fit on one and a half. Two
+columns halve that and turn the lists into something scanned at a glance rather than paged through,
+which is what a browse list is for.
+
+The stagger is not decoration, it is what makes the arrangement work. These cards are exactly as
+tall as what they have to say — a stand with no dietary band is a band shorter than one with two,
+and at half a phone's width an offering line wraps on some names and not others. A plain
+`LazyVerticalGrid` measures a line's items together and aligns them to its top, so every short card
+sat over a hole that lasted until the taller card beside it finished, and the holes were the most
+visible thing on the screen. `LazyVerticalStaggeredGrid` gives each column its own cursor: the next
+card starts where the one above it ends and the columns drift out of step, which is the absence of
+the gap rather than a second problem.
+
+The alternative was equalising — reserving a fixed number of lines for the name and the marks so
+every card is the same height. That buys a ruled grid by putting blank space under every short card,
+which is the same dead space moved inside the card where it cannot be blamed on the layout.
 
 *À essayer* uses the same two columns rather than a shape of its own, with the Category headers
-spanning the full width of one grid instead of each group holding a grid of its own — separate
-grids would each round their last row up to two columns, so a group of three would leave a hole
-beside the third card and nothing but the alignment would say why.
+spanning the full width of one grid instead of each group holding a grid of its own. Separate grids
+would each level their columns at the boundary and re-stagger from scratch; one grid with full-line
+headers levels the columns exactly where a Category actually changes, which is the only place a
+straight edge means anything.
 
 **Sourcing and allergens are facts, not tags.** "Viande et légumes de producteurs vaudois"
 and "Allergènes sur demande auprès du stand" belong in *Bon à savoir*. A festival truck will

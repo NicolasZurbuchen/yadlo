@@ -49,12 +49,15 @@ import yadlo.shared.generated.resources.img_placeholder
  * *Créateurs* and one of the six on *Nourriture & boissons* — a rule under a name with nothing
  * below it reads as content that failed to load.
  *
- * **It is drawn two to a row.** Nothing here is sized for that — the picture is a ratio, the name
- * and the offering wrap, the marks flow — so the card takes whatever width the grid hands it and
- * the only visible cost is that two cards in a row end at different heights when one carries a
- * dietary band and the other does not. That is the honest result of laying out cards whose content
- * genuinely differs, and it is what `LazyVerticalGrid` does: a line's items are measured
- * independently and aligned to its top.
+ * **It is drawn two to a column, in a staggered grid.** Nothing here is sized for that — the picture
+ * is a ratio, the name and the offering wrap, the marks flow — so the card takes whatever width it
+ * is handed and is exactly as tall as what it has to say. A plain `LazyVerticalGrid` turned that
+ * into dead space: its lines are measured together, so a card with no dietary band left a gap under
+ * itself until the taller card beside it finished. Under
+ * `androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid` each column runs on
+ * its own cursor and the next card starts where the one above it ends, which is the arrangement a
+ * card of genuinely variable height wants. The two columns drift out of step, and that drift is the
+ * absence of the gap rather than a flaw in it.
  */
 @Composable
 fun StandCard(

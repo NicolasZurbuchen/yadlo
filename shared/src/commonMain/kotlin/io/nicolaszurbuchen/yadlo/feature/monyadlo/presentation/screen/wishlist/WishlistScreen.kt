@@ -5,10 +5,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.GridItemSpan
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
+import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -81,10 +81,10 @@ fun WishlistScreen(
             }
 
             else -> {
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(COLUMNS),
+                LazyVerticalStaggeredGrid(
+                    columns = StaggeredGridCells.Fixed(COLUMNS),
                     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm),
-                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm),
+                    verticalItemSpacing = MaterialTheme.spacing.sm,
                     contentPadding =
                         PaddingValues(
                             start = MaterialTheme.spacing.md,
@@ -99,7 +99,9 @@ fun WishlistScreen(
                     // row up to two columns, so a group of three would leave a hole beside the
                     // third card — and the grid alignment would be the only thing saying so.
                     state.groups.forEachIndexed { index, group ->
-                        item(key = group.id, span = { GridItemSpan(maxLineSpan) }) {
+                        // A full line, which on a staggered grid also levels the two columns:
+                        // a Category header cannot sit halfway up one of them.
+                        item(key = group.id, span = StaggeredGridItemSpan.FullLine) {
                             YadloSectionHeader(
                                 title = group.name,
                                 // Categories are further apart than the cards inside one, or

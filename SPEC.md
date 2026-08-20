@@ -641,9 +641,9 @@ the only place the answer lives.
 - **Lists compare, cards separate.** Programme and Mon Yadlo's timeline use rows; the three
   places a Stand is listed — *Nourriture & boissons*, *Créateurs*, *À essayer* — and grouped Plus
   entries use cards. Measured: cards cost +32% vertical space in Programme. A stand card is one
-  component, shared, it leads with the Happening's photograph, and the three screens lay it out
-  **two to a row** (DECISIONS.md § A Stand is a photograph). The grid is being tried, not
-  concluded — the entry names what it costs.
+  component, shared, it leads with the Happening's photograph, and the three screens lay it out in
+  a **staggered two-column grid** — each column on its own cursor, because a card is exactly as tall
+  as what it has to say (DECISIONS.md § A Stand is a photograph).
 - **Facts must not look tappable.** Card-with-chevron is reserved for navigation; `↗` marks
   an external link, `›` internal, `✉` opens mail.
 - **An annonce carries a nullable URL, not a typed action.** Reversed from the earlier
