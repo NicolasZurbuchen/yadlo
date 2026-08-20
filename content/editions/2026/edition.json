@@ -2171,7 +2171,12 @@
       "name": "La Fanfrelucherie",
       "category": "createurs",
       "description": "Des costumes excentriques de seconde main à dénicher pour le week-end.",
-      "images": [],
+      "images": [
+        {
+          "src": "shared/images/stands/la-fanfrelucherie.webp",
+          "credit": null
+        }
+      ],
       "provenance": "confirmed",
       "stand": {
         "offering": "Costumes de seconde main",
@@ -2185,7 +2190,12 @@
       "name": "Les Secrets de Houna",
       "category": "createurs",
       "description": "Une sélection d'huiles précieuses 100 % pures et de soins naturels, entre rituels méditerranéens et savoir-faire suisse.",
-      "images": [],
+      "images": [
+        {
+          "src": "shared/images/stands/les-secrets-de-houna.webp",
+          "credit": null
+        }
+      ],
       "provenance": "confirmed",
       "stand": {
         "offering": "Huiles précieuses et soins naturels",

@@ -281,11 +281,16 @@ Three whole artists missing and one on the wrong day is not drift, it is a page 
 working copy of the programme lives somewhere else — a spreadsheet, a Notion page, the Instagram
 drafts — that is the thing the app should be fed from.
 
-## 7. Images — two stands short of a complete bank
+## 7. Images — every photograph is in, the partner logos are not
 
-**36/38 happenings carry a photo: all thirteen artists, all seventeen activities, and six of the
-eight stands.** They were taken from the association's own channels, cleaned, cropped to one size
-and converted to WebP. **Two remain**, both stands: *La Fanfrelucherie* and *Les secrets de Houna*.
+**38/38 happenings carry a photo**: all thirteen artists, all seventeen activities and all eight
+stands. They were taken from
+the association's own channels, cleaned, cropped to one size and converted to WebP.
+
+The last two were the créateur stands, *La Fanfrelucherie* and *Les secrets de Houna*, and they were
+the reason the fiche's bundled placeholder was built. It stays: the placeholder is what a fiche opens
+on the day a Happening is added to the programme before its photograph exists, which is the normal
+order of events rather than an accident.
 
 **A file in the bank is named for the Happening it depicts, exactly.** `shared/images/artists/dj-alf.webp`
 against the happening `dj-alf`, and a Happening with several photos names them `<id>.webp`,
@@ -317,14 +322,12 @@ toolbar behind a scrim; a logo must never be cropped, tinted or bled to an edge.
 opposite handling, so they do not share a name.
 
 `credit` exists because press photos usually carry a photographer's condition. It is `null` on all
-thirty-nine files currently in the bank, none of which arrived with one.
+forty-one files currently in the bank, none of which arrived with one. **That is worth revisiting
+before the app is shown to anyone**: several are portraits of identifiable people, and a photographer
+who supplied one to the association for its own channels has not thereby licensed it to an app.
 
 **What is still needed:**
 
-- **A photo of La Fanfrelucherie and one of Les secrets de Houna.** Both were prepared and both were
-  lost before they were committed; everything else on the stand list has one. Until they arrive those
-  two fiches open on the bundled placeholder, which is a photograph of the site rather than a grey
-  rectangle — see DECISIONS.md § The fiche has one ground.
 - **The partner logos wired up**, which is a mapping rather than an ask.
 
 ## ✅ Resolved — every Slot now has a start and an end
