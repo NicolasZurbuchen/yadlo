@@ -13,6 +13,7 @@ import io.nicolaszurbuchen.yadlo.app.design.theme.YadloTheme
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloDietaryMarkUiModel
 import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloDietaryTagUiModel
+import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.StandCardUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.dietary_all_dairy_free
@@ -60,10 +61,11 @@ private fun kept() =
                     name = "Restauration",
                     stands =
                         listOf(
-                            WishlistStandUiModel(
+                            StandCardUiModel(
                                 id = "vegan-fabrik",
                                 name = "Vegan Fabrik",
                                 offering = "Cuisine végétale",
+                                imageUrl = "$BANK/stands/vegan-fabrik.webp",
                                 dietary =
                                     listOf(
                                         YadloDietaryTagUiModel(YadloDietaryMarkUiModel.VEGAN, Res.string.dietary_all_vegan),
@@ -73,10 +75,11 @@ private fun kept() =
                                         ),
                                     ),
                             ),
-                            WishlistStandUiModel(
+                            StandCardUiModel(
                                 id = "guliko",
                                 name = "Guliko",
                                 offering = "Cuisine géorgienne",
+                                imageUrl = "$BANK/stands/guliko.webp",
                                 dietary = emptyList(),
                             ),
                         ),
@@ -86,13 +89,17 @@ private fun kept() =
                     name = "Créateurs",
                     stands =
                         listOf(
-                            WishlistStandUiModel(
+                            StandCardUiModel(
                                 id = "la-fanfrelucherie",
                                 name = "La Fanfrelucherie",
                                 offering = null,
+                                imageUrl = "$BANK/stands/la-fanfrelucherie.webp",
                                 dietary = emptyList(),
                             ),
                         ),
                 ),
             ),
     )
+
+/** Where the published bank lives, so a preview names the file the running app actually fetches. */
+private const val BANK = "https://nicolaszurbuchen.github.io/yadlo/shared/images"

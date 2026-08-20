@@ -2,6 +2,7 @@ package io.nicolaszurbuchen.yadlo.feature.monyadlo.presentation.screen.wishlist
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -73,8 +74,15 @@ fun WishlistScreen(
 
             else -> {
                 LazyColumn(
-                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md),
-                    contentPadding = contentPadding,
+                    // Between two Categories, not between two cards: the cards inside a block carry
+                    // their own gap, and one size for both would make *Créateurs* look like the
+                    // third stand in *Restauration*.
+                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.lg),
+                    contentPadding =
+                        PaddingValues(
+                            top = contentPadding.calculateTopPadding() + MaterialTheme.spacing.md,
+                            bottom = contentPadding.calculateBottomPadding() + MaterialTheme.spacing.md,
+                        ),
                     modifier = Modifier.fillMaxSize(),
                 ) {
                     items(state.groups, key = { it.id }) { group ->
