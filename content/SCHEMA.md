@@ -301,6 +301,12 @@ link** when a logo with no url is tapped.
 behind a scrim; a logo must never be cropped, tinted or bled to an edge. Sharing a field name is what
 leads to a sponsor's logo being rendered like a press shot.
 
+**A logo file is named for the partner id, exactly** — `shared/logos/volt-a.webp` against the partner
+`volt-a` — the same rule the happening photographs follow, and for the same reason: the name *is* the
+lookup, so there is no table to fall out of step and a drifted name shows up as one partner with no
+logo rather than as a silent mismatch. Both `.svg` and `.webp` are in the bank and the app reads
+either; the extension is not part of the lookup.
+
 ---
 
 ## `festival.json`

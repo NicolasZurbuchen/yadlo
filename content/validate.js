@@ -416,7 +416,10 @@ for (const tier of ed.partners) {
     // A partner has a logo, not a photo: never cropped, never behind a scrim. Keeping the field
     // name distinct from "images" is what stops one being rendered as the other.
     if (m.logo === undefined) errors.push(`partner ${m.id}: logo must be present, use null if unknown`);
-    else if (m.logo !== null) checkSrc(m.logo, `partner ${m.id}/logo`);
+    // `.src`, not the object. This handed checkSrc the whole Image for as long as every partner's
+    // logo was null, so the branch never ran and the mistake could not be seen; the first wired
+    // logo turned all 39 of them into "src must be a non-empty string".
+    else if (m.logo !== null) checkSrc(m.logo.src, `partner ${m.id}/logo`);
     if (m.url === null) warns.push(`partner ${m.id}: no website found`);
   }
 }
