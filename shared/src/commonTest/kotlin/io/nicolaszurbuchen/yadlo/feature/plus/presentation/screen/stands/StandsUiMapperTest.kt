@@ -32,6 +32,13 @@ class StandsUiMapperTest {
     }
 
     @Test
+    fun toUiModel_thePhotograph_reachesTheCardItIsMostlyMadeOf() {
+        val model = state().toUiModel()
+
+        assertEquals("https://example.test/vegan-fabrik.webp", model.stands.first().imageUrl)
+    }
+
+    @Test
     fun toUiModel_theTitle_matchesTheRowThatOpenedIt() {
         val model = StandsState(kind = StandsKindUiModel.MAKERS, directory = directory()).toUiModel()
 
@@ -209,6 +216,7 @@ class StandsUiMapperTest {
         id = id,
         name = id,
         offering = offering,
+        imageUrl = "https://example.test/$id.webp",
         dietary = dietary,
     )
 }

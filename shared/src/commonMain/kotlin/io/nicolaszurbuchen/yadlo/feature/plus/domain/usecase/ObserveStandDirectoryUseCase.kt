@@ -40,6 +40,7 @@ class ObserveStandDirectoryUseCase(
                                 id = stand.id,
                                 name = stand.name,
                                 offering = stand.offering,
+                                imageUrl = stand.images.firstOrNull()?.url,
                                 dietary = stand.dietaryCoverage(),
                             )
                         }

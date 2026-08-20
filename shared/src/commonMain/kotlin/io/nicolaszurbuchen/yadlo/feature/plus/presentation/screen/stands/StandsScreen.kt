@@ -16,9 +16,9 @@ import androidx.compose.ui.text.style.TextAlign
 import io.nicolaszurbuchen.yadlo.app.design.theme.ShimmerPulse
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
+import io.nicolaszurbuchen.yadlo.common.content.presentation.component.StandCard
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusScreenScaffold
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands.component.StandMarkChips
-import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands.component.StandRow
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands.component.StandsSkeleton
 import io.nicolaszurbuchen.yadlo.infra.ui.asString
 
@@ -75,13 +75,16 @@ fun StandsScreen(
                         Modifier
                             .fillMaxSize()
                             .padding(contentPadding)
-                            .padding(horizontal = MaterialTheme.spacing.md, vertical = MaterialTheme.spacing.sm),
+                            .padding(MaterialTheme.spacing.md),
                 )
             }
         } else {
             LazyColumn(
-                verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm),
-                contentPadding = PaddingValues(vertical = MaterialTheme.spacing.sm, horizontal = MaterialTheme.spacing.md),
+                // Wider than the gap between two rows was, because these are cards with a
+                // photograph at the top of each: at 8dp the picture of one stand sat close enough
+                // to the dietary line of the one above it to read as part of the same object.
+                verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md),
+                contentPadding = PaddingValues(MaterialTheme.spacing.md),
                 modifier = Modifier.fillMaxSize().padding(contentPadding),
             ) {
                 state.emptyMessage?.let { message ->
@@ -97,7 +100,7 @@ fun StandsScreen(
                 }
 
                 items(items = state.stands, key = { it.id }) { stand ->
-                    StandRow(stand = stand, onClick = onStandClick)
+                    StandCard(stand = stand, onClick = onStandClick)
                 }
             }
         }

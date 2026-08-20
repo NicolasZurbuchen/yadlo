@@ -193,6 +193,27 @@ class ObserveStandDirectoryUseCaseTest {
             assertEquals("Cuisine géorgienne", directoryFrom(repository).stands.single().offering)
         }
 
+    @Test
+    fun invoke_theFirstPhotograph_isCarriedBecauseItIsWhatTheCardIsMostlyMadeOf() =
+        runTest {
+            val repository =
+                FakeContentRepository().apply {
+                    emitStatus(
+                        ready(happenings = listOf(stand("guliko", image = "https://example.test/guliko.webp"))),
+                    )
+                }
+
+            assertEquals("https://example.test/guliko.webp", directoryFrom(repository).stands.single().imageUrl)
+        }
+
+    @Test
+    fun invoke_aStandWithNoPhotograph_isNullRatherThanDropped() =
+        runTest {
+            val repository = FakeContentRepository().apply { emitStatus(ready(happenings = listOf(stand("guliko")))) }
+
+            assertEquals(null, directoryFrom(repository).stands.single().imageUrl)
+        }
+
     private suspend fun directoryFrom(
         repository: FakeContentRepository,
         kind: StandKind = StandKind.FOOD,

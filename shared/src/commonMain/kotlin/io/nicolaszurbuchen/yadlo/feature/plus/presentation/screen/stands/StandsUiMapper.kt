@@ -2,6 +2,7 @@ package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands
 
 import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloDietaryMarkUiModel
 import io.nicolaszurbuchen.yadlo.app.design.uimodel.toDietaryTags
+import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.StandCardUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.stands_empty
@@ -26,10 +27,11 @@ fun StandsState.toUiModel(): StandsUiModel {
             // dangerous half of that choice.
             .filter { stand -> stand.dietary.keys.containsAll(selectedMarks) }
             .map { stand ->
-                StandUiModel(
+                StandCardUiModel(
                     id = stand.id,
                     name = stand.name,
                     offering = stand.offering,
+                    imageUrl = stand.imageUrl,
                     dietary = stand.dietary.toDietaryTags(),
                 )
             }
