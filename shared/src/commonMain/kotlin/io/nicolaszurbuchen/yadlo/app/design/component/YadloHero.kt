@@ -1,11 +1,15 @@
 package io.nicolaszurbuchen.yadlo.app.design.component
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
@@ -16,8 +20,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.unit.dp
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
+import org.jetbrains.compose.resources.DrawableResource
+import org.jetbrains.compose.resources.painterResource
 
 /**
  * The answer, before the page that supports it.
@@ -40,6 +50,19 @@ import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
  * carries dark ink; white on that blue is 2.4:1 and unusable, which AppColorTest holds rather than
  * leaving as prose.
  *
+ * **[image] swaps that ground for a photograph, and it is the exception rather than the pattern.**
+ * A hero earns one when the sentence it carries is the *whole* of what the screen has left to say,
+ * which happens exactly once: the Monday after the festival, when the programme is over, the
+ * countdown has nothing to count and *Merci.* is the entire page. A blue card there is the app
+ * closing the year on a UI component. Every other hero sits above content it introduces, and a
+ * photograph would make the introduction louder than the thing introduced.
+ *
+ * Over a photograph the ink is [io.nicolaszurbuchen.yadlo.app.design.theme.AppColors.onScrim] under
+ * the same bottom-weighted scrim the fiche's head uses. That is not decoration: the scrim's alpha is
+ * the lowest at which white clears 4.5:1 over a *white* photograph, and the hero's own ink is
+ * measured against blue, which a photograph is not. The two treatments are one component so that a
+ * hero cannot end up with page ink over a picture.
+ *
  * [kicker] is set in the label face, which is what it is: *Nouveau*, *À faire maintenant* — a word
  * about the sentence under it rather than a sentence of its own.
  *
@@ -53,52 +76,106 @@ fun YadloHero(
     modifier: Modifier = Modifier,
     kicker: String? = null,
     body: String? = null,
+    image: DrawableResource? = null,
     onClick: (() -> Unit)? = null,
 ) {
-    Row(
-        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm),
-        verticalAlignment = Alignment.CenterVertically,
+    val ink = if (image != null) MaterialTheme.appColors.onScrim else MaterialTheme.appColors.onPrimarySubtle
+    val scrim = MaterialTheme.appColors.scrim
+
+    Box(
         modifier =
             modifier
                 .fillMaxWidth()
                 .clip(MaterialTheme.shapes.medium)
+                // Under the photograph as well as instead of it: a picture that has not decoded on
+                // the first frame leaves the block the colour it would otherwise have been.
                 .background(MaterialTheme.appColors.primarySubtle)
                 .then(if (onClick != null) Modifier.clickable(onClick = onClick) else Modifier)
-                .padding(MaterialTheme.spacing.lg),
+                .then(if (image != null) Modifier.heightIn(min = IMAGE_HERO_MIN_HEIGHT) else Modifier),
     ) {
-        Column(
-            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm),
-            modifier = Modifier.weight(1f),
-        ) {
-            kicker?.let {
-                Text(
-                    text = it,
-                    style = MaterialTheme.typography.displaySmall,
-                    color = MaterialTheme.appColors.onPrimarySubtle,
-                )
-            }
-
-            Text(
-                text = title,
-                style = MaterialTheme.typography.headlineSmall,
-                color = MaterialTheme.appColors.onPrimarySubtle,
+        image?.let {
+            Image(
+                painter = painterResource(it),
+                // The words in front of it say what it is. A photograph of the site behind
+                // "Merci." adds nothing a screen reader can use and interrupts the sentence.
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize(),
             )
 
-            body?.let {
-                Text(
-                    text = it,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.appColors.onPrimarySubtle,
-                )
-            }
+            // Weighted to the bottom, where the words are, and clear at the top — the same shape as
+            // the fiche's head, for the same reason: the middle of the picture is the part worth
+            // showing and the text still has to clear 4.5:1 wherever it lands.
+            Box(
+                modifier =
+                    Modifier
+                        .matchParentSize()
+                        .background(
+                            Brush.verticalGradient(
+                                0f to Color.Transparent,
+                                SCRIM_FROM to Color.Transparent,
+                                1f to scrim,
+                            ),
+                        ),
+            )
         }
 
-        if (onClick != null) {
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                contentDescription = null,
-                tint = MaterialTheme.appColors.onPrimarySubtle,
-            )
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm),
+            verticalAlignment = Alignment.CenterVertically,
+            modifier =
+                Modifier
+                    .align(if (image != null) Alignment.BottomStart else Alignment.Center)
+                    .fillMaxWidth()
+                    .padding(MaterialTheme.spacing.lg),
+        ) {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm),
+                modifier = Modifier.weight(1f),
+            ) {
+                kicker?.let {
+                    Text(
+                        text = it,
+                        style = MaterialTheme.typography.displaySmall,
+                        color = ink,
+                    )
+                }
+
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.headlineSmall,
+                    color = ink,
+                )
+
+                body?.let {
+                    Text(
+                        text = it,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = ink,
+                    )
+                }
+            }
+
+            if (onClick != null) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                    contentDescription = null,
+                    tint = ink,
+                )
+            }
         }
     }
 }
+
+/**
+ * Enough of a landscape photograph to be a photograph rather than a strip of one. Two lines of text
+ * and their padding come to about 120dp, so anything less would crop to the band behind the words
+ * and show nothing of the picture above them.
+ */
+private val IMAGE_HERO_MIN_HEIGHT = 200.dp
+
+/**
+ * Where the scrim starts, as a fraction of the block's height. Later than the fiche's 0.5, because
+ * this block is shorter and its words sit in the bottom third rather than filling it.
+ */
+private const val SCRIM_FROM = 0.35f

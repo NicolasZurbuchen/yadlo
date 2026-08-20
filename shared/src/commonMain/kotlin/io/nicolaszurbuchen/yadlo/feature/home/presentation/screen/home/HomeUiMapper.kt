@@ -22,6 +22,7 @@ import yadlo.shared.generated.resources.home_hero_approaching_kicker
 import yadlo.shared.generated.resources.home_hero_approaching_title
 import yadlo.shared.generated.resources.home_thank_you_body
 import yadlo.shared.generated.resources.home_thank_you_title
+import yadlo.shared.generated.resources.img_see_you_soon
 import kotlin.time.Duration.Companion.hours
 
 /**
@@ -87,6 +88,9 @@ fun HomeState.toUiModel(): HomeUiModel {
         HomeBlockUiModel.ThankYou(
             title = UiText.Resource(Res.string.home_thank_you_title),
             body = UiText.Resource(Res.string.home_thank_you_body),
+            // Bundled rather than fetched: ENDED is the Phase the app spends its offline months in,
+            // and a thank-you that fails to load is worse than no photograph at all.
+            image = Res.drawable.img_see_you_soon,
         )
 
     val figures =

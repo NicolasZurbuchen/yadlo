@@ -259,6 +259,29 @@ why it is bad.
 This also settles the Plan lifecycle — there is nothing to show before clearing, so a
 previous edition's Plan is simply discarded when a new Edition publishes.
 
+**The thank-you is the one hero with a photograph, and it is meant to stay the one.** Every other
+hero sits above content it introduces — a programme to open, a payment page to read — where a
+picture would make the introduction louder than the thing introduced. ENDED has nothing under it
+but chiffres and archives; *Merci.* is the whole of what the screen has left to say, and a blue
+card there is the app closing the year on a UI component. `img_see_you_soon` is the association's
+own photograph, the surfboard sign reading *À tout bientôt*, which says it in the festival's voice
+rather than the app's.
+
+Bundled rather than fetched. ENDED runs mid-July to late August and is the phase the app spends
+most offline; a thank-you that fails to load is worse than no photograph at all.
+
+Over it the ink is `onScrim` under the fiche's own bottom-weighted scrim, not the hero's usual
+`onPrimarySubtle`. That is the same measurement, not a matching exercise: `onPrimarySubtle` was
+derived against the bandeau blue and guarantees nothing over a picture, and the scrim's alpha is
+the lowest at which white clears 4.5:1 over a *white* photograph. The two treatments live in one
+component so that no hero can end up with page ink over a picture.
+
+**The pre-festival heroes stay flat.** *La programmation est là* has no image made for it, and the
+candidates were both wrong: reusing the splash photograph would open the app and then sit in the
+middle of it, and `editions/2026/images/` is empty — the affiche is the right occupant of that
+slot and does not exist yet. A hero with a picture on one phase and without on another is a phase
+difference, which is the whole idea of the block stack.
+
 **No live Instagram feed, and no special-cased link either.** LIVE gets the same four social
 links as every other phase.
 

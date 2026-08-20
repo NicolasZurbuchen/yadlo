@@ -28,6 +28,7 @@ import yadlo.shared.generated.resources.home_hero_approaching_kicker
 import yadlo.shared.generated.resources.home_hero_approaching_title
 import yadlo.shared.generated.resources.home_thank_you_body
 import yadlo.shared.generated.resources.home_thank_you_title
+import yadlo.shared.generated.resources.img_see_you_soon
 
 /**
  * All five phases, because the phase *is* the screen — previewing one of them previews a fifth of
@@ -80,6 +81,7 @@ private class HomeStackProvider : PreviewParameterProvider<HomeUiModel> {
         HomeBlockUiModel.ThankYou(
             title = UiText.Resource(Res.string.home_thank_you_title),
             body = UiText.Resource(Res.string.home_thank_you_body),
+            image = Res.drawable.img_see_you_soon,
         )
 
     private fun figures() =
