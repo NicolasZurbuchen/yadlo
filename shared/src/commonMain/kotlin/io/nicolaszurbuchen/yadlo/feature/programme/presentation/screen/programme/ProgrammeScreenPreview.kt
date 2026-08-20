@@ -12,6 +12,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import io.nicolaszurbuchen.yadlo.app.design.theme.YadloTheme
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotLiveStateUiModel
+import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotSegmentUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.price_free
@@ -96,74 +97,96 @@ private class ProgrammeStateProvider : PreviewParameterProvider<ProgrammeUiModel
                 name = "Acro-yoga",
                 categoryId = "terre",
                 categoryName = "Sur terre",
-                timeText = "10:00 – 11:00",
                 priceText = UiText.Resource(Res.string.price_free),
                 stateLabel = UiText.Resource(Res.string.slot_state_over),
                 state = SlotLiveStateUiModel.Over,
-                barStart = 0f,
-                barEnd = 0.059f,
+                slots = listOf(segment("10:00 – 11:00", SlotLiveStateUiModel.Over, 0f, 0.059f)),
             ),
             row(
                 id = "2026:thalasso-sat",
                 name = "Thalassothérapie",
                 categoryId = "musique",
                 categoryName = "Musique",
-                timeText = "14:00 – 16:00",
                 priceText = null,
                 stateLabel = UiText.Resource(Res.string.slot_state_ending, listOf("15")),
                 state = SlotLiveStateUiModel.Ending(endsIn = 15.minutes, progress = 0.875f),
-                barStart = 0.235f,
-                barEnd = 0.353f,
+                slots =
+                    listOf(
+                        segment(
+                            "14:00 – 16:00",
+                            SlotLiveStateUiModel.Ending(endsIn = 15.minutes, progress = 0.875f),
+                            0.235f,
+                            0.353f,
+                        ),
+                    ),
             ),
             row(
                 id = "2026:gladiasup-sat",
                 name = "GladiaSUP",
                 categoryId = "eau",
                 categoryName = "Sur l'eau",
-                timeText = "12:00 – 19:00",
                 priceText = UiText.Raw("CHF 5"),
                 stateLabel = UiText.Resource(Res.string.slot_state_running),
                 state = SlotLiveStateUiModel.Running(progress = 0.53f),
-                barStart = 0.118f,
-                barEnd = 0.529f,
+                slots =
+                    listOf(
+                        segment("12:00 – 19:00", SlotLiveStateUiModel.Running(progress = 0.53f), 0.118f, 0.529f),
+                    ),
+            ),
+            // The case the merge exists for: three separate hours of one activity, the first over
+            // while the row is not, on one track — DECISIONS.md § A row is a Happening on a day.
+            row(
+                id = "2026:sat/sup-yoga",
+                name = "SUP Yoga",
+                categoryId = "eau",
+                categoryName = "Sur l'eau",
+                priceText = UiText.Raw("CHF 20"),
+                stateLabel = UiText.Resource(Res.string.slot_state_starts_in_minutes, listOf("45")),
+                state = SlotLiveStateUiModel.StartingSoon(startsIn = 45.minutes),
+                slots =
+                    listOf(
+                        segment("14:00 – 15:00", SlotLiveStateUiModel.Over, 0.235f, 0.294f),
+                        segment("16:00 – 17:00", SlotLiveStateUiModel.StartingSoon(45.minutes), 0.353f, 0.412f),
+                        segment("18:00 – 19:00", SlotLiveStateUiModel.Upcoming, 0.471f, 0.529f),
+                    ),
             ),
             row(
                 id = "2026:dubside-sat",
                 name = "Dubside",
                 categoryId = "musique",
                 categoryName = "Musique",
-                timeText = "16:00 – 18:00",
                 priceText = null,
                 stateLabel = UiText.Resource(Res.string.slot_state_starts_in_minutes, listOf("15")),
                 state = SlotLiveStateUiModel.StartingSoon(startsIn = 15.minutes),
-                barStart = 0.353f,
-                barEnd = 0.471f,
+                slots =
+                    listOf(
+                        segment("16:00 – 18:00", SlotLiveStateUiModel.StartingSoon(15.minutes), 0.353f, 0.471f),
+                    ),
             ),
             row(
                 id = "2026:silent-party-sat",
                 name = "Silent Party",
                 categoryId = "silent",
                 categoryName = "Silent Party",
-                timeText = "20:00 – 02:00",
                 // Two tiers, so the row shows the one that lets a family in rather than the adult
                 // price — CHF 25 adulte, CHF 15 moins de 16 ans.
                 priceText = UiText.Resource(Res.string.price_from, listOf("CHF 15")),
                 stateLabel = null,
                 state = SlotLiveStateUiModel.Upcoming,
-                barStart = 0.588f,
-                barEnd = 0.941f,
+                slots = listOf(segment("20:00 – 02:00", SlotLiveStateUiModel.Upcoming, 0.588f, 0.941f)),
             ),
             row(
                 id = "2026:coin-enfant-sat",
                 name = "Coin enfant — maquillage, bricolage et mur de grimpe",
                 categoryId = "enfants",
                 categoryName = "Enfants",
-                timeText = "12:00 – 19:00",
                 priceText = UiText.Resource(Res.string.price_free),
                 stateLabel = UiText.Resource(Res.string.slot_state_running),
                 state = SlotLiveStateUiModel.Running(progress = 0.53f),
-                barStart = 0.118f,
-                barEnd = 0.529f,
+                slots =
+                    listOf(
+                        segment("12:00 – 19:00", SlotLiveStateUiModel.Running(progress = 0.53f), 0.118f, 0.529f),
+                    ),
             ),
         )
 
@@ -172,21 +195,30 @@ private class ProgrammeStateProvider : PreviewParameterProvider<ProgrammeUiModel
         name: String,
         categoryId: String,
         categoryName: String,
-        timeText: String,
         priceText: UiText?,
         stateLabel: UiText?,
         state: SlotLiveStateUiModel,
-        barStart: Float,
-        barEnd: Float,
+        slots: List<SlotSegmentUiModel>,
     ) = SlotRowUiModel(
         id = id,
-        happeningId = id.substringAfter(':').substringBeforeLast('-'),
+        happeningId = id.substringAfterLast('/').substringAfter(':').substringBeforeLast('-'),
         name = name,
         categoryId = categoryId,
         categoryName = categoryName,
-        timeText = timeText,
         priceText = priceText,
         stateLabel = stateLabel,
+        state = state,
+        slots = slots,
+    )
+
+    private fun segment(
+        timeText: String,
+        state: SlotLiveStateUiModel,
+        barStart: Float,
+        barEnd: Float,
+    ) = SlotSegmentUiModel(
+        id = timeText,
+        timeText = timeText,
         state = state,
         barStart = barStart,
         barEnd = barEnd,

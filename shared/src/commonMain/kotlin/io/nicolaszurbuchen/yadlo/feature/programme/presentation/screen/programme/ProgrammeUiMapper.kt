@@ -1,6 +1,8 @@
 package io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme
 
 import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotLiveStateUiModel
+import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotSegmentUiModel
+import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.loudestState
 import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.slotLiveStateAt
 import io.nicolaszurbuchen.yadlo.common.time.FESTIVAL_TIME_ZONE
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
@@ -18,14 +20,14 @@ import yadlo.shared.generated.resources.slot_state_starts_in_minutes
 import kotlin.time.Duration
 
 /**
- * One day's Slots, in order, each carrying its own state against the clock and its own place on the
- * day's span.
+ * One day's Happenings, in order, each carrying every hour it runs that day, its own state against
+ * the clock and its own place on the day's span.
  *
  * Everything is built inside this single function: a UiMapper file is required to hold nothing but
  * the State-to-UiModel extension, so a helper here would have to be local, which Konsist reads as
- * an extra function in the file. The two pieces that would otherwise want to be helpers live
- * elsewhere on purpose — `slotLiveStateAt` beside the state it returns, `formatMoney` in `infra/ui`
- * where the fiche will find it too.
+ * an extra function in the file. The pieces that would otherwise want to be helpers live elsewhere
+ * on purpose — `slotLiveStateAt` and `loudestState` beside the states they return, `formatMoney` in
+ * `infra/ui` where the fiche finds it too.
  */
 fun ProgrammeState.toUiModel(): ProgrammeUiModel {
     val loaded =
@@ -77,20 +79,49 @@ fun ProgrammeState.toUiModel(): ProgrammeUiModel {
         daySlots
             // An empty selection is *Tout*, not a filter that excludes everything.
             .filter { selectedCategoryIds.isEmpty() || it.categoryId in selectedCategoryIds }
-            .map { slot ->
-                val state = slotLiveStateAt(now = now, start = slot.start, end = slot.end)
+            // One row per Happening, with its hours on it — DECISIONS.md § A row is a Happening on
+            // a day. `groupBy` keeps first-seen order and the Slots arrive sorted, so the rows come
+            // out in the order their first hour starts and each row's hours are chronological.
+            .groupBy { it.happeningId }
+            .map { (happeningId, slots) ->
+                val first = slots.first()
+
+                val segments =
+                    slots.map { slot ->
+                        SlotSegmentUiModel(
+                            id = slot.id,
+                            timeText =
+                                "${slot.start.formatAsTimeOfDay(FESTIVAL_TIME_ZONE)} – " +
+                                    slot.end.formatAsTimeOfDay(FESTIVAL_TIME_ZONE),
+                            state = slotLiveStateAt(now = now, start = slot.start, end = slot.end),
+                            barStart =
+                                if (hasAxis && axisStart != null) {
+                                    ((slot.start - axisStart) / axisSpan).toFloat().coerceIn(0f, 1f)
+                                } else {
+                                    0f
+                                },
+                            barEnd =
+                                if (hasAxis && axisStart != null) {
+                                    ((slot.end - axisStart) / axisSpan).toFloat().coerceIn(0f, 1f)
+                                } else {
+                                    1f
+                                },
+                        )
+                    }
+
+                val state = segments.loudestState()
 
                 SlotRowUiModel(
-                    id = slot.id,
-                    happeningId = slot.happeningId,
-                    name = slot.name,
-                    categoryId = slot.categoryId,
-                    categoryName = slot.categoryName,
-                    timeText =
-                        "${slot.start.formatAsTimeOfDay(FESTIVAL_TIME_ZONE)} – " +
-                            slot.end.formatAsTimeOfDay(FESTIVAL_TIME_ZONE),
+                    // The day is in it because the same Happening runs on all three of them, and a
+                    // list key that repeats across days is a list that reuses a row's scroll state
+                    // for a different day's copy of it.
+                    id = "${first.dayId}/$happeningId",
+                    happeningId = happeningId,
+                    name = first.name,
+                    categoryId = first.categoryId,
+                    categoryName = first.categoryName,
                     priceText =
-                        slot.price?.let { price ->
+                        first.price?.let { price ->
                             // `tiers` is empty exactly when `free` is true, and the content
                             // validator holds that — so a missing cheapest tier means free too.
                             val cheapest = price.tiers.minByOrNull { it.amount.amount }
@@ -147,18 +178,7 @@ fun ProgrammeState.toUiModel(): ProgrammeUiModel {
                             }
                         },
                     state = state,
-                    barStart =
-                        if (hasAxis && axisStart != null) {
-                            ((slot.start - axisStart) / axisSpan).toFloat().coerceIn(0f, 1f)
-                        } else {
-                            0f
-                        },
-                    barEnd =
-                        if (hasAxis && axisStart != null) {
-                            ((slot.end - axisStart) / axisSpan).toFloat().coerceIn(0f, 1f)
-                        } else {
-                            1f
-                        },
+                    slots = segments,
                 )
             }
 
