@@ -4,6 +4,7 @@ import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloFigureUiModel
 import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SocialLinkUiModel
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.uimodel.AnnouncementUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
+import org.jetbrains.compose.resources.DrawableResource
 
 /**
  * Accueil is a block stack whose contents change with the Phase, so the screen renders a list it is
@@ -31,9 +32,18 @@ sealed interface HomeBlockUiModel {
         val body: UiText,
     ) : HomeBlockUiModel
 
+    /**
+     * The Monday after, and the only hero in the app that carries a picture — DECISIONS.md
+     * § The thank-you is the one hero with a photograph.
+     *
+     * [image] is not nullable, unlike a fiche's: this block exists for exactly one Phase and ships
+     * with the photograph it was written for, so a null here would describe a state the app cannot
+     * reach.
+     */
     data class ThankYou(
         val title: UiText,
         val body: UiText,
+        val image: DrawableResource,
     ) : HomeBlockUiModel
 
     data class Figures(

@@ -71,7 +71,11 @@ fun HomeScreen(
                 }
 
                 is HomeBlockUiModel.ThankYou -> {
-                    YadloHero(title = block.title.asString(), body = block.body.asString())
+                    YadloHero(
+                        title = block.title.asString(),
+                        body = block.body.asString(),
+                        image = block.image,
+                    )
                 }
 
                 is HomeBlockUiModel.Figures -> {

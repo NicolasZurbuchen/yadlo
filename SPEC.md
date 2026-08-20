@@ -503,7 +503,9 @@ ENDED         then                             →  +6 weeks
 
 **Accueil** — a block stack per phase (blocks enumerated in DECISIONS.md). Global search
 appears only in ANNOUNCED / APPROACHING / LIVE. LIVE is deliberately thin because the app
-opens on Programme then.
+opens on Programme then. ENDED's thank-you carries the association's *À tout bientôt*
+photograph, bundled — the only hero in the app with a picture behind it (DECISIONS.md § The
+thank-you is the one hero with a photograph).
 
 **Programme** — layout B2: one chronological list per day, no calendar column, no "now"
 line. Each row carries live state as a text pill (`dans 15 min` / `en cours` / `se termine` /
