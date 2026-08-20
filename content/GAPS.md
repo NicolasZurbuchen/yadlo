@@ -281,11 +281,19 @@ Three whole artists missing and one on the wrong day is not drift, it is a page 
 working copy of the programme lives somewhere else — a spreadsheet, a Notion page, the Instagram
 drafts — that is the thing the app should be fed from.
 
-## 7. Images — the artists are done, the stands are not
+## 7. Images — two stands short of a complete bank
 
-**16/38 happenings now carry a photo: all thirteen artists, and three activities** — GladiaSUP, la
-Silent Party and le yoga. They were taken from the association's own channels, cleaned, cropped to
-one size and converted to WebP. **22 remain**: every stand, and every activity but those three.
+**36/38 happenings carry a photo: all thirteen artists, all seventeen activities, and six of the
+eight stands.** They were taken from the association's own channels, cleaned, cropped to one size
+and converted to WebP. **Two remain**, both stands: *La Fanfrelucherie* and *Les secrets de Houna*.
+
+**A file in the bank is named for the Happening it depicts, exactly.** `shared/images/artists/dj-alf.webp`
+against the happening `dj-alf`, and a Happening with several photos names them `<id>.webp`,
+`<id>-1.webp` and so on — which is what Léman Records' four are. That is the whole lookup: there is
+no table mapping names to ids that could fall out of step, and a photo whose name has drifted shows
+up as a Happening with no picture rather than as a silent mismatch. The three folders under
+`images/` are the Happening's kind, so `stands/guliko.webp` is findable by someone who has never
+read this file.
 
 **All 39 partner logos are in the picture bank and none of them is referenced yet.** The files are
 there under `shared/logos/`; `logo` is still `null` on every partner, so the validator reports each
@@ -299,7 +307,7 @@ not match their partner id (`arenaz-automobile` against `arenaz`, `morges` again
 | `logo` | every partner | a single `src`, or `null` |
 
 **A `src` is either an absolute `https://` URL, or a path relative to the content root** —
-`shared/images/artists/alf.webp`. There is no `imageBaseUrl`: the app already knows the address it
+`shared/images/artists/dj-alf.webp`. There is no `imageBaseUrl`: the app already knows the address it
 fetched the bundle from, and declaring it again in the content would be the same fact written twice.
 The picture bank lives under `shared/` rather than under an edition because a photo of an artist who
 plays two years running is one file, not two.
@@ -309,13 +317,14 @@ toolbar behind a scrim; a logo must never be cropped, tinted or bled to an edge.
 opposite handling, so they do not share a name.
 
 `credit` exists because press photos usually carry a photographer's condition. It is `null` on all
-nineteen files currently in the bank, none of which arrived with one.
+thirty-nine files currently in the bank, none of which arrived with one.
 
 **What is still needed:**
 
-- **One photo per stand.** The stand list is the screen where a photo does most work: people choose
-  food by looking at it, and this is now the largest remaining hole.
-- **One photo per activity**, for the ten that have none.
+- **A photo of La Fanfrelucherie and one of Les secrets de Houna.** Both were prepared and both were
+  lost before they were committed; everything else on the stand list has one. Until they arrive those
+  two fiches open on the bundled placeholder, which is a photograph of the site rather than a grey
+  rectangle — see DECISIONS.md § The fiche has one ground.
 - **The partner logos wired up**, which is a mapping rather than an ask.
 
 ## ✅ Resolved — every Slot now has a start and an end
