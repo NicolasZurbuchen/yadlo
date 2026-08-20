@@ -198,7 +198,6 @@ private fun stand() =
                     id = "plats",
                     name = "Plats",
                     description = null,
-                    source = "Liste transmise, non publiée par le festival",
                     items =
                         listOf(
                             HappeningMenuItemUiModel(
@@ -218,6 +217,45 @@ private fun stand() =
                                 name = "Seitan à la cantonaise",
                                 priceText = "CHF 18",
                                 description = "Tofu suisse mijoté aux légumes de saison, riz.",
+                                dietary =
+                                    listOf(
+                                        YadloDietaryTagUiModel(YadloDietaryMarkUiModel.VEGAN, Res.string.dietary_mark_vegan),
+                                        YadloDietaryTagUiModel(
+                                            YadloDietaryMarkUiModel.GLUTEN_FREE,
+                                            Res.string.dietary_mark_gluten_free,
+                                        ),
+                                        YadloDietaryTagUiModel(
+                                            YadloDietaryMarkUiModel.DAIRY_FREE,
+                                            Res.string.dietary_mark_dairy_free,
+                                        ),
+                                    ),
+                            ),
+                        ),
+                ),
+                // A second group, so the tab row has something to navigate between and the group
+                // description has somewhere to be seen. Four tabs is what the real cartes carry.
+                HappeningMenuGroupUiModel(
+                    id = "tartelettes",
+                    name = "Tartelettes",
+                    description = "Pâte sablée végétale, crème à l’aquafaba ou à la noix de cajou.",
+                    items =
+                        listOf(
+                            HappeningMenuItemUiModel(
+                                name = "Citron meringuée",
+                                priceText = "CHF 7",
+                                description = null,
+                                dietary =
+                                    listOf(
+                                        YadloDietaryTagUiModel(YadloDietaryMarkUiModel.VEGAN, Res.string.dietary_mark_vegan),
+                                    ),
+                            ),
+                            // The longest name in the 2026 content beside the most marks any dish
+                            // carries: the pair that decides whether the glyphs fit on the name's
+                            // own line.
+                            HappeningMenuItemUiModel(
+                                name = "Chocolat noir et fleur de sel",
+                                priceText = "CHF 7",
+                                description = null,
                                 dietary =
                                     listOf(
                                         YadloDietaryTagUiModel(YadloDietaryMarkUiModel.VEGAN, Res.string.dietary_mark_vegan),

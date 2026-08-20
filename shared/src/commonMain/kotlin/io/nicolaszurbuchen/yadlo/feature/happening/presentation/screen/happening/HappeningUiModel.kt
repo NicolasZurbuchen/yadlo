@@ -103,21 +103,27 @@ data class HappeningBookingUiModel(
 )
 
 /**
- * [source] is shown because no menu here is confirmed by the festival — one is a vendor's carte for
- * another location, one was read off a photographed chalkboard. A price presented as fact when it
- * came off a blackboard is the kind of wrong that costs someone at the counter.
+ * One group of a stand's carte. [name] is both the section header it is drawn under and the label
+ * on the tab that scrolls to it, which is why the two can never disagree.
+ *
+ * **No `source`.** The content still records where each carte came from, on the group and on every
+ * item; the fiche stopped writing it out. Five groups ending in five copies of the same forty-word
+ * disclaimer taught a reader to skip small grey text, which is the opposite of what it was for.
  */
 data class HappeningMenuGroupUiModel(
     val id: String,
     val name: String,
     val description: String?,
-    val source: String?,
     val items: List<HappeningMenuItemUiModel>,
 )
 
 /**
- * Up to three independent rows — name with price, ingredients, dietary tags — so nothing shares a
- * line with the name and nothing can overflow into the price.
+ * Two independent rows — the name with its marks and its price, then the ingredients — so nothing
+ * shares a line with the price and nothing can overflow into it.
+ *
+ * [dietary] is drawn as glyphs alone here. The words are written once at the top of the fiche, over
+ * the whole stand, which is what makes the glyph on a dish readable rather than a symbol to guess
+ * at — see [io.nicolaszurbuchen.yadlo.app.design.component.YadloDietaryMarks].
  */
 data class HappeningMenuItemUiModel(
     val name: String,

@@ -370,11 +370,13 @@ class HappeningUiMapperTest {
     }
 
     @Test
-    fun toUiModel_menuGroupSource_survivesToTheScreen() {
+    fun toUiModel_menuGroupIdAndName_bothSurviveBecauseTheTabsNeedBoth() {
         val model = state(detail(menu = listOf(plats()))).toUiModel()
 
-        // A price presented as fact when it came off a chalkboard costs someone at the counter.
-        assertEquals("Lu sur une ardoise", model.menu.single().source)
+        // The id is the key the fiche scrolls to and the name is what the tab is labelled with, so
+        // a group that lost either would leave a tab pointing at nothing.
+        assertEquals("plats", model.menu.single().id)
+        assertEquals("Plats", model.menu.single().name)
     }
 
     // endregion
