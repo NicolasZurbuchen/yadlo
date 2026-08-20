@@ -77,6 +77,7 @@ class StandsReducerTest {
                         id = "vegan-fabrik",
                         name = "Vegan Fabrik",
                         offering = null,
+                        imageUrl = null,
                         dietary = mapOf("vegan" to DietaryCoverage.ALL),
                     ),
                 ),

@@ -3,6 +3,7 @@ package io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happenin
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
@@ -60,7 +61,6 @@ import yadlo.shared.generated.resources.back
 import yadlo.shared.generated.resources.happening_missing
 import yadlo.shared.generated.resources.happening_section_good_to_know
 import yadlo.shared.generated.resources.happening_section_links
-import yadlo.shared.generated.resources.happening_section_menu
 import yadlo.shared.generated.resources.happening_section_price
 import yadlo.shared.generated.resources.happening_section_when
 import yadlo.shared.generated.resources.wishlist_add
@@ -332,15 +332,18 @@ fun HappeningScreen(
 
                     if (state.menu.isNotEmpty()) {
                         item(key = "menu") {
-                            HappeningSection(
-                                title = stringResource(Res.string.happening_section_menu),
+                            // Each group is a section of the fiche in its own right — *Plats*,
+                            // *Boissons* — rather than a sub-heading under one *Au menu*. Two levels
+                            // of heading over a carte of fourteen dishes was one more than it needs,
+                            // and the outer one only ever said what the dishes underneath already do.
+                            Column(
+                                verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.lg),
                                 modifier = Modifier.padding(horizontal = MaterialTheme.spacing.md),
                             ) {
                                 state.menu.forEach { group ->
-                                    HappeningMenuGroupBlock(
-                                        group = group,
-                                        modifier = Modifier.padding(bottom = MaterialTheme.spacing.md),
-                                    )
+                                    HappeningSection(title = group.name) {
+                                        HappeningMenuGroupBlock(group = group)
+                                    }
                                 }
                             }
                         }

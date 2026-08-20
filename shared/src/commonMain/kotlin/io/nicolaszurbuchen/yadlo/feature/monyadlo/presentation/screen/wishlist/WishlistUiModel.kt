@@ -1,6 +1,6 @@
 package io.nicolaszurbuchen.yadlo.feature.monyadlo.presentation.screen.wishlist
 
-import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloDietaryTagUiModel
+import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.StandCardUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 
 /**
@@ -16,25 +16,17 @@ data class WishlistUiModel(
     val emptyMessage: UiText?,
 )
 
+/**
+ * [stands] are the same [StandCardUiModel] the browse lists draw. *À essayer* is what you kept from
+ * Plus › Nourriture & boissons, and a Stand that changed shape between the screen it was saved on
+ * and the screen it was saved to would read as a different object.
+ *
+ * No hours and no live state on any of them — DECISIONS.md § No opening times on the Wishlist.
+ * Whether stands close before the festival does is unknown, and "ouvert maintenant" is too good a
+ * claim to invent.
+ */
 data class WishlistGroupUiModel(
     val id: String,
     val name: String,
-    val stands: List<WishlistStandUiModel>,
-)
-
-/**
- * One Stand.
- *
- * [offering] answers what someone walking the row is asking — "Cuisine libanaise" — and [dietary]
- * says what can be eaten here, derived from the menu: whether a mark covers everything the stand
- * sells or only part of it.
- *
- * No hours and no live state — DECISIONS.md § No opening times on the Wishlist. Whether stands close
- * before the festival does is unknown, and "ouvert maintenant" is too good a claim to invent.
- */
-data class WishlistStandUiModel(
-    val id: String,
-    val name: String,
-    val offering: String?,
-    val dietary: List<YadloDietaryTagUiModel>,
+    val stands: List<StandCardUiModel>,
 )

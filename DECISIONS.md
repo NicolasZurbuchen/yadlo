@@ -967,6 +967,44 @@ the name and nothing can overflow into the price. An item with only a name and a
 complete item, which matters because that is the data most trucks will actually give.
 Groups make drinks and combo menus expressible without a special case.
 
+**A menu group is a section of the fiche, and there is no *Au menu* above them.** *Plats*,
+*Boissons* and *Tartelettes* are headed exactly the way *Quand*, *Tarifs* and *Liens* are, because
+that is what they are — peers, not sub-headings. Two levels of heading over a carte of fourteen
+dishes was one more than it needs, and the outer one only ever said what the dishes underneath
+already do.
+
+**Tabs over the carte were built and then taken out, and the reason is worth keeping.** A row of
+Uber-Eats-style tabs pinned under the toolbar — one per group, one for *Liens*, tap to scroll,
+selection following the scroll — was the obvious answer to a fiche that is five groups long, and it
+worked. It was removed the moment the glyphs landed, because the two changes were solving the same
+problem and the cheaper one won: with the marks reduced to glyphs, a dish is two short lines instead
+of four, and the longest carte in the 2026 content is no longer long enough for anyone to get lost
+in. Tabs over content that fits in two or three screens are a control that exists to be noticed
+rather than used, and they cost a pinned band of chrome on every food fiche to say so.
+
+Reopen it only against a measurement, not a hunch: the trigger is a carte long enough that a reader
+scrolls past a group heading and cannot find their way back — realistically a stand publishing
+thirty-plus dishes, which none does today. The `HappeningMenuTabs` component and its scroll-sync
+are in the history of the branch that removed them if that day comes.
+
+Two things the tab work settled that are still true without it. **A second screen for food fiches**
+is not wanted — the template's whole promise is that an Artist, an Activity and a Stand degrade the
+same quiet way. And **collapsible groups** answer "show me less" when the question was "take me
+there", while hiding the very thing a fiche is for, which is what the stand sells.
+
+**A dish name is `titleMedium`, not `bodyLarge`.** At 15sp Normal over a 13sp Normal ingredient
+line it was two points and a shade of grey away from its own description, in the same weight, which
+left a carte with no edge to scan down. The title style puts a step of weight between them as well
+as three points of size.
+
+**The menu's source line is off the screen and still in the content.** Every group carried a
+sentence saying the carte was reconstructed from the vendor's own and not confirmed by the festival.
+True, and doing the opposite of its job: five groups of a menu ended in five copies of the same
+forty words, which is how a reader learns to skip small grey text rather than how they learn a price
+might be wrong. `source` and `provenance` stay on every group and every item in `edition.json`,
+where the record belongs and where content/GAPS.md can point at it. If a single unmissable statement
+is wanted later, it belongs once per fiche and not once per group.
+
 **Dietary information is a glyph and the word beside it, never the glyph alone.** It was text only,
 for good reasons that turned out to be half the picture: no legend to learn, it translates for the
 English build, and it avoids symbols that mean "contains" in one country and "free from" in another.
@@ -977,6 +1015,62 @@ word is what makes it safe to act on.
 The vocabulary is closed at six and lives in the app keyed by a content slug, the same arrangement
 Category colour uses: which marks exist is a content decision, what they look like is a design one
 made once against a measured palette.
+
+*Refined on the carte, and only there.* Beside a dish the mark is the glyph alone; the words are
+written once at the top of the fiche, over the whole stand — *100 % végan*, *options sans gluten*.
+That legend is what makes the glyph below readable rather than a symbol to guess at, and it is
+always complete, because a stand's own marks are derived from its dishes. What forced it was
+layout: a dish carrying four marks spent two lines spelling them out under a name and a price that
+took one, so on a carte of fourteen dishes the marks outweighed the food. Every other place a mark
+appears — a stand card, the filter chips, the top of a fiche — still writes the word. And the word
+has not actually left the dish: each glyph carries its own label as its content description, which
+is the reverse of the tag row, where a description would make a screen reader say everything twice.
+
+**A Stand is a photograph.** Both browse lists and *À essayer* drew a stand as three lines of text
+with a chevron — the shape of a settings entry, asked to sell dinner. On *Créateurs*, which
+publishes no menu and therefore no dietary line, it was two lines on an otherwise empty tile.
+Every one of the eight Stands the edition declares has a picture and none of the three screens was
+showing it.
+
+One card now, in `common/content/presentation`, drawn by all three: the photograph, then the name
+and what the stand sells, then — behind a rule, so it is skippable by anyone who does not need it —
+what can be eaten there. The rule is the answer to "everything is smushed together": the wording did
+not change, the single indent everything was stacked at did. The chevron went with the change,
+because a picture already says the card is a place rather than a row.
+
+The frame is three by two rather than the sixteen by nine a card like this usually takes. Every
+photograph in the bank is four by three, so a 16:9 frame is a centre crop that throws away a quarter
+of the height — which on the one portrait among the eight takes the top of the subject's head off.
+
+*This reverses "rows, because a list you compare across wants rows" on the Wishlist.* That was
+answering the wrong question. You compare across a Programme to choose what to do at four o'clock;
+you open *À essayer* standing on the site, to find the stall you kept among forty you did not, which
+is matching a picture to a thing in front of you. It also means a Stand looks the same on the screen
+it was saved from and the screen it was saved to.
+
+**Two columns, and they are staggered.** A full-width card is mostly photograph, and eight of them
+is a scroll of roughly three screens to see a list that would nearly fit on one and a half. Two
+columns halve that and turn the lists into something scanned at a glance rather than paged through,
+which is what a browse list is for.
+
+The stagger is not decoration, it is what makes the arrangement work. These cards are exactly as
+tall as what they have to say — a stand with no dietary band is a band shorter than one with two,
+and at half a phone's width an offering line wraps on some names and not others. A plain
+`LazyVerticalGrid` measures a line's items together and aligns them to its top, so every short card
+sat over a hole that lasted until the taller card beside it finished, and the holes were the most
+visible thing on the screen. `LazyVerticalStaggeredGrid` gives each column its own cursor: the next
+card starts where the one above it ends and the columns drift out of step, which is the absence of
+the gap rather than a second problem.
+
+The alternative was equalising — reserving a fixed number of lines for the name and the marks so
+every card is the same height. That buys a ruled grid by putting blank space under every short card,
+which is the same dead space moved inside the card where it cannot be blamed on the layout.
+
+*À essayer* uses the same two columns rather than a shape of its own, with the Category headers
+spanning the full width of one grid instead of each group holding a grid of its own. Separate grids
+would each level their columns at the boundary and re-stagger from scratch; one grid with full-line
+headers levels the columns exactly where a Category actually changes, which is the only place a
+straight edge means anything.
 
 **Sourcing and allergens are facts, not tags.** "Viande et légumes de producteurs vaudois"
 and "Allergènes sur demande auprès du stand" belong in *Bon à savoir*. A festival truck will

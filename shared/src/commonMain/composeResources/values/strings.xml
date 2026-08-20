@@ -188,7 +188,8 @@
     <string name="happening_missing">Cette fiche n'est plus disponible.</string>
     <string name="happening_section_when">Quand</string>
     <string name="happening_section_price">Tarifs</string>
-    <string name="happening_section_menu">Au menu</string>
+    <!-- No "Au menu": a stand's carte is its groups, each one its own section titled by the name
+         the content gives it, and a heading over the headings was one level too many. -->
     <string name="happening_section_good_to_know">Bon à savoir</string>
     <string name="happening_section_links">Liens</string>
     <!-- A date row under Quand: weekday, day, month. A resource rather than a concatenation because

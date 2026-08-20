@@ -6,8 +6,10 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
+import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -16,9 +18,9 @@ import androidx.compose.ui.text.style.TextAlign
 import io.nicolaszurbuchen.yadlo.app.design.theme.ShimmerPulse
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
+import io.nicolaszurbuchen.yadlo.common.content.presentation.component.StandCard
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusScreenScaffold
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands.component.StandMarkChips
-import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands.component.StandRow
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands.component.StandsSkeleton
 import io.nicolaszurbuchen.yadlo.infra.ui.asString
 
@@ -75,17 +77,24 @@ fun StandsScreen(
                         Modifier
                             .fillMaxSize()
                             .padding(contentPadding)
-                            .padding(horizontal = MaterialTheme.spacing.md, vertical = MaterialTheme.spacing.sm),
+                            .padding(MaterialTheme.spacing.md),
                 )
             }
         } else {
-            LazyColumn(
-                verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm),
-                contentPadding = PaddingValues(vertical = MaterialTheme.spacing.sm, horizontal = MaterialTheme.spacing.md),
+            LazyVerticalStaggeredGrid(
+                columns = StaggeredGridCells.Fixed(COLUMNS),
+                // Equal and tight both ways, which is what makes a grid read as a grid rather than
+                // as two lists: a gutter wider than the gap between two cards separates the columns
+                // more than it separates the cards inside one.
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm),
+                verticalItemSpacing = MaterialTheme.spacing.sm,
+                contentPadding = PaddingValues(MaterialTheme.spacing.md),
                 modifier = Modifier.fillMaxSize().padding(contentPadding),
             ) {
                 state.emptyMessage?.let { message ->
-                    item(key = EMPTY_KEY) {
+                    // Across both columns. A sentence explaining why the list is empty, set in one
+                    // half of the screen with a hole beside it, reads as a card that failed.
+                    item(key = EMPTY_KEY, span = StaggeredGridItemSpan.FullLine) {
                         Text(
                             text = message.asString(),
                             style = MaterialTheme.typography.bodyLarge,
@@ -97,7 +106,7 @@ fun StandsScreen(
                 }
 
                 items(items = state.stands, key = { it.id }) { stand ->
-                    StandRow(stand = stand, onClick = onStandClick)
+                    StandCard(stand = stand, onClick = onStandClick)
                 }
             }
         }
@@ -105,3 +114,8 @@ fun StandsScreen(
 }
 
 private const val EMPTY_KEY = "empty"
+
+// Two, and fixed rather than adaptive. Every phone this app targets is between 320 and 430dp wide,
+// where a minimum-width grid would give two columns anyway and a tablet is not a target — an
+// adaptive count would be machinery answering a question nobody is asking yet.
+private const val COLUMNS = 2

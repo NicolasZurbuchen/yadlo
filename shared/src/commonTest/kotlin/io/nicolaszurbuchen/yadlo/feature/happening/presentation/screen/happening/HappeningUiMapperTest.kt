@@ -370,11 +370,12 @@ class HappeningUiMapperTest {
     }
 
     @Test
-    fun toUiModel_menuGroupSource_survivesToTheScreen() {
+    fun toUiModel_menuGroupIdAndName_bothSurvive() {
         val model = state(detail(menu = listOf(plats()))).toUiModel()
 
-        // A price presented as fact when it came off a chalkboard costs someone at the counter.
-        assertEquals("Lu sur une ardoise", model.menu.single().source)
+        // The id keys the group in the list and the name is the section header it is drawn under.
+        assertEquals("plats", model.menu.single().id)
+        assertEquals("Plats", model.menu.single().name)
     }
 
     // endregion

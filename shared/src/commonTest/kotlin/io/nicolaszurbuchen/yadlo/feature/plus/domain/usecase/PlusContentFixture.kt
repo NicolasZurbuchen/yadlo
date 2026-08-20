@@ -8,6 +8,7 @@ import io.nicolaszurbuchen.yadlo.common.content.domain.model.Festival
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.FestivalDay
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Figure
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Happening
+import io.nicolaszurbuchen.yadlo.common.content.domain.model.Image
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.MenuGroup
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Partner
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.PartnerTier
@@ -74,6 +75,7 @@ internal fun stand(
     name: String = id,
     category: Category = RESTAURATION,
     offering: String? = null,
+    image: String? = null,
     /** One entry per dish. A stand's own answer is derived from these — see dietaryCoverage. */
     itemMarks: List<List<String>> = emptyList(),
 ) = Happening.Stand(
@@ -81,7 +83,7 @@ internal fun stand(
     name = name,
     category = category,
     description = null,
-    images = emptyList(),
+    images = image?.let { listOf(Image(url = it, credit = null)) }.orEmpty(),
     provenance = Provenance.CONFIRMED,
     offering = offering,
     links = emptyList(),

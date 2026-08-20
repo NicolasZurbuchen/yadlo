@@ -13,6 +13,7 @@ import io.nicolaszurbuchen.yadlo.app.design.theme.YadloTheme
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloDietaryMarkUiModel
 import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloDietaryTagUiModel
+import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.StandCardUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.dietary_all_dairy_free
@@ -94,10 +95,11 @@ private fun food() =
         chips = chips(selected = null),
         stands =
             listOf(
-                StandUiModel(
+                StandCardUiModel(
                     id = "vegan-fabrik",
                     name = "Vegan Fabrik",
                     offering = "Cuisine végétale",
+                    imageUrl = "$BANK/stands/vegan-fabrik.webp",
                     dietary =
                         listOf(
                             YadloDietaryTagUiModel(YadloDietaryMarkUiModel.VEGAN, Res.string.dietary_all_vegan),
@@ -105,14 +107,24 @@ private fun food() =
                         ),
                 ),
                 // Matched by the `végé` chip through one bokit, and showing no mark of its own —
-                // the case the stand/item distinction exists for.
-                StandUiModel(
+                // the case the stand/item distinction exists for. With no dietary band it is a
+                // picture over two lines, which is the shape every Créateurs card has.
+                StandCardUiModel(
                     id = "de-lor-bokit",
                     name = "De l'Or Bokit",
                     offering = "Cuisine guadeloupéenne",
+                    imageUrl = "$BANK/stands/de-lor-bokit.webp",
                     dietary = emptyList(),
                 ),
-                StandUiModel(id = "guliko", name = "Guliko", offering = "Cuisine géorgienne", dietary = emptyList()),
+                // And the stand whose photograph has not arrived: nothing about the card changes
+                // but which picture is in the frame — see StandCard.
+                StandCardUiModel(
+                    id = "guliko",
+                    name = "Guliko",
+                    offering = "Cuisine géorgienne",
+                    imageUrl = null,
+                    dietary = emptyList(),
+                ),
             ),
     )
 
@@ -132,17 +144,22 @@ private fun makers() =
             ),
         stands =
             listOf(
-                StandUiModel(
+                StandCardUiModel(
                     id = "la-fanfrelucherie",
                     name = "La Fanfrelucherie",
                     offering = "Costumes de seconde main",
+                    imageUrl = "$BANK/stands/la-fanfrelucherie.webp",
                     dietary = emptyList(),
                 ),
-                StandUiModel(
+                StandCardUiModel(
                     id = "les-secrets-de-houna",
                     name = "Les Secrets de Houna",
                     offering = "Huiles précieuses et soins naturels",
+                    imageUrl = "$BANK/stands/les-secrets-de-houna.webp",
                     dietary = emptyList(),
                 ),
             ),
     )
+
+/** Where the published bank lives, so a preview names the file the running app actually fetches. */
+private const val BANK = "https://nicolaszurbuchen.github.io/yadlo/shared/images"

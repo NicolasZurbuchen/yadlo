@@ -82,10 +82,11 @@ class WishlistUiMapperTest {
                         id = "vegan-fabrik",
                         name = "Vegan Fabrik",
                         offering = "Cuisine végétale",
+                        imageUrl = "https://example.test/vegan-fabrik.webp",
                         dietary =
                             mapOf("vegan" to DietaryCoverage.ALL, "piquant" to DietaryCoverage.SOME),
                     ),
-                    WishlistStand(id = "guliko", name = "Guliko", offering = null, dietary = emptyMap()),
+                    WishlistStand(id = "guliko", name = "Guliko", offering = null, imageUrl = null, dietary = emptyMap()),
                 ),
         )
 
@@ -99,6 +100,7 @@ class WishlistUiMapperTest {
                         id = "la-fanfrelucherie",
                         name = "La Fanfrelucherie",
                         offering = "Accessoires",
+                        imageUrl = null,
                         dietary = emptyMap(),
                     ),
                 ),

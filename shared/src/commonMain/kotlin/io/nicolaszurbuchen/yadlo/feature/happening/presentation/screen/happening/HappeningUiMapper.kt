@@ -187,7 +187,8 @@ fun HappeningState.toUiModel(): HappeningUiModel {
                     id = group.id,
                     name = group.name,
                     description = group.description,
-                    source = group.source,
+                    // `group.source` is deliberately not carried. The content keeps the record of
+                    // where each carte came from; the fiche stopped repeating it under every group.
                     items =
                         group.items.map { item ->
                             HappeningMenuItemUiModel(

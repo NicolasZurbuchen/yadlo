@@ -1,6 +1,6 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands
 
-import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloDietaryTagUiModel
+import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.StandCardUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import org.jetbrains.compose.resources.StringResource
 import yadlo.shared.generated.resources.Res
@@ -18,7 +18,7 @@ data class StandsUiModel(
     val isLoading: Boolean,
     val title: UiText,
     val chips: List<StandChipUiModel>,
-    val stands: List<StandUiModel>,
+    val stands: List<StandCardUiModel>,
     val emptyMessage: UiText?,
 )
 
@@ -45,21 +45,4 @@ data class StandChipUiModel(
     val mark: String?,
     val label: UiText,
     val isSelected: Boolean,
-)
-
-/**
- * One Stand.
- *
- * [dietary] is what the stand can feed you, derived from its menu — and it says how much of the
- * menu it covers, so a row the filter matched through a single vegan bokit reads *options véganes*
- * rather than claiming the whole truck is one.
- *
- * **No hours.** Not one of the stands publishes any — see content/GAPS.md — and a time on this row
- * would be invented. It is the single most useful thing the association could send.
- */
-data class StandUiModel(
-    val id: String,
-    val name: String,
-    val offering: String?,
-    val dietary: List<YadloDietaryTagUiModel>,
 )

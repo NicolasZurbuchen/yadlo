@@ -9,6 +9,7 @@ import io.nicolaszurbuchen.yadlo.common.content.domain.model.DietaryCoverage
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Edition
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Festival
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Happening
+import io.nicolaszurbuchen.yadlo.common.content.domain.model.Image
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.MenuGroup
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Provenance
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Venue
@@ -107,12 +108,34 @@ class ObserveWishlistUseCaseTest {
             }
         }
 
+    @Test
+    fun invoke_theFirstPhotograph_isCarriedBecauseItIsWhatTheCardIsMostlyMadeOf() =
+        runTest {
+            planRepository.emitSaved(listOf(saved("vegan-fabrik"), saved("guliko")))
+
+            useCase().test {
+                contentRepository.emitStatus(ready())
+
+                val stands = awaitItem().first().stands
+
+                assertEquals("https://example.test/vegan-fabrik.webp", stands.first().imageUrl)
+                // And a Stand the content has no picture for is null rather than dropped: the card
+                // falls back to the bundled photograph of the site.
+                assertEquals(null, stands.last().imageUrl)
+            }
+        }
+
     private fun saved(id: String) = SavedItem(id = id, kind = SavedKind.STAND, editionId = "2026")
 
     private fun ready(): ContentStatus.Ready {
         val veganFabrik =
-            stand(id = "vegan-fabrik", name = "Vegan Fabrik", category = FOOD, offering = "Cuisine végétale")
-                .copy(menu = listOf(veganMenu()))
+            stand(
+                id = "vegan-fabrik",
+                name = "Vegan Fabrik",
+                category = FOOD,
+                offering = "Cuisine végétale",
+                image = "https://example.test/vegan-fabrik.webp",
+            ).copy(menu = listOf(veganMenu()))
 
         return ContentStatus.Ready(
             bundle =
@@ -172,12 +195,13 @@ class ObserveWishlistUseCaseTest {
         name: String,
         category: Category,
         offering: String?,
+        image: String? = null,
     ) = Happening.Stand(
         id = id,
         name = name,
         category = category,
         description = null,
-        images = emptyList(),
+        images = image?.let { listOf(Image(url = it, credit = null)) }.orEmpty(),
         provenance = Provenance.CONFIRMED,
         offering = offering,
         links = emptyList(),
