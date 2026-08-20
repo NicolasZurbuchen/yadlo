@@ -141,7 +141,7 @@ class PlusUiMapperTest {
         // Drawn at the foot rather than counted into a row that opened a screen of four links out.
         // The icon is resolved here, against the marks the app ships, so the row never renders an
         // empty square for a network the content added first.
-        assertEquals(listOf("Instagram"), model.socials.map { it.name })
+        assertEquals(listOf(UiText.Raw("Instagram")), model.socials.map { it.name })
         assertEquals(socialIconFor("instagram"), model.socials.single().icon)
     }
 

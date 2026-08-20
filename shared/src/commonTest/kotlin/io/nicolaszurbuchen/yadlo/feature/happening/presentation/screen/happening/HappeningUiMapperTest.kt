@@ -6,6 +6,7 @@ import io.nicolaszurbuchen.yadlo.common.content.domain.model.Money
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Price
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Provenance
 import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotLiveStateUiModel
+import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.socialIconFor
 import io.nicolaszurbuchen.yadlo.feature.happening.domain.model.HappeningDetail
 import io.nicolaszurbuchen.yadlo.feature.happening.domain.model.HappeningSlot
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
@@ -384,7 +385,7 @@ class HappeningUiMapperTest {
     fun toUiModel_websiteLink_isTheOneLabelThatTranslates() {
         val model = state(detail(links = listOf(Link(type = "website", url = "https://djalf.ch/")))).toUiModel()
 
-        assertEquals(UiText.Resource(Res.string.happening_link_website), model.links.single().label)
+        assertEquals(UiText.Resource(Res.string.happening_link_website), model.links.single().name)
     }
 
     @Test
@@ -398,16 +399,35 @@ class HappeningUiMapperTest {
         // Brand names are not copy and do not translate, so they never enter strings.xml.
         assertEquals(
             listOf(UiText.Raw("TikTok"), UiText.Raw("SoundCloud")),
-            state(detail(links = links)).toUiModel().links.map { it.label },
+            state(detail(links = links)).toUiModel().links.map { it.name },
         )
     }
 
     @Test
     fun toUiModel_anUnknownPlatform_fallsBackToWhatTheContentAuthored() {
-        val model = state(detail(links = listOf(Link(type = "bandcamp", url = "https://bandcamp.com/")))).toUiModel()
+        val model = state(detail(links = listOf(Link(type = "mixcloud", url = "https://mixcloud.com/")))).toUiModel()
 
         // `type` stays a String precisely so a new platform renders rather than failing to parse.
-        assertEquals(UiText.Raw("bandcamp"), model.links.single().label)
+        // With no mark to draw, the row falls back to this word — which is why it is carried at all.
+        assertEquals(UiText.Raw("mixcloud"), model.links.single().name)
+        assertNull(model.links.single().icon)
+    }
+
+    @Test
+    fun toUiModel_aKnownPlatform_carriesItsMark() {
+        val links =
+            listOf(
+                Link(type = "website", url = "https://djalf.ch/"),
+                Link(type = "beatport", url = "https://beatport.com/"),
+            )
+
+        // One function keys both this row and Accueil's footer, so the two cannot disagree about
+        // what Instagram looks like — and `website` is in the set, because on a fiche an artist's
+        // own site is one more place they exist rather than a different kind of offer.
+        assertEquals(
+            listOf(socialIconFor("website"), socialIconFor("beatport")),
+            state(detail(links = links)).toUiModel().links.map { it.icon },
+        )
     }
 
     // endregion

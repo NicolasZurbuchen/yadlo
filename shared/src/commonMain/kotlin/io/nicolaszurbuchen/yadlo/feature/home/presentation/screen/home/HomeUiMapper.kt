@@ -139,7 +139,14 @@ fun HomeState.toUiModel(): HomeUiModel {
             HomeBlockUiModel.Social(
                 items =
                     loaded.social.map {
-                        SocialLinkUiModel(id = it.id, name = it.name, icon = socialIconFor(it.id), url = it.url)
+                        SocialLinkUiModel(
+                            id = it.id,
+                            // Raw, not a resource: the association's networks are named by the
+                            // content, and a brand name does not translate.
+                            name = UiText.Raw(it.name),
+                            icon = socialIconFor(it.id),
+                            url = it.url,
+                        )
                     },
             )
         }

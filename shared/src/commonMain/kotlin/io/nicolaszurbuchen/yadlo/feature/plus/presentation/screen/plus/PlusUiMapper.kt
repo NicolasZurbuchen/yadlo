@@ -109,7 +109,14 @@ fun PlusState.toUiModel(): PlusUiModel {
         // row it replaced gave by not existing.
         socials =
             loaded.socials.map {
-                SocialLinkUiModel(id = it.id, name = it.name, icon = socialIconFor(it.id), url = it.url)
+                SocialLinkUiModel(
+                    // Raw, not a resource: the association's networks are named by the content,
+                    // and a brand name does not translate.
+                    id = it.id,
+                    name = UiText.Raw(it.name),
+                    icon = socialIconFor(it.id),
+                    url = it.url,
+                )
             },
     )
 }

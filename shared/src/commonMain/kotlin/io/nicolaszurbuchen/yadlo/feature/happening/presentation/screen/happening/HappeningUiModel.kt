@@ -2,6 +2,7 @@ package io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happenin
 
 import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloDietaryTagUiModel
 import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotLiveStateUiModel
+import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SocialLinkUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 
 /**
@@ -25,9 +26,12 @@ data class HappeningUiModel(
     val categoryId: String,
     val categoryLabel: String,
     /**
-     * The photograph behind the title, or null for the twenty-two Happenings that have none. Its
-     * nullness is a layout instruction like [wishlisted]'s: with one, the head of the fiche is an
-     * image under a scrim; without, it is the Category's own colour.
+     * The photograph behind the title, or null for a Happening the content has none for — two of
+     * the 38, both stands, and the number only ever goes down.
+     *
+     * Unlike [wishlisted]'s, this null is not a layout instruction. The head of the fiche is a
+     * photograph either way; a null one means the bundled picture of the site goes behind the title
+     * instead — DECISIONS.md § The fiche has one ground.
      */
     val imageUrl: String?,
     val description: String?,
@@ -39,7 +43,12 @@ data class HappeningUiModel(
     val booking: HappeningBookingUiModel?,
     val facts: List<UiText>,
     val menu: List<HappeningMenuGroupUiModel>,
-    val links: List<HappeningLinkUiModel>,
+    /**
+     * Where else this Happening exists — its own site, and whichever of the nine platforms it
+     * publishes on. The footer's own model, because a fiche's *Liens* section and the foot of
+     * Accueil are the same row of marks doing the same job.
+     */
+    val links: List<SocialLinkUiModel>,
     val wishlisted: Boolean?,
 )
 
@@ -115,9 +124,4 @@ data class HappeningMenuItemUiModel(
     val priceText: String?,
     val description: String?,
     val dietary: List<YadloDietaryTagUiModel>,
-)
-
-data class HappeningLinkUiModel(
-    val label: UiText,
-    val url: String,
 )

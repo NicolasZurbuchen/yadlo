@@ -124,10 +124,10 @@ private class HomeStackProvider : PreviewParameterProvider<HomeUiModel> {
         HomeBlockUiModel.Social(
             items =
                 listOf(
-                    SocialLinkUiModel("instagram", "Instagram", socialIconFor("instagram"), "https://example.com/i"),
-                    SocialLinkUiModel("facebook", "Facebook", socialIconFor("facebook"), "https://example.com/f"),
-                    SocialLinkUiModel("youtube", "YouTube", socialIconFor("youtube"), "https://example.com/y"),
-                    SocialLinkUiModel("tiktok", "TikTok", socialIconFor("tiktok"), "https://example.com/t"),
+                    SocialLinkUiModel("instagram", UiText.Raw("Instagram"), socialIconFor("instagram"), "https://example.com/i"),
+                    SocialLinkUiModel("facebook", UiText.Raw("Facebook"), socialIconFor("facebook"), "https://example.com/f"),
+                    SocialLinkUiModel("youtube", UiText.Raw("YouTube"), socialIconFor("youtube"), "https://example.com/y"),
+                    SocialLinkUiModel("tiktok", UiText.Raw("TikTok"), socialIconFor("tiktok"), "https://example.com/t"),
                 ),
         )
 }

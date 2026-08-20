@@ -14,6 +14,8 @@ import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloDietaryMarkUiModel
 import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloDietaryTagUiModel
 import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotLiveStateUiModel
+import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SocialLinkUiModel
+import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.socialIconFor
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.dietary_all_dairy_free
@@ -118,9 +120,24 @@ private fun artist() =
             ),
         links =
             listOf(
-                HappeningLinkUiModel(label = UiText.Resource(Res.string.happening_link_website), url = "https://djalf.ch/"),
-                HappeningLinkUiModel(label = UiText.Raw("Instagram"), url = "https://instagram.com/"),
-                HappeningLinkUiModel(label = UiText.Raw("SoundCloud"), url = "https://soundcloud.com/"),
+                SocialLinkUiModel(
+                    id = "website",
+                    name = UiText.Resource(Res.string.happening_link_website),
+                    icon = socialIconFor("website"),
+                    url = "https://djalf.ch/",
+                ),
+                SocialLinkUiModel(
+                    id = "instagram",
+                    name = UiText.Raw("Instagram"),
+                    icon = socialIconFor("instagram"),
+                    url = "https://instagram.com/",
+                ),
+                SocialLinkUiModel(
+                    id = "soundcloud",
+                    name = UiText.Raw("SoundCloud"),
+                    icon = socialIconFor("soundcloud"),
+                    url = "https://soundcloud.com/",
+                ),
             ),
     )
 
@@ -224,8 +241,10 @@ private fun stand() =
         wishlisted = true,
         links =
             listOf(
-                HappeningLinkUiModel(
-                    label = UiText.Resource(Res.string.happening_link_website),
+                SocialLinkUiModel(
+                    id = "website",
+                    name = UiText.Resource(Res.string.happening_link_website),
+                    icon = socialIconFor("website"),
                     url = "https://vegan-fabrik.ch/",
                 ),
             ),

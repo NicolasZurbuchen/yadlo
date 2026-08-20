@@ -2,7 +2,9 @@ package io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happenin
 
 import io.nicolaszurbuchen.yadlo.app.design.uimodel.toDietaryTags
 import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotLiveStateUiModel
+import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SocialLinkUiModel
 import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.slotLiveStateAt
+import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.socialIconFor
 import io.nicolaszurbuchen.yadlo.common.time.FESTIVAL_TIME_ZONE
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import io.nicolaszurbuchen.yadlo.infra.ui.formatAsDayOfMonth
@@ -201,11 +203,13 @@ fun HappeningState.toUiModel(): HappeningUiModel {
             },
         links =
             loaded.links.map { link ->
-                HappeningLinkUiModel(
+                SocialLinkUiModel(
+                    id = link.type,
                     // Brand names are not copy and do not translate, so they are written here
                     // rather than kept in strings.xml. An unknown type falls back to what the
-                    // content authored, which is the point of `type` staying a String.
-                    label =
+                    // content authored, which is the point of `type` staying a String — and on a
+                    // row of marks that fallback is what gets drawn, since there is no icon for it.
+                    name =
                         when (link.type) {
                             "website" -> UiText.Resource(Res.string.happening_link_website)
                             "instagram" -> UiText.Raw("Instagram")
@@ -214,8 +218,12 @@ fun HappeningState.toUiModel(): HappeningUiModel {
                             "youtube" -> UiText.Raw("YouTube")
                             "soundcloud" -> UiText.Raw("SoundCloud")
                             "spotify" -> UiText.Raw("Spotify")
+                            "appleMusic" -> UiText.Raw("Apple Music")
+                            "bandcamp" -> UiText.Raw("Bandcamp")
+                            "beatport" -> UiText.Raw("Beatport")
                             else -> UiText.Raw(link.type)
                         },
+                    icon = socialIconFor(link.type),
                     url = link.url,
                 )
             },

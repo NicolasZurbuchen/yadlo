@@ -45,6 +45,7 @@ import io.nicolaszurbuchen.yadlo.app.design.theme.categoryColors
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloFactMarkUiModel
 import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloLinkMarkUiModel
+import io.nicolaszurbuchen.yadlo.common.content.presentation.component.SocialLinksRow
 import io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening.component.HappeningHeader
 import io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening.component.HappeningMenuGroupBlock
 import io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening.component.HappeningPriceBlock
@@ -70,6 +71,9 @@ import yadlo.shared.generated.resources.wishlist_remove
  * everything. Which sections appear is decided by which lists are non-empty, never by the kind of
  * Happening, so a Stand that publishes no menu and an Activity that costs nothing degrade the same
  * quiet way.
+ *
+ * The head is a photograph on every fiche, the bundled one where the content has none — see
+ * [HappeningHeader].
  *
  * **The Category's colour closes over the whole head, not just over the toolbar**, and the header
  * is what paints it. The bar stays clear until that veil is already solid, then takes over as the
@@ -139,11 +143,9 @@ fun HappeningScreen(
         category.fill.copy(
             alpha = ((collapseProgress - BAR_TAKEOVER_FROM) / (1f - BAR_TAKEOVER_FROM)).coerceIn(0f, 1f),
         )
-    // Over a photograph the icons stand on the scrim, over the blob they stand on the page. Either
-    // way they end on the Category's own ink, and they travel there as the colour arrives.
-    val expandedInk =
-        if (state.imageUrl != null) MaterialTheme.appColors.onScrim else MaterialTheme.appColors.textPrimary
-    val barInk = lerp(expandedInk, category.ink, tint)
+    // The icons stand on the header's scrim while it is there and on the Category's own ink once
+    // the veil has closed, and they travel between the two as the colour arrives.
+    val barInk = lerp(MaterialTheme.appColors.onScrim, category.ink, tint)
     val barTitleAlpha = ((collapseProgress - TITLE_FADE_FROM) / (1f - TITLE_FADE_FROM)).coerceIn(0f, 1f)
 
     Scaffold(
@@ -350,13 +352,17 @@ fun HappeningScreen(
                                 title = stringResource(Res.string.happening_section_links),
                                 modifier = Modifier.padding(horizontal = MaterialTheme.spacing.md),
                             ) {
-                                state.links.forEach { link ->
-                                    YadloLinkTile(
-                                        label = link.label.asString(),
-                                        mark = YadloLinkMarkUiModel.EXTERNAL,
-                                        onClick = { onLinkClick(link.url) },
-                                    )
-                                }
+                                // The footer's row, left-aligned — the same marks Accueil and Plus
+                                // end on. A column of full-width tiles gave an artist's five links
+                                // more of the fiche than its description, and said nothing the mark
+                                // does not: nobody needs the word "Instagram" written beside the
+                                // Instagram glyph, and five rows of chevron are five promises that
+                                // the tap goes somewhere different each time.
+                                SocialLinksRow(
+                                    items = state.links,
+                                    onSocialClick = onLinkClick,
+                                    start = true,
+                                )
                             }
                         }
                     }
