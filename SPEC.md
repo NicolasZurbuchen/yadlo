@@ -519,17 +519,19 @@ as a range, same row vocabulary as Programme. Timeline plus one full-width Wishl
 
 **Fiches** — one template for Artist, Activity and Stand: collapsing toolbar over a photo (title
 rising into the bar on scroll as the bar takes the category colour, continuously rather than at a
-threshold; the category colour as a radial blob where there is no photo; status bar taking the
-colour), written category label, attribute-only tags, sections. Round icon actions in the bar.
-Silent Party = same template + booking row.
+threshold; the bundled placeholder photograph where the content has no picture; status bar taking
+the colour), written category label, attribute-only tags, sections. *Liens* renders as the footer's
+row of marks, left-aligned. Round icon actions in the bar. Silent Party = same template + booking
+row.
 
 > **What shipped, and what the fiche is still missing.** The template, the head, the hero
 > photograph and its continuous collapse, the date rows with their live-state pills and their
 > hearts, the tiered price with its deposit, the menu, the facts and the links are built, as is the
-> Stand's single heart in the bar. Twenty-two Happenings still have no photograph and fall back to
-> the Category blob (content/GAPS.md § 7). The share and map actions are not built, nor is the
-> status-bar tint. Each is deferred for its own reason, recorded in DECISIONS.md § One fiche
-> template for everything.
+> Stand's single heart in the bar. **The head is one ground now** — every fiche opens on a
+> photograph, the bundled one for the two stands whose picture has not arrived (content/GAPS.md
+> § 7); the Category blob that stood in for it is gone, DECISIONS.md § The fiche has one ground. The
+> share and map actions are not built, nor is the status-bar tint. Each is deferred for its own
+> reason, recorded in DECISIONS.md § One fiche template for everything.
 
 **Plus** — iOS-style grouped list, four cards: *Sur place* · *Le festival* · *S'impliquer* ·
 *L'application*. Payment is the third row of the tab. Lost property, first aid, children and

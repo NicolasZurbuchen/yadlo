@@ -7,15 +7,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -24,28 +21,39 @@ import coil3.compose.AsyncImage
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.app.design.theme.categoryColors
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
+import org.jetbrains.compose.resources.painterResource
+import yadlo.shared.generated.resources.Res
+import yadlo.shared.generated.resources.img_placeholder
 
 /**
- * The head of the fiche: the Category written out, then the name, over the photograph when there is
- * one.
+ * The head of the fiche: the Category written out, then the name, over the photograph.
  *
- * **Two grounds, one layout.** With a photograph it is a hero image bled to all three edges, running
- * under the status bar and the toolbar, with the words at the bottom of it. Without one it is the
- * Category colour as a radial blob anchored bottom-right — the treatment that shipped while the
- * content had no images at all, and still the right answer for the twenty-two Happenings that have
- * none. The words sit in the same place either way, so a fiche with a photo and a fiche without do
- * not read as two different screens.
+ * **One ground, always a photograph** — DECISIONS.md § The fiche has one ground. It was two: a hero
+ * image where the content had one, and the Category's colour as a radial blob where it did not.
+ * That shipped when nothing had a picture, and it stopped earning its keep the moment almost
+ * everything did. Two fiches that differ in height, in ground and in ink read as two screens, and
+ * the rarer of them was the one a reader would meet without warning — the fiche of the stand whose
+ * photo has not arrived yet, which is exactly the moment the app should look finished rather than
+ * apologetic.
  *
- * **A rule in the Category's colour closes the hero, and only the hero.** Sitting still at the top
- * of a fiche, a photograph says nothing about which Category it belongs to: the toolbar is
- * transparent, the label is written in the scrim's ink, and the colour does not arrive until
- * something is scrolled. The rule is the one place the Category is stated at rest. The blob variant
- * needs no such thing — it is already the colour — and capping its soft falloff with a hard edge
- * would fight the only idea it has.
+ * **What fills the gap is a photograph of the site, not a grey rectangle.** [Res.drawable.img_placeholder]
+ * is bundled, so it is there on the first launch with no signal, and it is a picture of the festival
+ * — which is a true thing to say about any Happening at it. It is the same 280dp, under the same
+ * scrim, under the same veil, so nothing about the screen changes but which photograph is behind
+ * the words.
  *
- * **[tint] closes the Category's own colour over the whole head**, photograph and blob alike, and
- * **it is the only thing painting that colour while it is translucent.** The toolbar over it stays
- * clear until this veil is already solid.
+ * It is used for a null url and for a failed load alike. Those are the same fact to a reader
+ * standing on a beach with one bar of signal, and telling them apart on screen would mean drawing a
+ * broken-image mark on a fiche that is otherwise complete.
+ *
+ * **A rule in the Category's colour closes the hero.** Sitting still at the top of a fiche, a
+ * photograph says nothing about which Category it belongs to: the toolbar is transparent, the label
+ * is written in the scrim's ink, and the colour does not arrive until something is scrolled. The
+ * rule is the one place the Category is stated at rest.
+ *
+ * **[tint] closes the Category's own colour over the whole head, and it is the only thing painting
+ * that colour while it is translucent.** The toolbar over it stays clear until this veil is already
+ * solid.
  *
  * That is not a preference, it is what alpha does. Two layers of one colour at `t` composite to
  * `1 - (1 - t)²`, not to `t` — at `t = 0.5` the overlap reads 0.75 — so a bar tinted alongside the
@@ -54,24 +62,20 @@ import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
  * same time over the same pixels. One layer paints, then the other takes over once there is nothing
  * left to see through.
  *
- * The veil covers the blob variant too, which it did not have to while the toolbar tinted itself:
- * with the bar now clear until the end, the header is the only thing that can carry the colour on a
- * fiche that has no photograph.
- *
  * **The words are under the veil rather than on it.** Drawn on top they outlived the thing they were
  * captioning — the head went solid Category colour and the title stayed sitting on it, at the same
  * moment the toolbar was fading in a second copy of the same word, so the fiche showed its title
  * twice in two sizes. What closes over a photograph has to close over what is written on it.
  *
- * **Over a photograph both lines are [io.nicolaszurbuchen.yadlo.app.design.theme.AppColors.onScrim],
- * including the Category label.** The scrim's alpha was derived as the lowest at which white clears
- * 4.5:1 over a *white* photograph, which is the worst case an image can present; a Category fill has
- * no such guarantee, because the fills were measured against the app's own grounds and never against
- * a photograph nobody has seen. Colour is not lost as a carrier — the Category is written out in
+ * **Both lines are [io.nicolaszurbuchen.yadlo.app.design.theme.AppColors.onScrim], including the
+ * Category label.** The scrim's alpha was derived as the lowest at which white clears 4.5:1 over a
+ * *white* photograph, which is the worst case an image can present; a Category fill has no such
+ * guarantee, because the fills were measured against the app's own grounds and never against a
+ * photograph nobody has seen. Colour is not lost as a carrier — the Category is written out in
  * words, it closes over the image on scroll, and the rule states it at rest.
  *
- * The Category colour is also what fills the frame until the image arrives, so a fiche opened with
- * no signal is the same colour as the bar it collapses into rather than a grey rectangle.
+ * The Category colour is what fills the frame until an image arrives, so a fiche opened with no
+ * signal is the same colour as the bar it collapses into rather than a grey rectangle.
  */
 @Composable
 fun HappeningHeader(
@@ -84,60 +88,41 @@ fun HappeningHeader(
 ) {
     val category = MaterialTheme.categoryColors.forId(categoryId)
     val scrim = MaterialTheme.appColors.scrim
+    val placeholder = painterResource(Res.drawable.img_placeholder)
 
     Box(
         contentAlignment = Alignment.BottomStart,
-        modifier =
-            if (imageUrl != null) {
-                modifier.fillMaxWidth().height(HERO_HEIGHT).background(category.fill)
-            } else {
-                modifier
-                    .fillMaxWidth()
-                    .heightIn(min = BLOB_HEADER_MIN_HEIGHT)
-                    .drawBehind {
-                        val center = Offset(x = size.width * BLOB_CENTER_X, y = size.height * BLOB_CENTER_Y)
-                        val radius = size.maxDimension * BLOB_RADIUS
-
-                        drawCircle(
-                            brush =
-                                Brush.radialGradient(
-                                    colors = listOf(category.fill.copy(alpha = BLOB_ALPHA), Color.Transparent),
-                                    center = center,
-                                    radius = radius,
-                                ),
-                            radius = radius,
-                            center = center,
-                        )
-                    }
-            },
+        modifier = modifier.fillMaxWidth().height(HERO_HEIGHT).background(category.fill),
     ) {
-        if (imageUrl != null) {
-            AsyncImage(
-                model = imageUrl,
-                // The photograph carries no information the words below it do not, and announcing
-                // "photo de DJ ALF" on a screen whose title is DJ ALF says it twice.
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxSize(),
-            )
+        AsyncImage(
+            model = imageUrl,
+            // The photograph carries no information the words below it do not, and announcing
+            // "photo de DJ ALF" on a screen whose title is DJ ALF says it twice.
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            // `fallback` is the null url and `error` is the load that failed. Same picture for
+            // both: on a beach with one bar of signal they are the same fact.
+            fallback = placeholder,
+            error = placeholder,
+            modifier = Modifier.fillMaxSize(),
+        )
 
-            // Dark at both ends and clear through the middle: the bottom stop is what the title
-            // stands on, the top one is what the back arrow does, and the gap between them is the
-            // part of the photograph that is actually worth showing.
-            Box(
-                modifier =
-                    Modifier
-                        .matchParentSize()
-                        .background(
-                            Brush.verticalGradient(
-                                0f to scrim,
-                                SCRIM_CLEAR_FROM to Color.Transparent,
-                                SCRIM_CLEAR_TO to Color.Transparent,
-                                1f to scrim,
-                            ),
+        // Dark at both ends and clear through the middle: the bottom stop is what the title
+        // stands on, the top one is what the back arrow does, and the gap between them is the
+        // part of the photograph that is actually worth showing.
+        Box(
+            modifier =
+                Modifier
+                    .matchParentSize()
+                    .background(
+                        Brush.verticalGradient(
+                            0f to scrim,
+                            SCRIM_CLEAR_FROM to Color.Transparent,
+                            SCRIM_CLEAR_TO to Color.Transparent,
+                            1f to scrim,
                         ),
-            )
-        }
+                    ),
+        )
 
         Column(
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xs),
@@ -154,7 +139,7 @@ fun HappeningHeader(
             Text(
                 text = categoryLabel,
                 style = MaterialTheme.typography.displaySmall,
-                color = if (imageUrl != null) MaterialTheme.appColors.onScrim else category.fill,
+                color = MaterialTheme.appColors.onScrim,
             )
 
             Text(
@@ -162,27 +147,25 @@ fun HappeningHeader(
                 // The screen-title size rather than the toolbar's: at rest this *is* the screen's
                 // title, and the 22sp the bar carries it at looked like a caption on a photograph.
                 style = MaterialTheme.typography.headlineLarge,
-                color = if (imageUrl != null) MaterialTheme.appColors.onScrim else MaterialTheme.appColors.textPrimary,
+                color = MaterialTheme.appColors.onScrim,
             )
         }
 
-        // Last, so it closes over the words as well as over the picture. matchParentSize rather than
-        // fillMaxSize: the blob variant is only as tall as its own title, and a child that fills
-        // would be measured against a list item's unbounded height.
+        // Last but one, so it closes over the words as well as over the picture. matchParentSize
+        // rather than fillMaxSize, so nothing here is measured against a list item's unbounded
+        // height.
         Box(modifier = Modifier.matchParentSize().background(category.fill.copy(alpha = tint)))
 
-        if (imageUrl != null) {
-            // Above the veil rather than under it, so it stays the same colour at every point of
-            // the collapse instead of being painted over by its own hue.
-            Box(
-                modifier =
-                    Modifier
-                        .align(Alignment.BottomCenter)
-                        .fillMaxWidth()
-                        .height(CATEGORY_RULE_HEIGHT)
-                        .background(category.fill),
-            )
-        }
+        // Above the veil rather than under it, so it stays the same colour at every point of the
+        // collapse instead of being painted over by its own hue.
+        Box(
+            modifier =
+                Modifier
+                    .align(Alignment.BottomCenter)
+                    .fillMaxWidth()
+                    .height(CATEGORY_RULE_HEIGHT)
+                    .background(category.fill),
+        )
     }
 }
 
@@ -191,12 +174,6 @@ fun HappeningHeader(
  * survive a centre crop, little enough that the first paragraph is on screen without scrolling.
  */
 private val HERO_HEIGHT = 280.dp
-
-/**
- * Taller than the hero needs to be, because this one has no photograph to be interesting and its
- * words still have to clear a toolbar and a status bar that are drawn on top of it.
- */
-private val BLOB_HEADER_MIN_HEIGHT = 200.dp
 
 /**
  * Thicker than a divider and thinner than a band. A hairline of `eau` blue against a photograph of
@@ -208,12 +185,3 @@ private val CATEGORY_RULE_HEIGHT = 3.dp
 /** The clear band, as fractions of the header's height. Wide enough to be the photograph's subject. */
 private const val SCRIM_CLEAR_FROM = 0.3f
 private const val SCRIM_CLEAR_TO = 0.5f
-
-private const val BLOB_CENTER_X = 0.92f
-private const val BLOB_CENTER_Y = 1.05f
-
-/** Wider than the header itself, so what is on screen is the inner part of the falloff. */
-private const val BLOB_RADIUS = 0.9f
-
-/** Enough to colour the corner, low enough to keep the title legible if the blob reaches it. */
-private const val BLOB_ALPHA = 0.55f

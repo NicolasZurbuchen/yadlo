@@ -241,7 +241,10 @@ class HomeUiMapperTest {
 
         val social = state.toUiModel().blocks.filterIsInstance<HomeBlockUiModel.Social>().single()
 
-        assertEquals(listOf("Instagram", "Facebook", "YouTube", "TikTok"), social.items.map { it.name })
+        assertEquals(
+            listOf("Instagram", "Facebook", "YouTube", "TikTok").map { UiText.Raw(it) },
+            social.items.map { it.name },
+        )
         assertEquals(socialIconFor("instagram"), social.items.first().icon)
         assertEquals("https://example.com/instagram", social.items.first().url)
     }
@@ -259,7 +262,7 @@ class HomeUiMapperTest {
 
         val social = state.toUiModel().blocks.filterIsInstance<HomeBlockUiModel.Social>().single()
 
-        assertEquals("Mastodon", social.items.single().name)
+        assertEquals(UiText.Raw("Mastodon"), social.items.single().name)
         assertNull(social.items.single().icon)
     }
 

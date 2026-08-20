@@ -733,12 +733,31 @@ different colour; the children's corner is covered by the same shape.
   card-with-chevron style is reserved for things that navigate; an outward arrow marks a
   link that leaves the app.
 
-**The photograph arrived, and it brought two decisions with it.** Sixteen of the 38 Happenings now
-carry an image — all thirteen artists and three activities — so the head of the fiche is the hero
-the template always described. The other twenty-two keep the Category blob that stood in for it, and
-the words sit at the same insets on both, so a fiche with a photograph and a fiche without do not
-read as two different screens. There is no `imageBaseUrl`: a src is a path relative to the content
-root, resolved once at the data boundary against the address the bundle was fetched from.
+**The photograph arrived, and it brought two decisions with it.** Thirty-six of the 38 Happenings
+carry an image, so the head of the fiche is the hero the template always described. There is no
+`imageBaseUrl`: a src is a path relative to the content root, resolved once at the data boundary
+against the address the bundle was fetched from.
+
+**The fiche has one ground, and it is always a photograph.** *Supersedes the two-variant head.* For
+one release the head was a hero image where the content had a picture and the Category's colour as a
+radial blob where it did not, with the words at matching insets so the two would not read as
+different screens. That was the right answer while sixteen fiches of 38 had a photograph. It stopped
+being one at thirty-six: the variant became the exception a reader meets without warning, on the
+fiche of the stand whose photo has not arrived — which is exactly the moment the app should look
+finished rather than apologetic. Two heads that differ in height, in ground and in ink are two
+screens however carefully the type is aligned.
+
+**What fills the gap is a photograph of the site, bundled.** Not a grey rectangle, not a category
+wash: `img_placeholder` is a picture of the festival, which is a true thing to say about anything
+at it, and being bundled it is there on a first launch with no signal. It is the same 280dp under
+the same scrim under the same veil, so nothing about the screen changes but which photograph is
+behind the words. It serves a null url and a failed load alike — on a beach with one bar of signal
+those are the same fact, and telling them apart would mean drawing a broken-image mark on a fiche
+that is otherwise complete.
+
+This makes the placeholder real rather than defensive. Two stands have no photograph today (GAPS
+§ 7), and both were prepared and lost; the number is expected to reach zero, and the ground is not
+built on the assumption that it does.
 
 **Over a photograph the Category label is written in the scrim's ink, not in the Category's colour.**
 This is the one place the rule "the Category is written *and* coloured" gives up the colour, and it
@@ -777,6 +796,27 @@ Activity's one outward address is its booking page, and that is an action attach
 commits you to rather than a reference to browse. It renders inside *Tarifs*, directly under the
 tiers. A booking that is required with no page still says so, as a fact with nothing to tap:
 someone who turns up without a ticket has lost the evening, not a tap.
+
+**A fiche's *Liens* are marks, not tiles — the footer's row, left-aligned.** *Reversed: they were a
+column of full-width `YadloLinkTile`s.* Seventeen of the 38 Happenings publish links and DJ ALF
+publishes five, which is five 64dp rows — more of the fiche than his description gets — to say five
+things the glyphs say by themselves. Nobody needs the word "Instagram" written beside the Instagram
+mark. Worse, the tile's whole job is its trailing mark saying *where the tap goes*, and five rows
+of identical chevron is that mark promising a difference it is not making.
+
+The row is the one Accueil and Plus already end on, with one parameter: **left-aligned here,
+centred there.** Centred, the row reads as the end of a page, which is what it is under a tab. Inside
+a fiche it is a section with a title over it, on a screen where every other line — the description,
+the dates, the prices — sits on one left edge, and a centred row of icons halfway up that column
+reads as a footer that has landed in the wrong place. It is nudged back 12dp so the *mark* lands on
+that edge rather than the invisible 48dp target around it.
+
+**`website` is one of the marks, drawn as a globe.** The content's own `link.type` set puts it
+alongside `instagram` and `spotify`, and on a fiche they are the same offer: somewhere else this
+artist exists. The globe is a weaker mark than a brand logo, which is right — it is the one
+destination whose identity is the thing you tapped from. The ten ids are resolved by one function
+shared with the footer, so the two rows cannot disagree about what Instagram looks like, and a
+platform the app ships no mark for still renders, under its name.
 
 **The live-state vocabulary moved to `common/content/presentation` when the fiche arrived.** It was
 written inside the Programme's screen package with a note saying it would move up a layer for its
