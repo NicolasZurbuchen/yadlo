@@ -967,6 +967,41 @@ the name and nothing can overflow into the price. An item with only a name and a
 complete item, which matters because that is the data most trucks will actually give.
 Groups make drinks and combo menus expressible without a special case.
 
+**A Stand's carte is navigated, not read from the top.** *Refines the fiche template; it does not
+fork it.* A stand fiche is up to five groups and fourteen dishes behind one *Au menu* heading, and
+the question a reader arrives with is "what are the drinks" or "what does a bokit cost". Each group
+is now its own section of the fiche, titled by the name the content gives it, with a row of tabs
+pinned under the toolbar: tap one and its heading scrolls to just below the row; scroll and the
+selection follows, including deep inside a group where no heading is on screen at all. *Liens* is
+the last tab, because "where is their Instagram" is the same kind of question.
+
+Three things were considered and rejected. **A second screen for food fiches** — the template's
+whole promise is that an Artist, an Activity and a Stand degrade the same quiet way, and what a
+carte actually wanted was a way to move *inside* a section the template already had. **Collapsible
+groups** — that answers "show me less" when the question is "take me there", and it hides the very
+thing a tab row makes visible, which is what a stand sells. **Tabs at rest, over the photograph** —
+at the top of a fiche there is nothing to navigate away from, and a row of controls on an untouched
+screen is chrome for its own sake. They arrive at the moment the first group would slide under the
+toolbar, which is exactly when they become the only way to know where you are.
+
+The tab row is absent wherever there is no menu, which is every Artist, every Activity and both
+créateur stands. That is the same "which lists are non-empty" rule as the rest of the fiche rather
+than a new one.
+
+The selected tab is marked by a 3dp rule in the Category's ink and never by a change of text colour.
+The obvious alternative — full ink selected, faded otherwise — is unavailable and the number says
+so: on the dark theme the neutral slate a stand fiche uses carries its ink at 4.96:1, so any alpha
+at all puts every unselected label under the 4.5:1 floor, on labels a reader has to read to use the
+control.
+
+**The menu's source line is off the screen and still in the content.** Every group carried a
+sentence saying the carte was reconstructed from the vendor's own and not confirmed by the festival.
+True, and doing the opposite of its job: five groups of a menu ended in five copies of the same
+forty words, which is how a reader learns to skip small grey text rather than how they learn a price
+might be wrong. `source` and `provenance` stay on every group and every item in `edition.json`,
+where the record belongs and where content/GAPS.md can point at it. If a single unmissable statement
+is wanted later, it belongs once per fiche and not once per group.
+
 **Dietary information is a glyph and the word beside it, never the glyph alone.** It was text only,
 for good reasons that turned out to be half the picture: no legend to learn, it translates for the
 English build, and it avoids symbols that mean "contains" in one country and "free from" in another.
@@ -977,6 +1012,38 @@ word is what makes it safe to act on.
 The vocabulary is closed at six and lives in the app keyed by a content slug, the same arrangement
 Category colour uses: which marks exist is a content decision, what they look like is a design one
 made once against a measured palette.
+
+*Refined on the carte, and only there.* Beside a dish the mark is the glyph alone; the words are
+written once at the top of the fiche, over the whole stand — *100 % végan*, *options sans gluten*.
+That legend is what makes the glyph below readable rather than a symbol to guess at, and it is
+always complete, because a stand's own marks are derived from its dishes. What forced it was
+layout: a dish carrying four marks spent two lines spelling them out under a name and a price that
+took one, so on a carte of fourteen dishes the marks outweighed the food. Every other place a mark
+appears — a stand card, the filter chips, the top of a fiche — still writes the word. And the word
+has not actually left the dish: each glyph carries its own label as its content description, which
+is the reverse of the tag row, where a description would make a screen reader say everything twice.
+
+**A Stand is a photograph.** Both browse lists and *À essayer* drew a stand as three lines of text
+with a chevron — the shape of a settings entry, asked to sell dinner. On *Créateurs*, which
+publishes no menu and therefore no dietary line, it was two lines on an otherwise empty tile.
+Every one of the eight Stands the edition declares has a picture and none of the three screens was
+showing it.
+
+One card now, in `common/content/presentation`, drawn by all three: the photograph, then the name
+and what the stand sells, then — behind a rule, so it is skippable by anyone who does not need it —
+what can be eaten there. The rule is the answer to "everything is smushed together": the wording did
+not change, the single indent everything was stacked at did. The chevron went with the change,
+because a picture already says the card is a place rather than a row.
+
+The frame is three by two rather than the sixteen by nine a card like this usually takes. Every
+photograph in the bank is four by three, so a 16:9 frame is a centre crop that throws away a quarter
+of the height — which on the one portrait among the eight takes the top of the subject's head off.
+
+*This reverses "rows, because a list you compare across wants rows" on the Wishlist.* That was
+answering the wrong question. You compare across a Programme to choose what to do at four o'clock;
+you open *À essayer* standing on the site, to find the stall you kept among forty you did not, which
+is matching a picture to a thing in front of you. It also means a Stand looks the same on the screen
+it was saved from and the screen it was saved to.
 
 **Sourcing and allergens are facts, not tags.** "Viande et légumes de producteurs vaudois"
 and "Allergènes sur demande auprès du stand" belong in *Bon à savoir*. A festival truck will

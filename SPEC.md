@@ -523,11 +523,12 @@ day on screen, with its scale written once in the chrome and inset to where the 
 *À essayer* hero. **Recall-only** — no browsing, no add-flow.
 
 > **What shipped.** Both halves. The tile sits above the timeline and carries a count; it opens
-> *à essayer*, the saved Stands grouped by Category. The timeline shows only the days something is
-> saved on, each with its date on the rail and its rows carrying the Programme's live-state pills.
-> Rows navigate to the fiche and carry no heart of their own — DECISIONS.md § The heart is attached
-> to what you are saving. Nothing here can add: both empty states point outward, at the Programme
-> and at Plus.
+> *à essayer*, the saved Stands grouped by Category — **as the same photograph-led cards the browse
+> lists draw**, not rows of their own (DECISIONS.md § A Stand is a photograph). The timeline shows
+> only the days something is saved on, each with its date on the rail and its rows carrying the
+> Programme's live-state pills. Rows navigate to the fiche and carry no heart of their own —
+> DECISIONS.md § The heart is attached to what you are saving. Nothing here can add: both empty
+> states point outward, at the Programme and at Plus.
 
 **Fiches** — one template for Artist, Activity and Stand: collapsing toolbar over a photo (title
 rising into the bar on scroll as the bar takes the category colour, continuously rather than at a
@@ -536,14 +537,24 @@ the colour), written category label, attribute-only tags, sections. *Liens* rend
 row of marks, left-aligned. Round icon actions in the bar. Silent Party = same template + booking
 row.
 
+A Stand's carte is the one section that is navigated rather than read: **each menu group is its own
+section and a row of tabs pins under the toolbar** once the first of them reaches it — tap to scroll
+to a group, scroll and the selection follows, with *Liens* as the last tab (DECISIONS.md § A Stand's
+carte is navigated). Beside a dish a dietary mark is **the glyph alone**, its words written once
+over the whole stand at the top of the fiche. No per-group source line: the content keeps the record,
+the screen stopped repeating it five times.
+
 > **What shipped, and what the fiche is still missing.** The template, the head, the hero
 > photograph and its continuous collapse, the date rows with their live-state pills and their
 > hearts, the tiered price with its deposit, the menu, the facts and the links are built, as is the
 > Stand's single heart in the bar. **The head is one ground now** — every fiche opens on a
 > photograph, the bundled one for the two stands whose picture has not arrived (content/GAPS.md
-> § 7); the Category blob that stood in for it is gone, DECISIONS.md § The fiche has one ground. The
-> share and map actions are not built, nor is the status-bar tint. Each is deferred for its own
-> reason, recorded in DECISIONS.md § One fiche template for everything.
+> § 7); the Category blob that stood in for it is gone, DECISIONS.md § The fiche has one ground.
+> **The carte has tabs now** and each of its groups is a section of its own, which is the only place
+> the template does something one kind of Happening needs and the others do not — and it does it by
+> the same rule as the rest, since a fiche with no menu simply has no tab row. The share and map
+> actions are not built, nor is the status-bar tint. Each is deferred for its own reason, recorded
+> in DECISIONS.md § One fiche template for everything.
 
 **Plus** — iOS-style grouped list, four cards: *Sur place* · *Le festival* · *S'impliquer* ·
 *L'application*. Payment is the third row of the tab. Lost property, first aid, children and
@@ -628,8 +639,11 @@ the only place the answer lives.
   screen. Never a selection dialog. *The whole row was the target until the fiche was built
   against real content: making a row tappable meant lighting a kept one, and a lit row reads
   as selected rather than as kept.*
-- **Lists compare, cards separate.** Programme and Mon Yadlo use rows; stand lists and
-  grouped Plus entries use cards. Measured: cards cost +32% vertical space in Programme.
+- **Lists compare, cards separate.** Programme and Mon Yadlo's timeline use rows; the three
+  places a Stand is listed — *Nourriture & boissons*, *Créateurs*, *À essayer* — and grouped Plus
+  entries use cards. Measured: cards cost +32% vertical space in Programme. A stand card is one
+  component, shared, and it leads with the Happening's photograph (DECISIONS.md § A Stand is a
+  photograph).
 - **Facts must not look tappable.** Card-with-chevron is reserved for navigation; `↗` marks
   an external link, `›` internal, `✉` opens mail.
 - **An annonce carries a nullable URL, not a typed action.** Reversed from the earlier
