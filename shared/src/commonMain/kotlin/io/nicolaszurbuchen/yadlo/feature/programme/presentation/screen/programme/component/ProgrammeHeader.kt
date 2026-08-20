@@ -2,6 +2,7 @@ package io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programm
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
@@ -11,9 +12,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
+import io.nicolaszurbuchen.yadlo.common.content.presentation.component.SlotScaleRow
+import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotScaleUiModel
 import io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme.CategoryChipUiModel
 import io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme.DayChipUiModel
-import io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme.ProgrammeScaleUiModel
 
 /**
  * The day, the kind, and the span the bars are drawn against — everything you set before you read
@@ -38,7 +40,7 @@ import io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme
 fun ProgrammeHeader(
     days: List<DayChipUiModel>,
     categories: List<CategoryChipUiModel>,
-    scale: ProgrammeScaleUiModel?,
+    scale: SlotScaleUiModel?,
     onDayClick: (String) -> Unit,
     onCategoryClick: (String) -> Unit,
     onAllCategoriesClick: () -> Unit,
@@ -61,9 +63,20 @@ fun ProgrammeHeader(
         }
 
         scale?.let {
-            ProgrammeScaleRow(
+            // The readings sit over the positions they describe: the rows' own left edge, and the
+            // right edge of the bar, which stops where the chevron column starts.
+            SlotScaleRow(
                 scale = it,
-                modifier = Modifier.offset(y = -ROW_OVERLAP).padding(bottom = MaterialTheme.spacing.xs),
+                modifier =
+                    Modifier
+                        .offset(y = -ROW_OVERLAP)
+                        .padding(
+                            PaddingValues(
+                                start = MaterialTheme.spacing.md,
+                                end = MaterialTheme.spacing.sm + CHEVRON_SIZE + MaterialTheme.spacing.sm,
+                                bottom = MaterialTheme.spacing.xs,
+                            ),
+                        ),
             )
         }
     }

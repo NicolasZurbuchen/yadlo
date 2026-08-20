@@ -80,7 +80,65 @@ class MonYadloUiMapperTest {
 
         assertEquals("11", model.days.single().dayNumber)
         assertEquals(UiText.Resource(Res.string.month_july), model.days.single().monthName)
-        assertEquals("01:00 – 02:30", model.days.single().rows.single().timeText)
+        assertEquals("01:00 – 02:30", model.days.single().rows.single().slot.timeText)
+    }
+
+    // endregion
+
+    // region one axis across the days
+
+    @Test
+    fun toUiModel_theScale_coversEveryDayRatherThanTheOneYouAreLookingAt() {
+        // Friday opens at 16:00 and closes at 02:00; Saturday opens at 12:00 and closes at 03:00.
+        // Three days are on screen at once, so one scale above them can only be honest if it spans
+        // all of them — DECISIONS.md § Mon Yadlo's bars share one axis across the days.
+        val model = state(twoDays()).toUiModel()
+
+        assertEquals("12:00", model.scale?.startText)
+        assertEquals("19:30", model.scale?.middleText)
+        assertEquals("03:00", model.scale?.endText)
+    }
+
+    @Test
+    fun toUiModel_aDayThatOpensLate_startsLateOnTheAxisRatherThanAtZero() {
+        // Friday's 17:00 set does not begin at the left edge, because Friday does not begin when
+        // Saturday does. That empty third is the true statement that Friday starts later.
+        val model = state(twoDays()).toUiModel()
+
+        val friday = model.days.first { it.id == "2026:fri" }.rows.single()
+
+        // A fifteen-hour axis from 12:00: 17:00 is five hours in.
+        assertEquals(0.333f, friday.slot.barStart, ONE_PIXEL_ON_A_PHONE)
+    }
+
+    @Test
+    fun toUiModel_slotsOnDifferentDays_areMeasuredFromTheirOwnDaysMidnight() {
+        // Subtracting instants across days would put Sunday two days of real time to the right of
+        // Friday. Both are clock readings counted from their own midnight.
+        val model = state(twoDays()).toUiModel()
+
+        val friday = model.days.first { it.id == "2026:fri" }.rows.single()
+        val saturday = model.days.first { it.id == "2026:sat" }.rows.single()
+
+        // 17:00 on the Friday, 20:30 on the Saturday: later in the day, and only by that much.
+        assertEquals(0.333f, friday.slot.barStart, ONE_PIXEL_ON_A_PHONE)
+        assertEquals(0.567f, saturday.slot.barStart, ONE_PIXEL_ON_A_PHONE)
+    }
+
+    @Test
+    fun toUiModel_aSlotPastMidnight_staysOnItsOwnDaysAxisRatherThanWrappingToTheLeft() {
+        // The Silent Party runs 01:00 to 02:30 on the Saturday, which is the Sunday by the
+        // calendar. It belongs at the far right of the Saturday's bar, not back at the start.
+        val row = state(saturdayNightOnly()).toUiModel().days.single().rows.single()
+
+        // 01:00 is thirteen hours after midnight on a fifteen-hour axis that opens at 12:00.
+        assertEquals(0.867f, row.slot.barStart, ONE_PIXEL_ON_A_PHONE)
+        assertEquals(0.967f, row.slot.barEnd, ONE_PIXEL_ON_A_PHONE)
+    }
+
+    @Test
+    fun toUiModel_nothingSaved_hasNoAxisBecauseThereIsNothingToMeasure() {
+        assertNull(state(MonYadloContent(days = emptyList(), wishlistCount = 0)).toUiModel().scale)
     }
 
     // endregion
@@ -91,7 +149,7 @@ class MonYadloUiMapperTest {
     fun toUiModel_row_writesTheTimeOnceAsARange() {
         val row = state(content()).toUiModel().days.single().rows.single()
 
-        assertEquals("20:30 – 22:00", row.timeText)
+        assertEquals("20:30 – 22:00", row.slot.timeText)
         assertEquals("Caesure", row.name)
     }
 
@@ -124,7 +182,7 @@ class MonYadloUiMapperTest {
         // By the Sunday a Plan is mostly what you went to, and that is the point of this screen.
         assertEquals(1, model.days.single().rows.size)
         assertEquals(UiText.Resource(Res.string.slot_state_over), model.days.single().rows.single().stateLabel)
-        assertEquals(SlotLiveStateUiModel.Over, model.days.single().rows.single().state)
+        assertEquals(SlotLiveStateUiModel.Over, model.days.single().rows.single().slot.state)
     }
 
     @Test
@@ -150,7 +208,7 @@ class MonYadloUiMapperTest {
         val model = state(content(), now = Instant.parse("2026-07-11T09:00:00+02:00")).toUiModel()
 
         assertNull(model.days.single().rows.single().stateLabel)
-        assertEquals(SlotLiveStateUiModel.Upcoming, model.days.single().rows.single().state)
+        assertEquals(SlotLiveStateUiModel.Upcoming, model.days.single().rows.single().slot.state)
     }
 
     @Test
@@ -226,6 +284,8 @@ class MonYadloUiMapperTest {
                         id = "2026:fri",
                         name = "Vendredi",
                         start = Instant.parse("2026-07-10T16:00:00+02:00"),
+                        windowStart = Instant.parse("2026-07-10T16:00:00+02:00"),
+                        windowEnd = Instant.parse("2026-07-11T02:00:00+02:00"),
                         slots =
                             listOf(
                                 PlannedSlot(
@@ -253,6 +313,8 @@ class MonYadloUiMapperTest {
                         id = "2026:sat",
                         name = "Samedi",
                         start = Instant.parse("2026-07-11T12:00:00+02:00"),
+                        windowStart = Instant.parse("2026-07-11T12:00:00+02:00"),
+                        windowEnd = Instant.parse("2026-07-12T03:00:00+02:00"),
                         slots =
                             listOf(
                                 PlannedSlot(
@@ -275,6 +337,10 @@ class MonYadloUiMapperTest {
             id = "2026:sat",
             name = "Samedi",
             start = Instant.parse("2026-07-11T12:00:00+02:00"),
+            // The Saturday as the edition programmes it, never as the Plan happens to fill it: the
+            // site opens at 12:00 and the last Slot on it ends at 03:00.
+            windowStart = Instant.parse("2026-07-11T12:00:00+02:00"),
+            windowEnd = Instant.parse("2026-07-12T03:00:00+02:00"),
             slots =
                 listOf(
                     PlannedSlot(
@@ -292,5 +358,8 @@ class MonYadloUiMapperTest {
 
     private companion object {
         val NOW = Instant.parse("2026-07-11T15:00:00+02:00")
+
+        /** Roughly a pixel of a 360dp bar. Tighter than that is asserting the arithmetic twice. */
+        const val ONE_PIXEL_ON_A_PHONE = 0.003f
     }
 }

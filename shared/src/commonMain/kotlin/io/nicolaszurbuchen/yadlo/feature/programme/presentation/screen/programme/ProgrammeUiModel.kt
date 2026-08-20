@@ -1,6 +1,7 @@
 package io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme
 
 import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotLiveStateUiModel
+import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotScaleUiModel
 import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotSegmentUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 
@@ -14,21 +15,9 @@ data class ProgrammeUiModel(
     val isLoading: Boolean,
     val days: List<DayChipUiModel>,
     val categories: List<CategoryChipUiModel>,
-    val scale: ProgrammeScaleUiModel?,
+    val scale: SlotScaleUiModel?,
     val rows: List<SlotRowUiModel>,
     val emptyMessage: UiText?,
-)
-
-/**
- * The three times written across the head of the list — the span every row's bar is drawn against.
- *
- * Written once at the top rather than on each row: it is one axis shared by the whole day, and
- * repeating it per row is the right-hand time column layout B2 exists to avoid.
- */
-data class ProgrammeScaleUiModel(
-    val startText: String,
-    val middleText: String,
-    val endText: String,
 )
 
 data class DayChipUiModel(

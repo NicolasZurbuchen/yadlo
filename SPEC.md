@@ -511,8 +511,10 @@ past hour dims on its own. Past rows are never collapsed. Countdowns appear only
 window.
 
 **Mon Yadlo** — the rail variant: date pinned left, items scrolling past, time written once
-as a range, same row vocabulary as Programme. Timeline plus one full-width Wishlist tile.
-**Recall-only** — no browsing, no add-flow.
+as a range, same row vocabulary as Programme — **span bar included**, on one axis shared by every
+day on screen, with its scale written once in the chrome and inset to where the bars begin
+(DECISIONS.md § Mon Yadlo's bars share one axis across the days). Timeline plus one full-width
+*À essayer* hero. **Recall-only** — no browsing, no add-flow.
 
 > **What shipped.** Both halves. The tile sits above the timeline and carries a count; it opens
 > *à essayer*, the saved Stands grouped by Category. The timeline shows only the days something is

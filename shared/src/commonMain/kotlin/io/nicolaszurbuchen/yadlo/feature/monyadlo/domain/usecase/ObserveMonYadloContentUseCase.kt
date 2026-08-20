@@ -42,6 +42,12 @@ class ObserveMonYadloContentUseCase(
         val plannedIds = saved.filter { it.kind == SavedKind.SLOT }.mapTo(mutableSetOf()) { it.id }
         val wishlistedIds = saved.filter { it.kind == SavedKind.STAND }.mapTo(mutableSetOf()) { it.id }
 
+        // The shape of each day, measured over everything the edition programmes on it rather than
+        // over what was saved — see PlannedDay.windowStart. Built once here because the join below
+        // has already thrown away the Slots that were not kept.
+        val windows =
+            edition.slots.groupBy { it.day.id }
+
         val planned =
             edition.slots
                 .filter { it.id in plannedIds }
@@ -62,6 +68,10 @@ class ObserveMonYadloContentUseCase(
                             id = day.id,
                             name = day.name,
                             start = day.start,
+                            windowStart =
+                                (listOf(day.start) + windows[day.id].orEmpty().map { it.start }).min(),
+                            windowEnd =
+                                (listOf(day.end) + windows[day.id].orEmpty().map { it.end }).max(),
                             slots =
                                 planned.getValue(day.id).map { slot ->
                                     PlannedSlot(

@@ -1,4 +1,4 @@
-package io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme.component
+package io.nicolaszurbuchen.yadlo.common.content.presentation.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -40,6 +40,10 @@ import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotSegment
  *
  * They are laid out with weights against a cursor rather than positioned absolutely, so the gaps
  * between them are real layout rather than arithmetic on a width this composable does not know.
+ *
+ * It sits in `common/content` because Mon Yadlo draws the same segment against the same axis. It
+ * moved up here for that second caller rather than in anticipation of it, the way the live-state
+ * vocabulary and the pill did before it.
  */
 @Composable
 fun SlotTimeBar(

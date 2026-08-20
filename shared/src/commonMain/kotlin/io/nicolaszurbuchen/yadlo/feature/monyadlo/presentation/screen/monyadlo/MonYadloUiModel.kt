@@ -1,17 +1,23 @@
 package io.nicolaszurbuchen.yadlo.feature.monyadlo.presentation.screen.monyadlo
 
-import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotLiveStateUiModel
+import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotScaleUiModel
+import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotSegmentUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 
 /**
  * The rail variant — DECISIONS.md § Mon Yadlo layout: a date pinned to the left while its items
  * scroll past, the time written once as a range, the same row vocabulary as Programme.
  *
+ * [scale] is the span every row's bar is drawn against, written once in the chrome rather than once
+ * per day — DECISIONS.md § Mon Yadlo's bars share one axis across the days. Null exactly when there
+ * is nothing planned, since an axis over no days describes nothing.
+ *
  * [emptyMessage] is non-null exactly when [days] is empty and the screen has loaded. It points at
  * the Programme rather than offering an add-flow: Mon Yadlo recalls, it never browses.
  */
 data class MonYadloUiModel(
     val isLoading: Boolean,
+    val scale: SlotScaleUiModel?,
     val days: List<MonYadloDayUiModel>,
     val wishlistCount: Int,
     val emptyMessage: UiText?,
@@ -35,15 +41,23 @@ data class MonYadloDayUiModel(
 /**
  * One saved Slot.
  *
- * No bar, unlike the Programme row it mirrors: the bar places a Slot against the whole day's span,
- * which is a question about a day you are choosing from rather than one you have already chosen.
+ * **It carries a bar now, and it did not.** The argument against was that a bar places a Slot
+ * against the whole day's span, which is a question about a day you are choosing from rather than
+ * one you have already chosen. That was half right: you are not choosing any more, but on the Sunday
+ * afternoon "how much of this is left, and what have I got after it" is exactly the question a Plan
+ * is open for. DECISIONS.md § Mon Yadlo's bars share one axis across the days.
  *
  * The price is here, and was not. The argument against it was that the decision had been made when
  * the heart was tapped — true of the decision, and not of the coins in your pocket. A Plan read on
  * the site is a list of what you are about to do, and what two of them cost is part of that.
  *
- * No heart either: the row opens the fiche, which is the one screen that owns this Slot's heart.
- * Never two hearts for the same thing — DECISIONS.md § The heart is attached to what you are saving.
+ * No heart: the row opens the fiche, which is the one screen that owns this Slot's heart. Never two
+ * hearts for the same thing — DECISIONS.md § The heart is attached to what you are saving.
+ *
+ * **[slot] holds the time, the state and the place on the axis together**, so the line under the
+ * name and the mark on the bar cannot disagree about which Slot they are describing. Exactly one,
+ * unlike a Programme row: Mon Yadlo does not merge a Happening's hours, because a Plan is what you
+ * are doing in order and two hours of yoga you kept are two appointments.
  */
 data class MonYadloRowUiModel(
     val id: String,
@@ -51,8 +65,7 @@ data class MonYadloRowUiModel(
     val name: String,
     val categoryId: String,
     val categoryName: String,
-    val timeText: String,
     val priceText: UiText?,
     val stateLabel: UiText?,
-    val state: SlotLiveStateUiModel,
+    val slot: SlotSegmentUiModel,
 )
