@@ -370,11 +370,10 @@ class HappeningUiMapperTest {
     }
 
     @Test
-    fun toUiModel_menuGroupIdAndName_bothSurviveBecauseTheTabsNeedBoth() {
+    fun toUiModel_menuGroupIdAndName_bothSurvive() {
         val model = state(detail(menu = listOf(plats()))).toUiModel()
 
-        // The id is the key the fiche scrolls to and the name is what the tab is labelled with, so
-        // a group that lost either would leave a tab pointing at nothing.
+        // The id keys the group in the list and the name is the section header it is drawn under.
         assertEquals("plats", model.menu.single().id)
         assertEquals("Plats", model.menu.single().name)
     }

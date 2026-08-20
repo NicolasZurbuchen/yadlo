@@ -1,8 +1,5 @@
 package io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -14,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -32,7 +28,6 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -54,14 +49,12 @@ import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloLinkMarkUiModel
 import io.nicolaszurbuchen.yadlo.common.content.presentation.component.SocialLinksRow
 import io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening.component.HappeningHeader
 import io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening.component.HappeningMenuGroupBlock
-import io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening.component.HappeningMenuTabs
 import io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening.component.HappeningPriceBlock
 import io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening.component.HappeningSection
 import io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening.component.HappeningSlotRow
 import io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening.component.HappeningTagRow
 import io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening.component.SavedHeart
 import io.nicolaszurbuchen.yadlo.infra.ui.asString
-import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.back
@@ -81,14 +74,6 @@ import yadlo.shared.generated.resources.wishlist_remove
  *
  * The head is a photograph on every fiche, the bundled one where the content has none — see
  * [HappeningHeader].
- *
- * **A Stand's carte gets tabs, and it is still this template.** *Reversed: the menu was one block
- * under one *Au menu* heading.* Fourteen dishes in five groups behind a single heading is a screen
- * you read from the top, and nobody reads a menu from the top — they arrive wanting the drinks, or
- * the price of a bokit. Each group is its own section now, and the tabs that scroll to them are the
- * control every food app has taught everyone to use. It did not need a second screen: what a menu
- * fiche wanted was a way to move inside a section the template already had, and the tabs are absent
- * on everything without one, which is the same "which lists are non-empty" rule as the rest.
  *
  * **The Category's colour closes over the whole head, not just over the toolbar**, and the header
  * is what paints it. The bar stays clear until that veil is already solid, then takes over as the
@@ -130,7 +115,6 @@ fun HappeningScreen(
     modifier: Modifier = Modifier,
 ) {
     val listState = rememberLazyListState()
-    val scope = rememberCoroutineScope()
     val category = MaterialTheme.categoryColors.forId(state.categoryId)
     val density = LocalDensity.current
 
@@ -138,44 +122,7 @@ fun HappeningScreen(
     // Measured rather than assumed: it is a fixed 280dp with a photograph behind it, and as tall as
     // its own title without one.
     var headerHeightPx by remember { mutableIntStateOf(0) }
-    var tabsHeightPx by remember { mutableIntStateOf(0) }
     val barBottomPx = WindowInsets.statusBars.getTop(density) + with(density) { TOP_BAR_HEIGHT.roundToPx() }
-    val snapSlackPx = with(density) { TAB_SNAP_SLACK.roundToPx() }
-
-    // Every item this screen emits, in the order it emits them. It is built here and consumed twice
-    // — once by the list below, once by the tabs, which need the *index* of a section rather than
-    // its key. Editing the list without editing this would put a tab on the wrong heading.
-    val itemKeys =
-        buildList {
-            add(HEADER_KEY)
-            if (state.tags.isNotEmpty()) add(TAGS_KEY)
-            if (state.dietary.isNotEmpty()) add(DIETARY_KEY)
-            if (state.description != null) add(DESCRIPTION_KEY)
-            if (state.slots.isNotEmpty()) add(WHEN_KEY)
-            if (state.price != null || state.booking != null) add(PRICE_KEY)
-            if (state.facts.isNotEmpty()) add(FACTS_KEY)
-            state.menu.forEach { add(menuKey(it.id)) }
-            if (state.links.isNotEmpty()) add(LINKS_KEY)
-        }
-
-    // A tab per group of the carte, then one for Liens — which is a tab rather than a stop at the
-    // end of a scroll because "where is their Instagram" is the same kind of question as "what are
-    // the drinks". Empty unless there is a menu: a fiche with nothing but links has one section, and
-    // a tab row over a single section navigates nothing.
-    val linksLabel = stringResource(Res.string.happening_section_links)
-    val tabLabels =
-        if (state.menu.isEmpty()) {
-            emptyList()
-        } else {
-            state.menu.map { it.name } + if (state.links.isNotEmpty()) listOf(linksLabel) else emptyList()
-        }
-    val tabIndices =
-        if (state.menu.isEmpty()) {
-            emptyList()
-        } else {
-            state.menu.map { itemKeys.indexOf(menuKey(it.id)) } +
-                if (state.links.isNotEmpty()) listOf(itemKeys.indexOf(LINKS_KEY)) else emptyList()
-        }
 
     val collapseProgress by remember(barBottomPx) {
         derivedStateOf {
@@ -186,40 +133,6 @@ fun HappeningScreen(
                 listState.firstVisibleItemIndex > 0 -> 1f
                 headerHeightPx == 0 || travel <= 0 -> 0f
                 else -> (listState.firstVisibleItemScrollOffset.toFloat() / travel).coerceIn(0f, 1f)
-            }
-        }
-    }
-
-    // The tabs arrive when the first group would go under the toolbar, measured against the bar
-    // alone: they are what is about to cover the rest, so they cannot be part of what decides it.
-    val firstGroupIndex = tabIndices.firstOrNull() ?: -1
-    val tabsVisible by remember(firstGroupIndex, barBottomPx) {
-        derivedStateOf { firstGroupIndex >= 0 && listState.hasReached(firstGroupIndex, barBottomPx) }
-    }
-
-    // And the selection is measured against the tabs' own bottom edge, which is where a group
-    // tapped from the row lands. The slack absorbs the pixel a scroll can end one either side of.
-    val chromeBottomPx = barBottomPx + tabsHeightPx
-    val selectedTab by remember(tabIndices, chromeBottomPx, snapSlackPx) {
-        derivedStateOf {
-            when {
-                tabIndices.isEmpty() -> {
-                    0
-                }
-
-                // At the foot of the fiche you are in the last section whether or not its heading
-                // travelled all the way up. A final group of two dishes cannot scroll under the
-                // tabs — there is nothing below it to push it there — and a tab that refuses to
-                // light while its own section is the only thing on screen reads as broken.
-                !listState.canScrollForward -> {
-                    tabIndices.lastIndex
-                }
-
-                else -> {
-                    tabIndices
-                        .indexOfLast { listState.hasReached(it, chromeBottomPx + snapSlackPx) }
-                        .coerceAtLeast(0)
-                }
             }
         }
     }
@@ -237,79 +150,50 @@ fun HappeningScreen(
 
     Scaffold(
         topBar = {
-            Column(modifier = Modifier.fillMaxWidth()) {
-                TopAppBar(
-                    title = {
-                        Text(
-                            text = state.title,
-                            style = MaterialTheme.typography.headlineSmall,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                            modifier = Modifier.alpha(barTitleAlpha),
+            TopAppBar(
+                title = {
+                    Text(
+                        text = state.title,
+                        style = MaterialTheme.typography.headlineSmall,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.alpha(barTitleAlpha),
+                    )
+                },
+                navigationIcon = {
+                    IconButton(onClick = onBackClick) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = stringResource(Res.string.back),
                         )
-                    },
-                    navigationIcon = {
-                        IconButton(onClick = onBackClick) {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = stringResource(Res.string.back),
+                    }
+                },
+                // Only a Stand has one, because only a Stand is kept whole — everything else keeps
+                // its Slots one at a time, on the date rows below.
+                actions = {
+                    state.wishlisted?.let { isSaved ->
+                        IconButton(onClick = onWishlistHeartClick) {
+                            SavedHeart(
+                                isSaved = isSaved,
+                                contentDescription =
+                                    stringResource(
+                                        if (isSaved) Res.string.wishlist_remove else Res.string.wishlist_add,
+                                    ),
+                                tint = barInk,
                             )
                         }
-                    },
-                    // Only a Stand has one, because only a Stand is kept whole — everything else
-                    // keeps its Slots one at a time, on the date rows below.
-                    actions = {
-                        state.wishlisted?.let { isSaved ->
-                            IconButton(onClick = onWishlistHeartClick) {
-                                SavedHeart(
-                                    isSaved = isSaved,
-                                    contentDescription =
-                                        stringResource(
-                                            if (isSaved) Res.string.wishlist_remove else Res.string.wishlist_add,
-                                        ),
-                                    tint = barInk,
-                                )
-                            }
-                        }
-                    },
-                    colors =
-                        TopAppBarDefaults.topAppBarColors(
-                            containerColor = Color.Transparent,
-                            scrolledContainerColor = Color.Transparent,
-                            navigationIconContentColor = barInk,
-                            titleContentColor = barInk,
-                            actionIconContentColor = barInk,
-                        ),
-                    modifier = Modifier.background(barColor),
-                )
-
-                // A fade and not a slide: the row is in the bar rather than in the list, so it takes
-                // its full height the instant it exists. Animating that height would move the edge
-                // the selection is measured against while the reader is scrolling past it.
-                AnimatedVisibility(
-                    visible = tabsVisible && tabLabels.isNotEmpty(),
-                    enter = fadeIn(),
-                    exit = fadeOut(),
-                ) {
-                    HappeningMenuTabs(
-                        labels = tabLabels,
-                        selectedIndex = selectedTab,
-                        fill = category.fill,
-                        ink = category.ink,
-                        onTabClick = { index ->
-                            scope.launch {
-                                // Negative, so the heading lands just under the tabs rather than
-                                // under the top of the screen where they are covering it.
-                                listState.animateScrollToItem(
-                                    index = tabIndices[index],
-                                    scrollOffset = -chromeBottomPx,
-                                )
-                            }
-                        },
-                        modifier = Modifier.onSizeChanged { tabsHeightPx = it.height },
-                    )
-                }
-            }
+                    }
+                },
+                colors =
+                    TopAppBarDefaults.topAppBarColors(
+                        containerColor = Color.Transparent,
+                        scrolledContainerColor = Color.Transparent,
+                        navigationIconContentColor = barInk,
+                        titleContentColor = barInk,
+                        actionIconContentColor = barInk,
+                    ),
+                modifier = Modifier.background(barColor),
+            )
         },
         modifier = modifier,
     ) { contentPadding ->
@@ -346,136 +230,142 @@ fun HappeningScreen(
                     // the inset: the header's own words are anchored to its bottom edge.
                     modifier = Modifier.fillMaxSize(),
                 ) {
-                    // One `when` over the keys built above rather than a second sequence of `if`s,
-                    // so what exists and what order it is in are decided in one place.
-                    itemKeys.forEach { key ->
-                        item(key = key) {
-                            when (key) {
-                                HEADER_KEY -> {
-                                    HappeningHeader(
-                                        imageUrl = state.imageUrl,
-                                        categoryId = state.categoryId,
-                                        categoryLabel = state.categoryLabel,
-                                        title = state.title,
-                                        tint = tint,
-                                        modifier = Modifier.onSizeChanged { headerHeightPx = it.height },
-                                    )
+                    item(key = "header") {
+                        HappeningHeader(
+                            imageUrl = state.imageUrl,
+                            categoryId = state.categoryId,
+                            categoryLabel = state.categoryLabel,
+                            title = state.title,
+                            tint = tint,
+                            modifier = Modifier.onSizeChanged { headerHeightPx = it.height },
+                        )
+                    }
+
+                    if (state.tags.isNotEmpty()) {
+                        item(key = "tags") {
+                            HappeningTagRow(
+                                tags = state.tags,
+                                modifier = Modifier.padding(horizontal = MaterialTheme.spacing.md),
+                            )
+                        }
+                    }
+
+                    if (state.dietary.isNotEmpty()) {
+                        item(key = "dietary") {
+                            YadloDietaryTags(
+                                tags = state.dietary,
+                                modifier = Modifier.padding(horizontal = MaterialTheme.spacing.md),
+                            )
+                        }
+                    }
+
+                    state.description?.let { description ->
+                        item(key = "description") {
+                            Text(
+                                text = description,
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = MaterialTheme.appColors.textSecondary,
+                                modifier =
+                                    Modifier
+                                        .fillMaxWidth()
+                                        .padding(horizontal = MaterialTheme.spacing.md),
+                            )
+                        }
+                    }
+
+                    if (state.slots.isNotEmpty()) {
+                        item(key = "when") {
+                            HappeningSection(
+                                title = stringResource(Res.string.happening_section_when),
+                                modifier = Modifier.padding(horizontal = MaterialTheme.spacing.md),
+                            ) {
+                                state.slots.forEach { slot ->
+                                    HappeningSlotRow(slot = slot, onClick = onSlotHeartClick)
+                                }
+                            }
+                        }
+                    }
+
+                    if (state.price != null || state.booking != null) {
+                        item(key = "price") {
+                            HappeningSection(
+                                title = stringResource(Res.string.happening_section_price),
+                                modifier = Modifier.padding(horizontal = MaterialTheme.spacing.md),
+                            ) {
+                                state.price?.let { price ->
+                                    HappeningPriceBlock(price = price)
                                 }
 
-                                TAGS_KEY -> {
-                                    HappeningTagRow(
-                                        tags = state.tags,
-                                        modifier = Modifier.padding(horizontal = MaterialTheme.spacing.md),
-                                    )
-                                }
-
-                                DIETARY_KEY -> {
-                                    // The legend for every glyph on the carte below, written out in
-                                    // words exactly once — see YadloDietaryMarks.
-                                    YadloDietaryTags(
-                                        tags = state.dietary,
-                                        modifier = Modifier.padding(horizontal = MaterialTheme.spacing.md),
-                                    )
-                                }
-
-                                DESCRIPTION_KEY -> {
-                                    state.description?.let { description ->
+                                state.booking?.let { booking ->
+                                    // A booking with a page is a link out; one without is a fact
+                                    // there is nothing to do about, so it must not look tappable.
+                                    if (booking.url != null) {
+                                        YadloLinkTile(
+                                            label = booking.label.asString(),
+                                            mark = YadloLinkMarkUiModel.EXTERNAL,
+                                            onClick = { onLinkClick(booking.url) },
+                                        )
+                                    } else {
                                         Text(
-                                            text = description,
+                                            text = booking.label.asString(),
                                             style = MaterialTheme.typography.bodyLarge,
                                             color = MaterialTheme.appColors.textSecondary,
-                                            modifier =
-                                                Modifier
-                                                    .fillMaxWidth()
-                                                    .padding(horizontal = MaterialTheme.spacing.md),
                                         )
                                     }
                                 }
+                            }
+                        }
+                    }
 
-                                WHEN_KEY -> {
-                                    HappeningSection(
-                                        title = stringResource(Res.string.happening_section_when),
-                                        modifier = Modifier.padding(horizontal = MaterialTheme.spacing.md),
-                                    ) {
-                                        state.slots.forEach { slot ->
-                                            HappeningSlotRow(slot = slot, onClick = onSlotHeartClick)
-                                        }
+                    if (state.facts.isNotEmpty()) {
+                        item(key = "facts") {
+                            HappeningSection(
+                                title = stringResource(Res.string.happening_section_good_to_know),
+                                modifier = Modifier.padding(horizontal = MaterialTheme.spacing.md),
+                            ) {
+                                state.facts.forEach { fact ->
+                                    YadloFactRow(mark = YadloFactMarkUiModel.CHECK, fact = fact.asString())
+                                }
+                            }
+                        }
+                    }
+
+                    if (state.menu.isNotEmpty()) {
+                        item(key = "menu") {
+                            // Each group is a section of the fiche in its own right — *Plats*,
+                            // *Boissons* — rather than a sub-heading under one *Au menu*. Two levels
+                            // of heading over a carte of fourteen dishes was one more than it needs,
+                            // and the outer one only ever said what the dishes underneath already do.
+                            Column(
+                                verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.lg),
+                                modifier = Modifier.padding(horizontal = MaterialTheme.spacing.md),
+                            ) {
+                                state.menu.forEach { group ->
+                                    HappeningSection(title = group.name) {
+                                        HappeningMenuGroupBlock(group = group)
                                     }
                                 }
+                            }
+                        }
+                    }
 
-                                PRICE_KEY -> {
-                                    HappeningSection(
-                                        title = stringResource(Res.string.happening_section_price),
-                                        modifier = Modifier.padding(horizontal = MaterialTheme.spacing.md),
-                                    ) {
-                                        state.price?.let { price ->
-                                            HappeningPriceBlock(price = price)
-                                        }
-
-                                        state.booking?.let { booking ->
-                                            // A booking with a page is a link out; one without is a
-                                            // fact there is nothing to do about, so it must not
-                                            // look tappable.
-                                            if (booking.url != null) {
-                                                YadloLinkTile(
-                                                    label = booking.label.asString(),
-                                                    mark = YadloLinkMarkUiModel.EXTERNAL,
-                                                    onClick = { onLinkClick(booking.url) },
-                                                )
-                                            } else {
-                                                Text(
-                                                    text = booking.label.asString(),
-                                                    style = MaterialTheme.typography.bodyLarge,
-                                                    color = MaterialTheme.appColors.textSecondary,
-                                                )
-                                            }
-                                        }
-                                    }
-                                }
-
-                                FACTS_KEY -> {
-                                    HappeningSection(
-                                        title = stringResource(Res.string.happening_section_good_to_know),
-                                        modifier = Modifier.padding(horizontal = MaterialTheme.spacing.md),
-                                    ) {
-                                        state.facts.forEach { fact ->
-                                            YadloFactRow(mark = YadloFactMarkUiModel.CHECK, fact = fact.asString())
-                                        }
-                                    }
-                                }
-
-                                LINKS_KEY -> {
-                                    HappeningSection(
-                                        title = linksLabel,
-                                        modifier = Modifier.padding(horizontal = MaterialTheme.spacing.md),
-                                    ) {
-                                        // The footer's row, left-aligned — the same marks Accueil
-                                        // and Plus end on. A column of full-width tiles gave an
-                                        // artist's five links more of the fiche than its
-                                        // description, and said nothing the mark does not: nobody
-                                        // needs the word "Instagram" written beside the Instagram
-                                        // glyph, and five rows of chevron are five promises that
-                                        // the tap goes somewhere different each time.
-                                        SocialLinksRow(
-                                            items = state.links,
-                                            onSocialClick = onLinkClick,
-                                            start = true,
-                                        )
-                                    }
-                                }
-
-                                // One group of the carte. Its own section, so its name is both the
-                                // heading and the tab that scrolls here — the two cannot drift.
-                                else -> {
-                                    state.menu.firstOrNull { menuKey(it.id) == key }?.let { group ->
-                                        HappeningSection(
-                                            title = group.name,
-                                            modifier = Modifier.padding(horizontal = MaterialTheme.spacing.md),
-                                        ) {
-                                            HappeningMenuGroupBlock(group = group)
-                                        }
-                                    }
-                                }
+                    if (state.links.isNotEmpty()) {
+                        item(key = "links") {
+                            HappeningSection(
+                                title = stringResource(Res.string.happening_section_links),
+                                modifier = Modifier.padding(horizontal = MaterialTheme.spacing.md),
+                            ) {
+                                // The footer's row, left-aligned — the same marks Accueil and Plus
+                                // end on. A column of full-width tiles gave an artist's five links
+                                // more of the fiche than its description, and said nothing the mark
+                                // does not: nobody needs the word "Instagram" written beside the
+                                // Instagram glyph, and five rows of chevron are five promises that
+                                // the tap goes somewhere different each time.
+                                SocialLinksRow(
+                                    items = state.links,
+                                    onSocialClick = onLinkClick,
+                                    start = true,
+                                )
                             }
                         }
                     }
@@ -486,54 +376,11 @@ fun HappeningScreen(
 }
 
 /**
- * Whether the item at [index] has reached [threshold] pixels from the top of the viewport, counting
- * an item that has scrolled off the top as reached.
- *
- * The second half is what a `visibleItemsInfo` lookup alone cannot answer: deep inside a group of
- * fourteen dishes no heading is on screen at all, and a tab row that de-selected itself there would
- * lose the reader exactly where the control is most useful.
- */
-private fun LazyListState.hasReached(
-    index: Int,
-    threshold: Int,
-): Boolean {
-    val visible = layoutInfo.visibleItemsInfo
-    val item = visible.firstOrNull { it.index == index }
-
-    return when {
-        item != null -> item.offset <= threshold
-        else -> index < (visible.firstOrNull()?.index ?: 0)
-    }
-}
-
-/** The carte's groups are keyed by their own id, which is what lets a tab name the item it opens. */
-private fun menuKey(id: String) = "$MENU_KEY_PREFIX$id"
-
-private const val HEADER_KEY = "header"
-private const val TAGS_KEY = "tags"
-private const val DIETARY_KEY = "dietary"
-private const val DESCRIPTION_KEY = "description"
-private const val WHEN_KEY = "when"
-private const val PRICE_KEY = "price"
-private const val FACTS_KEY = "facts"
-private const val LINKS_KEY = "links"
-private const val MENU_KEY_PREFIX = "menu:"
-
-/**
  * Material's own container height for a small top app bar. Written out because the collapse needs
  * the number rather than the bar, and asking the bar would mean measuring a composable that is drawn
  * above the one whose height decides when it changes colour.
  */
 private val TOP_BAR_HEIGHT = 64.dp
-
-/**
- * How far past the tabs' bottom edge a heading may sit and still count as the one being read.
- *
- * A tapped tab scrolls its heading to exactly that edge, and a scroll can finish a pixel either side
- * of exactly. Without the slack the tab you just pressed would occasionally spring back to the one
- * before it, which reads as the control refusing the tap.
- */
-private val TAB_SNAP_SLACK = 8.dp
 
 /**
  * Where the Category's colour starts arriving, as a fraction of the header's travel. Late enough

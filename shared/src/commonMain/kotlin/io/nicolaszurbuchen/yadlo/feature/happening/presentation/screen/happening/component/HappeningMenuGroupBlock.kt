@@ -18,9 +18,10 @@ import io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening
 /**
  * The dishes in one group of a stand's menu — *Plats*, *Boissons*, *Desserts*.
  *
- * **The group's name is not drawn here.** It is the section header the screen wraps this in, and the
- * anchor the tab of the same name scrolls to. A group that titled itself would put a second heading
- * under the first.
+ * **The group's name is not drawn here.** It is the section header the screen wraps this in, at the
+ * same level as *Quand* and *Tarifs*, because that is what a group is: a section of the fiche.
+ * There is no *Au menu* above them any more — two levels of heading over fourteen dishes was one
+ * more than the carte needs, and the outer one only said what the dishes underneath already do.
  *
  * Each dish is up to three things: the name with its marks and its price, then the ingredients.
  * Nothing shares a line with the price, so nothing can overflow into it — an item with only a name
@@ -69,11 +70,16 @@ fun HappeningMenuGroupBlock(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.weight(1f),
                     ) {
+                        // A title, not body text. At `bodyLarge` a dish name was 15sp Normal over a
+                        // 13sp Normal ingredient line — two points and a shade of grey apart, in
+                        // the same weight, which on a carte of fourteen dishes gave no edge to
+                        // scan down. `titleMedium` puts a step of weight between them as well.
+                        //
                         // Shrinks to what is left rather than filling it, so the glyphs sit against
                         // the end of the name instead of against the price.
                         Text(
                             text = item.name,
-                            style = MaterialTheme.typography.bodyLarge,
+                            style = MaterialTheme.typography.titleMedium,
                             color = MaterialTheme.appColors.textPrimary,
                             modifier = Modifier.weight(1f, fill = false),
                         )

@@ -537,12 +537,12 @@ the colour), written category label, attribute-only tags, sections. *Liens* rend
 row of marks, left-aligned. Round icon actions in the bar. Silent Party = same template + booking
 row.
 
-A Stand's carte is the one section that is navigated rather than read: **each menu group is its own
-section and a row of tabs pins under the toolbar** once the first of them reaches it — tap to scroll
-to a group, scroll and the selection follows, with *Liens* as the last tab (DECISIONS.md § A Stand's
-carte is navigated). Beside a dish a dietary mark is **the glyph alone**, its words written once
-over the whole stand at the top of the fiche. No per-group source line: the content keeps the record,
-the screen stopped repeating it five times.
+A Stand's carte is **one section per menu group**, headed like every other section of the fiche;
+there is no *Au menu* above them. Beside a dish a dietary mark is **the glyph alone**, its words
+written once over the whole stand at the top of the fiche, and the dish name is a title rather than
+body text so it carries an edge over its own ingredient line. No per-group source line: the content
+keeps the record, the screen stopped repeating it five times. Tabs over the carte were built and
+removed — DECISIONS.md § Tabs over the carte were built and then taken out.
 
 > **What shipped, and what the fiche is still missing.** The template, the head, the hero
 > photograph and its continuous collapse, the date rows with their live-state pills and their
@@ -550,11 +550,10 @@ the screen stopped repeating it five times.
 > Stand's single heart in the bar. **The head is one ground now** — every fiche opens on a
 > photograph, the bundled one for the two stands whose picture has not arrived (content/GAPS.md
 > § 7); the Category blob that stood in for it is gone, DECISIONS.md § The fiche has one ground.
-> **The carte has tabs now** and each of its groups is a section of its own, which is the only place
-> the template does something one kind of Happening needs and the others do not — and it does it by
-> the same rule as the rest, since a fiche with no menu simply has no tab row. The share and map
-> actions are not built, nor is the status-bar tint. Each is deferred for its own reason, recorded
-> in DECISIONS.md § One fiche template for everything.
+> **Each group of a carte is a section of its own**, so the template still does nothing for a Stand
+> that it does not do for an Artist. The share and map actions are not built, nor is the status-bar
+> tint. Each is deferred for its own reason, recorded in DECISIONS.md § One fiche template for
+> everything.
 
 **Plus** — iOS-style grouped list, four cards: *Sur place* · *Le festival* · *S'impliquer* ·
 *L'application*. Payment is the third row of the tab. Lost property, first aid, children and

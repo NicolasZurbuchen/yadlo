@@ -103,8 +103,8 @@ data class HappeningBookingUiModel(
 )
 
 /**
- * One group of a stand's carte. [name] is both the section header it is drawn under and the label
- * on the tab that scrolls to it, which is why the two can never disagree.
+ * One group of a stand's carte. [name] is the section header it is drawn under, at the same level
+ * as *Quand* and *Tarifs* — a group is a section of the fiche rather than a sub-heading under one.
  *
  * **No `source`.** The content still records where each carte came from, on the group and on every
  * item; the fiche stopped writing it out. Five groups ending in five copies of the same forty-word

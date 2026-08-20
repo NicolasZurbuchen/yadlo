@@ -232,8 +232,8 @@ private fun stand() =
                             ),
                         ),
                 ),
-                // A second group, so the tab row has something to navigate between and the group
-                // description has somewhere to be seen. Four tabs is what the real cartes carry.
+                // A second group, so the gap between two of them can be judged and the group
+                // description has somewhere to be seen. Four or five is what the real cartes carry.
                 HappeningMenuGroupUiModel(
                     id = "tartelettes",
                     name = "Tartelettes",

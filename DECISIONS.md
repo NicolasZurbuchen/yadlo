@@ -967,32 +967,35 @@ the name and nothing can overflow into the price. An item with only a name and a
 complete item, which matters because that is the data most trucks will actually give.
 Groups make drinks and combo menus expressible without a special case.
 
-**A Stand's carte is navigated, not read from the top.** *Refines the fiche template; it does not
-fork it.* A stand fiche is up to five groups and fourteen dishes behind one *Au menu* heading, and
-the question a reader arrives with is "what are the drinks" or "what does a bokit cost". Each group
-is now its own section of the fiche, titled by the name the content gives it, with a row of tabs
-pinned under the toolbar: tap one and its heading scrolls to just below the row; scroll and the
-selection follows, including deep inside a group where no heading is on screen at all. *Liens* is
-the last tab, because "where is their Instagram" is the same kind of question.
+**A menu group is a section of the fiche, and there is no *Au menu* above them.** *Plats*,
+*Boissons* and *Tartelettes* are headed exactly the way *Quand*, *Tarifs* and *Liens* are, because
+that is what they are — peers, not sub-headings. Two levels of heading over a carte of fourteen
+dishes was one more than it needs, and the outer one only ever said what the dishes underneath
+already do.
 
-Three things were considered and rejected. **A second screen for food fiches** — the template's
-whole promise is that an Artist, an Activity and a Stand degrade the same quiet way, and what a
-carte actually wanted was a way to move *inside* a section the template already had. **Collapsible
-groups** — that answers "show me less" when the question is "take me there", and it hides the very
-thing a tab row makes visible, which is what a stand sells. **Tabs at rest, over the photograph** —
-at the top of a fiche there is nothing to navigate away from, and a row of controls on an untouched
-screen is chrome for its own sake. They arrive at the moment the first group would slide under the
-toolbar, which is exactly when they become the only way to know where you are.
+**Tabs over the carte were built and then taken out, and the reason is worth keeping.** A row of
+Uber-Eats-style tabs pinned under the toolbar — one per group, one for *Liens*, tap to scroll,
+selection following the scroll — was the obvious answer to a fiche that is five groups long, and it
+worked. It was removed the moment the glyphs landed, because the two changes were solving the same
+problem and the cheaper one won: with the marks reduced to glyphs, a dish is two short lines instead
+of four, and the longest carte in the 2026 content is no longer long enough for anyone to get lost
+in. Tabs over content that fits in two or three screens are a control that exists to be noticed
+rather than used, and they cost a pinned band of chrome on every food fiche to say so.
 
-The tab row is absent wherever there is no menu, which is every Artist, every Activity and both
-créateur stands. That is the same "which lists are non-empty" rule as the rest of the fiche rather
-than a new one.
+Reopen it only against a measurement, not a hunch: the trigger is a carte long enough that a reader
+scrolls past a group heading and cannot find their way back — realistically a stand publishing
+thirty-plus dishes, which none does today. The `HappeningMenuTabs` component and its scroll-sync
+are in the history of the branch that removed them if that day comes.
 
-The selected tab is marked by a 3dp rule in the Category's ink and never by a change of text colour.
-The obvious alternative — full ink selected, faded otherwise — is unavailable and the number says
-so: on the dark theme the neutral slate a stand fiche uses carries its ink at 4.96:1, so any alpha
-at all puts every unselected label under the 4.5:1 floor, on labels a reader has to read to use the
-control.
+Two things the tab work settled that are still true without it. **A second screen for food fiches**
+is not wanted — the template's whole promise is that an Artist, an Activity and a Stand degrade the
+same quiet way. And **collapsible groups** answer "show me less" when the question was "take me
+there", while hiding the very thing a fiche is for, which is what the stand sells.
+
+**A dish name is `titleMedium`, not `bodyLarge`.** At 15sp Normal over a 13sp Normal ingredient
+line it was two points and a shade of grey away from its own description, in the same weight, which
+left a carte with no edge to scan down. The title style puts a step of weight between them as well
+as three points of size.
 
 **The menu's source line is off the screen and still in the content.** Every group carried a
 sentence saying the carte was reconstructed from the vendor's own and not confirmed by the festival.
