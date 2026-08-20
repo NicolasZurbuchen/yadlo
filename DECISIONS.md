@@ -334,6 +334,33 @@ Why B2 over the alternatives:
 What B2 gives up: nothing shows that two later slots will collide — which turned out not to
 be a loss, since clash warnings were dropped entirely.
 
+**A row is a Happening on a day, not a Slot.** SUP Yoga runs 14:00, 16:00 and 18:00 on the
+Saturday, and as three rows it read as three activities that happen to share a name, a Category, a
+price and a photograph — scattered among everything programmed between them. One row now, with its
+hours written on one line: *14:00 – 15:00 · 16:00 – 17:00 · 18:00 – 19:00*, and three marks on one
+track.
+
+The fiche was always right about this and the list was the odd one out. There is no screen for a
+single Slot — tapping any of the three has always opened one page with a list of dates on it —
+because an activity running three times has one description, one price and one photograph. The list
+was making a distinction the rest of the app does not.
+
+Only SUP Yoga qualifies in 2026. The rule is not written for it: an activity that runs in sessions is
+the normal shape for an activity, and the previous behaviour was a bug waiting for the second one.
+
+**Each hour keeps its own state, and the row takes the loudest of them.** *En cours* wins, because a
+row with something happening on it right now has exactly one useful thing to say. **`terminé` appears
+only when every hour is finished** — a row whose 14:00 is over and whose 18:00 has not started is not
+over, and saying so hides the rest of the afternoon. That is the one thing about a merged row a
+reader could call a lie, so it is the thing the tests pin down. Between them, the hour that has gone
+dims on its own at the same alpha the whole row uses when it is finished: a row whose 14:00 has gone
+is not a row that has gone.
+
+**Mon Yadlo does not merge, and that asymmetry is deliberate.** The Programme is a list you choose
+*from*, so three chances at one activity is one choice. A Plan is a list of what you are doing, in
+order, and two hours of yoga you kept are two appointments — collapsing them would take the
+chronology out of the one screen whose whole structure is chronology.
+
 **The bar spans the day, and it is on every row — finished ones included.** Each row's segment
 sits where its Slot falls on the day's span, so the list carries the shape of the day as well
 as the state of each item: what overlaps what, how much of the afternoon a seven-hour activity

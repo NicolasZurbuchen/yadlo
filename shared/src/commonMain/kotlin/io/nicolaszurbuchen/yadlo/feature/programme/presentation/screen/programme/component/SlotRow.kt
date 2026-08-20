@@ -5,6 +5,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -51,8 +53,16 @@ import io.nicolaszurbuchen.yadlo.infra.ui.asString
  * is already the colour, and the fills were chosen to sit beside each other rather than to be
  * written with — `enfants` gold measures 1.9:1 on the light page.
  *
- * Past rows dim and stay — bar included. By 21:00 on the Saturday that is most of the list, and
- * that is accepted: reading what has already happened is part of reading the day you are in.
+ * **The third line holds every hour the Happening runs that day**, separated by middots, and each
+ * one dims on its own once it is past — *14:00 – 15:00 · 16:00 – 17:00 · 18:00 – 19:00* with the
+ * first of the three greyed at half past three. A row whose 14:00 has gone is not a row that has
+ * gone, which is the distinction three separate rows could not make. A FlowRow rather than a Row,
+ * because three ranges do not fit on one line at the largest text sizes and wrapping is the right
+ * way for that to fail.
+ *
+ * Past rows dim and stay — bar included — and a row is past only when every hour on it is. By 21:00
+ * on the Saturday that is most of the list, and that is accepted: reading what has already happened
+ * is part of reading the day you are in.
  *
  * **The bar spans the row's text, not the row.** It ran the full width, under the chevron included,
  * which put the axis's end at a different x from everything above it. The chevron is a column of its
@@ -61,6 +71,7 @@ import io.nicolaszurbuchen.yadlo.infra.ui.asString
  * [ProgrammeScaleRow] carries the same inset, so the three readings at the top of the list sit over
  * the positions they describe.
  */
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun SlotRow(
     row: SlotRowUiModel,
@@ -141,18 +152,33 @@ fun SlotRow(
                 }
             }
 
-            Text(
-                text = row.timeText,
-                style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.appColors.textSecondary,
-            )
+            FlowRow(horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xs)) {
+                row.slots.forEachIndexed { index, slot ->
+                    if (index > 0) {
+                        // Tertiary rather than the times' own colour, so the separator recedes
+                        // behind what it separates instead of counting as a fourth reading.
+                        Text(
+                            text = TIME_SEPARATOR,
+                            style = MaterialTheme.typography.labelLarge,
+                            color = MaterialTheme.appColors.textTertiary,
+                        )
+                    }
 
-            SlotTimeBar(
-                barStart = row.barStart,
-                barEnd = row.barEnd,
-                categoryFill = category.fill,
-                state = row.state,
-            )
+                    Text(
+                        text = slot.timeText,
+                        style = MaterialTheme.typography.labelLarge,
+                        color = MaterialTheme.appColors.textSecondary,
+                        // The row's own dimming, applied to one hour of it. Same value, so an hour
+                        // that has passed on a live row looks exactly as past as a row that has.
+                        modifier =
+                            Modifier.alpha(
+                                if (slot.state is SlotLiveStateUiModel.Over && !isOver) PAST_ALPHA else 1f,
+                            ),
+                    )
+                }
+            }
+
+            SlotTimeBar(segments = row.slots, categoryFill = category.fill)
         }
 
         // The row already opens the fiche; the chevron says so before it is tapped. Every other list
@@ -165,6 +191,12 @@ fun SlotRow(
         )
     }
 }
+
+/**
+ * A middot with the spacing around it coming from the row rather than from the string, so the times
+ * either side wrap independently of it.
+ */
+private const val TIME_SEPARATOR = "·"
 
 private val CATEGORY_MARK_SIZE = 10.dp
 

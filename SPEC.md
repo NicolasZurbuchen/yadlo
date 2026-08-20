@@ -502,9 +502,13 @@ appears only in ANNOUNCED / APPROACHING / LIVE. LIVE is deliberately thin becaus
 opens on Programme then.
 
 **Programme** — layout B2: one chronological list per day, no calendar column, no "now"
-line. Each row carries live state as a text pill (`dans 15 min` / `en cours` / `se termine` /
-`terminé`), a raised progress bar while running, and dims when past. Past rows are never
-collapsed. Countdowns appear only within a one-hour window.
+line. **A row is a Happening on a day**, carrying every hour it runs — an activity in sessions is
+one row with its times on one line and a mark per session on the bar, not one row per session
+(DECISIONS.md § A row is a Happening on a day). Each row carries live state as a text pill
+(`dans 15 min` / `en cours` / `se termine` / `terminé`), a raised progress bar while running, and
+dims when past. `terminé` and the dimming wait for every hour on the row to be finished; a single
+past hour dims on its own. Past rows are never collapsed. Countdowns appear only within a one-hour
+window.
 
 **Mon Yadlo** — the rail variant: date pinned left, items scrolling past, time written once
 as a range, same row vocabulary as Programme. Timeline plus one full-width Wishlist tile.
