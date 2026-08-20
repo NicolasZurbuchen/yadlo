@@ -202,9 +202,25 @@ fun HappeningScreen(
     val chromeBottomPx = barBottomPx + tabsHeightPx
     val selectedTab by remember(tabIndices, chromeBottomPx, snapSlackPx) {
         derivedStateOf {
-            tabIndices
-                .indexOfLast { listState.hasReached(it, chromeBottomPx + snapSlackPx) }
-                .coerceAtLeast(0)
+            when {
+                tabIndices.isEmpty() -> {
+                    0
+                }
+
+                // At the foot of the fiche you are in the last section whether or not its heading
+                // travelled all the way up. A final group of two dishes cannot scroll under the
+                // tabs — there is nothing below it to push it there — and a tab that refuses to
+                // light while its own section is the only thing on screen reads as broken.
+                !listState.canScrollForward -> {
+                    tabIndices.lastIndex
+                }
+
+                else -> {
+                    tabIndices
+                        .indexOfLast { listState.hasReached(it, chromeBottomPx + snapSlackPx) }
+                        .coerceAtLeast(0)
+                }
+            }
         }
     }
 
