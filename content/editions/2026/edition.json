@@ -82,7 +82,7 @@
       "description": "Elliot Guyot, étudiant à HEC Lausanne devenu une figure des nuits vaudoises. Résident hebdomadaire du MAD Club et du D! Club, il a joué au Montreux Jazz, au Venoge et à Caribana, ainsi qu'au Flow à Paris. Un répertoire volontairement large — house, reggaeton, afrobeat et throwbacks des années 2010 — résumé par sa devise : « Bangers Only ».",
       "images": [
         {
-          "src": "shared/images/artists/alf.webp",
+          "src": "shared/images/artists/dj-alf.webp",
           "credit": null
         }
       ],
@@ -250,7 +250,7 @@
       "description": "Il a joué ses premiers sets à l'époque où seuls les vinyles tournaient. Sa collection s'est étoffée en même temps que son métier, jusqu'à devenir DJ professionnel. Il se produit aujourd'hui dans le monde entier avec des sets 100 % vinyles et une maîtrise absolue des platines.",
       "images": [
         {
-          "src": "shared/images/artists/carlos-willenghton.webp",
+          "src": "shared/images/artists/carlos-willengton.webp",
           "credit": null
         }
       ],
@@ -338,7 +338,7 @@
       "description": "DJ et producteur, membre du Collectif 52.",
       "images": [
         {
-          "src": "shared/images/artists/gauthier.webp",
+          "src": "shared/images/artists/gauthier-quenis.webp",
           "credit": null
         }
       ],
@@ -498,7 +498,7 @@
       "description": "Trois ambiances, un seul dancefloor et des centaines de casques illuminés. Choisissez votre musique, changez de canal — vert, bleu ou rouge — au gré de vos envies. L'expérience immersive du samedi soir à Yadlo.",
       "images": [
         {
-          "src": "shared/images/activities/silent.webp",
+          "src": "shared/images/activities/silent-party.webp",
           "credit": null
         }
       ],
@@ -543,7 +543,12 @@
       "name": "Le coin enfants",
       "category": "enfants",
       "description": "Un espace encadré par des bénévoles, dédié au jeu, au dessin, au bricolage et au maquillage. Vous pouvez y déposer vos enfants pour deux heures au maximum, le temps de souffler ou de faire un tour du festival.",
-      "images": [],
+      "images": [
+        {
+          "src": "shared/images/activities/coin-enfant.webp",
+          "credit": null
+        }
+      ],
       "provenance": "confirmed",
       "activity": {
         "genres": [],
@@ -566,7 +571,12 @@
       "name": "Le mur de grimpe",
       "category": "enfants",
       "description": "Envie de prendre de la hauteur ? Un mur de grimpe encadré par Totem Escalade, pour découvrir l'escalade en toute sécurité.",
-      "images": [],
+      "images": [
+        {
+          "src": "shared/images/activities/mur-de-grimpe.webp",
+          "credit": null
+        }
+      ],
       "provenance": "confirmed",
       "activity": {
         "genres": [],
@@ -589,7 +599,12 @@
       "name": "Jeux de société",
       "category": "terre",
       "description": "Ch'piil met à disposition une sélection de jeux de société et accompagne les joueurs, en expliquant les règles et en animant les parties. Joueur confirmé ou simple curieux, une place vous attend autour de la table.",
-      "images": [],
+      "images": [
+        {
+          "src": "shared/images/activities/jeux-de-societe.webp",
+          "credit": null
+        }
+      ],
       "provenance": "confirmed",
       "activity": {
         "genres": [],
@@ -612,7 +627,12 @@
       "name": "Chasse au trésor",
       "category": "terre",
       "description": "Partez à l'aventure en famille ou entre amis. Suivez les pistes disséminées à travers le festival, relevez les défis qui vous attendent et tentez de percer le mystère avant la fin du parcours.",
-      "images": [],
+      "images": [
+        {
+          "src": "shared/images/activities/chasse-au-tresor.webp",
+          "credit": null
+        }
+      ],
       "provenance": "confirmed",
       "activity": {
         "genres": [],
@@ -635,7 +655,12 @@
       "name": "Mini Escape Game",
       "category": "terre",
       "description": "Quatre escape games différents, en équipe.",
-      "images": [],
+      "images": [
+        {
+          "src": "shared/images/activities/mini-escape-game.webp",
+          "credit": null
+        }
+      ],
       "provenance": "confirmed",
       "activity": {
         "genres": [],
@@ -665,7 +690,12 @@
       "name": "Tournoi de UNO",
       "category": "terre",
       "description": "Une carte peut tout changer. Tentez de vous hisser jusqu'à la victoire malgré les +4, les changements de sens et les coups bas de vos adversaires. Fous rires, suspense et revanche garantis.",
-      "images": [],
+      "images": [
+        {
+          "src": "shared/images/activities/tournoi-uno.webp",
+          "credit": null
+        }
+      ],
       "provenance": "confirmed",
       "activity": {
         "genres": [],
@@ -688,7 +718,12 @@
       "name": "Diffusion de match",
       "category": "terre",
       "description": "Les matchs de la Coupe du monde 2026 diffusés sur grand écran, sans le son.",
-      "images": [],
+      "images": [
+        {
+          "src": "shared/images/activities/diffusion-match.webp",
+          "credit": null
+        }
+      ],
       "provenance": "confirmed",
       "activity": {
         "genres": [],
@@ -711,7 +746,12 @@
       "name": "Initiation salsa et bachata",
       "category": "terre",
       "description": "Découvrez les bases de la salsa et de la bachata lors d'une initiation animée par des professionnels de l'école AliaSalsa. Après une heure d'apprentissage, place à la danse libre — juste avant de rejoindre la Silent Party.",
-      "images": [],
+      "images": [
+        {
+          "src": "shared/images/activities/salsa-bachata.webp",
+          "credit": null
+        }
+      ],
       "provenance": "confirmed",
       "activity": {
         "genres": [],
@@ -734,7 +774,12 @@
       "name": "Slackline — parcours d'équilibre",
       "category": "terre",
       "description": "Saurez-vous garder l'équilibre ? Une série de défis ludiques qui mettront à l'épreuve votre concentration, votre coordination et votre persévérance. Ouvert à toutes et tous, du simple curieux au véritable funambule.",
-      "images": [],
+      "images": [
+        {
+          "src": "shared/images/activities/slackline.webp",
+          "credit": null
+        }
+      ],
       "provenance": "confirmed",
       "activity": {
         "genres": [],
@@ -757,7 +802,12 @@
       "name": "Le trésor de Black Sam",
       "category": "terre",
       "description": "Aventure de pirates en équipe : résoudre les énigmes pour ouvrir le coffre.",
-      "images": [],
+      "images": [
+        {
+          "src": "shared/images/activities/tresor-black-sam.webp",
+          "credit": null
+        }
+      ],
       "provenance": "confirmed",
       "activity": {
         "genres": [],
@@ -789,7 +839,7 @@
       "description": "Parcours d'obstacles sur stand-up paddle, matériel inclus. Venez défier vos amis ou le chronomètre pour tenter de remporter le gros lot.",
       "images": [
         {
-          "src": "shared/images/activities/gladia-sup.webp",
+          "src": "shared/images/activities/gladiasup.webp",
           "credit": null
         }
       ],
@@ -822,7 +872,12 @@
       "name": "SUP Yoga",
       "category": "eau",
       "description": "Du yoga sur un stand-up paddle ? C'est possible. Un cours d'une heure sous la supervision d'un coach, tout le matériel inclus. Trois séances par jour, à 14h, 16h et 18h.",
-      "images": [],
+      "images": [
+        {
+          "src": "shared/images/activities/sup-yoga.webp",
+          "credit": null
+        }
+      ],
       "provenance": "confirmed",
       "activity": {
         "genres": [],
@@ -852,7 +907,12 @@
       "name": "Air Track sur la plage",
       "category": "eau",
       "description": "Une piste de gymnastique rebondissante de six mètres de long, à disposition gratuitement sur la plage. Venez montrer vos plus belles figures.",
-      "images": [],
+      "images": [
+        {
+          "src": "shared/images/activities/airtrack.webp",
+          "credit": null
+        }
+      ],
       "provenance": "confirmed",
       "activity": {
         "genres": [],
@@ -875,7 +935,12 @@
       "name": "Trampoline flottant",
       "category": "eau",
       "description": "Un trampoline de quatre mètres de diamètre qui flotte sur le lac. Jusqu'à trois personnes à la fois peuvent aller sauter à la surface de l'eau. Il se transforme volontiers en plateforme de jeux par équipes au fil de la journée.",
-      "images": [],
+      "images": [
+        {
+          "src": "shared/images/activities/trampoline-flottant.webp",
+          "credit": null
+        }
+      ],
       "provenance": "confirmed",
       "activity": {
         "genres": [],
@@ -907,7 +972,7 @@
       "description": "Cours de yoga matinal sur la plage, sans inscription, tous niveaux bienvenus. Venez avec votre tapis — s'il vous reste de l'énergie après la Silent Party.",
       "images": [
         {
-          "src": "shared/images/activities/yoga.webp",
+          "src": "shared/images/activities/yoga-plage.webp",
           "credit": null
         }
       ],
@@ -933,7 +998,12 @@
       "name": "Acro-yoga",
       "category": "eau",
       "description": "Cours d'acro-yoga matinal sur la plage, sans inscription. Pas besoin de partenaire et tous les niveaux sont les bienvenus. Amenez un tapis et c'est parti.",
-      "images": [],
+      "images": [
+        {
+          "src": "shared/images/activities/acro-yoga.webp",
+          "credit": null
+        }
+      ],
       "provenance": "confirmed",
       "activity": {
         "genres": [],
@@ -956,7 +1026,12 @@
       "name": "Vegan Fabrik",
       "category": "restauration",
       "description": "Une cuisine 100 % végétale qui prouve qu'on peut allier gourmandise, créativité et produits de qualité. Entre plats mijotés, mezzés, douceurs sucrées et glaces, il y en a pour tous les appétits. Seitan fait maison, tofu suisse Swissoja, desserts à la crème végétale, à l'aquafaba ou à la crème de cajou.",
-      "images": [],
+      "images": [
+        {
+          "src": "shared/images/stands/vegan-fabrik.webp",
+          "credit": null
+        }
+      ],
       "provenance": "confirmed",
       "stand": {
         "offering": "Cuisine végétale",
@@ -1174,7 +1249,12 @@
       "name": "Guliko",
       "category": "restauration",
       "description": "Embarquez pour un voyage en Géorgie avec des spécialités traditionnelles préparées dans le respect des recettes authentiques. Une cuisine généreuse, parfumée et pleine de caractère.",
-      "images": [],
+      "images": [
+        {
+          "src": "shared/images/stands/guliko.webp",
+          "credit": null
+        }
+      ],
       "provenance": "confirmed",
       "stand": {
         "offering": "Cuisine géorgienne",
@@ -1392,7 +1472,12 @@
       "name": "Man'ouchy",
       "category": "restauration",
       "description": "Les saveurs du Liban s'invitent au Yadlo. Shawarmas, falafels et assiettes gourmandes préparés à la minute font découvrir toute la richesse de la cuisine levantine. Née en 2016 d'un food truck à la Riponne, la maison tient aujourd'hui un restaurant à la rue César-Roux à Lausanne.",
-      "images": [],
+      "images": [
+        {
+          "src": "shared/images/stands/manouchy.webp",
+          "credit": null
+        }
+      ],
       "provenance": "confirmed",
       "stand": {
         "offering": "Cuisine libanaise",
@@ -1662,7 +1747,12 @@
       "name": "De l'Or Bokit",
       "category": "restauration",
       "description": "Impossible de passer à côté des célèbres bokits guadeloupéens. Ces sandwichs frits, généreusement garnis et relevés d'une touche créole, vous feront voyager sous les tropiques. Le bokit naît en Guadeloupe après l'abolition de l'esclavage, d'une simple pâte frite devenue emblème de la cuisine caribéenne.",
-      "images": [],
+      "images": [
+        {
+          "src": "shared/images/stands/de-lor-bokit.webp",
+          "credit": null
+        }
+      ],
       "provenance": "confirmed",
       "stand": {
         "offering": "Cuisine guadeloupéenne",
@@ -1788,7 +1878,12 @@
       "name": "Gyros Greek & La Focacceria",
       "category": "restauration",
       "description": "Deux incontournables de la cuisine méditerranéenne réunis sur un même stand. Entre gyros grecs généreux et focaccias italiennes garnies de produits de qualité, il y a de quoi satisfaire toutes les envies.",
-      "images": [],
+      "images": [
+        {
+          "src": "shared/images/stands/gyros-greek-focacceria.webp",
+          "credit": null
+        }
+      ],
       "provenance": "confirmed",
       "stand": {
         "offering": "Cuisine méditerranéenne",
@@ -1933,7 +2028,12 @@
       "name": "Surf Shop",
       "category": "restauration",
       "description": "Pour une pause gourmande à toute heure de la journée, le Surf Shop propose un choix de crêpes, gaufres et glaces. L'idéal pour une douceur entre deux concerts ou pour terminer la soirée sur une note sucrée.",
-      "images": [],
+      "images": [
+        {
+          "src": "shared/images/stands/surf-shop.webp",
+          "credit": null
+        }
+      ],
       "provenance": "confirmed",
       "stand": {
         "offering": "Crêpes, gaufres et glaces",

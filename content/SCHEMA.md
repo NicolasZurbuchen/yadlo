@@ -151,13 +151,18 @@ provenance   Provenance
 
 `Image` is `{ src, credit }`. `credit` is usually null and exists because press photos carry a
 photographer's condition. A `src` is an absolute `https://` URL, or a path relative to the **content
-root** — `shared/images/artists/alf.webp`, never `../../shared/…`. It is the published site's root
-rather than the file's own directory, so a path reads the same whichever file it is written in.
+root** — `shared/images/artists/dj-alf.webp`, never `../../shared/…`. It is the published site's
+root rather than the file's own directory, so a path reads the same whichever file it is written in.
 There is no `imageBaseUrl`: the app already knows the address it fetched the bundle from, and
 declaring it again in the content would be the same fact written twice, free to drift.
 
 The picture bank lives at `shared/`, outside any edition, because a photo of an artist who plays two
-years running is one file rather than one per edition.
+years running is one file rather than one per edition. Inside it, `images/` is split by the
+Happening's kind and **a file is named for the Happening it depicts** — `artists/dj-alf.webp`
+against `dj-alf`, and `<id>-1.webp`, `<id>-2.webp` for a Happening with several. Nothing enforces
+that, and nothing needs to: the convention exists so that a photo can be found without reading
+`edition.json`, and a name that drifts costs one Happening its picture rather than misfiling it
+under another.
 
 #### `artist` payload
 
