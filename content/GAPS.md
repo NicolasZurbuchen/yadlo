@@ -281,7 +281,7 @@ Three whole artists missing and one on the wrong day is not drift, it is a page 
 working copy of the programme lives somewhere else — a spreadsheet, a Notion page, the Instagram
 drafts — that is the thing the app should be fed from.
 
-## 7. Images — every photograph is in, the partner logos are not
+## 7. Images — the bank is complete, the permissions are not
 
 **38/38 happenings carry a photo**: all thirteen artists, all seventeen activities and all eight
 stands. They were taken from
@@ -300,11 +300,20 @@ up as a Happening with no picture rather than as a silent mismatch. The three fo
 `images/` are the Happening's kind, so `stands/guliko.webp` is findable by someone who has never
 read this file.
 
-**All 39 partner logos are in the picture bank and none of them is referenced yet.** The files are
-there under `shared/logos/`; `logo` is still `null` on every partner, so the validator reports each
-file as unreferenced. That is a wiring job rather than a content gap — eleven of the filenames do
-not match their partner id (`arenaz-automobile` against `arenaz`, `morges` against `morges-region`,
-`volta` against `volt-a`), so the mapping wants an eye rather than a loop.
+**39/39 partners carry a logo**, under `shared/logos/`, and the same naming rule applies: the file
+is named for the partner id and nothing else. Eleven of them were not — `arenaz-automobile` against
+`arenaz`, `morges` against `morges-region`, `volta` against `volt-a` — and were renamed rather than
+mapped, for the reason the photographs were: a convention fails loudly on one partner, a table goes
+stale silently on all of them.
+
+Seven are SVG and thirty-two WebP, which the app handles alike. Their aspect ratios run from 0.83 to
+6.38 — Volt-A is all but square, VSM is six times wider than it is tall — and that spread is a
+layout problem rather than a content one; DECISIONS.md § A logo is normalised by area records how
+the grid answers it.
+
+Wiring them turned up a bug in `validate.js`: the partner-logo check passed the whole `Image` to
+`checkSrc` instead of its `src`. It could not fire while every logo was null, and the first wired one
+turned all 39 into "src must be a non-empty string". Fixed with them.
 
 | Field | On | Shape |
 |---|---|---|
@@ -322,13 +331,17 @@ toolbar behind a scrim; a logo must never be cropped, tinted or bled to an edge.
 opposite handling, so they do not share a name.
 
 `credit` exists because press photos usually carry a photographer's condition. It is `null` on all
-forty-one files currently in the bank, none of which arrived with one. **That is worth revisiting
-before the app is shown to anyone**: several are portraits of identifiable people, and a photographer
-who supplied one to the association for its own channels has not thereby licensed it to an app.
+eighty files in the bank, none of which arrived with one. **That is worth revisiting before the app
+is shown to anyone**, and it is the forty-one photographs it is worth revisiting for: several are
+portraits of identifiable people, and a photographer who supplied one to the association for its own
+channels has not thereby licensed it to an app. The thirty-nine logos are a different question with a
+different answer — a sponsor supplies a logo in order to be seen, and the partners screen is the use
+it was supplied for.
 
 **What is still needed:**
 
-- **The partner logos wired up**, which is a mapping rather than an ask.
+- **A licensing answer on the photographs**, per the `credit` note above. It is the only thing left
+  in this section, and it is the one that matters.
 
 ## ✅ Resolved — every Slot now has a start and an end
 

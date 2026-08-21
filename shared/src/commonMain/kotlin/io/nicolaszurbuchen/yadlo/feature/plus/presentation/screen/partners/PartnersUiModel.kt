@@ -33,9 +33,10 @@ data class PartnerTierUiModel(
 )
 
 /**
- * [logoUrl] is null for every partner in the 2026 content: the field exists and no file has been
- * supplied, so the name is drawn instead. That is the right fallback rather than a placeholder box
- * — a company's name is the thing the logo was standing for.
+ * [logoUrl] is set for all thirty-nine partners the 2026 content declares. It stays nullable because
+ * a partner is added before its logo arrives at least as often as the other way round, and because
+ * the card draws the same fallback for a null url as for a load that failed: the name, which is what
+ * the logo was standing for.
  */
 data class PartnerUiModel(
     val id: String,

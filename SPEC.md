@@ -594,12 +594,17 @@ two genuinely have none, one is an activity of the festival rather than a compan
 address that 404s — so silence on tap would be the common case, not the edge one, and a tap that
 does nothing reads as a bug.
 
-> **What shipped.** The tiers, sorted by their declared order, as grids of tappable cards — and the
-> cards draw **names rather than logos**, because no partner in the 2026 content has a logo file
-> supplied. The name is what the logo was standing for, and a grid of grey rectangles would read as
-> a broken screen. The "no website" message is keyed on a **counter in the state** rather than
-> published as a one-shot Label, so that a second tap says it a second time and the behaviour is
-> assertable rather than a fire-and-forget.
+> **What shipped.** The tiers, sorted by their declared order, as grids of tappable cards, each card
+> a **logo on a fixed white ground in both themes** — the ground these marks were drawn against, and
+> the only one the app can be right about without a curated dark-theme set it will never own
+> (DECISIONS.md § A partner's logo sits on white). **The top three tiers are two across and the rest
+> three**, which is the same hierarchy the section order states, said in the one other language a
+> layout has. Every logo is **normalised by area** rather than fitted to its cell, because the bank
+> runs from 0.83 to 6.38 in aspect ratio and fitting each to one frame makes the square ones read as
+> three times the sponsor. The name is still drawn for a null url and a failed load alike. The "no
+> website" message is keyed on a **counter in the state** rather than published as a one-shot Label,
+> so that a second tap says it a second time and the behaviour is assertable rather than a
+> fire-and-forget.
 
 **Splash** — one background photograph of the beach under a tint, the Yadlo wordmark, the logo and
 the motto, and beneath them the two **soutien public** logos, Morges and Préverenges.

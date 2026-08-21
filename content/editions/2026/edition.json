@@ -2606,37 +2606,55 @@
           "id": "garage-dind",
           "name": "Garage Dind",
           "url": "https://www.garagedind.ch/",
-          "logo": null
+          "logo": {
+            "src": "shared/logos/garage-dind.webp",
+            "credit": null
+          }
         },
         {
           "id": "la-nebuleuse",
           "name": "La Nébuleuse",
           "url": "https://lanebuleuse.ch/",
-          "logo": null
+          "logo": {
+            "src": "shared/logos/la-nebuleuse.webp",
+            "credit": null
+          }
         },
         {
           "id": "white-horse-pub",
           "name": "White Horse Pub",
           "url": "https://www.whitehorse.ch/",
-          "logo": null
+          "logo": {
+            "src": "shared/logos/white-horse-pub.webp",
+            "credit": null
+          }
         },
         {
           "id": "anae",
           "name": "anae — atelier nature architecture environnement",
           "url": "https://www.anae.archi/",
-          "logo": null
+          "logo": {
+            "src": "shared/logos/anae.webp",
+            "credit": null
+          }
         },
         {
           "id": "fishermans-friend",
           "name": "Fisherman's Friend",
           "url": "https://www.fishermansfriend.ch/",
-          "logo": null
+          "logo": {
+            "src": "shared/logos/fishermans-friend.svg",
+            "credit": null
+          }
         },
         {
           "id": "loterie-romande",
           "name": "Loterie Romande",
           "url": "https://loro.ch/",
-          "logo": null
+          "logo": {
+            "src": "shared/logos/loterie-romande.svg",
+            "credit": null
+          }
         }
       ]
     },
@@ -2650,25 +2668,37 @@
           "id": "ap-consulting",
           "name": "AP Consulting André Prahin SA",
           "url": "https://ap-consulting-andre-prahin.digitalone.site/",
-          "logo": null
+          "logo": {
+            "src": "shared/logos/ap-consulting.webp",
+            "credit": null
+          }
         },
         {
           "id": "arenaz",
           "name": "Arenaz Automobiles",
           "url": "https://www.arenaz.ch/",
-          "logo": null
+          "logo": {
+            "src": "shared/logos/arenaz.webp",
+            "credit": null
+          }
         },
         {
           "id": "edifice",
           "name": "Edifice",
           "url": null,
-          "logo": null
+          "logo": {
+            "src": "shared/logos/edifice.webp",
+            "credit": null
+          }
         },
         {
           "id": "mbc",
           "name": "MBC — Transports de la région Morges-Bière-Cossonay",
           "url": "https://www.mbc.ch/",
-          "logo": null
+          "logo": {
+            "src": "shared/logos/mbc.svg",
+            "credit": null
+          }
         }
       ]
     },
@@ -2682,13 +2712,19 @@
           "id": "bcv",
           "name": "BCV — Banque Cantonale Vaudoise",
           "url": "https://www.bcv.ch/",
-          "logo": null
+          "logo": {
+            "src": "shared/logos/bcv.svg",
+            "credit": null
+          }
         },
         {
           "id": "romande-energie",
           "name": "Romande Energie",
           "url": "https://www.romande-energie.ch/",
-          "logo": null
+          "logo": {
+            "src": "shared/logos/romande-energie.webp",
+            "credit": null
+          }
         }
       ]
     },
@@ -2702,31 +2738,46 @@
           "id": "cham-properties",
           "name": "Cham Swiss Properties",
           "url": "https://www.champroperties.ch/",
-          "logo": null
+          "logo": {
+            "src": "shared/logos/cham-properties.webp",
+            "credit": null
+          }
         },
         {
           "id": "ellgass-plastiline",
           "name": "Ellgass Plastiline",
           "url": "https://www.ellgass.ch/",
-          "logo": null
+          "logo": {
+            "src": "shared/logos/ellgass-plastiline.webp",
+            "credit": null
+          }
         },
         {
           "id": "retripa",
           "name": "Retripa",
           "url": "https://www.retripa.ch/",
-          "logo": null
+          "logo": {
+            "src": "shared/logos/retripa.webp",
+            "credit": null
+          }
         },
         {
           "id": "vaudoise",
           "name": "Vaudoise Assurances",
           "url": "https://www.vaudoise.ch/",
-          "logo": null
+          "logo": {
+            "src": "shared/logos/vaudoise.webp",
+            "credit": null
+          }
         },
         {
           "id": "von-auw",
           "name": "Von Auw SA",
           "url": "https://www.vonauw.ch/",
-          "logo": null
+          "logo": {
+            "src": "shared/logos/von-auw.webp",
+            "credit": null
+          }
         }
       ]
     },
@@ -2740,121 +2791,181 @@
           "id": "totem-climbing",
           "name": "Totem Escalade",
           "url": "https://www.totem.ch/",
-          "logo": null
+          "logo": {
+            "src": "shared/logos/totem-climbing.webp",
+            "credit": null
+          }
         },
         {
           "id": "bertola",
           "name": "Bertola Construction SA",
           "url": "https://www.bertola.ch/",
-          "logo": null
+          "logo": {
+            "src": "shared/logos/bertola.webp",
+            "credit": null
+          }
         },
         {
           "id": "dream-garden",
           "name": "Dream Garden",
           "url": "https://www.dreamgarden.ch/",
-          "logo": null
+          "logo": {
+            "src": "shared/logos/dream-garden.webp",
+            "credit": null
+          }
         },
         {
           "id": "surf-shop",
           "name": "Surfshop Préverenges",
           "url": "https://www.surfshop.ch/",
-          "logo": null
+          "logo": {
+            "src": "shared/logos/surf-shop.webp",
+            "credit": null
+          }
         },
         {
           "id": "volt-a",
           "name": "Volt-A Solutions Électriques",
           "url": "https://www.volt-a.ch/",
-          "logo": null
+          "logo": {
+            "src": "shared/logos/volt-a.webp",
+            "credit": null
+          }
         },
         {
           "id": "vsm-nettoyage",
           "name": "VSM Nettoyage & Services",
           "url": "https://www.vsm-nettoyage.ch/",
-          "logo": null
+          "logo": {
+            "src": "shared/logos/vsm-nettoyage.webp",
+            "credit": null
+          }
         },
         {
           "id": "summit-video",
           "name": "Summit Video",
           "url": "https://www.summitvideo.ch/",
-          "logo": null
+          "logo": {
+            "src": "shared/logos/summit-video.webp",
+            "credit": null
+          }
         },
         {
           "id": "rivella",
           "name": "Rivella",
           "url": "https://www.rivella.ch/",
-          "logo": null
+          "logo": {
+            "src": "shared/logos/rivella.webp",
+            "credit": null
+          }
         },
         {
           "id": "gladiasup",
           "name": "GladiaSUP",
           "url": null,
-          "logo": null
+          "logo": {
+            "src": "shared/logos/gladiasup.webp",
+            "credit": null
+          }
         },
         {
           "id": "brocello",
           "name": "BroCello",
           "url": "https://www.brocello.ch/",
-          "logo": null
+          "logo": {
+            "src": "shared/logos/brocello.webp",
+            "credit": null
+          }
         },
         {
           "id": "grano-mate",
           "name": "Grano Maté",
           "url": "https://granomate.ch/",
-          "logo": null
+          "logo": {
+            "src": "shared/logos/grano-mate.webp",
+            "credit": null
+          }
         },
         {
           "id": "cash-solutions",
           "name": "Cash Solutions",
           "url": "https://cash-solutions.ch/",
-          "logo": null
+          "logo": {
+            "src": "shared/logos/cash-solutions.webp",
+            "credit": null
+          }
         },
         {
           "id": "frisco",
           "name": "Nestlé Frisco",
           "url": "https://www.frisco.ch/",
-          "logo": null
+          "logo": {
+            "src": "shared/logos/frisco.webp",
+            "credit": null
+          }
         },
         {
           "id": "lfm",
           "name": "LFM",
           "url": "https://www.lfm.ch/",
-          "logo": null
+          "logo": {
+            "src": "shared/logos/lfm.webp",
+            "credit": null
+          }
         },
         {
           "id": "sherlock-events",
           "name": "Sherlock Events",
           "url": "https://www.sherlock-events.ch/",
-          "logo": null
+          "logo": {
+            "src": "shared/logos/sherlock-events.webp",
+            "credit": null
+          }
         },
         {
           "id": "vivi-kola",
           "name": "Vivi Kola",
           "url": "https://www.vivikola.ch/",
-          "logo": null
+          "logo": {
+            "src": "shared/logos/vivi-kola.svg",
+            "credit": null
+          }
         },
         {
           "id": "kosmos",
           "name": "Kosmos Drinks",
           "url": "https://kosmosdrinks.ch/",
-          "logo": null
+          "logo": {
+            "src": "shared/logos/kosmos.webp",
+            "credit": null
+          }
         },
         {
           "id": "supernaturalclub",
           "name": "Super Natural Club",
           "url": "https://www.supernaturalclub.ch/",
-          "logo": null
+          "logo": {
+            "src": "shared/logos/supernaturalclub.webp",
+            "credit": null
+          }
         },
         {
           "id": "swan",
           "name": "SwanWine",
           "url": "https://swanwine.ch/",
-          "logo": null
+          "logo": {
+            "src": "shared/logos/swan.webp",
+            "credit": null
+          }
         },
         {
           "id": "winatypic",
           "name": "Winatypic",
           "url": null,
-          "logo": null
+          "logo": {
+            "src": "shared/logos/winatypic.webp",
+            "credit": null
+          }
         }
       ]
     },
@@ -2868,13 +2979,19 @@
           "id": "preverenges",
           "name": "Commune de Préverenges",
           "url": "https://www.preverenges.ch/",
-          "logo": null
+          "logo": {
+            "src": "shared/logos/preverenges.svg",
+            "credit": null
+          }
         },
         {
           "id": "morges-region",
           "name": "Morges Région Slow Tourisme",
           "url": "https://www.morges-tourisme.ch/",
-          "logo": null
+          "logo": {
+            "src": "shared/logos/morges-region.svg",
+            "credit": null
+          }
         }
       ]
     }

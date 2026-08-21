@@ -76,8 +76,12 @@ fun PartnersScreen(
                 verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.lg),
                 modifier = Modifier.fillMaxWidth(),
             ) {
-                state.tiers.forEach { tier ->
-                    PartnerTierBlock(tier = tier, onPartnerClick = onPartnerClick)
+                state.tiers.forEachIndexed { index, tier ->
+                    PartnerTierBlock(
+                        tier = tier,
+                        columns = if (index < PROMINENT_TIERS) PROMINENT_COLUMNS else COLUMNS,
+                        onPartnerClick = onPartnerClick,
+                    )
                 }
             }
         }
@@ -88,3 +92,18 @@ fun PartnersScreen(
         )
     }
 }
+
+/**
+ * How many tiers are drawn two across before the rest go three.
+ *
+ * Three, which in the 2026 content is *Sponsors généraux*, *Sponsors cygnes d'or* and *Sponsors
+ * cygnes d'argent*. Counted from the top rather than matched by id, because the thing being said is
+ * "the top of the hierarchy gets more room" rather than "these three slugs are special" — the tiers
+ * arrive already ordered by the rank the sponsors paid into, and a tier that gets renamed or a
+ * fourth that gets added should not silently lose or gain a column.
+ */
+private const val PROMINENT_TIERS = 3
+
+private const val PROMINENT_COLUMNS = 2
+
+private const val COLUMNS = 3
