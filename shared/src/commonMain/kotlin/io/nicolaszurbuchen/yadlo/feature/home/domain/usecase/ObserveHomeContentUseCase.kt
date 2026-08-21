@@ -49,5 +49,20 @@ class ObserveHomeContentUseCase(
             figures = edition.figures,
             figuresAreConfirmed = edition.figures.all { it.provenance == Provenance.CONFIRMED },
             social = festival.social,
+            // Each of these is the existence of a Plus section, read here so Accueil can promote a
+            // few of them by Phase without ever offering an empty screen. They are asked of the
+            // same `festival` the Plus overview asks, so the two tabs cannot disagree about whether
+            // a screen is worth opening.
+            hasStory = festival.story != null,
+            hasVolunteering = festival.involvement?.volunteering != null,
+            hasTransport = festival.transport?.modes.orEmpty().isNotEmpty(),
+            hasPayment = festival.payment != null,
+            newsletterUrl = festival.links.firstOrNull { it.id == NEWSLETTER_LINK_ID }?.url,
         )
 }
+
+/**
+ * The standing call to action, keyed by its id in `festival.links` rather than by its position —
+ * the list also carries the donation page, and the two are ordered by the content.
+ */
+private const val NEWSLETTER_LINK_ID = "newsletter"

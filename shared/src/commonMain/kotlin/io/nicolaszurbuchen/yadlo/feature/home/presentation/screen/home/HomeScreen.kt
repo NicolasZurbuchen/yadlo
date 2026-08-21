@@ -18,6 +18,7 @@ import io.nicolaszurbuchen.yadlo.common.content.presentation.component.SocialLin
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.component.AnnouncementsBlock
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.component.CountdownBlock
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.component.FiguresBlock
+import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.component.QuickAccessBlock
 import io.nicolaszurbuchen.yadlo.infra.ui.asString
 
 /**
@@ -31,6 +32,7 @@ fun HomeScreen(
     onAnnouncementClick: (String) -> Unit,
     onSeeAllAnnouncementsClick: () -> Unit,
     onSocialClick: (String) -> Unit,
+    onQuickAccessClick: (QuickAccessItemUiModel) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     if (state.isLoading) {
@@ -92,6 +94,10 @@ fun HomeScreen(
 
                 is HomeBlockUiModel.Social -> {
                     SocialLinksRow(items = block.items, onSocialClick = onSocialClick)
+                }
+
+                is HomeBlockUiModel.QuickAccess -> {
+                    QuickAccessBlock(block = block, onItemClick = onQuickAccessClick)
                 }
             }
         }

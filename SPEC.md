@@ -505,7 +505,11 @@ ENDED         then                             →  +6 weeks
 appears only in ANNOUNCED / APPROACHING / LIVE. LIVE is deliberately thin because the app
 opens on Programme then. ENDED's thank-you carries the association's *À tout bientôt*
 photograph, bundled — the only hero in the app with a picture behind it (DECISIONS.md § The
-thank-you is the one hero with a photograph).
+thank-you is the one hero with a photograph). One block **promotes a small number of Plus
+screens by phase** — one tile in ANNOUNCED, up to three in OFF_SEASON, none at all in LIVE —
+under a heading belonging to that phase. It is a promotion rather than a shortcut, and the
+count follows what is actionable at that point in the year rather than filling a grid
+(DECISIONS.md § Accueil promotes a few Plus screens).
 
 **Programme** — layout B2: one chronological list per day, no calendar column, no "now"
 line. **A row is a Happening on a day**, carrying every hour it runs — an activity in sessions is

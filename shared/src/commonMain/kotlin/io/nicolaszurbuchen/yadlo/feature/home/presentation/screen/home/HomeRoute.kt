@@ -13,12 +13,14 @@ import org.koin.compose.viewmodel.koinViewModel
 fun HomeRoute(
     onNavigateToProgramme: () -> Unit,
     onNavigateToAnnouncements: () -> Unit,
+    onNavigateToQuickAccess: (QuickAccessEntryUiModel) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = koinViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val onNavigateToProgrammeUpdated by rememberUpdatedState(onNavigateToProgramme)
     val onNavigateToAnnouncementsUpdated by rememberUpdatedState(onNavigateToAnnouncements)
+    val onNavigateToQuickAccessUpdated by rememberUpdatedState(onNavigateToQuickAccess)
 
     // An annonce or a network leaves the app entirely, so it is the platform's business rather than
     // the navigator's — a link out is not a destination and never joins a back stack.
@@ -40,6 +42,21 @@ fun HomeRoute(
         onAnnouncementClick = { url -> viewModel.onIntent(HomeIntent.AnnouncementClicked(url)) },
         onSeeAllAnnouncementsClick = { viewModel.onIntent(HomeIntent.AllAnnouncementsClicked) },
         onSocialClick = { url -> viewModel.onIntent(HomeIntent.SocialClicked(url)) },
+        // The same split PlusRoute makes: a tile carrying a url is one that leaves the app, and
+        // only it needs the store — the address is on the model the store is already holding.
+        // Everything else is a fixed destination, and sending it round the Intent → Executor →
+        // Label loop would add a hop that only forwards and put the navigation decision in two
+        // places. It is also what keeps a back stack out of a browser.
+        //
+        // The null branch is the one to watch: an entry given a leaving mark but no url would
+        // quietly open a screen instead. `QuickAccessEntryUiModelTest` fails if that happens.
+        onQuickAccessClick = { item ->
+            if (item.url != null) {
+                viewModel.onIntent(HomeIntent.QuickAccessLinkClicked(item.url))
+            } else {
+                onNavigateToQuickAccessUpdated(item.entry)
+            }
+        },
         modifier = modifier,
     )
 }

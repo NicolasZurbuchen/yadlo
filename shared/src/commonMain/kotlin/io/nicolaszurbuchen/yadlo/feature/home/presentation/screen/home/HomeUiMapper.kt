@@ -20,6 +20,10 @@ import yadlo.shared.generated.resources.home_hero_announced_title
 import yadlo.shared.generated.resources.home_hero_approaching_body
 import yadlo.shared.generated.resources.home_hero_approaching_kicker
 import yadlo.shared.generated.resources.home_hero_approaching_title
+import yadlo.shared.generated.resources.home_quick_access_announced
+import yadlo.shared.generated.resources.home_quick_access_approaching
+import yadlo.shared.generated.resources.home_quick_access_ended
+import yadlo.shared.generated.resources.home_quick_access_off_season
 import yadlo.shared.generated.resources.home_thank_you_body
 import yadlo.shared.generated.resources.home_thank_you_title
 import yadlo.shared.generated.resources.img_see_you_soon
@@ -28,11 +32,14 @@ import kotlin.time.Duration.Companion.hours
 /**
  * The block stack, decided per Phase, following the published Accueil prototype.
  *
- * Blocks the prototype shows that are absent here have nowhere to send anyone yet: recherche,
- * revivre l'édition, s'impliquer, la newsletter, l'histoire, préparer sa venue, les réservations,
- * and the LIVE quiet-hours block. Each waits on either the unmodelled Plus sections of
- * `festival.json`, a screen that does not exist, or Slot live state. The phases they belong to are
- * where they go; the ordering below is not a suggestion, it is the prototype's.
+ * Blocks the prototype shows that are still absent have nowhere to send anyone yet: recherche,
+ * revivre l'édition, les réservations, and the LIVE quiet-hours block. Recherche and the quiet
+ * hours wait on Slot state; the other two wait on a screen that does not exist — there is no
+ * archive of past editions, and nothing in the published content is a booking. S'impliquer, la
+ * newsletter, l'histoire and préparer sa venue have arrived, as the tiles of [HomeBlockUiModel.QuickAccess].
+ *
+ * The phases they belong to are where they go; the ordering below is not a suggestion, it is the
+ * prototype's.
  *
  * Every block is built before one `when` picks the stack, rather than each being built inside the
  * branch that wants it. They are small immutable values, and a UiMapper is required to be a single
@@ -155,20 +162,88 @@ fun HomeState.toUiModel(): HomeUiModel {
             )
         }
 
+    // Each promoted tile is gated on the section behind it, exactly as the matching Plus row is, so
+    // Accueil can never offer a screen with nothing on it. The two entries that leave the app carry
+    // their address; the three that stay carry null, because the navigator already knows the key.
+    val volunteering =
+        QuickAccessItemUiModel(entry = QuickAccessEntryUiModel.VOLUNTEERING, url = null)
+            .takeIf { loaded.hasVolunteering }
+    val story =
+        QuickAccessItemUiModel(entry = QuickAccessEntryUiModel.STORY, url = null)
+            .takeIf { loaded.hasStory }
+    val payment =
+        QuickAccessItemUiModel(entry = QuickAccessEntryUiModel.PAYMENT, url = null)
+            .takeIf { loaded.hasPayment }
+    val access =
+        QuickAccessItemUiModel(entry = QuickAccessEntryUiModel.ACCESS, url = null)
+            .takeIf { loaded.hasTransport }
+    val newsletter =
+        loaded.newsletterUrl?.let { QuickAccessItemUiModel(entry = QuickAccessEntryUiModel.NEWSLETTER, url = it) }
+
+    // **Which tiles a Phase gets, and what the block calls them.** This is the block's whole
+    // argument, so it is one readable table rather than five conditions scattered down the file.
+    //
+    // The counts are uneven on purpose — one in ANNOUNCED, three in OFF_SEASON — because a tile
+    // earns its place by being actionable *now*, and filling every phase to the same width would
+    // mean promoting things nobody is ready to act on. ANNOUNCED gets exactly one because the hero
+    // is doing the work in that phase and a grid under it would compete with the one thing the
+    // screen is for.
+    //
+    // **LIVE gets nothing, and that is a decision rather than a gap** — DECISIONS.md § Accueil,
+    // block by block turned down the plan du site and the stands here by name, on the grounds that
+    // both already live in Plus › Sur place, and the app is meant to open on Programme during the
+    // festival anyway. A block promoting Plus screens onto a tab nobody is looking at that weekend
+    // is the duplication rule with extra steps.
+    val quickAccess =
+        when (phase) {
+            PhaseUiModel.OFF_SEASON -> {
+                Res.string.home_quick_access_off_season to listOfNotNull(volunteering, newsletter, story)
+            }
+
+            PhaseUiModel.ANNOUNCED -> {
+                Res.string.home_quick_access_announced to listOfNotNull(volunteering)
+            }
+
+            // Paiement first of the two: it is the only fact in the app that is actionable
+            // exclusively *before leaving the house*, which is when someone would otherwise stop at
+            // a cash machine they did not need.
+            PhaseUiModel.APPROACHING -> {
+                Res.string.home_quick_access_approaching to listOfNotNull(payment, access)
+            }
+
+            PhaseUiModel.LIVE -> {
+                null
+            }
+
+            // The Monday after is the one moment someone has just decided they are coming back, and
+            // the newsletter is the only thing the app can offer them to act on it.
+            PhaseUiModel.ENDED -> {
+                Res.string.home_quick_access_ended to listOfNotNull(newsletter)
+            }
+        }?.let { (title, items) ->
+            items
+                .takeIf { it.isNotEmpty() }
+                ?.let { HomeBlockUiModel.QuickAccess(title = UiText.Resource(title), items = it) }
+        }
+
     val blocks =
         when (phase) {
-            PhaseUiModel.OFF_SEASON -> listOfNotNull(countdown, announcements, social)
+            // Quick access sits under the annonces in the two long phases and over them in
+            // APPROACHING, which is the prototype's ordering and follows from what each is for:
+            // in June the annonces are the news and these are the sidelines, while at J-3 they are
+            // the errand and the annonces are the news about it.
+            PhaseUiModel.OFF_SEASON -> listOfNotNull(countdown, announcements, quickAccess, social)
 
-            PhaseUiModel.ANNOUNCED -> listOfNotNull(countdown, hero, announcements, social)
+            PhaseUiModel.ANNOUNCED -> listOfNotNull(countdown, hero, announcements, quickAccess, social)
 
             // No networks in this one phase, and that is the prototype's call rather than an
             // omission: it is the only phase with something to do, and it ends on the annonces
             // instead of offering a way off the app three days before the gates open.
-            PhaseUiModel.APPROACHING -> listOfNotNull(countdown, hero, announcements)
+            PhaseUiModel.APPROACHING -> listOfNotNull(countdown, hero, quickAccess, announcements)
 
             PhaseUiModel.LIVE -> listOfNotNull(announcements, social)
 
-            PhaseUiModel.ENDED -> listOfNotNull(thankYou, figures, announcements, social)
+            PhaseUiModel.ENDED -> listOfNotNull(thankYou, figures, announcements, quickAccess, social)
         }
 
     return HomeUiModel(isLoading = false, blocks = blocks)

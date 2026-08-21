@@ -11,9 +11,15 @@ import io.nicolaszurbuchen.yadlo.common.content.domain.model.Festival
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.FestivalDay
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Figure
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Happening
+import io.nicolaszurbuchen.yadlo.common.content.domain.model.InfoLink
+import io.nicolaszurbuchen.yadlo.common.content.domain.model.Involvement
+import io.nicolaszurbuchen.yadlo.common.content.domain.model.Payment
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Provenance
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Slot
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.SocialLink
+import io.nicolaszurbuchen.yadlo.common.content.domain.model.Story
+import io.nicolaszurbuchen.yadlo.common.content.domain.model.Transport
+import io.nicolaszurbuchen.yadlo.common.content.domain.model.TransportMode
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Venue
 import io.nicolaszurbuchen.yadlo.common.error.AppError
 import kotlinx.coroutines.test.runTest
@@ -152,6 +158,103 @@ class ObserveHomeContentUseCaseTest {
             }
         }
 
+    // region the sections Accueil promotes
+
+    @Test
+    fun invoke_everyPromotedSectionPublished_reportsEachOneAvailable() =
+        runTest {
+            val repository = FakeContentRepository()
+            val useCase = ObserveHomeContentUseCase(repository)
+
+            useCase().test {
+                repository.emitStatus(ContentStatus.Ready(bundle = bundle(festival = fullFestival()), updateRequired = false))
+
+                val content = awaitItem()
+
+                assertEquals(true, content.hasStory)
+                assertEquals(true, content.hasVolunteering)
+                assertEquals(true, content.hasTransport)
+                assertEquals(true, content.hasPayment)
+                assertEquals("https://example.ch/newsletter", content.newsletterUrl)
+            }
+        }
+
+    @Test
+    fun invoke_nothingPublishedYet_promotesNothing() =
+        runTest {
+            // The normal case for most of this app's life, and the one that has to be right: a tile
+            // drawn for an unpublished section would open a screen with nothing on it.
+            val repository = FakeContentRepository()
+            val useCase = ObserveHomeContentUseCase(repository)
+
+            useCase().test {
+                repository.emitStatus(ContentStatus.Ready(bundle = bundle(), updateRequired = false))
+
+                val content = awaitItem()
+
+                assertEquals(false, content.hasStory)
+                assertEquals(false, content.hasVolunteering)
+                assertEquals(false, content.hasTransport)
+                assertEquals(false, content.hasPayment)
+                assertEquals(null, content.newsletterUrl)
+            }
+        }
+
+    @Test
+    fun invoke_transportSectionPublishedWithNoModes_isNotPromoted() =
+        runTest {
+            // Present but empty is the state a rolled-back publish leaves behind, and it is not the
+            // same as published — the screen behind the tile would have a heading and no timetable.
+            val repository = FakeContentRepository()
+            val useCase = ObserveHomeContentUseCase(repository)
+
+            useCase().test {
+                val festival = fullFestival().copy(transport = Transport(modes = emptyList(), provenance = Provenance.CONFIRMED))
+
+                repository.emitStatus(ContentStatus.Ready(bundle = bundle(festival = festival), updateRequired = false))
+
+                assertEquals(false, awaitItem().hasTransport)
+            }
+        }
+
+    @Test
+    fun invoke_applicationsClosedForThisEdition_stopsPromotingVolunteering() =
+        runTest {
+            // Recruiting is a campaign rather than a fact, so the tile has to be able to go away
+            // without the involvement section being deleted.
+            val repository = FakeContentRepository()
+            val useCase = ObserveHomeContentUseCase(repository)
+
+            useCase().test {
+                val festival = fullFestival().copy(involvement = Involvement(volunteering = null, partnership = null))
+
+                repository.emitStatus(ContentStatus.Ready(bundle = bundle(festival = festival), updateRequired = false))
+
+                assertEquals(false, awaitItem().hasVolunteering)
+            }
+        }
+
+    @Test
+    fun invoke_linksCarryTheDonationPageButNoNewsletter_promotesNoNewsletter() =
+        runTest {
+            // The list is keyed by id rather than by position, and it really does hold two things.
+            val repository = FakeContentRepository()
+            val useCase = ObserveHomeContentUseCase(repository)
+
+            useCase().test {
+                val festival =
+                    fullFestival().copy(
+                        links = listOf(InfoLink(id = "don", label = "Faire un don", sublabel = null, url = "https://example.ch/don")),
+                    )
+
+                repository.emitStatus(ContentStatus.Ready(bundle = bundle(festival = festival), updateRequired = false))
+
+                assertEquals(null, awaitItem().newsletterUrl)
+            }
+        }
+
+    // endregion
+
     @Test
     fun invoke_statusIsNotReady_emitsNothing() =
         runTest {
@@ -169,15 +272,9 @@ class ObserveHomeContentUseCaseTest {
         slots: List<Slot> = listOf(slot()),
         announcements: List<Announcement> = emptyList(),
         figureProvenance: Provenance = Provenance.CONFIRMED,
+        festival: Festival = bareFestival(),
     ) = ContentBundle(
-        festival =
-            Festival(
-                name = "Yadlo",
-                tagline = "Mouille ton corps, arrose ton esprit",
-                currentEditionId = "2026",
-                minSupportedAppVersion = null,
-                social = listOf(SocialLink(id = "instagram", name = "Instagram", url = "https://example.ch/insta")),
-            ),
+        festival = festival,
         edition =
             Edition(
                 id = "2026",
@@ -200,6 +297,63 @@ class ObserveHomeContentUseCaseTest {
             ),
         announcements = announcements,
     )
+
+    /**
+     * The four fields the loading chain and Accueil are built on, and nothing else — which is also
+     * the shape of a real `festival.json` before the association has published its practical
+     * sections. Every promoted tile is absent against this fixture, on purpose.
+     */
+    private fun bareFestival() =
+        Festival(
+            name = "Yadlo",
+            tagline = "Mouille ton corps, arrose ton esprit",
+            currentEditionId = "2026",
+            minSupportedAppVersion = null,
+            social = listOf(SocialLink(id = "instagram", name = "Instagram", url = "https://example.ch/insta")),
+        )
+
+    /** The same file with every section Accueil can promote filled in. */
+    private fun fullFestival() =
+        bareFestival().copy(
+            links = listOf(InfoLink(id = "newsletter", label = "Newsletter", sublabel = null, url = "https://example.ch/newsletter")),
+            story = Story(foundedYear = 2015, body = "Depuis 2015.", passage = null, provenance = Provenance.CONFIRMED),
+            transport =
+                Transport(
+                    modes =
+                        listOf(
+                            TransportMode(
+                                id = "train",
+                                name = "Train",
+                                body = "Gare de Préverenges.",
+                                facts = emptyList(),
+                                links = emptyList(),
+                                departures = emptyList(),
+                            ),
+                        ),
+                    provenance = Provenance.CONFIRMED,
+                ),
+            payment =
+                Payment(
+                    headline = null,
+                    summary = null,
+                    methods = listOf(Payment.Method(id = "cash", name = "Espèces", accepted = false)),
+                    notes = emptyList(),
+                    provenance = Provenance.CONFIRMED,
+                ),
+            involvement =
+                Involvement(
+                    volunteering =
+                        Involvement.Volunteering(
+                            name = "Hot'Staff",
+                            body = "Rejoins l'équipe.",
+                            perks = emptyList(),
+                            signupUrl = "https://example.ch/staff",
+                            contactEmailId = "staff",
+                            provenance = Provenance.CONFIRMED,
+                        ),
+                    partnership = null,
+                ),
+        )
 
     private fun day() =
         FestivalDay(
