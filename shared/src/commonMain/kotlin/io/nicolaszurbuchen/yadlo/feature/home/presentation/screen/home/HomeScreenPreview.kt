@@ -16,6 +16,7 @@ import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SocialLinkU
 import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.socialIconFor
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.uimodel.AnnouncementUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
+import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.StringResource
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.home_announcements_title
@@ -45,6 +46,10 @@ import yadlo.shared.generated.resources.home_quick_access_ended
 import yadlo.shared.generated.resources.home_quick_access_off_season
 import yadlo.shared.generated.resources.home_thank_you_body
 import yadlo.shared.generated.resources.home_thank_you_title
+import yadlo.shared.generated.resources.img_atmosphere
+import yadlo.shared.generated.resources.img_concert
+import yadlo.shared.generated.resources.img_festival
+import yadlo.shared.generated.resources.img_reception
 import yadlo.shared.generated.resources.img_see_you_soon
 
 /**
@@ -88,9 +93,21 @@ private class HomeStackProvider : PreviewParameterProvider<HomeUiModel> {
             // LIVE, all four of it. The site is shut for roughly 48 of LIVE's 83 hours, so the
             // hero is what this tab mostly is during the festival — and the Sunday-night one is
             // the half-step that stops the weekend ending on a cliff.
-            stack(liveHero(LIVE_BEFORE_KICKER, LIVE_BEFORE_TITLE, LIVE_BEFORE_BODY, "16:00"), announcements(), social()),
-            stack(liveHero(LIVE_OPEN_KICKER, LIVE_OPEN_TITLE, LIVE_OPEN_BODY, "02:00"), announcements(), social()),
-            stack(liveHero(LIVE_CLOSED_KICKER, LIVE_CLOSED_TITLE, LIVE_CLOSED_BODY, "12:00"), announcements(), social()),
+            stack(
+                liveHero(LIVE_BEFORE_KICKER, LIVE_BEFORE_TITLE, LIVE_BEFORE_BODY, "16:00", Res.drawable.img_reception),
+                announcements(),
+                social(),
+            ),
+            stack(
+                liveHero(LIVE_OPEN_KICKER, LIVE_OPEN_TITLE, LIVE_OPEN_BODY, "02:00", Res.drawable.img_atmosphere),
+                announcements(),
+                social(),
+            ),
+            stack(
+                liveHero(LIVE_CLOSED_KICKER, LIVE_CLOSED_TITLE, LIVE_CLOSED_BODY, "12:00", Res.drawable.img_reception),
+                announcements(),
+                social(),
+            ),
             stack(liveGoodbye(), announcements(), social()),
             // ENDED — merci, the closing figures, and the way out.
             stack(
@@ -115,6 +132,7 @@ private class HomeStackProvider : PreviewParameterProvider<HomeUiModel> {
             kicker = UiText.Resource(Res.string.home_hero_announced_kicker),
             title = UiText.Resource(Res.string.home_hero_announced_title, listOf("2026")),
             body = UiText.Resource(Res.string.home_hero_announced_body, listOf("13", "17", "3")),
+            image = Res.drawable.img_festival,
         )
 
     private fun approachingHero() =
@@ -122,6 +140,7 @@ private class HomeStackProvider : PreviewParameterProvider<HomeUiModel> {
             kicker = UiText.Resource(Res.string.home_hero_approaching_kicker),
             title = UiText.Resource(Res.string.home_hero_approaching_title),
             body = UiText.Resource(Res.string.home_hero_approaching_body),
+            image = Res.drawable.img_concert,
         )
 
     private fun thankYou() =
@@ -174,10 +193,12 @@ private class HomeStackProvider : PreviewParameterProvider<HomeUiModel> {
         title: StringResource,
         body: StringResource,
         at: String,
+        image: DrawableResource,
     ) = HomeBlockUiModel.Hero(
         kicker = UiText.Resource(kicker),
         title = UiText.Resource(title),
         body = UiText.Resource(body, listOf(at)),
+        image = image,
     )
 
     /** The one hero with nowhere to send anyone, so the one drawn without a chevron. */
@@ -186,6 +207,7 @@ private class HomeStackProvider : PreviewParameterProvider<HomeUiModel> {
             kicker = UiText.Resource(Res.string.home_live_over_kicker),
             title = UiText.Resource(Res.string.home_live_over_title),
             body = UiText.Resource(Res.string.home_live_over_body),
+            image = Res.drawable.img_see_you_soon,
             opensProgramme = false,
         )
 

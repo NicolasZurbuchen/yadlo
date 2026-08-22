@@ -50,12 +50,13 @@ import org.jetbrains.compose.resources.painterResource
  * carries dark ink; white on that blue is 2.4:1 and unusable, which AppColorTest holds rather than
  * leaving as prose.
  *
- * **[image] swaps that ground for a photograph, and it is the exception rather than the pattern.**
- * A hero earns one when the sentence it carries is the *whole* of what the screen has left to say,
- * which happens exactly once: the Monday after the festival, when the programme is over, the
- * countdown has nothing to count and *Merci.* is the entire page. A blue card there is the app
- * closing the year on a UI component. Every other hero sits above content it introduces, and a
- * photograph would make the introduction louder than the thing introduced.
+ * **[image] swaps that ground for a photograph, and on Accueil that is now every hero.** It was
+ * written as the exception — one picture, on the Monday after, when *Merci.* is the entire page —
+ * on the reasoning that a photograph under a hero introducing other content would be louder than
+ * the thing introduced. Seeing the phases side by side settled it the other way: Accueil carries at
+ * most one hero at a time, it is the first thing the app shows, and a blue card is the app's voice
+ * where a photograph is the festival's. The blue remains for a hero inside a page that has more to
+ * say — *Paiement* is the case — where the block really is an introduction.
  *
  * Over a photograph the ink is [io.nicolaszurbuchen.yadlo.app.design.theme.AppColors.onScrim] under
  * the same bottom-weighted scrim the fiche's head uses. That is not decoration: the scrim's alpha is

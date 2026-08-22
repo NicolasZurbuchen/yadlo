@@ -31,6 +31,15 @@ sealed interface HomeBlockUiModel {
         val title: UiText,
         val body: UiText,
         /**
+         * Not nullable, because every hero Accueil draws has one. A blue card was the original
+         * shape and the photograph was its exception; the exception won — see [YadloHero].
+         *
+         * Bundled rather than fetched, like the thank-you's: these are chrome for the one screen
+         * that has to work on a saturated cell tower, and a hero whose picture never arrives is
+         * worse than a hero that never promised one.
+         */
+        val image: DrawableResource,
+        /**
          * Every hero but one is a way into the Programme, and draws the chevron that says so.
          *
          * The exception is the Sunday-night goodbye, which is the only one that is purely a

@@ -39,6 +39,10 @@ import yadlo.shared.generated.resources.home_quick_access_ended
 import yadlo.shared.generated.resources.home_quick_access_off_season
 import yadlo.shared.generated.resources.home_thank_you_body
 import yadlo.shared.generated.resources.home_thank_you_title
+import yadlo.shared.generated.resources.img_atmosphere
+import yadlo.shared.generated.resources.img_concert
+import yadlo.shared.generated.resources.img_festival
+import yadlo.shared.generated.resources.img_reception
 import yadlo.shared.generated.resources.img_see_you_soon
 import kotlin.time.Duration.Companion.hours
 
@@ -87,6 +91,9 @@ fun HomeState.toUiModel(): HomeUiModel {
                 kicker = UiText.Resource(Res.string.home_hero_approaching_kicker),
                 title = UiText.Resource(Res.string.home_hero_approaching_title),
                 body = UiText.Resource(Res.string.home_hero_approaching_body),
+                // A crowd in front of a stage, three days out: the thing the Plan is being built
+                // for, rather than the site it happens on.
+                image = Res.drawable.img_concert,
             )
         } else {
             HomeBlockUiModel.Hero(
@@ -101,6 +108,10 @@ fun HomeState.toUiModel(): HomeUiModel {
                             loaded.days.size.toString(),
                         ),
                     ),
+                // The festival at large, because this hero announces the whole of it and not one
+                // evening of it. Its own file rather than the fallback photograph it was copied
+                // from — see the note in HomeScreenPreview.
+                image = Res.drawable.img_festival,
             )
         }
 
@@ -127,6 +138,8 @@ fun HomeState.toUiModel(): HomeUiModel {
                             Res.string.home_live_before_body,
                             listOf(siteMoment.opensAt.formatAsTimeOfDay(FESTIVAL_TIME_ZONE)),
                         ),
+                    // The gate, on both the states that are waiting outside it.
+                    image = Res.drawable.img_reception,
                 )
             }
 
@@ -143,6 +156,7 @@ fun HomeState.toUiModel(): HomeUiModel {
                             Res.string.home_live_open_body,
                             listOf(siteMoment.closesAt.formatAsTimeOfDay(FESTIVAL_TIME_ZONE)),
                         ),
+                    image = Res.drawable.img_atmosphere,
                 )
             }
 
@@ -157,6 +171,7 @@ fun HomeState.toUiModel(): HomeUiModel {
                             Res.string.home_live_closed_body,
                             listOf(siteMoment.reopensAt.formatAsTimeOfDay(FESTIVAL_TIME_ZONE)),
                         ),
+                    image = Res.drawable.img_reception,
                 )
             }
 
@@ -169,6 +184,10 @@ fun HomeState.toUiModel(): HomeUiModel {
                     kicker = UiText.Resource(Res.string.home_live_over_kicker),
                     title = UiText.Resource(Res.string.home_live_over_title),
                     body = UiText.Resource(Res.string.home_live_over_body),
+                    // The same farewell the ENDED thank-you carries, thirteen hours earlier and
+                    // in a quieter register. Shared on purpose: nobody sees the two at once, and
+                    // one picture across both reads as one long goodbye rather than two screens.
+                    image = Res.drawable.img_see_you_soon,
                     opensProgramme = false,
                 )
             }
