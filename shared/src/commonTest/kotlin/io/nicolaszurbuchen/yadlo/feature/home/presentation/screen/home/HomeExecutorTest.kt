@@ -16,6 +16,7 @@ import io.nicolaszurbuchen.yadlo.common.content.domain.model.Slot
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.SocialLink
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Venue
 import io.nicolaszurbuchen.yadlo.common.content.domain.usecase.DerivePhaseUseCase
+import io.nicolaszurbuchen.yadlo.feature.home.domain.usecase.DeriveSiteMomentUseCase
 import io.nicolaszurbuchen.yadlo.feature.home.domain.usecase.ObserveHomeContentUseCase
 import io.nicolaszurbuchen.yadlo.infra.time.AppClock
 import kotlinx.coroutines.Dispatchers
@@ -258,6 +259,7 @@ class HomeExecutorTest {
                 storeFactory = DefaultStoreFactory(),
                 observeHomeContent = ObserveHomeContentUseCase(repository),
                 derivePhase = DerivePhaseUseCase(clock),
+                deriveSiteMoment = DeriveSiteMomentUseCase(clock),
                 clock = clock,
             ).create()
 

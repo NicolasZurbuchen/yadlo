@@ -505,7 +505,8 @@ ENDED         then                             →  +6 weeks
 
 **Accueil** — a block stack per phase (blocks enumerated in DECISIONS.md). Global search
 appears only in ANNOUNCED / APPROACHING / LIVE. LIVE is deliberately thin because the app
-opens on Programme then. ENDED's thank-you carries the association's *À tout bientôt*
+opens on Programme then, and carries one hero saying where the weekend is up to — before the
+gates, open until X, shut until Y, or a light goodbye once the last day has closed (story 61). ENDED's thank-you carries the association's *À tout bientôt*
 photograph, bundled — the only hero in the app with a picture behind it (DECISIONS.md § The
 thank-you is the one hero with a photograph). One block **promotes a small number of Plus
 screens by phase** — one row in ANNOUNCED, up to three in OFF_SEASON, none at all in LIVE —

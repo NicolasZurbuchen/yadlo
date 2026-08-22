@@ -1,5 +1,6 @@
 package io.nicolaszurbuchen.yadlo.feature.home.di
 
+import io.nicolaszurbuchen.yadlo.feature.home.domain.usecase.DeriveSiteMomentUseCase
 import io.nicolaszurbuchen.yadlo.feature.home.domain.usecase.ObserveHomeContentUseCase
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.announcements.AnnouncementsStoreFactory
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.announcements.AnnouncementsViewModel
@@ -12,6 +13,7 @@ import org.koin.dsl.module
 val homeModule =
     module {
         factoryOf(::ObserveHomeContentUseCase)
+        factoryOf(::DeriveSiteMomentUseCase)
 
         factoryOf(::HomeStoreFactory)
         viewModelOf(::HomeViewModel)

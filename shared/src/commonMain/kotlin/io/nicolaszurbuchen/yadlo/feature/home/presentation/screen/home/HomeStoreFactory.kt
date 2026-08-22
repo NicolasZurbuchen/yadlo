@@ -8,6 +8,8 @@ import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Phase
 import io.nicolaszurbuchen.yadlo.common.content.domain.usecase.DerivePhaseUseCase
 import io.nicolaszurbuchen.yadlo.feature.home.domain.model.HomeContent
+import io.nicolaszurbuchen.yadlo.feature.home.domain.model.SiteMoment
+import io.nicolaszurbuchen.yadlo.feature.home.domain.usecase.DeriveSiteMomentUseCase
 import io.nicolaszurbuchen.yadlo.feature.home.domain.usecase.ObserveHomeContentUseCase
 import io.nicolaszurbuchen.yadlo.infra.time.AppClock
 import kotlinx.coroutines.delay
@@ -20,6 +22,7 @@ class HomeStoreFactory(
     private val storeFactory: StoreFactory,
     private val observeHomeContent: ObserveHomeContentUseCase,
     private val derivePhase: DerivePhaseUseCase,
+    private val deriveSiteMoment: DeriveSiteMomentUseCase,
     private val clock: AppClock,
 ) {
     fun create(): HomeStore =
@@ -79,7 +82,13 @@ class HomeStoreFactory(
         private fun observeContent() {
             scope.launch {
                 observeHomeContent().collect { content ->
-                    dispatch(HomeMessage.ContentUpdated(content = content, phase = phaseOf(content)))
+                    dispatch(
+                        HomeMessage.ContentUpdated(
+                            content = content,
+                            phase = phaseOf(content),
+                            siteMoment = siteMomentOf(content),
+                        ),
+                    )
                 }
             }
         }
@@ -92,7 +101,7 @@ class HomeStoreFactory(
             scope.launch {
                 while (true) {
                     delay(TICK_INTERVAL)
-                    dispatch(HomeMessage.Ticked(now = clock.now(), phase = phaseOf(state().content)))
+                    dispatch(tick())
                 }
             }
 
@@ -101,10 +110,23 @@ class HomeStoreFactory(
             // the phase stack. Nothing emits on this in release.
             scope.launch {
                 clock.jumps.collect {
-                    dispatch(HomeMessage.Ticked(now = clock.now(), phase = phaseOf(state().content)))
+                    dispatch(tick())
                 }
             }
         }
+
+        /** One reading of the clock for all three, so the countdown and the two derived states agree. */
+        private fun tick(): HomeMessage.Ticked {
+            val content = state().content
+
+            return HomeMessage.Ticked(
+                now = clock.now(),
+                phase = phaseOf(content),
+                siteMoment = siteMomentOf(content),
+            )
+        }
+
+        private fun siteMomentOf(content: HomeContent?) = deriveSiteMoment(days = content?.days.orEmpty())?.toUiModel()
 
         private fun phaseOf(content: HomeContent?): PhaseUiModel =
             derivePhase(
@@ -117,8 +139,13 @@ class HomeStoreFactory(
     internal object ReducerImpl : Reducer<HomeState, HomeMessage> {
         override fun HomeState.reduce(msg: HomeMessage): HomeState =
             when (msg) {
-                is HomeMessage.ContentUpdated -> copy(content = msg.content, phase = msg.phase)
-                is HomeMessage.Ticked -> copy(now = msg.now, phase = msg.phase)
+                is HomeMessage.ContentUpdated -> {
+                    copy(content = msg.content, phase = msg.phase, siteMoment = msg.siteMoment)
+                }
+
+                is HomeMessage.Ticked -> {
+                    copy(now = msg.now, phase = msg.phase, siteMoment = msg.siteMoment)
+                }
             }
     }
 
@@ -132,6 +159,14 @@ class HomeStoreFactory(
         val TICK_INTERVAL = 1.minutes
     }
 }
+
+private fun SiteMoment.toUiModel(): SiteMomentUiModel =
+    when (this) {
+        is SiteMoment.BeforeFirstDay -> SiteMomentUiModel.BeforeFirstDay(opensAt)
+        is SiteMoment.Open -> SiteMomentUiModel.Open(closesAt)
+        is SiteMoment.Closed -> SiteMomentUiModel.Closed(reopensAt)
+        SiteMoment.Finished -> SiteMomentUiModel.Finished
+    }
 
 private fun Phase.toUiModel(): PhaseUiModel =
     when (this) {

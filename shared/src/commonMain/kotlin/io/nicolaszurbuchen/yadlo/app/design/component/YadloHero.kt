@@ -20,8 +20,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
@@ -50,18 +48,20 @@ import org.jetbrains.compose.resources.painterResource
  * carries dark ink; white on that blue is 2.4:1 and unusable, which AppColorTest holds rather than
  * leaving as prose.
  *
- * **[image] swaps that ground for a photograph, and it is the exception rather than the pattern.**
- * A hero earns one when the sentence it carries is the *whole* of what the screen has left to say,
- * which happens exactly once: the Monday after the festival, when the programme is over, the
- * countdown has nothing to count and *Merci.* is the entire page. A blue card there is the app
- * closing the year on a UI component. Every other hero sits above content it introduces, and a
- * photograph would make the introduction louder than the thing introduced.
+ * **[image] swaps that ground for a photograph, and on Accueil that is now every hero.** It was
+ * written as the exception — one picture, on the Monday after, when *Merci.* is the entire page —
+ * on the reasoning that a photograph under a hero introducing other content would be louder than
+ * the thing introduced. Seeing the phases side by side settled it the other way: Accueil carries at
+ * most one hero at a time, it is the first thing the app shows, and a blue card is the app's voice
+ * where a photograph is the festival's. The blue remains for a hero inside a page that has more to
+ * say — *Paiement* is the case — where the block really is an introduction.
  *
  * Over a photograph the ink is [io.nicolaszurbuchen.yadlo.app.design.theme.AppColors.onScrim] under
- * the same bottom-weighted scrim the fiche's head uses. That is not decoration: the scrim's alpha is
- * the lowest at which white clears 4.5:1 over a *white* photograph, and the hero's own ink is
- * measured against blue, which a photograph is not. The two treatments are one component so that a
- * hero cannot end up with page ink over a picture.
+ * a flat, full-bleed scrim — the splash's treatment, and for the same reason: it is the alpha at
+ * which white clears 4.5:1 over a *white* photograph, so it holds wherever the picture is brightest
+ * and whatever is under any given line. The hero's own ink is measured against blue, which a
+ * photograph is not. The two treatments are one component so that a hero cannot end up with page
+ * ink over a picture.
  *
  * [kicker] is set in the label face, which is what it is: *Nouveau*, *À faire maintenant* — a word
  * about the sentence under it rather than a sentence of its own.
@@ -103,20 +103,25 @@ fun YadloHero(
                 modifier = Modifier.fillMaxSize(),
             )
 
-            // Weighted to the bottom, where the words are, and clear at the top — the same shape as
-            // the fiche's head, for the same reason: the middle of the picture is the part worth
-            // showing and the text still has to clear 4.5:1 wherever it lands.
+            // Flat and full-bleed, the splash's treatment rather than the fiche's gradient.
+            //
+            // It was a bottom-weighted gradient, on the reasoning that the middle of the picture is
+            // the part worth showing. That works on the fiche, where the words are a single line
+            // against the very bottom edge; it does not work here, because a hero's text is a
+            // kicker, a title and a body stacked up through the lower half, and the gradient only
+            // reaches full strength at 1f. The top of that stack was sitting over near-transparent
+            // scrim, so on a bright photograph the kicker and the title went first — which is
+            // exactly backwards, since the title is the sentence the block exists to say.
+            //
+            // A flat scrim is the value AppColorTest measures: white over it clears AA against a
+            // *pure white* photograph, so every line clears it wherever the picture is brightest.
+            // The cost is a picture uniformly darker than a gradient would leave it, which is the
+            // right trade for a block whose words are the point.
             Box(
                 modifier =
                     Modifier
                         .matchParentSize()
-                        .background(
-                            Brush.verticalGradient(
-                                0f to Color.Transparent,
-                                SCRIM_FROM to Color.Transparent,
-                                1f to scrim,
-                            ),
-                        ),
+                        .background(scrim),
             )
         }
 
@@ -173,9 +178,3 @@ fun YadloHero(
  * and show nothing of the picture above them.
  */
 private val IMAGE_HERO_MIN_HEIGHT = 200.dp
-
-/**
- * Where the scrim starts, as a fraction of the block's height. Later than the fiche's 0.5, because
- * this block is shorter and its words sit in the bottom third rather than filling it.
- */
-private const val SCRIM_FROM = 0.35f

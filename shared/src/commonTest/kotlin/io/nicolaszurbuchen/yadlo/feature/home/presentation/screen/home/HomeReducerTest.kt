@@ -15,11 +15,18 @@ class HomeReducerTest {
 
         val result =
             with(reducer) {
-                state.reduce(HomeMessage.ContentUpdated(content = content, phase = PhaseUiModel.ENDED))
+                state.reduce(
+                    HomeMessage.ContentUpdated(
+                        content = content,
+                        phase = PhaseUiModel.ENDED,
+                        siteMoment = SiteMomentUiModel.Finished,
+                    ),
+                )
             }
 
         assertEquals(content, result.content)
         assertEquals(PhaseUiModel.ENDED, result.phase)
+        assertEquals(SiteMomentUiModel.Finished, result.siteMoment)
     }
 
     @Test
@@ -30,11 +37,18 @@ class HomeReducerTest {
 
         val result =
             with(reducer) {
-                state.reduce(HomeMessage.Ticked(now = later, phase = PhaseUiModel.LIVE))
+                state.reduce(
+                    HomeMessage.Ticked(
+                        now = later,
+                        phase = PhaseUiModel.LIVE,
+                        siteMoment = SiteMomentUiModel.Open(later),
+                    ),
+                )
             }
 
         assertEquals(later, result.now)
         assertEquals(PhaseUiModel.LIVE, result.phase)
+        assertEquals(SiteMomentUiModel.Open(later), result.siteMoment)
         assertEquals(content, result.content)
     }
 

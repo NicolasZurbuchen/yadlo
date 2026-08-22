@@ -45,6 +45,18 @@
     <string name="home_quick_access_announced">Envie d'aider ?</string>
     <string name="home_quick_access_approaching">Préparer sa venue</string>
     <string name="home_quick_access_ended">Rester au courant</string>
+    <string name="home_live_before_kicker">Jour J</string>
+    <string name="home_live_before_title">C'est aujourd'hui</string>
+    <string name="home_live_before_body">Le site ouvre à %1$s.</string>
+    <string name="home_live_open_kicker">En ce moment</string>
+    <string name="home_live_open_title">Le festival est en cours</string>
+    <string name="home_live_open_body">Ouvert jusqu'à %1$s.</string>
+    <string name="home_live_closed_kicker">Fermé</string>
+    <string name="home_live_closed_title">Le site est fermé</string>
+    <string name="home_live_closed_body">Réouverture à %1$s.</string>
+    <string name="home_live_over_kicker">C'est fini</string>
+    <string name="home_live_over_title">À l'année prochaine</string>
+    <string name="home_live_over_body">Rentrez bien.</string>
 
     <string name="announcements_title">Annonces</string>
     <string name="announcements_empty">Aucune annonce pour le moment.</string>
