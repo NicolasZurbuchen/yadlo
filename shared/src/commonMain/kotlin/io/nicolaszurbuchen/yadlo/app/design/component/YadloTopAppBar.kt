@@ -136,23 +136,25 @@ fun YadloTopAppBar(
 /**
  * The festival's name set as a lockup with the mark rather than as a heading beside it.
  *
- * **The size is derived, not chosen.** Barlow SemiCondensed puts its cap height and its ascender at
- * exactly 0.70em — measured from the font, and equal because this is a grotesque — and *Yadlo* has
- * no descender, so the word's ink is 0.70 × the font size and nothing else. [MARK_SIZE] / 0.70 is
- * therefore what makes the word exactly as tall as the mark next to it, which is what a lockup is.
+ * **The em box matches the mark, not the ink.** Barlow SemiCondensed puts its cap height and its
+ * ascender at exactly 0.70em — measured from the font, and equal to each other because this is a
+ * grotesque — and *Yadlo* has no descender, so the word's ink is 0.70 × the font size and nothing
+ * else. Setting the size to [MARK_SIZE] therefore draws a word 19.6dp tall beside a 28dp mark: the
+ * name sits *within* the mark's height rather than squaring up to it. Matching the ink exactly would
+ * take 40sp, which was tried and is too much bar for a word this short.
  *
- * **The weight is derived too, and this is why it is not the Bold it started as.** The mark's own
- * stroke — the wave bands and the swan, not the hairline ring around them — is 11.1% of its width,
- * which is 3.11dp at [MARK_SIZE]. Barlow SemiCondensed's stem at this size measures 2.84dp Regular,
- * 3.84 Medium, 4.64 SemiBold and 5.64 Bold. Regular is the only one in the same ink as the mark;
- * Bold is nearly twice it, which is what made the word read as shouting next to a drawing.
+ * **The weight is measured, and it is why this is not the Bold it started as.** Compare the two as
+ * ratios rather than in points, because that is what the eye reads and it holds whatever size the
+ * word is set at. The mark's own stroke — the wave bands and the swan, not the hairline ring around
+ * them — is 11.1% of the mark's height. Barlow SemiCondensed's stem against its cap height is 10.1%
+ * Regular, 13.7% Medium, 16.6% SemiBold and 20.1% Bold. Regular is the one carrying the mark's own
+ * ink; Bold is nearly twice it, which is what made the word read as shouting next to a drawing.
  *
- * The ring is thinner still, at 1.15dp, and no weight in the family reaches it. That is the right
- * thing to miss: an outline is not what gives a mark its weight.
+ * The ring is thinner still — 4.1% of the mark, a hairline no weight in the family reaches. That is
+ * the right thing to miss: an outline is not what gives a mark its weight.
  *
- * Line height equal to the font size, which is the ordinary tight setting for display type and
- * leaves room here regardless — the ink is 0.70em, so a 1.00em line box has three tenths of an em
- * spare before anything could clip.
+ * Line height equal to the font size, the ordinary tight setting for display type, and it clears the
+ * ink here with room to spare: 0.70em of ink in a 1.00em box.
  */
 @Composable
 private fun wordmarkStyle() =
@@ -169,8 +171,8 @@ private fun wordmarkStyle() =
  */
 private val MARK_SIZE = 28.dp
 
-/** [MARK_SIZE] ÷ 0.70, the em fraction Barlow SemiCondensed gives a capital or an ascender. */
-private val WORDMARK_SIZE = 40.sp
+/** The mark's size read as an em box, which puts 19.6dp of ink beside it — see [wordmarkStyle]. */
+private val WORDMARK_SIZE = 28.sp
 
 /**
  * The twelve an `IconButton` would have put around the mark, added by hand because there is no
