@@ -168,6 +168,9 @@ fun HomeState.toUiModel(): HomeUiModel {
     val volunteering =
         QuickAccessItemUiModel(entry = QuickAccessEntryUiModel.VOLUNTEERING, url = null)
             .takeIf { loaded.hasVolunteering }
+    val contact =
+        QuickAccessItemUiModel(entry = QuickAccessEntryUiModel.CONTACT, url = null)
+            .takeIf { loaded.hasContact }
     val story =
         QuickAccessItemUiModel(entry = QuickAccessEntryUiModel.STORY, url = null)
             .takeIf { loaded.hasStory }
@@ -196,10 +199,15 @@ fun HomeState.toUiModel(): HomeUiModel {
     // is the duplication rule with extra steps.
     val quickAccess =
         when (phase) {
+            // *Nous écrire* rather than *Devenir bénévole*, which is the difference between the two
+            // long phases: between editions there is nothing to staff yet, and the useful offer is
+            // a way to reach the association during the months it can actually answer.
             PhaseUiModel.OFF_SEASON -> {
-                Res.string.home_quick_access_off_season to listOfNotNull(volunteering, newsletter, story)
+                Res.string.home_quick_access_off_season to listOfNotNull(contact, newsletter, story)
             }
 
+            // And now there is: the programme exists, so the edition is a thing that has to be
+            // staffed, and this is the phase the association is actually recruiting in.
             PhaseUiModel.ANNOUNCED -> {
                 Res.string.home_quick_access_announced to listOfNotNull(volunteering)
             }

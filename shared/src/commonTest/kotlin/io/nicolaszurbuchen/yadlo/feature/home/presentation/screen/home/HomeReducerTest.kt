@@ -54,6 +54,7 @@ class HomeReducerTest {
             // Nothing promoted: the reducer only ever swaps one content for another, and what
             // Accueil chooses to raise out of it is the UiMapper's business.
             hasStory = false,
+            hasContact = false,
             hasVolunteering = false,
             hasTransport = false,
             hasPayment = false,

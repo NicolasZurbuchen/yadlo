@@ -54,6 +54,7 @@ class ObserveHomeContentUseCase(
             // same `festival` the Plus overview asks, so the two tabs cannot disagree about whether
             // a screen is worth opening.
             hasStory = festival.story != null,
+            hasContact = festival.contact?.emails.orEmpty().isNotEmpty(),
             hasVolunteering = festival.involvement?.volunteering != null,
             hasTransport = festival.transport?.modes.orEmpty().isNotEmpty(),
             hasPayment = festival.payment != null,

@@ -27,7 +27,7 @@ class QuickAccessEntryUiModelTest {
     }
 
     @Test
-    fun entries_thatStayInTheApp_areTheFourTheNavKeyHandlerCanReach() {
+    fun entries_thatStayInTheApp_areTheFiveTheNavKeyHandlerCanReach() {
         // The handler's `when` is exhaustive over the enum, so the compiler already holds this half
         // — but only as long as no entry is quietly given a leaving mark to escape it.
         val staying = QuickAccessEntryUiModel.entries.filter { it.mark == YadloLinkMarkUiModel.DISCLOSURE }
@@ -37,6 +37,7 @@ class QuickAccessEntryUiModelTest {
                 QuickAccessEntryUiModel.PAYMENT,
                 QuickAccessEntryUiModel.ACCESS,
                 QuickAccessEntryUiModel.VOLUNTEERING,
+                QuickAccessEntryUiModel.CONTACT,
                 QuickAccessEntryUiModel.STORY,
             ),
             staying,
@@ -55,7 +56,7 @@ class QuickAccessEntryUiModelTest {
     }
 
     private companion object {
-        /** Three across is what fits a phone before a tile's label wraps past two lines. */
+        /** Three rows is the most any one phase promotes, and OFF_SEASON is the phase that does. */
         const val MOST_A_PHASE_MAY_PROMOTE = 3
 
         /** Every phase but LIVE, which promotes nothing. */

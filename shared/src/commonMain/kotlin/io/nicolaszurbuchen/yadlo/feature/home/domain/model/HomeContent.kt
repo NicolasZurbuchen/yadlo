@@ -43,6 +43,7 @@ data class HomeContent(
      * screen's content on a model that draws a tile.
      */
     val hasStory: Boolean,
+    val hasContact: Boolean,
     /** False when the edition has closed its applications — recruiting is a campaign, not a fact. */
     val hasVolunteering: Boolean,
     val hasTransport: Boolean,

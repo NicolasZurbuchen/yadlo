@@ -1151,13 +1151,13 @@ invariant lives in the content pipeline and the app never has to defend against 
 **Accueil promotes a few Plus screens, and it is not a shortcut.** The objection to raise first is
 that it saves one tap, since everything it points at already lives in Plus — and if that were all
 it did, it would not be worth the room. It is not. Plus is a table of contents where sixteen rows
-carry identical weight and nothing in it knows what month it is: *Devenir bénévole*, the one thing
-the association is actively recruiting for, sits at the same volume as *Politique de
-confidentialité*, and a visitor in November has no reason to open the tab at all. Accueil is the
+carry identical weight and nothing in it knows what month it is: *Devenir bénévole*, the thing the
+association spends the spring recruiting for, sits at the same volume as *Politique de
+confidentialité* all year round, and a visitor in November has no reason to open the tab at all. Accueil is the
 only surface in the app that knows the Phase. What the block buys is that a thing is raised at the
 moment it becomes actionable and drops away afterwards, which no arrangement of Plus can do.
 
-**The count follows the phase rather than a grid — one tile in ANNOUNCED, three in OFF_SEASON.**
+**The count follows the phase rather than a fixed width — one row in ANNOUNCED, three in OFF_SEASON.**
 This is the part that decides whether the block is worth having. Filling every phase to the same
 width means promoting whatever is left over once the genuinely urgent items run out, and a
 promotion surface full of padding *is* just a smaller Plus, which really would be worth less than
@@ -1189,13 +1189,27 @@ asks, so the two tabs cannot disagree about whether a screen is worth opening. T
 Plus tab's own label strings for the same reason: a tile and a row that open one screen have to
 call it the same thing.
 
-**Tiles across, not rows down.** A stack of full-width rows is what the Plus tab looks like, and a
-block on Accueil that reads as a shorter Plus invites being scanned past like one. Drawn across
-under a phase-specific heading — *Préparer sa venue* rather than a neutral "accès rapide" — the two
-or three read as what they are. The heading is the block's argument and belongs to the Phase, which
-is why it travels on the model rather than being fixed in the component. Only the leaving mark is
-drawn: a tile has no trailing column, and the chevron was already the mark that says nothing the tap
-has not said.
+**It is drawn as the Plus tab's own card, sharing the component rather than matching it by eye.**
+The first attempt made these compact tiles laid out across the width, reasoning that a block reading
+like a shorter Plus invites being scanned past like one. Wrong trade: these rows *open Plus screens*,
+so a reader who taps *Paiement* here and *Paiement* there has tapped one thing and must not be able
+to tell the two apart. The row and the card moved to `app/design/component/` — a titled card of
+full-width rows, generic over the caller's own row type so nothing is matched up by a string
+afterwards — and both screens now draw the same object. Matching a style by eye is exactly how the
+four hand-written app bars ended up agreeing on nothing.
+
+What makes it Accueil's rather than Plus's is the heading, which belongs to the Phase — *Préparer sa
+venue* over payment and transport says why those two and why now, where a neutral "accès rapide"
+would say nothing — and the length, one to three rather than sixteen. It carries no subtitles: Plus
+writes the little it knows under a row because that tab is a table of contents being scanned, while
+here the heading has already said why the row is on the screen, and a second line under each would
+turn three promoted rows back into a list to read through.
+
+**Recruiting is promoted only once there is an edition to staff.** OFF_SEASON offers *Nous écrire*
+and ANNOUNCED offers *Devenir bénévole*, which is the difference between the two long phases rather
+than an inconsistency. Between editions there is nothing to volunteer *for* yet and the useful offer
+is a way to reach the association during the months it can actually answer; once the programme
+exists it is an edition that has to be staffed, and that is when the association is recruiting.
 
 **They push onto Accueil's stack, not into the Plus tab.** A tab switch would leave the reader on
 Plus's root when they back out of *Paiement*, somewhere they never chose to be. Pushed, back returns

@@ -5,6 +5,7 @@ import io.nicolaszurbuchen.yadlo.app.navigation.TabNavigator
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.navigation.AnnouncementsDestination
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.navigation.HomeNavigator
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.AccessDestination
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.ContactDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.PaymentDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.StoryDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.VolunteeringDestination
@@ -27,8 +28,8 @@ class HomeNavigatorImpl(
     }
 
     // Pushes, not tab switches. [AppNavigator] is attached to whichever stack is showing, so a
-    // promoted tile tapped on Accueil opens over Accueil and backs out to it — which is what makes
-    // these four a promotion of a Plus screen rather than a shortcut into the Plus tab.
+    // promoted row tapped on Accueil opens over Accueil and backs out to it — which is what makes
+    // these five a promotion of a Plus screen rather than a shortcut into the Plus tab.
     override fun navigateToPayment() {
         appNavigator.navigateTo(PaymentDestination)
     }
@@ -39,6 +40,10 @@ class HomeNavigatorImpl(
 
     override fun navigateToVolunteering() {
         appNavigator.navigateTo(VolunteeringDestination)
+    }
+
+    override fun navigateToContact() {
+        appNavigator.navigateTo(ContactDestination)
     }
 
     override fun navigateToStory() {

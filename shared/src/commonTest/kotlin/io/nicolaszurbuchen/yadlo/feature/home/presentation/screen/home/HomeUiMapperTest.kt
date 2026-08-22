@@ -322,12 +322,26 @@ class HomeUiMapperTest {
 
         assertEquals(
             listOf(
-                QuickAccessEntryUiModel.VOLUNTEERING,
+                QuickAccessEntryUiModel.CONTACT,
                 QuickAccessEntryUiModel.NEWSLETTER,
                 QuickAccessEntryUiModel.STORY,
             ),
             state.quickAccessEntries(),
         )
+    }
+
+    @Test
+    fun toUiModel_recruitingIsPromotedOnlyOnceThereIsAnEditionToStaff() {
+        // The split between the two long phases. Off season there is nothing to volunteer *for*
+        // yet, so the offer is a way to reach the association; once the programme exists it becomes
+        // an edition that has to be staffed, and that is the phase they are recruiting in.
+        val offSeason = state(phase = PhaseUiModel.OFF_SEASON, now = THREE_DAYS_BEFORE).quickAccessEntries()
+        val announced = state(phase = PhaseUiModel.ANNOUNCED, now = THREE_DAYS_BEFORE).quickAccessEntries()
+
+        assertTrue(QuickAccessEntryUiModel.CONTACT in offSeason)
+        assertTrue(QuickAccessEntryUiModel.VOLUNTEERING !in offSeason)
+        assertTrue(QuickAccessEntryUiModel.VOLUNTEERING in announced)
+        assertTrue(QuickAccessEntryUiModel.CONTACT !in announced)
     }
 
     @Test
@@ -372,7 +386,7 @@ class HomeUiMapperTest {
         val state = state(phase = PhaseUiModel.OFF_SEASON, now = THREE_DAYS_BEFORE, hasStory = false)
 
         assertEquals(
-            listOf(QuickAccessEntryUiModel.VOLUNTEERING, QuickAccessEntryUiModel.NEWSLETTER),
+            listOf(QuickAccessEntryUiModel.CONTACT, QuickAccessEntryUiModel.NEWSLETTER),
             state.quickAccessEntries(),
         )
     }
@@ -384,7 +398,7 @@ class HomeUiMapperTest {
                 phase = PhaseUiModel.OFF_SEASON,
                 now = THREE_DAYS_BEFORE,
                 hasStory = false,
-                hasVolunteering = false,
+                hasContact = false,
                 newsletterUrl = null,
             )
 
@@ -471,6 +485,7 @@ class HomeUiMapperTest {
         // Phase gets is not silently also a test about what the content happens to hold. The tests
         // that care about an unpublished section turn one off by name.
         hasStory: Boolean = true,
+        hasContact: Boolean = true,
         hasVolunteering: Boolean = true,
         hasTransport: Boolean = true,
         hasPayment: Boolean = true,
@@ -492,6 +507,7 @@ class HomeUiMapperTest {
                 figuresAreConfirmed = figuresAreConfirmed,
                 social = social,
                 hasStory = hasStory,
+                hasContact = hasContact,
                 hasVolunteering = hasVolunteering,
                 hasTransport = hasTransport,
                 hasPayment = hasPayment,

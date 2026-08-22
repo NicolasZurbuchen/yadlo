@@ -158,10 +158,10 @@ private class HomeStackProvider : PreviewParameterProvider<HomeUiModel> {
         items: List<QuickAccessItemUiModel>,
     ) = HomeBlockUiModel.QuickAccess(title = UiText.Resource(title), items = items)
 
-    /** Three across, and the only stack where a tile that leaves the app sits beside two that do not. */
+    /** Three rows, and the only stack where one that leaves the app sits beside two that do not. */
     private fun offSeasonTiles() =
         listOf(
-            QuickAccessItemUiModel(QuickAccessEntryUiModel.VOLUNTEERING, url = null),
+            QuickAccessItemUiModel(QuickAccessEntryUiModel.CONTACT, url = null),
             QuickAccessItemUiModel(QuickAccessEntryUiModel.NEWSLETTER, url = NEWSLETTER_URL),
             QuickAccessItemUiModel(QuickAccessEntryUiModel.STORY, url = null),
         )

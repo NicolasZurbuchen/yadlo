@@ -4,6 +4,7 @@ import app.cash.turbine.test
 import io.nicolaszurbuchen.yadlo.common.content.domain.fake.FakeContentRepository
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Announcement
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Category
+import io.nicolaszurbuchen.yadlo.common.content.domain.model.Contact
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.ContentBundle
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.ContentStatus
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Edition
@@ -172,6 +173,7 @@ class ObserveHomeContentUseCaseTest {
                 val content = awaitItem()
 
                 assertEquals(true, content.hasStory)
+                assertEquals(true, content.hasContact)
                 assertEquals(true, content.hasVolunteering)
                 assertEquals(true, content.hasTransport)
                 assertEquals(true, content.hasPayment)
@@ -193,6 +195,7 @@ class ObserveHomeContentUseCaseTest {
                 val content = awaitItem()
 
                 assertEquals(false, content.hasStory)
+                assertEquals(false, content.hasContact)
                 assertEquals(false, content.hasVolunteering)
                 assertEquals(false, content.hasTransport)
                 assertEquals(false, content.hasPayment)
@@ -317,6 +320,16 @@ class ObserveHomeContentUseCaseTest {
         bareFestival().copy(
             links = listOf(InfoLink(id = "newsletter", label = "Newsletter", sublabel = null, url = "https://example.ch/newsletter")),
             story = Story(foundedYear = 2015, body = "Depuis 2015.", passage = null, provenance = Provenance.CONFIRMED),
+            contact =
+                Contact(
+                    addressLines = emptyList(),
+                    phone = null,
+                    emails =
+                        listOf(
+                            Contact.Email(id = "hello", address = "hello@example.ch", label = "Général", responsible = null),
+                        ),
+                    provenance = Provenance.CONFIRMED,
+                ),
             transport =
                 Transport(
                     modes =
