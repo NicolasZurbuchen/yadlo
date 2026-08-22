@@ -19,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,9 +34,15 @@ import io.nicolaszurbuchen.yadlo.common.content.domain.model.ContentStatus
 import io.nicolaszurbuchen.yadlo.common.content.domain.repository.ContentRepository
 import io.nicolaszurbuchen.yadlo.common.time.FESTIVAL_TIME_ZONE
 import io.nicolaszurbuchen.yadlo.infra.platform.BuildFlags
+import io.nicolaszurbuchen.yadlo.infra.platform.NotificationTarget
+import io.nicolaszurbuchen.yadlo.infra.platform.Notifier
+import io.nicolaszurbuchen.yadlo.infra.platform.ScheduledNotification
+import io.nicolaszurbuchen.yadlo.infra.platform.rememberNotificationPermissionRequester
 import io.nicolaszurbuchen.yadlo.infra.time.TimeTravelClock
+import io.nicolaszurbuchen.yadlo.infra.time.WallClock
 import io.nicolaszurbuchen.yadlo.infra.ui.formatAsShortDate
 import io.nicolaszurbuchen.yadlo.infra.ui.formatAsTimeOfDay
+import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.atTime
@@ -46,6 +53,7 @@ import kotlin.time.Duration
 import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.minutes
+import kotlin.time.Duration.Companion.seconds
 import kotlin.time.Instant
 
 /**
@@ -71,6 +79,10 @@ fun TimeTravelPanel(modifier: Modifier = Modifier) {
 
     val clock = koinInject<TimeTravelClock>()
     val repository = koinInject<ContentRepository>()
+    val notifier = koinInject<Notifier>()
+    val wallClock = koinInject<WallClock>()
+    val permissionRequester = rememberNotificationPermissionRequester()
+    val scope = rememberCoroutineScope()
 
     val simulated by clock.simulated.collectAsStateWithLifecycle()
     val status by repository.observeStatus().collectAsStateWithLifecycle()
@@ -202,6 +214,40 @@ fun TimeTravelPanel(modifier: Modifier = Modifier) {
                 }
             }
 
+            // **The one control on this panel the clock above cannot reach.** Reminders are scheduled
+            // against WallClock, never the simulated one, because the OS compares them to wall time —
+            // so jumping to the Saturday evening moves every screen and no alarm. This is the way to
+            // see the notification pipe end to end without waiting: schedule, background the app, and
+            // watch it arrive cold, which is the case that actually breaks.
+            //
+            // It replaces the real reminders for a minute, the same as any other pass. The next sync
+            // puts them back, and one happens on the next resume.
+            FlowRow(
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xs),
+                verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xs),
+            ) {
+                DebugAction(label = "Reminder in 60 s") {
+                    permissionRequester.request { granted ->
+                        if (!granted) return@request
+
+                        scope.launch {
+                            notifier.replaceScheduled(
+                                listOf(
+                                    ScheduledNotification(
+                                        id = DEBUG_REMINDER_ID,
+                                        at = wallClock.now() + DEBUG_REMINDER_DELAY,
+                                        title = "Test reminder",
+                                        body = "Scheduled 60 s ago from the debug panel.",
+                                        target = NotificationTarget.Programme,
+                                        staleAfter = null,
+                                    ),
+                                ),
+                            )
+                        }
+                    }
+                }
+            }
+
             // Straight at each Phase boundary, which is what "check every state" actually means:
             // the block stack on Accueil changes at each of these and nowhere in between.
             FlowRow(
@@ -293,3 +339,7 @@ private val APPROACHING_LEAD = 3.days
 private val ENDED_LEAD = 1.days
 
 private val MID_AFTERNOON = LocalTime(hour = 15, minute = 45)
+
+/** Long enough to background the app before it fires, which is the state worth testing. */
+private val DEBUG_REMINDER_DELAY = 60.seconds
+private const val DEBUG_REMINDER_ID = "debug:reminder"

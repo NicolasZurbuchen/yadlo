@@ -230,6 +230,16 @@
     <string name="happening_fact_supervised">Encadré par des bénévoles</string>
     <string name="happening_link_website">Site web</string>
 
+
+    <string name="notification_channel_name">Rappels</string>
+    <string name="notification_channel_description">Un rappel avant chaque créneau enregistré, et les grandes dates de l'édition.</string>
+    <string name="notification_slot_body">Ça commence à %1$s.</string>
+    <string name="notification_approaching_title">Yadlo dans une semaine</string>
+    <string name="notification_approaching_body">Le programme est en ligne. C'est le moment de préparer ton Yadlo.</string>
+    <string name="notification_live_title">C'est aujourd'hui</string>
+    <string name="notification_live_body">Le festival commence aujourd'hui. Le programme t'attend.</string>
+    <string name="notification_ended_title">Merci d'être venu</string>
+    <string name="notification_ended_body">L'édition est terminée. À l'année prochaine au bord du lac.</string>
     <string name="error_retry">Retry</string>
     <string name="error_dismiss">Dismiss</string>
     <string name="error_network_unavailable_title">No internet connection</string>

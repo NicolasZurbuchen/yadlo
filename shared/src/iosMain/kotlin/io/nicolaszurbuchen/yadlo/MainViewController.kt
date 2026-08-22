@@ -4,6 +4,8 @@ import androidx.compose.ui.window.ComposeUIViewController
 import io.nicolaszurbuchen.yadlo.app.App
 import io.nicolaszurbuchen.yadlo.app.di.initKoin
 import io.nicolaszurbuchen.yadlo.infra.di.platformModule
+import io.nicolaszurbuchen.yadlo.infra.platform.NotificationTargetRelay
+import io.nicolaszurbuchen.yadlo.infra.platform.startNotificationTapRouting
 import org.koin.mp.KoinPlatform
 import platform.Foundation.NSBundle
 import platform.UIKit.UIViewController
@@ -19,6 +21,11 @@ fun MainViewController(): UIViewController {
             appVersion = marketingVersion(),
             additionalModules = listOf(platformModule),
         )
+
+        // Before the first composition on purpose. A tap on a notification is one of the ways this
+        // app is launched, and the system delivers that response moments after the process starts —
+        // if the delegate is not in place by then, the tap is simply lost.
+        startNotificationTapRouting(KoinPlatform.getKoin().get<NotificationTargetRelay>())
     }
     return ComposeUIViewController { App() }
 }

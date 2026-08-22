@@ -31,16 +31,20 @@ import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.rememberNavBackStack
 import io.nicolaszurbuchen.yadlo.app.design.component.YadloTopAppBar
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
+import io.nicolaszurbuchen.yadlo.app.notification.ReminderEffects
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.ContentStatus
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.FestivalDay
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Phase
 import io.nicolaszurbuchen.yadlo.common.content.domain.repository.ContentRepository
 import io.nicolaszurbuchen.yadlo.common.content.domain.usecase.DerivePhaseUseCase
 import io.nicolaszurbuchen.yadlo.common.time.FESTIVAL_TIME_ZONE
+import io.nicolaszurbuchen.yadlo.feature.happening.presentation.navigation.HappeningDestination
 import io.nicolaszurbuchen.yadlo.infra.navigation.AppNavigator
 import io.nicolaszurbuchen.yadlo.infra.navigation.NavGraph
 import io.nicolaszurbuchen.yadlo.infra.navigation.rememberNavEntries
 import io.nicolaszurbuchen.yadlo.infra.platform.BackHandler
+import io.nicolaszurbuchen.yadlo.infra.platform.NotificationTarget
+import io.nicolaszurbuchen.yadlo.infra.platform.NotificationTargetRelay
 import io.nicolaszurbuchen.yadlo.infra.time.AppClock
 import kotlinx.datetime.number
 import kotlinx.datetime.toLocalDateTime
@@ -62,6 +66,7 @@ fun MainScaffold(modifier: Modifier = Modifier) {
     val contentRepository = koinInject<ContentRepository>()
     val derivePhase = koinInject<DerivePhaseUseCase>()
     val clock = koinInject<AppClock>()
+    val notificationRelay = koinInject<NotificationTargetRelay>()
 
     // Read here rather than by each tab's own store: the bar belongs to the shell, and four
     // screens deriving the same two strings is four places for them to drift apart.
@@ -108,6 +113,10 @@ fun MainScaffold(modifier: Modifier = Modifier) {
 
     val selectedTab by tabNavigator.selectedTab.collectAsStateWithLifecycle()
 
+    // Scheduling and the permission ask, both of which need the shell to exist and neither of which
+    // draws anything. Kept in one composable rather than four effects inlined here.
+    ReminderEffects()
+
     // Declared one by one rather than built in a loop: these are composables, and the call order
     // has to be identical on every recomposition. Each rememberNavEntries call is also its own
     // composition slot, which is what gives each tab decorator state of its own.
@@ -130,6 +139,38 @@ fun MainScaffold(modifier: Modifier = Modifier) {
                 Tab.PLUS to plusStack,
             )
         }
+
+    // **A notification tap arrives here, and it is the one thing allowed to move the visitor.**
+    // It is written below the stacks rather than beside the other effects because it needs them: a
+    // Slot reminder opens a fiche, and a fiche is a push onto the Programme tab's own stack, not a
+    // tab switch. Pushing it there rather than onto whichever tab happens to be showing is what
+    // makes backing out of it land on the Programme — the tab the reminder was about.
+    //
+    // Consumed rather than left set, because a target is an event: without that, every
+    // recomposition and every rotation would send the visitor back to the same fiche.
+    val notificationTarget by notificationRelay.target.collectAsStateWithLifecycle()
+    LaunchedEffect(notificationTarget) {
+        when (val target = notificationTarget) {
+            null -> {
+                return@LaunchedEffect
+            }
+
+            NotificationTarget.Home -> {
+                tabNavigator.select(Tab.HOME)
+            }
+
+            NotificationTarget.Programme -> {
+                tabNavigator.select(Tab.PROGRAMME)
+            }
+
+            is NotificationTarget.Happening -> {
+                tabNavigator.select(Tab.PROGRAMME)
+                programmeStack.add(HappeningDestination(target.id))
+            }
+        }
+
+        notificationRelay.consume()
+    }
 
     val currentStack = stacks.getValue(selectedTab)
     val currentEntries =
