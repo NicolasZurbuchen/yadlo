@@ -314,6 +314,7 @@ either; the extension is not part of the lookup.
 ```
 schemaVersion   number
 name, tagline   string
+website         string
 currentEditionId string
 minSupportedAppVersion string | null
 histoire        { foundedYear, body, journee: {title, body, provenance}, provenance }
@@ -328,6 +329,12 @@ besoin          { emergencyNumbers: {id, label, number}[], recognition: {id, tex
                   lostPropertyEmailId, provenance }
 simpliquer      { hotstaff: {...}, partenaire: {...} }
 ```
+
+`website` is the festival's public address, and it exists for exactly one reason: it is what a
+shared Happening carries so the person receiving it has somewhere to go. Everything else the app
+shows is for someone who already has the app; this is the one field written for someone who does
+not. It lives in the content rather than in the binary so that the day a shared link becomes an
+Android App Link, the path changes here and no release is needed.
 
 `currentEditionId` is how a new edition ships without an app release: move it, and the app fetches
 the new one.

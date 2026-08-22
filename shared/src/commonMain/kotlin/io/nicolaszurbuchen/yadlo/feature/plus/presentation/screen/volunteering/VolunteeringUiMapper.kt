@@ -11,6 +11,7 @@ fun VolunteeringState.toUiModel(): VolunteeringUiModel {
             perks = emptyList(),
             signupUrl = null,
             email = null,
+            shareText = null,
         )
 
     return VolunteeringUiModel(
@@ -19,6 +20,13 @@ fun VolunteeringState.toUiModel(): VolunteeringUiModel {
         body = loaded.body,
         perks = loaded.perks,
         signupUrl = loaded.signupUrl,
+        // Name, one line of the ask, and the address that receives it. Built from the content
+        // rather than written as a string so it renames itself when the programme does — the
+        // association calls this Hot’Staff today and has renamed it before.
+        shareText =
+            loaded.signupUrl?.let { url ->
+                listOfNotNull(loaded.name, loaded.body, url).joinToString("\n")
+            },
         email =
             loaded.email?.let {
                 PlusEmailUiModel(

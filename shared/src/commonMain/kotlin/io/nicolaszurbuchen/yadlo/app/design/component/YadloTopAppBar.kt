@@ -2,6 +2,7 @@ package io.nicolaszurbuchen.yadlo.app.design.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -45,6 +46,10 @@ import yadlo.shared.generated.resources.ic_yadlo
  * qualifies the title, and pinned to the right it reads as an unrelated status field. Only the tab
  * shell has one, where it is the edition's dates.
  *
+ * [actions] is the trailing slot, empty on every bar but the one Plus screen with something to
+ * offer there. It takes the same ink as the chevron, so a screen adding one cannot end up with an
+ * icon in a colour the bar does not use.
+ *
  * A null [onBackClick] is a bar with no way back, which is what a tab root is. The fiche keeps a bar
  * of its own instead of taking this one: it is transparent over the header image and collapses into
  * the Category's colour as the title scrolls under it, and neither half of that is chrome.
@@ -67,6 +72,7 @@ fun YadloTopAppBar(
     modifier: Modifier = Modifier,
     subtitle: String? = null,
     onBackClick: (() -> Unit)? = null,
+    actions: @Composable RowScope.() -> Unit = {},
 ) {
     // The same condition the mark is drawn off, read once: a bar with no way back is a tab root,
     // where the title is the festival's own name and belongs in the lockup beside the mark. On a
@@ -122,11 +128,13 @@ fun YadloTopAppBar(
                 }
             }
         },
+        actions = actions,
         colors =
             TopAppBarDefaults.topAppBarColors(
                 containerColor = MaterialTheme.appColors.primarySubtle,
                 scrolledContainerColor = MaterialTheme.appColors.primarySubtle,
                 navigationIconContentColor = MaterialTheme.appColors.onPrimarySubtle,
+                actionIconContentColor = MaterialTheme.appColors.onPrimarySubtle,
                 titleContentColor = MaterialTheme.appColors.onPrimarySubtle,
             ),
         modifier = modifier,

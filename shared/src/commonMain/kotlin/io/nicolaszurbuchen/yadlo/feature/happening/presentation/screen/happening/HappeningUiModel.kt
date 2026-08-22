@@ -50,6 +50,14 @@ data class HappeningUiModel(
      */
     val links: List<SocialLinkUiModel>,
     val wishlisted: Boolean?,
+    /**
+     * The message the share sheet sends, built here so the screen has nothing to assemble and a
+     * test can read the whole thing.
+     *
+     * Empty while the fiche is loading or missing, which is the one state the share action is
+     * hidden in — there is no title to put in it yet.
+     */
+    val shareText: String,
 )
 
 /**

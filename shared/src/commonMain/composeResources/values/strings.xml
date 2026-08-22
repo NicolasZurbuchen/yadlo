@@ -12,6 +12,9 @@
          it are four places for it to stop saying the same word. -->
     <string name="back">Retour</string>
 
+    <!-- One label for every share action, for the same reason as the chevron above it. -->
+    <string name="share">Partager</string>
+
     <!-- Written out because Mon Yadlo's rail sets the day as the largest thing on it and needs the
          month underneath in words. Resources rather than a formatter, so a second language is a
          second values file rather than a code change. Lowercase: French does not capitalise them. -->

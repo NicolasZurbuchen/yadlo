@@ -17,6 +17,7 @@ data class FestivalDto(
     val schemaVersion: Int,
     val name: String,
     val tagline: String,
+    val website: String? = null,
     val currentEditionId: String,
     val minSupportedAppVersion: String? = null,
     val social: List<SocialDto> = emptyList(),

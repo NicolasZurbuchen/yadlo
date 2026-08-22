@@ -6,6 +6,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import io.nicolaszurbuchen.yadlo.infra.platform.rememberShareLauncher
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -19,6 +20,10 @@ fun HappeningRoute(
     // A booking page or an artist's own site leaves the app entirely, so it is the platform's
     // business rather than the navigator's — the same reasoning as the annonces on Accueil.
     val uriHandler = LocalUriHandler.current
+
+    // Nothing to remember and no state to change, so it never reaches the store — the text is
+    // already on the model and the sheet is the platform’s, exactly like opening a url.
+    val shareLauncher = rememberShareLauncher()
 
     LaunchedEffect(Unit) {
         viewModel.labels.collect { label ->
@@ -34,6 +39,7 @@ fun HappeningRoute(
         onLinkClick = { url -> viewModel.onIntent(HappeningIntent.LinkClicked(url)) },
         onSlotHeartClick = { slotId -> viewModel.onIntent(HappeningIntent.SlotHeartClicked(slotId)) },
         onWishlistHeartClick = { viewModel.onIntent(HappeningIntent.WishlistHeartClicked) },
+        onShareClick = { shareLauncher.share(state.shareText) },
         modifier = modifier,
     )
 }

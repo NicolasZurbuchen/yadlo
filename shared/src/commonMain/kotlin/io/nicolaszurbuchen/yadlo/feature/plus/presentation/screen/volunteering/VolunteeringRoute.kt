@@ -6,6 +6,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import io.nicolaszurbuchen.yadlo.infra.platform.rememberShareLauncher
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -15,6 +16,9 @@ fun VolunteeringRoute(
     viewModel: VolunteeringViewModel = koinViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    // The sheet is the platform’s and there is no state to change, so this never reaches the store.
+    val shareLauncher = rememberShareLauncher()
     val uriHandler = LocalUriHandler.current
 
     LaunchedEffect(Unit) {
@@ -30,6 +34,7 @@ fun VolunteeringRoute(
         onBackClick = onNavigateBack,
         onSignupClick = { url -> viewModel.onIntent(VolunteeringIntent.SignupClicked(url)) },
         onEmailClick = { address -> viewModel.onIntent(VolunteeringIntent.EmailClicked(address)) },
+        onShareClick = { state.shareText?.let(shareLauncher::share) },
         modifier = modifier,
     )
 }

@@ -65,6 +65,7 @@ private fun HappeningScreenPreview(
                 onLinkClick = {},
                 onSlotHeartClick = {},
                 onWishlistHeartClick = {},
+                onShareClick = {},
             )
         }
     }
@@ -90,6 +91,7 @@ private fun blank(
     menu = emptyList(),
     links = emptyList(),
     wishlisted = null,
+    shareText = "",
 )
 
 private fun artist() =

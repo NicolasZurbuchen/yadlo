@@ -42,6 +42,7 @@ class FestivalRemoteMapperTest {
             Festival(
                 name = "Yadlo",
                 tagline = "Mouille ton corps, arrose ton esprit",
+                website = "https://www.yadlo.ch/",
                 currentEditionId = "2026",
                 minSupportedAppVersion = "1.2.0",
                 social = listOf(SocialLink(id = "instagram", name = "Instagram", url = "https://example.ch/insta")),
@@ -408,6 +409,7 @@ class FestivalRemoteMapperTest {
             schemaVersion = 1,
             name = "Yadlo",
             tagline = "Mouille ton corps, arrose ton esprit",
+            website = "https://www.yadlo.ch/",
             currentEditionId = "2026",
             minSupportedAppVersion = null,
         )

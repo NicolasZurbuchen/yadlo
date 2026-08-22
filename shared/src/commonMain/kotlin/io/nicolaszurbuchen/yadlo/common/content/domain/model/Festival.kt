@@ -21,6 +21,16 @@ package io.nicolaszurbuchen.yadlo.common.content.domain.model
 data class Festival(
     val name: String,
     val tagline: String,
+    /**
+     * The festival's public address, and the one field here written for somebody who does *not*
+     * have the app: it is what a shared Happening carries so the person receiving it has somewhere
+     * to go.
+     *
+     * `validate.js` requires it, so the published file always has one. It is nullable anyway for the
+     * reason every section below is: a bundle cached by an older build, or read by a newer one, must
+     * cost the visitor a line of a share message rather than the whole festival.
+     */
+    val website: String?,
     /** Moving this is how a new edition ships without an app release. */
     val currentEditionId: String,
     /**

@@ -21,4 +21,12 @@ data class VolunteeringUiModel(
     val perks: List<String>,
     val signupUrl: String?,
     val email: PlusEmailUiModel?,
+    /**
+     * The message the share sheet sends, and null when there is no [signupUrl] to put in it.
+     *
+     * **It carries the association’s own recruitment address, never this app.** Somebody
+     * forwarding this is doing the association a favour, and what they send has to work for a
+     * recipient who has never heard of this app — which is every recipient.
+     */
+    val shareText: String?,
 )

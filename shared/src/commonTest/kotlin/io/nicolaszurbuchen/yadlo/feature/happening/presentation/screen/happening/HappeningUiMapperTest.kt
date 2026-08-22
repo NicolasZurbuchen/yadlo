@@ -433,6 +433,43 @@ class HappeningUiMapperTest {
 
     // endregion
 
+    // region the share message
+
+    @Test
+    fun toUiModel_shareText_namesTheThingItsDatesAndOneAddressThatWorksWithoutTheApp() {
+        val state = state(detail(slots = listOf(saturdayFourToSix())))
+
+        assertEquals(
+            "Dubside\nSamedi 16:00\nYadlo 2026 · https://www.yadlo.ch/",
+            state.toUiModel().shareText,
+        )
+    }
+
+    @Test
+    fun toUiModel_shareTextForAThingWithNoSlots_dropsTheDatesLineRatherThanLeavingItBlank() {
+        val state = state(detail(slots = emptyList()))
+
+        assertEquals("Dubside\nYadlo 2026 · https://www.yadlo.ch/", state.toUiModel().shareText)
+    }
+
+    @Test
+    fun toUiModel_shareTextWhenTheContentPublishesNoWebsite_stillNamesTheEdition() {
+        // The published file always carries one — validate.js sees to that — but a bundle cached
+        // by an older build does not, and that has to cost a line rather than the message.
+        val state = state(detail(festivalWebsite = null))
+
+        assertEquals("Dubside\nYadlo 2026", state.toUiModel().shareText)
+    }
+
+    @Test
+    fun toUiModel_shareTextWhileLoading_isEmptySoTheActionCanHideItself() {
+        val state = HappeningState(now = NOW, detail = null, isLoaded = false)
+
+        assertEquals("", state.toUiModel().shareText)
+    }
+
+    // endregion
+
     private fun state(
         detail: HappeningDetail,
         now: Instant = NOW,
@@ -453,6 +490,7 @@ class HappeningUiMapperTest {
         menu: List<MenuGroup> = emptyList(),
         links: List<Link> = emptyList(),
         wishlisted: Boolean? = null,
+        festivalWebsite: String? = "https://www.yadlo.ch/",
     ) = HappeningDetail(
         id = "dubside",
         name = "Dubside",
@@ -472,6 +510,8 @@ class HappeningUiMapperTest {
         menu = menu,
         links = links,
         wishlisted = wishlisted,
+        editionName = "Yadlo 2026",
+        festivalWebsite = festivalWebsite,
     )
 
     private fun saturdayFourToSix(planned: Boolean = false) =

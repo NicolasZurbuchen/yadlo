@@ -35,6 +35,7 @@ fun FestivalDto.toDomain(): Festival =
     Festival(
         name = name,
         tagline = tagline,
+        website = website,
         currentEditionId = currentEditionId,
         minSupportedAppVersion = minSupportedAppVersion,
         social = social.map { SocialLink(id = it.id, name = it.name, url = it.url) },

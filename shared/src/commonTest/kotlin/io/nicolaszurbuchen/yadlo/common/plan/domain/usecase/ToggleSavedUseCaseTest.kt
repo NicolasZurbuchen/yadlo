@@ -71,6 +71,7 @@ class ToggleSavedUseCaseTest {
                         Festival(
                             name = "Yadlo",
                             tagline = "Trois jours au bord du lac",
+                            website = "https://www.yadlo.ch/",
                             currentEditionId = editionId,
                             minSupportedAppVersion = null,
                             social = emptyList(),

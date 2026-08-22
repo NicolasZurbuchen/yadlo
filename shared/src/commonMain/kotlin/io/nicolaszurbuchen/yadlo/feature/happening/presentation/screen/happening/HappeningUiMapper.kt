@@ -54,6 +54,7 @@ fun HappeningState.toUiModel(): HappeningUiModel {
             menu = emptyList(),
             links = emptyList(),
             wishlisted = null,
+            shareText = "",
         )
 
     val loaded = detail ?: return blank
@@ -229,5 +230,33 @@ fun HappeningState.toUiModel(): HappeningUiModel {
                 )
             },
         wishlisted = loaded.wishlisted,
+        // **What somebody actually receives, and it assumes they do not have the app.** The name,
+        // when it runs, and one address they can open — the festival's own, not this app's, which
+        // has none to give. No deep link: that needs a file served on a domain nobody here owns,
+        // and a link that only works for people who already installed the app is worse than none.
+        //
+        // The dates are the Happening's own rather than whichever row was on screen. A fiche shows
+        // every date a thing runs and the share is of the thing, not of an occurrence — the same
+        // call story 8 makes for a search result. Capped, because an activity running every day
+        // would otherwise turn a message into a timetable.
+        shareText =
+            listOfNotNull(
+                loaded.name,
+                loaded.slots
+                    .take(SHARED_DATES)
+                    .joinToString(SHARE_DATE_SEPARATOR) { slot ->
+                        slot.dayName + " " + slot.start.formatAsTimeOfDay(FESTIVAL_TIME_ZONE)
+                    }.takeIf { it.isNotEmpty() },
+                listOfNotNull(loaded.editionName, loaded.festivalWebsite).joinToString(SHARE_DATE_SEPARATOR),
+            ).joinToString("\n"),
     )
 }
+
+/**
+ * Three, which is every day this festival runs. A Happening on all of them still reads as one line;
+ * anything longer is a timetable somebody has to scroll through in a chat window.
+ */
+private const val SHARED_DATES = 3
+
+/** A middot, the same separator the countdown subtitle and the Plus rows use. */
+private const val SHARE_DATE_SEPARATOR = " · "

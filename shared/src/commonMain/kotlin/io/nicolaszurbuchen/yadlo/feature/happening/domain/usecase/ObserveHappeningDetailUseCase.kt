@@ -67,6 +67,8 @@ class ObserveHappeningDetailUseCase(
         return HappeningDetail(
             id = happening.id,
             name = happening.name,
+            editionName = edition.name,
+            festivalWebsite = festival.website,
             categoryId = happening.category.id,
             categoryName = happening.category.name,
             // The first image or none. Which one is the lead photograph is an authoring decision

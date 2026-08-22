@@ -187,6 +187,11 @@ Built unofficially, with the explicit aim of becoming the association's official
 53. As a visitor, I want to book the Silent Party from its own screen, so that I do not have
     to find the ticketing site myself.
 54. As a visitor, I want to share a thing with a friend, so that we can agree to meet there.
+
+> **Plain text, not a deep link.** A link that reopens the app on the shared fiche needs a file
+> served on a domain nobody here owns — see DECISIONS.md. The message carries the name, the dates
+> and the festival’s own address, which works for a recipient without the app, and going official
+> turns it into an App Link without changing its shape.
 55. As a visitor, I want facts that are not links to not look like buttons, so that I do not
     tap things that do nothing.
 

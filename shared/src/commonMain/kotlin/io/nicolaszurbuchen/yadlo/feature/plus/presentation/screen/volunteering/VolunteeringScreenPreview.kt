@@ -27,6 +27,7 @@ private class VolunteeringStateProvider : PreviewParameterProvider<VolunteeringU
                 perks = emptyList(),
                 signupUrl = null,
                 email = null,
+                shareText = null,
             ),
             published(),
         )
@@ -39,7 +40,7 @@ private fun VolunteeringScreenPreview(
 ) {
     YadloTheme {
         Box(modifier = Modifier.fillMaxSize().background(MaterialTheme.appColors.background)) {
-            VolunteeringScreen(state = state, onBackClick = {}, onSignupClick = {}, onEmailClick = {})
+            VolunteeringScreen(state = state, onBackClick = {}, onSignupClick = {}, onEmailClick = {}, onShareClick = {})
         }
     }
 }
@@ -51,7 +52,7 @@ private fun VolunteeringScreenDarkPreview(
 ) {
     YadloTheme(darkTheme = true) {
         Box(modifier = Modifier.fillMaxSize().background(MaterialTheme.appColors.background)) {
-            VolunteeringScreen(state = state, onBackClick = {}, onSignupClick = {}, onEmailClick = {})
+            VolunteeringScreen(state = state, onBackClick = {}, onSignupClick = {}, onEmailClick = {}, onShareClick = {})
         }
     }
 }
@@ -71,6 +72,7 @@ private fun published() =
                 "Repas végane chaque jour",
             ),
         signupUrl = "https://ehro.app/o/yadlo/",
+        shareText = "Hot’Staff\nhttps://ehro.app/o/yadlo/",
         email =
             PlusEmailUiModel(
                 id = "staff",

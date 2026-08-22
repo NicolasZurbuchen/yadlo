@@ -62,6 +62,8 @@ class HappeningReducerTest {
     private fun detail(name: String = "DJ ALF") =
         HappeningDetail(
             id = "dj-alf",
+            editionName = "Yadlo 2026",
+            festivalWebsite = "https://www.yadlo.ch/",
             name = name,
             categoryId = "musique",
             categoryName = "Musique",

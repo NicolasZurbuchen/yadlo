@@ -3,6 +3,7 @@ package io.nicolaszurbuchen.yadlo.feature.plus.presentation.component
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -42,12 +43,14 @@ fun PlusDetailScaffold(
     onBackClick: () -> Unit,
     isLoading: Boolean,
     modifier: Modifier = Modifier,
+    actions: @Composable RowScope.() -> Unit = {},
     skeleton: @Composable ColumnScope.() -> Unit = { PlusPageSkeleton() },
     content: @Composable ColumnScope.() -> Unit,
 ) {
     PlusScreenScaffold(
         title = title,
         onBackClick = onBackClick,
+        actions = actions,
         modifier = modifier,
     ) { contentPadding ->
         Column(

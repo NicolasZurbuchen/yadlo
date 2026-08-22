@@ -144,6 +144,7 @@ class ObserveWishlistUseCaseTest {
                         Festival(
                             name = "Yadlo",
                             tagline = "Trois jours au bord du lac",
+                            website = "https://www.yadlo.ch/",
                             currentEditionId = "2026",
                             minSupportedAppVersion = null,
                             social = emptyList(),

@@ -285,6 +285,7 @@ class HappeningExecutorTest {
                         Festival(
                             name = "Yadlo",
                             tagline = "Mouille ton corps, arrose ton esprit",
+                            website = "https://www.yadlo.ch/",
                             currentEditionId = "2026",
                             minSupportedAppVersion = null,
                             social = emptyList(),
