@@ -30,6 +30,14 @@ sealed interface HomeBlockUiModel {
         val kicker: UiText,
         val title: UiText,
         val body: UiText,
+        /**
+         * Every hero but one is a way into the Programme, and draws the chevron that says so.
+         *
+         * The exception is the Sunday-night goodbye, which is the only one that is purely a
+         * statement: the festival has finished, and offering a tap into a programme with nothing
+         * left on it would be the app failing to notice.
+         */
+        val opensProgramme: Boolean = true,
     ) : HomeBlockUiModel
 
     /**

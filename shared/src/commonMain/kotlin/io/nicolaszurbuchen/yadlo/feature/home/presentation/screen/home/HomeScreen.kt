@@ -68,7 +68,10 @@ fun HomeScreen(
                         title = block.title.asString(),
                         kicker = block.kicker.asString(),
                         body = block.body.asString(),
-                        onClick = onHeroClick,
+                        // Null drops the chevron as well as the tap, which is the point: the
+                        // Sunday-night goodbye is a statement, and a block that looks tappable and
+                        // is not is worse than one that never offered.
+                        onClick = onHeroClick.takeIf { block.opensProgramme },
                     )
                 }
 

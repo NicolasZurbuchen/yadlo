@@ -51,11 +51,13 @@ sealed interface HomeMessage {
     data class ContentUpdated(
         val content: HomeContent,
         val phase: PhaseUiModel,
+        val siteMoment: SiteMomentUiModel?,
     ) : HomeMessage
 
     data class Ticked(
         val now: Instant,
         val phase: PhaseUiModel,
+        val siteMoment: SiteMomentUiModel?,
     ) : HomeMessage
 }
 
@@ -67,4 +69,11 @@ data class HomeState(
     val now: Instant,
     val phase: PhaseUiModel,
     val content: HomeContent? = null,
+    /**
+     * Null until an Edition with days is loaded, and meaningless outside [PhaseUiModel.LIVE] — the
+     * mapper reads it only in that Phase. Carried beside the Phase rather than derived from it
+     * because the two answer different questions: LIVE says the visitor is at the festival, this
+     * says whether the beach is currently open.
+     */
+    val siteMoment: SiteMomentUiModel? = null,
 )

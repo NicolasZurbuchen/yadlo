@@ -182,6 +182,29 @@ before opening on day one, in the gap between two days, and after the last day. 
 is a next FestivalDay it reads *demain dès 09:00*; when there is not, it says goodbye
 properly. That last variant is what makes the handover to ENDED land over breakfast.
 
+*Built as a fourth `YadloHero` on Accueil rather than as a screen of its own, and with a fourth
+state — the site being open.* Counting the real 2026 windows settled it: Friday runs 16:00–02:00,
+Saturday 12:00–03:00, Sunday 12:00–22:00, and LIVE spans midnight Friday to 11:00 Monday, so **the
+site is shut for 48 of LIVE's 83 hours**. Sixteen before the gates, ten and nine overnight, thirteen
+between Sunday's close and the handover. A block that only appears in the gaps would be the tab's
+main content anyway; and in the remaining 35 hours Accueil would fall back to a social row plus
+whatever was posted in the last day, which is a screen that reads as broken rather than as closed.
+
+The open variant says how long is left — *ouvert jusqu'à 02:00* — rather than pointing at the
+Programme and nothing else. That is the one useful fact this tab has during opening hours, and it
+is nowhere else on it; a hero that only said "go and look at the other tab" would be a signpost to
+the tab the app already opened on, which is the rule against a home tab that summarises other tabs.
+
+The goodbye is deliberately *not* the thank-you. It is thirteen hours of *à l'année prochaine,
+rentrez bien* and no chevron, because the programme it would open has nothing left on it; the real
+*Merci.* with the photograph arrives with ENDED the next morning. Two steps rather than one is what
+stops the weekend ending on a cliff at 22:00 on the Sunday.
+
+**Closed is one state, not two, and the copy has to survive both readings of it.** The same variant
+is what someone sees at 02:30 leaving the beach and at 10:00 the next morning over coffee. *C'est
+fini pour ce soir* is right for the first and wrong for the second, so the wording is the neutral
+*le site est fermé · réouverture à 12:00* — the reopening time being the part either reader wants.
+
 **Recompute while running, not only at launch.** At 08:55 someone is in APPROACHING; at
 09:00 they should be in LIVE without killing the app. The same ticker drives the `en cours`
 pills and the "dans 15 min" countdowns. It is also why the clock must be settable from the
@@ -218,8 +241,8 @@ is built by saving rows in Programme; Mon Yadlo only recalls what is already sav
 no add-flow by design. So the hero that says "choose your weekend" was landing the reader on
 an empty tab, one short of the thing it had just asked them to do.
 
-*LIVE* — recherche · annonces du jour · lien Instagram, plus the quiet-hours block when
-nothing is running. Deliberately thin, because during LIVE **the app opens on Programme,
+*LIVE* — recherche · **hero: where the weekend is up to** · annonces du jour · lien Instagram.
+The hero is present throughout rather than only in the gaps — see above. Deliberately thin, because during LIVE **the app opens on Programme,
 not Accueil.** No plan du site and no stands here: both already live in Plus › Sur place,
 and duplicating them is the thing we are avoiding.
 

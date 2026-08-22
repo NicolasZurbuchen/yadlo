@@ -27,6 +27,18 @@ import yadlo.shared.generated.resources.home_hero_announced_title
 import yadlo.shared.generated.resources.home_hero_approaching_body
 import yadlo.shared.generated.resources.home_hero_approaching_kicker
 import yadlo.shared.generated.resources.home_hero_approaching_title
+import yadlo.shared.generated.resources.home_live_before_body
+import yadlo.shared.generated.resources.home_live_before_kicker
+import yadlo.shared.generated.resources.home_live_before_title
+import yadlo.shared.generated.resources.home_live_closed_body
+import yadlo.shared.generated.resources.home_live_closed_kicker
+import yadlo.shared.generated.resources.home_live_closed_title
+import yadlo.shared.generated.resources.home_live_open_body
+import yadlo.shared.generated.resources.home_live_open_kicker
+import yadlo.shared.generated.resources.home_live_open_title
+import yadlo.shared.generated.resources.home_live_over_body
+import yadlo.shared.generated.resources.home_live_over_kicker
+import yadlo.shared.generated.resources.home_live_over_title
 import yadlo.shared.generated.resources.home_quick_access_announced
 import yadlo.shared.generated.resources.home_quick_access_approaching
 import yadlo.shared.generated.resources.home_quick_access_ended
@@ -73,9 +85,13 @@ private class HomeStackProvider : PreviewParameterProvider<HomeUiModel> {
                 quickAccess(Res.string.home_quick_access_approaching, approachingTiles()),
                 announcements(),
             ),
-            // LIVE — thin on purpose: during the festival the app opens on Programme, and
-            // DECISIONS.md turned down promoting Plus screens onto a tab nobody is looking at.
-            stack(announcements(), social()),
+            // LIVE, all four of it. The site is shut for roughly 48 of LIVE's 83 hours, so the
+            // hero is what this tab mostly is during the festival — and the Sunday-night one is
+            // the half-step that stops the weekend ending on a cliff.
+            stack(liveHero(LIVE_BEFORE_KICKER, LIVE_BEFORE_TITLE, LIVE_BEFORE_BODY, "16:00"), announcements(), social()),
+            stack(liveHero(LIVE_OPEN_KICKER, LIVE_OPEN_TITLE, LIVE_OPEN_BODY, "02:00"), announcements(), social()),
+            stack(liveHero(LIVE_CLOSED_KICKER, LIVE_CLOSED_TITLE, LIVE_CLOSED_BODY, "12:00"), announcements(), social()),
+            stack(liveGoodbye(), announcements(), social()),
             // ENDED — merci, the closing figures, and the way out.
             stack(
                 thankYou(),
@@ -153,6 +169,26 @@ private class HomeStackProvider : PreviewParameterProvider<HomeUiModel> {
             hasMore = true,
         )
 
+    private fun liveHero(
+        kicker: StringResource,
+        title: StringResource,
+        body: StringResource,
+        at: String,
+    ) = HomeBlockUiModel.Hero(
+        kicker = UiText.Resource(kicker),
+        title = UiText.Resource(title),
+        body = UiText.Resource(body, listOf(at)),
+    )
+
+    /** The one hero with nowhere to send anyone, so the one drawn without a chevron. */
+    private fun liveGoodbye() =
+        HomeBlockUiModel.Hero(
+            kicker = UiText.Resource(Res.string.home_live_over_kicker),
+            title = UiText.Resource(Res.string.home_live_over_title),
+            body = UiText.Resource(Res.string.home_live_over_body),
+            opensProgramme = false,
+        )
+
     private fun quickAccess(
         title: StringResource,
         items: List<QuickAccessItemUiModel>,
@@ -177,6 +213,16 @@ private class HomeStackProvider : PreviewParameterProvider<HomeUiModel> {
     private fun endedTiles() = listOf(QuickAccessItemUiModel(QuickAccessEntryUiModel.NEWSLETTER, url = NEWSLETTER_URL))
 
     private companion object {
+        val LIVE_BEFORE_KICKER = Res.string.home_live_before_kicker
+        val LIVE_BEFORE_TITLE = Res.string.home_live_before_title
+        val LIVE_BEFORE_BODY = Res.string.home_live_before_body
+        val LIVE_OPEN_KICKER = Res.string.home_live_open_kicker
+        val LIVE_OPEN_TITLE = Res.string.home_live_open_title
+        val LIVE_OPEN_BODY = Res.string.home_live_open_body
+        val LIVE_CLOSED_KICKER = Res.string.home_live_closed_kicker
+        val LIVE_CLOSED_TITLE = Res.string.home_live_closed_title
+        val LIVE_CLOSED_BODY = Res.string.home_live_closed_body
+
         const val NEWSLETTER_URL = "https://example.com/newsletter"
     }
 

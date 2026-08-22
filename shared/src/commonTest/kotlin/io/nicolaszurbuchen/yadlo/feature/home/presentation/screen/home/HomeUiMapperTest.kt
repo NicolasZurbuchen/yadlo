@@ -13,6 +13,11 @@ import yadlo.shared.generated.resources.home_countdown_days_remaining
 import yadlo.shared.generated.resources.home_hero_announced_kicker
 import yadlo.shared.generated.resources.home_hero_announced_title
 import yadlo.shared.generated.resources.home_hero_approaching_kicker
+import yadlo.shared.generated.resources.home_live_before_body
+import yadlo.shared.generated.resources.home_live_before_title
+import yadlo.shared.generated.resources.home_live_closed_body
+import yadlo.shared.generated.resources.home_live_open_body
+import yadlo.shared.generated.resources.home_live_over_title
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
@@ -314,6 +319,77 @@ class HomeUiMapperTest {
 
     // endregion
 
+    // region the live hero
+
+    @Test
+    fun toUiModel_liveBeforeTheGates_saysWhenTheSiteOpensAndOffersTheProgramme() {
+        val state = state(phase = PhaseUiModel.LIVE, now = DURING, siteMoment = SiteMomentUiModel.BeforeFirstDay(GATES_OPEN))
+
+        val hero = state.toUiModel().blocks.filterIsInstance<HomeBlockUiModel.Hero>().single()
+
+        assertEquals(UiText.Resource(Res.string.home_live_before_title), hero.title)
+        assertEquals(UiText.Resource(Res.string.home_live_before_body, listOf("16:00")), hero.body)
+        assertTrue(hero.opensProgramme)
+    }
+
+    @Test
+    fun toUiModel_liveAndOpen_saysHowLongIsLeftRatherThanJustPointingAtTheOtherTab() {
+        val closesAt = Instant.parse("2026-07-12T02:00:00+02:00")
+        val state = state(phase = PhaseUiModel.LIVE, now = DURING, siteMoment = SiteMomentUiModel.Open(closesAt))
+
+        val hero = state.toUiModel().blocks.filterIsInstance<HomeBlockUiModel.Hero>().single()
+
+        assertEquals(UiText.Resource(Res.string.home_live_open_body, listOf("02:00")), hero.body)
+    }
+
+    @Test
+    fun toUiModel_liveAndShutForTheNight_namesTheReopening() {
+        val reopensAt = Instant.parse("2026-07-12T12:00:00+02:00")
+        val state = state(phase = PhaseUiModel.LIVE, now = DURING, siteMoment = SiteMomentUiModel.Closed(reopensAt))
+
+        val hero = state.toUiModel().blocks.filterIsInstance<HomeBlockUiModel.Hero>().single()
+
+        assertEquals(UiText.Resource(Res.string.home_live_closed_body, listOf("12:00")), hero.body)
+        assertTrue(hero.opensProgramme)
+    }
+
+    @Test
+    fun toUiModel_liveAndFinished_saysGoodbyeAndOffersNothingToTap() {
+        // The half-step before ENDED. There is no programme left to open, and a block that looks
+        // tappable and is not is worse than one that never offered.
+        val state = state(phase = PhaseUiModel.LIVE, now = DURING, siteMoment = SiteMomentUiModel.Finished)
+
+        val hero = state.toUiModel().blocks.filterIsInstance<HomeBlockUiModel.Hero>().single()
+
+        assertEquals(UiText.Resource(Res.string.home_live_over_title), hero.title)
+        assertEquals(false, hero.opensProgramme)
+    }
+
+    @Test
+    fun toUiModel_live_leadsWithTheHeroAndKeepsTheAnnoncesUnderIt() {
+        val state = state(phase = PhaseUiModel.LIVE, now = DURING, siteMoment = SiteMomentUiModel.Finished)
+
+        assertEquals(listOf("Hero", "Announcements", "Social"), state.toUiModel().blockNames())
+    }
+
+    @Test
+    fun toUiModel_liveWithNoDaysPublished_drawsNoHeroRatherThanAnEmptyOne() {
+        val state = state(phase = PhaseUiModel.LIVE, now = DURING, siteMoment = null)
+
+        assertEquals(listOf("Announcements", "Social"), state.toUiModel().blockNames())
+    }
+
+    @Test
+    fun toUiModel_outsideLive_ignoresTheSiteMomentEntirely() {
+        // It is derived whenever days exist, so it is set well outside the festival too. Only LIVE
+        // reads it, and OFF_SEASON must not grow a hero out of it.
+        val state = state(phase = PhaseUiModel.OFF_SEASON, now = THREE_DAYS_BEFORE, siteMoment = SiteMomentUiModel.Finished)
+
+        assertTrue(state.toUiModel().blocks.none { it is HomeBlockUiModel.Hero })
+    }
+
+    // endregion
+
     // region quick access
 
     @Test
@@ -490,9 +566,13 @@ class HomeUiMapperTest {
         hasTransport: Boolean = true,
         hasPayment: Boolean = true,
         newsletterUrl: String? = "https://example.com/newsletter",
+        // Null by default so the phase-stack tests stay about the stack. The live-hero tests are
+        // the ones that set it, and they are the only ones LIVE draws a hero for.
+        siteMoment: SiteMomentUiModel? = null,
     ) = HomeState(
         now = now,
         phase = phase,
+        siteMoment = siteMoment,
         content =
             HomeContent(
                 editionName = "Yadlo 2026",

@@ -7,6 +7,7 @@ import io.nicolaszurbuchen.yadlo.common.time.FESTIVAL_TIME_ZONE
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.uimodel.AnnouncementUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import io.nicolaszurbuchen.yadlo.infra.ui.formatAsShortDate
+import io.nicolaszurbuchen.yadlo.infra.ui.formatAsTimeOfDay
 import kotlinx.datetime.daysUntil
 import kotlinx.datetime.toLocalDateTime
 import yadlo.shared.generated.resources.Res
@@ -20,6 +21,18 @@ import yadlo.shared.generated.resources.home_hero_announced_title
 import yadlo.shared.generated.resources.home_hero_approaching_body
 import yadlo.shared.generated.resources.home_hero_approaching_kicker
 import yadlo.shared.generated.resources.home_hero_approaching_title
+import yadlo.shared.generated.resources.home_live_before_body
+import yadlo.shared.generated.resources.home_live_before_kicker
+import yadlo.shared.generated.resources.home_live_before_title
+import yadlo.shared.generated.resources.home_live_closed_body
+import yadlo.shared.generated.resources.home_live_closed_kicker
+import yadlo.shared.generated.resources.home_live_closed_title
+import yadlo.shared.generated.resources.home_live_open_body
+import yadlo.shared.generated.resources.home_live_open_kicker
+import yadlo.shared.generated.resources.home_live_open_title
+import yadlo.shared.generated.resources.home_live_over_body
+import yadlo.shared.generated.resources.home_live_over_kicker
+import yadlo.shared.generated.resources.home_live_over_title
 import yadlo.shared.generated.resources.home_quick_access_announced
 import yadlo.shared.generated.resources.home_quick_access_approaching
 import yadlo.shared.generated.resources.home_quick_access_ended
@@ -33,10 +46,10 @@ import kotlin.time.Duration.Companion.hours
  * The block stack, decided per Phase, following the published Accueil prototype.
  *
  * Blocks the prototype shows that are still absent have nowhere to send anyone yet: recherche,
- * revivre l'édition, les réservations, and the LIVE quiet-hours block. Recherche and the quiet
- * hours wait on Slot state; the other two wait on a screen that does not exist — there is no
- * archive of past editions, and nothing in the published content is a booking. S'impliquer, la
- * newsletter, l'histoire and préparer sa venue have arrived, as the tiles of [HomeBlockUiModel.QuickAccess].
+ * revivre l'édition and les réservations. Recherche waits on Slot state; the other two wait on a
+ * screen that does not exist — there is no archive of past editions, and nothing in the published
+ * content is a booking. S'impliquer, la newsletter, l'histoire and préparer sa venue have arrived,
+ * as the tiles of [HomeBlockUiModel.QuickAccess], and the quiet hours as [liveHero].
  *
  * The phases they belong to are where they go; the ordering below is not a suggestion, it is the
  * prototype's.
@@ -89,6 +102,76 @@ fun HomeState.toUiModel(): HomeUiModel {
                         ),
                     ),
             )
+        }
+
+    // **What Accueil says during the festival, which is mostly "not right now".** `Phase.LIVE` is
+    // wide on purpose — it starts at midnight on the opening Friday because that is where the
+    // visitor's head is — and for roughly 48 of its 83 hours the site itself is shut. Without this
+    // the tab spends most of the weekend showing a social row and whatever was posted in the last
+    // day, which reads as broken rather than as closed.
+    //
+    // Every variant but the last opens the Programme, because in each of them there is still a
+    // programme to look at: what is on tonight, what is on tomorrow.
+    val liveHero =
+        when (siteMoment) {
+            null -> {
+                null
+            }
+
+            is SiteMomentUiModel.BeforeFirstDay -> {
+                HomeBlockUiModel.Hero(
+                    kicker = UiText.Resource(Res.string.home_live_before_kicker),
+                    title = UiText.Resource(Res.string.home_live_before_title),
+                    body =
+                        UiText.Resource(
+                            Res.string.home_live_before_body,
+                            listOf(siteMoment.opensAt.formatAsTimeOfDay(FESTIVAL_TIME_ZONE)),
+                        ),
+                )
+            }
+
+            // The closing time is the useful fact here and it is nowhere else on this tab — "how
+            // long have I got" is the question someone on the beach actually has. The alternative
+            // considered was sending the reader to the Programme and saying nothing, which is a
+            // signpost to a tab the app already opened on.
+            is SiteMomentUiModel.Open -> {
+                HomeBlockUiModel.Hero(
+                    kicker = UiText.Resource(Res.string.home_live_open_kicker),
+                    title = UiText.Resource(Res.string.home_live_open_title),
+                    body =
+                        UiText.Resource(
+                            Res.string.home_live_open_body,
+                            listOf(siteMoment.closesAt.formatAsTimeOfDay(FESTIVAL_TIME_ZONE)),
+                        ),
+                )
+            }
+
+            // Deliberately not "c'est fini pour ce soir": this same state is what someone reads at
+            // 02:30 and again at 10:00 the next morning, and only one of those is an evening.
+            is SiteMomentUiModel.Closed -> {
+                HomeBlockUiModel.Hero(
+                    kicker = UiText.Resource(Res.string.home_live_closed_kicker),
+                    title = UiText.Resource(Res.string.home_live_closed_title),
+                    body =
+                        UiText.Resource(
+                            Res.string.home_live_closed_body,
+                            listOf(siteMoment.reopensAt.formatAsTimeOfDay(FESTIVAL_TIME_ZONE)),
+                        ),
+                )
+            }
+
+            // The half-step that stops the weekend ending on a cliff. The site shuts at 22:00 on
+            // the Sunday and ENDED does not take over until 11:00 the next morning, so without this
+            // the last thirteen hours would still read as a running festival. It says goodbye
+            // lightly; the real thank-you, with the photograph, is what the morning brings.
+            SiteMomentUiModel.Finished -> {
+                HomeBlockUiModel.Hero(
+                    kicker = UiText.Resource(Res.string.home_live_over_kicker),
+                    title = UiText.Resource(Res.string.home_live_over_title),
+                    body = UiText.Resource(Res.string.home_live_over_body),
+                    opensProgramme = false,
+                )
+            }
         }
 
     val thankYou =
@@ -249,7 +332,9 @@ fun HomeState.toUiModel(): HomeUiModel {
             // instead of offering a way off the app three days before the gates open.
             PhaseUiModel.APPROACHING -> listOfNotNull(countdown, hero, quickAccess, announcements)
 
-            PhaseUiModel.LIVE -> listOfNotNull(announcements, social)
+            // The hero leads, because during the festival the first question is whether the site
+            // is open at all, and the annonces underneath are the answer to a different one.
+            PhaseUiModel.LIVE -> listOfNotNull(liveHero, announcements, social)
 
             PhaseUiModel.ENDED -> listOfNotNull(thankYou, figures, announcements, quickAccess, social)
         }
