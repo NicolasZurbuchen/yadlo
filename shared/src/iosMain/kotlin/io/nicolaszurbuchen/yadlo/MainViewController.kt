@@ -3,6 +3,7 @@ package io.nicolaszurbuchen.yadlo
 import androidx.compose.ui.window.ComposeUIViewController
 import io.nicolaszurbuchen.yadlo.app.App
 import io.nicolaszurbuchen.yadlo.app.di.initKoin
+import io.nicolaszurbuchen.yadlo.infra.di.platformModule
 import org.koin.mp.KoinPlatform
 import platform.Foundation.NSBundle
 import platform.UIKit.UIViewController
@@ -13,7 +14,11 @@ import kotlin.native.Platform
 @Suppress("ktlint:standard:function-naming")
 fun MainViewController(): UIViewController {
     if (KoinPlatform.getKoinOrNull() == null) {
-        initKoin(isDebugBuild = Platform.isDebugBinary, appVersion = marketingVersion())
+        initKoin(
+            isDebugBuild = Platform.isDebugBinary,
+            appVersion = marketingVersion(),
+            additionalModules = listOf(platformModule),
+        )
     }
     return ComposeUIViewController { App() }
 }
