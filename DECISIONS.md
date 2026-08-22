@@ -244,6 +244,30 @@ no "Maintenant" block, because you are already looking at now; no "Ensuite" bloc
 unanswerable "how many do we show", because Mon Yadlo is one tap away; and no reappearance
 of the drop-in versus timed split that B2 exists to avoid.
 
+**It is a start destination, not a redirect, and that distinction is the whole implementation.**
+LIVE begins at midnight on the Friday, so a rule that simply keeps the tab in step with the Phase
+would pull the screen out from under someone reading the annonces as the date turns — and would
+do it again on every later recomposition, undoing whichever tab they had chosen since.
+`TabNavigator.selectStart` therefore moves once and is idempotent afterwards, and an explicit tap
+closes the question early: a decision the visitor has already made cannot be overruled by content
+arriving a beat later.
+
+Decided during composition rather than in an effect. An effect runs after the pass that draws, so
+the shell would show one frame of Accueil on the Saturday morning before replacing it; written
+before the selected tab is read, the navigator has already moved. The shell is not composed until
+the content is Ready — the splash holds until then — so the Phase is known on the first pass and
+there is no second chance to wait for.
+
+**"Scrolled to now" was dropped from this.** The valuable half of it was already built and lives in
+`ProgrammeStoreFactory`: the day chip opens on the current FestivalDay, which is the part that is
+unambiguous and the part that matters. The scrolling half is not. "Now" has no single row when a
+14:00–20:00 activity overlaps an 18:00 concert — anchoring on the first unfinished row lands at the
+top of the day, and anchoring on the next to start hides what is already running. The trigger is no
+better defined: doing it on every visit to the tab throws away a scroll position the visitor
+expects to find again, and doing it only on the first visit makes the behaviour unrepeatable.
+Against that, a day here is around sixteen rows — two or three screens — so the whole feature saves
+a flick. It is a Paléo-sized answer to a problem this festival does not have.
+
 **No last-bus block.** Transport was dropped; an earlier mock reintroduced it by mistake.
 
 **The aftermovie is an annonce, not a block.** It lands in September; ENDED runs mid-July to

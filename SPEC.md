@@ -286,8 +286,10 @@ Built unofficially, with the explicit aim of becoming the association's official
     drift. Verified on an Android device — the directory is created, written and survives a
     reinstall. **Not yet verified on iOS**, which needs a Mac; the target compiles.
 - Four bottom-nav destinations: **Accueil · Programme · Mon Yadlo · Plus**.
-- **The default destination follows the phase**: Programme (scrolled to now) during LIVE,
-  Accueil for the rest of the year.
+- **The default destination follows the phase**: Programme during LIVE, Accueil for the rest
+  of the year. A start destination decided once, never a redirect — see DECISIONS.md. Programme
+  opens on the current FestivalDay; scrolling to a row within it was dropped, and the reasoning
+  is recorded with the decision (story 10 is met by the day, not by the scroll).
 
 ### Domain model
 
