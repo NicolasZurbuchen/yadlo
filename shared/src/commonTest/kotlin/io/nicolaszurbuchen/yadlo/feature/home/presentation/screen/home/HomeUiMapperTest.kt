@@ -39,17 +39,17 @@ class HomeUiMapperTest {
     // region block stack per phase
 
     @Test
-    fun toUiModel_offSeason_stacksCountdownThenAnnoncesThenLesReseaux() {
+    fun toUiModel_offSeason_stacksCountdownThenAnnoncesThenQuickAccessThenLesReseaux() {
         val state = state(phase = PhaseUiModel.OFF_SEASON, now = THREE_DAYS_BEFORE)
 
-        assertEquals(listOf("Countdown", "Announcements", "Social"), state.toUiModel().blockNames())
+        assertEquals(listOf("Countdown", "Announcements", "QuickAccess", "Social"), state.toUiModel().blockNames())
     }
 
     @Test
-    fun toUiModel_announced_stacksCountdownThenHeroThenAnnoncesThenLesReseaux() {
+    fun toUiModel_announced_stacksCountdownThenHeroThenAnnoncesThenQuickAccessThenLesReseaux() {
         val state = state(phase = PhaseUiModel.ANNOUNCED, now = THREE_DAYS_BEFORE)
 
-        assertEquals(listOf("Countdown", "Hero", "Announcements", "Social"), state.toUiModel().blockNames())
+        assertEquals(listOf("Countdown", "Hero", "Announcements", "QuickAccess", "Social"), state.toUiModel().blockNames())
     }
 
     @Test
@@ -58,7 +58,7 @@ class HomeUiMapperTest {
         // three days out is the only moment the screen has something for the reader to do.
         val state = state(phase = PhaseUiModel.APPROACHING, now = THREE_DAYS_BEFORE)
 
-        assertEquals(listOf("Countdown", "Hero", "Announcements"), state.toUiModel().blockNames())
+        assertEquals(listOf("Countdown", "Hero", "QuickAccess", "Announcements"), state.toUiModel().blockNames())
     }
 
     @Test
@@ -69,10 +69,10 @@ class HomeUiMapperTest {
     }
 
     @Test
-    fun toUiModel_ended_stacksMerciThenLesChiffresThenAnnoncesThenLesReseaux() {
+    fun toUiModel_ended_stacksMerciThenLesChiffresThenAnnoncesThenQuickAccessThenLesReseaux() {
         val state = state(phase = PhaseUiModel.ENDED, now = AFTER)
 
-        assertEquals(listOf("ThankYou", "Figures", "Announcements", "Social"), state.toUiModel().blockNames())
+        assertEquals(listOf("ThankYou", "Figures", "Announcements", "QuickAccess", "Social"), state.toUiModel().blockNames())
     }
 
     // endregion
@@ -114,14 +114,14 @@ class HomeUiMapperTest {
     fun toUiModel_theFirstDayHasAlreadyPassed_dropsTheCountdownRatherThanRunningItBackwards() {
         val state = state(phase = PhaseUiModel.OFF_SEASON, now = AFTER)
 
-        assertEquals(listOf("Announcements", "Social"), state.toUiModel().blockNames())
+        assertEquals(listOf("Announcements", "QuickAccess", "Social"), state.toUiModel().blockNames())
     }
 
     @Test
     fun toUiModel_noDaysPublished_dropsTheCountdown() {
         val state = state(phase = PhaseUiModel.OFF_SEASON, now = THREE_DAYS_BEFORE, days = emptyList())
 
-        assertEquals(listOf("Announcements", "Social"), state.toUiModel().blockNames())
+        assertEquals(listOf("Announcements", "QuickAccess", "Social"), state.toUiModel().blockNames())
     }
 
     // endregion
@@ -270,7 +270,7 @@ class HomeUiMapperTest {
     fun toUiModel_noNetworksPublished_dropsTheBlock() {
         val state = state(phase = PhaseUiModel.OFF_SEASON, now = THREE_DAYS_BEFORE, social = emptyList())
 
-        assertEquals(listOf("Countdown", "Announcements"), state.toUiModel().blockNames())
+        assertEquals(listOf("Countdown", "Announcements", "QuickAccess"), state.toUiModel().blockNames())
     }
 
     // endregion
@@ -299,7 +299,7 @@ class HomeUiMapperTest {
     fun toUiModel_endedWithNoFiguresPublished_dropsTheFiguresBlock() {
         val state = state(phase = PhaseUiModel.ENDED, now = AFTER, figures = emptyList())
 
-        assertEquals(listOf("ThankYou", "Announcements", "Social"), state.toUiModel().blockNames())
+        assertEquals(listOf("ThankYou", "Announcements", "QuickAccess", "Social"), state.toUiModel().blockNames())
     }
 
     @Test
@@ -310,6 +310,129 @@ class HomeUiMapperTest {
 
         assertEquals(listOf("6000"), figures.items.map { it.value })
         assertEquals(listOf("visiteurs"), figures.items.map { it.label })
+    }
+
+    // endregion
+
+    // region quick access
+
+    @Test
+    fun toUiModel_offSeason_promotesTheThreeThingsThereIsTimeToActOnInNovember() {
+        val state = state(phase = PhaseUiModel.OFF_SEASON, now = THREE_DAYS_BEFORE)
+
+        assertEquals(
+            listOf(
+                QuickAccessEntryUiModel.CONTACT,
+                QuickAccessEntryUiModel.NEWSLETTER,
+                QuickAccessEntryUiModel.STORY,
+            ),
+            state.quickAccessEntries(),
+        )
+    }
+
+    @Test
+    fun toUiModel_recruitingIsPromotedOnlyOnceThereIsAnEditionToStaff() {
+        // The split between the two long phases. Off season there is nothing to volunteer *for*
+        // yet, so the offer is a way to reach the association; once the programme exists it becomes
+        // an edition that has to be staffed, and that is the phase they are recruiting in.
+        val offSeason = state(phase = PhaseUiModel.OFF_SEASON, now = THREE_DAYS_BEFORE).quickAccessEntries()
+        val announced = state(phase = PhaseUiModel.ANNOUNCED, now = THREE_DAYS_BEFORE).quickAccessEntries()
+
+        assertTrue(QuickAccessEntryUiModel.CONTACT in offSeason)
+        assertTrue(QuickAccessEntryUiModel.VOLUNTEERING !in offSeason)
+        assertTrue(QuickAccessEntryUiModel.VOLUNTEERING in announced)
+        assertTrue(QuickAccessEntryUiModel.CONTACT !in announced)
+    }
+
+    @Test
+    fun toUiModel_announced_promotesExactlyOneThingBecauseTheHeroIsDoingTheWork() {
+        // The phase has one job — announce the programme and send people to it — so a grid of tiles
+        // under the hero would be competing with the only thing the screen is for.
+        val state = state(phase = PhaseUiModel.ANNOUNCED, now = THREE_DAYS_BEFORE)
+
+        assertEquals(listOf(QuickAccessEntryUiModel.VOLUNTEERING), state.quickAccessEntries())
+    }
+
+    @Test
+    fun toUiModel_approaching_promotesPaiementFirstThenCommentVenir() {
+        // Order matters here and nowhere else: the payment rule is the one fact in the app that is
+        // actionable *only* before leaving the house.
+        val state = state(phase = PhaseUiModel.APPROACHING, now = THREE_DAYS_BEFORE)
+
+        assertEquals(
+            listOf(QuickAccessEntryUiModel.PAYMENT, QuickAccessEntryUiModel.ACCESS),
+            state.quickAccessEntries(),
+        )
+    }
+
+    @Test
+    fun toUiModel_live_promotesNothingAtAll() {
+        // DECISIONS.md § Accueil, block by block: the plan du site and the stands were turned down
+        // here by name, and the app is meant to open on Programme during the festival anyway.
+        val state = state(phase = PhaseUiModel.LIVE, now = DURING)
+
+        assertTrue(state.toUiModel().blocks.none { it is HomeBlockUiModel.QuickAccess })
+    }
+
+    @Test
+    fun toUiModel_ended_promotesTheNewsletterAlone() {
+        val state = state(phase = PhaseUiModel.ENDED, now = AFTER)
+
+        assertEquals(listOf(QuickAccessEntryUiModel.NEWSLETTER), state.quickAccessEntries())
+    }
+
+    @Test
+    fun toUiModel_aPromotedSectionIsNotPublished_dropsThatTileAndKeepsTheRest() {
+        val state = state(phase = PhaseUiModel.OFF_SEASON, now = THREE_DAYS_BEFORE, hasStory = false)
+
+        assertEquals(
+            listOf(QuickAccessEntryUiModel.CONTACT, QuickAccessEntryUiModel.NEWSLETTER),
+            state.quickAccessEntries(),
+        )
+    }
+
+    @Test
+    fun toUiModel_noPromotedSectionIsPublished_dropsTheWholeBlockRatherThanDrawingAnEmptyOne() {
+        val state =
+            state(
+                phase = PhaseUiModel.OFF_SEASON,
+                now = THREE_DAYS_BEFORE,
+                hasStory = false,
+                hasContact = false,
+                newsletterUrl = null,
+            )
+
+        assertEquals(listOf("Countdown", "Announcements", "Social"), state.toUiModel().blockNames())
+    }
+
+    @Test
+    fun toUiModel_theNewsletterTile_carriesItsAddressAndTheOthersCarryNone() {
+        // What the Route splits on. A tile with a url leaves the app; one without is a fixed
+        // destination the navigator already knows.
+        val state = state(phase = PhaseUiModel.OFF_SEASON, now = THREE_DAYS_BEFORE)
+
+        val items = state.toUiModel().blocks.filterIsInstance<HomeBlockUiModel.QuickAccess>().single().items
+
+        assertEquals("https://example.com/newsletter", items.single { it.entry == QuickAccessEntryUiModel.NEWSLETTER }.url)
+        assertTrue(items.filter { it.entry != QuickAccessEntryUiModel.NEWSLETTER }.all { it.url == null })
+    }
+
+    @Test
+    fun toUiModel_eachPhase_titlesTheBlockForItself() {
+        // The title is the block's argument — *Préparer sa venue* says why these two and why now —
+        // so no two phases may reach for the same heading.
+        val titles =
+            listOf(PhaseUiModel.OFF_SEASON, PhaseUiModel.ANNOUNCED, PhaseUiModel.APPROACHING, PhaseUiModel.ENDED)
+                .map { phase ->
+                    state(phase = phase, now = THREE_DAYS_BEFORE)
+                        .toUiModel()
+                        .blocks
+                        .filterIsInstance<HomeBlockUiModel.QuickAccess>()
+                        .single()
+                        .title
+                }
+
+        assertEquals(titles.size, titles.toSet().size)
     }
 
     // endregion
@@ -331,6 +454,15 @@ class HomeUiMapperTest {
 
     private fun HomeUiModel.blockNames(): List<String> = blocks.map { it::class.simpleName.orEmpty() }
 
+    /** The promoted tiles in the order they are drawn. Fails loudly when the block is absent. */
+    private fun HomeState.quickAccessEntries(): List<QuickAccessEntryUiModel> =
+        toUiModel()
+            .blocks
+            .filterIsInstance<HomeBlockUiModel.QuickAccess>()
+            .single()
+            .items
+            .map { it.entry }
+
     private fun state(
         phase: PhaseUiModel,
         now: Instant,
@@ -349,6 +481,15 @@ class HomeUiMapperTest {
                 SocialLink("youtube", "YouTube", "https://example.com/youtube"),
                 SocialLink("tiktok", "TikTok", "https://example.com/tiktok"),
             ),
+        // Everything a Phase could promote is published by default, so a test about *which* tiles a
+        // Phase gets is not silently also a test about what the content happens to hold. The tests
+        // that care about an unpublished section turn one off by name.
+        hasStory: Boolean = true,
+        hasContact: Boolean = true,
+        hasVolunteering: Boolean = true,
+        hasTransport: Boolean = true,
+        hasPayment: Boolean = true,
+        newsletterUrl: String? = "https://example.com/newsletter",
     ) = HomeState(
         now = now,
         phase = phase,
@@ -365,6 +506,12 @@ class HomeUiMapperTest {
                 figures = figures,
                 figuresAreConfirmed = figuresAreConfirmed,
                 social = social,
+                hasStory = hasStory,
+                hasContact = hasContact,
+                hasVolunteering = hasVolunteering,
+                hasTransport = hasTransport,
+                hasPayment = hasPayment,
+                newsletterUrl = newsletterUrl,
             ),
     )
 

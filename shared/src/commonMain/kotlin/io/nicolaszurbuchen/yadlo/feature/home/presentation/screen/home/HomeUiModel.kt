@@ -67,4 +67,40 @@ sealed interface HomeBlockUiModel {
     data class Social(
         val items: List<SocialLinkUiModel>,
     ) : HomeBlockUiModel
+
+    /**
+     * A handful of Plus screens, promoted because this is the moment they are worth opening.
+     *
+     * **It is not a shortcut, and the tap it saves is not the point.** Plus is a table of contents
+     * where sixteen rows carry the same weight and nothing knows what month it is — *Devenir
+     * bénévole* sits at the same volume as *Politique de confidentialité*, and someone in November
+     * has no reason to open the tab at all. Accueil is the only surface in the app that knows the
+     * Phase, so this is where a thing can be raised at the point it becomes actionable and dropped
+     * again afterwards.
+     *
+     * **[items] is as long as the Phase deserves and no longer**, which is why the count runs from
+     * one to three rather than filling a grid. Padding a promotion surface with whatever is left
+     * over turns it into a smaller copy of Plus, and *that* really would be worth less than the tap
+     * it saves. LIVE gets no block at all — see the UiMapper.
+     *
+     * [title] belongs to the Phase rather than to the block, because it is the block's whole
+     * argument: *Préparer sa venue* over payment and transport says why those two and why now, and
+     * one neutral heading over all five phases would say nothing.
+     */
+    data class QuickAccess(
+        val title: UiText,
+        val items: List<QuickAccessItemUiModel>,
+    ) : HomeBlockUiModel
 }
+
+/**
+ * One promoted tile.
+ *
+ * [url] is set for exactly the entries that leave the app and null for the rest, mirroring
+ * `PlusRowUiModel`: a destination inside the app is a fixed key the navigator already knows, while
+ * a link out is an address that only the content can supply.
+ */
+data class QuickAccessItemUiModel(
+    val entry: QuickAccessEntryUiModel,
+    val url: String?,
+)

@@ -15,6 +15,16 @@ sealed interface HomeIntent {
     ) : HomeIntent
 
     data object AllAnnouncementsClicked : HomeIntent
+
+    /**
+     * Only the promoted tiles that *leave* the app come through here, carrying the address the
+     * screen read off the model. The ones that open a screen go straight to the navigator from the
+     * Route — routing them through the store would add a hop that only forwards, and write the
+     * navigation decision down in two places. The same split `PlusRoute` makes, for the same reason.
+     */
+    data class QuickAccessLinkClicked(
+        val url: String,
+    ) : HomeIntent
 }
 
 sealed interface HomeLabel {

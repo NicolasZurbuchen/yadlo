@@ -1148,6 +1148,73 @@ confirmed, the hours are inferred. Leaving them `confirmed` would have asserted 
 organisers published times they did not. `validate.js` rejects a null `start` or `end`, so the
 invariant lives in the content pipeline and the app never has to defend against it.
 
+**Accueil promotes a few Plus screens, and it is not a shortcut.** The objection to raise first is
+that it saves one tap, since everything it points at already lives in Plus — and if that were all
+it did, it would not be worth the room. It is not. Plus is a table of contents where sixteen rows
+carry identical weight and nothing in it knows what month it is: *Devenir bénévole*, the thing the
+association spends the spring recruiting for, sits at the same volume as *Politique de
+confidentialité* all year round, and a visitor in November has no reason to open the tab at all. Accueil is the
+only surface in the app that knows the Phase. What the block buys is that a thing is raised at the
+moment it becomes actionable and drops away afterwards, which no arrangement of Plus can do.
+
+**The count follows the phase rather than a fixed width — one row in ANNOUNCED, three in OFF_SEASON.**
+This is the part that decides whether the block is worth having. Filling every phase to the same
+width means promoting whatever is left over once the genuinely urgent items run out, and a
+promotion surface full of padding *is* just a smaller Plus, which really would be worth less than
+the tap. ANNOUNCED gets exactly one because the hero is the screen's whole job in that phase.
+APPROACHING gets paiement first, since the payment rule is the only fact in the app that is
+actionable exclusively before leaving the house. ENDED gets the newsletter alone: the Monday after
+is the one moment someone has just decided they are coming back.
+
+**LIVE promotes nothing, and this is the earlier decision standing rather than an omission.** The
+plan du site and the stands were turned down here by name — both already live in Plus › Sur place —
+and the app is meant to open on Programme during the festival, so a block promoting Plus screens
+onto Accueil that weekend is aimed at a tab nobody is looking at. *Urgences* was considered and is
+the one item never covered by that reasoning; it was left out anyway, on the same grounds. If
+emergency access matters at 01:00 on the Saturday — it does — then Accueil is the wrong home for it
+precisely because nobody is on Accueil then. It wants a surface that is reachable from anywhere,
+which is a separate piece of work.
+
+**Three of the phases' natural tiles have nowhere to go, and stayed out.** *Revivre l'édition
+précédente* needs an archive screen; nothing reads `editions.json` yet. *Réservations* has no
+booking anywhere in the published content — `silentparty@yadlo.ch` is a row in the contact router
+and nothing more, so a tile would open a mail composer under a label promising a reservation. The
+FAQ was floated for APPROACHING and left out on the evidence: it holds four questions, three of
+which are about being on site already (free drinking water, the heat, alcohol-free drinks), so it
+is not what someone consults at J-3.
+
+**A promoted tile is gated on its section exactly as the matching Plus row is.** `HomeContent`
+carries five availability fields it never draws, asked of the same `festival` the Plus overview
+asks, so the two tabs cannot disagree about whether a screen is worth opening. The tiles reuse the
+Plus tab's own label strings for the same reason: a tile and a row that open one screen have to
+call it the same thing.
+
+**It is drawn as the Plus tab's own card, sharing the component rather than matching it by eye.**
+The first attempt made these compact tiles laid out across the width, reasoning that a block reading
+like a shorter Plus invites being scanned past like one. Wrong trade: these rows *open Plus screens*,
+so a reader who taps *Paiement* here and *Paiement* there has tapped one thing and must not be able
+to tell the two apart. The row and the card moved to `app/design/component/` — a titled card of
+full-width rows, generic over the caller's own row type so nothing is matched up by a string
+afterwards — and both screens now draw the same object. Matching a style by eye is exactly how the
+four hand-written app bars ended up agreeing on nothing.
+
+What makes it Accueil's rather than Plus's is the heading, which belongs to the Phase — *Préparer sa
+venue* over payment and transport says why those two and why now, where a neutral "accès rapide"
+would say nothing — and the length, one to three rather than sixteen. It carries no subtitles: Plus
+writes the little it knows under a row because that tab is a table of contents being scanned, while
+here the heading has already said why the row is on the screen, and a second line under each would
+turn three promoted rows back into a list to read through.
+
+**Recruiting is promoted only once there is an edition to staff.** OFF_SEASON offers *Nous écrire*
+and ANNOUNCED offers *Devenir bénévole*, which is the difference between the two long phases rather
+than an inconsistency. Between editions there is nothing to volunteer *for* yet and the useful offer
+is a way to reach the association during the months it can actually answer; once the programme
+exists it is an edition that has to be staffed, and that is when the association is recruiting.
+
+**They push onto Accueil's stack, not into the Plus tab.** A tab switch would leave the reader on
+Plus's root when they back out of *Paiement*, somewhere they never chose to be. Pushed, back returns
+to Accueil — the same rule the fiche already follows when it is opened from two different tabs.
+
 ## Open
 
 **The accent colour.** `#14618F` is the primary, not an accent — the terminology in earlier

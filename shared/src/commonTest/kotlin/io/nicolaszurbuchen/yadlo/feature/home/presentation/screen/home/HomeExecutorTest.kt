@@ -225,6 +225,24 @@ class HomeExecutorTest {
 
     // endregion
 
+    // region QuickAccessLinkClicked
+
+    @Test
+    fun quickAccessLinkClicked_publishesTheUrlRatherThanNavigatingAnywhere() =
+        homeTest(startingAt = A_WEEK_AFTER) { store, _, _ ->
+            // The one promoted tile that leaves the app. The other four never reach the store at
+            // all — the Route sends them straight to the navigator, which is what keeps a browser
+            // out of the back stack.
+            testDispatcher.scheduler.runCurrent()
+
+            store.labels.test {
+                store.accept(HomeIntent.QuickAccessLinkClicked("https://eepurl.com/dPUvrX"))
+                assertEquals(HomeLabel.OpenUrl("https://eepurl.com/dPUvrX"), awaitItem())
+            }
+        }
+
+    // endregion
+
     /**
      * The ticker never stops on its own, so every store is disposed even when an assertion throws —
      * an undisposed one leaves a repeating task on the shared test scheduler.

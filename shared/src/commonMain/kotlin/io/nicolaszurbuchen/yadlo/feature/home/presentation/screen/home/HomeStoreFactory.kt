@@ -69,6 +69,10 @@ class HomeStoreFactory(
                 HomeIntent.AllAnnouncementsClicked -> {
                     publish(HomeLabel.NavigateToAnnouncements)
                 }
+
+                is HomeIntent.QuickAccessLinkClicked -> {
+                    publish(HomeLabel.OpenUrl(intent.url))
+                }
             }
         }
 

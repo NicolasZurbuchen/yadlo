@@ -33,4 +33,24 @@ data class HomeContent(
      */
     val figuresAreConfirmed: Boolean,
     val social: List<SocialLink>,
+    /**
+     * Whether the section behind each promoted tile has been published — the same gate every row of
+     * Plus is drawn behind, asked a second time because Accueil promotes a handful of those rows by
+     * Phase and must not offer a screen with nothing on it either.
+     *
+     * Booleans rather than the sections themselves: Accueil never renders a word of any of them,
+     * and carrying a Transport here to ask whether it exists would put the whole of the transport
+     * screen's content on a model that draws a tile.
+     */
+    val hasStory: Boolean,
+    val hasContact: Boolean,
+    /** False when the edition has closed its applications — recruiting is a campaign, not a fact. */
+    val hasVolunteering: Boolean,
+    val hasTransport: Boolean,
+    val hasPayment: Boolean,
+    /**
+     * The one promoted tile that leaves the app, so the URL travels rather than a boolean: a tile
+     * that cannot say where it goes should not be drawn at all.
+     */
+    val newsletterUrl: String?,
 )
