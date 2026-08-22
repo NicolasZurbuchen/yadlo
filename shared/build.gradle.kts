@@ -65,6 +65,8 @@ kotlin {
     sourceSets {
         androidMain.dependencies {
             implementation(libs.android.driver)
+            implementation(libs.androidx.activity.compose)
+            implementation(libs.androidx.core.ktx)
             implementation(libs.compose.uiTooling)
             implementation(libs.ktor.client.android)
             implementation(libs.ktor.client.okhttp)
