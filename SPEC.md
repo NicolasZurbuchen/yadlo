@@ -223,9 +223,8 @@ Built unofficially, with the explicit aim of becoming the association's official
 **Language and accessibility**
 
 69. As a French-speaking visitor, I want the app in French.
-70. As a non-French-speaking visitor, I want the app in English.
-71. As a user, I want French shown when an English translation is missing, rather than a
-    blank or a key.
+
+> **70 and 71 are out of scope.** The app is French-only, UI and content alike — see Out of Scope.
 72. As a user with large text enabled, I want every screen to remain usable, so that nothing
     depends on a fixed-width column.
 73. As a screen reader user, I want a slot's state read aloud, because it is written in
@@ -696,10 +695,10 @@ figures. Accent `#E27BA6` is still open (see DECISIONS.md).
   field in the content files is a plain string, not a `{fr, en}` object. The festival is French,
   its programme is French, and carrying an `en` key that is empty on all 29 happenings bought
   nothing but noise. `validate.js` fails the build if a localized object reappears.
-- **UI strings stay translatable** — they are Compose Multiplatform resources and independent of
-  the content bundle, so an English UI over French content remains possible without a schema
-  change. If content translation is ever wanted, it returns as a parallel field or a parallel
-  file, and that is a deliberate migration rather than something to carry speculatively now.
+- **The UI is French-only too**, which is a change from the earlier draft — see Out of Scope. The
+  strings remain Compose Multiplatform resources in a `values/` folder, so a second language is a
+  second folder rather than a code change; nothing has been done to make that harder, and nothing
+  has been done to bring it closer.
 
 ## Testing Decisions
 
@@ -796,6 +795,13 @@ reducer test, `ContentApiImplTest` before an API test, `FakeContentRepository` b
 
 ## Out of Scope
 
+- **Any language but French.** The app is French, UI and content alike, and stories 70 and 71 are
+  withdrawn rather than deferred. Yadlo is a village beach festival on Lake Geneva whose site, whose
+  posters and whose programme are French; its visitors are Vaudois. An English UI over a French
+  programme translates the chrome around content nobody could read anyway — the tab labels and the
+  section headers — which is the half that matters least. It stays cheap to reverse: strings live in
+  `composeResources/values/`, so a second language is a second folder, and the one thing that would
+  have made it expensive — localized objects in the content schema — was already rejected.
 - **Notifications of every kind, local included** — deferred past v1. Neither the interface nor the
   implementation exists today. For remote push specifically there is a second reason on top of the
   work: an unofficial app broadcasting operational claims is a content problem, not a technical one.
