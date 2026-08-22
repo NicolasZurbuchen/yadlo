@@ -15,6 +15,14 @@
     <!-- One label for every share action, for the same reason as the chevron above it. -->
     <string name="share">Partager</string>
 
+    <!-- The opening line of a shared message, and the only part of it that is copy: everything under
+         it is the Happening's own name, dates and the festival's address. Tutoiement, because this
+         is written by one visitor to a friend rather than by the festival to a visitor — every other
+         string in this file is the second. -->
+    <string name="share_happening_artist">Viens voir ce concert :\n\n%1$s</string>
+    <string name="share_happening_activity">Viens tester cette activité :\n\n%1$s</string>
+    <string name="share_happening_stand">Je te partage ce stand :\n\n%1$s</string>
+
     <!-- Written out because Mon Yadlo's rail sets the day as the largest thing on it and needs the
          month underneath in words. Resources rather than a formatter, so a second language is a
          second values file rather than a code change. Lowercase: French does not capitalise them. -->

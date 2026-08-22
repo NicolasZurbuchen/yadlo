@@ -178,7 +178,7 @@ fun HappeningScreen(
                     // Share sits left of the heart rather than right of it. The heart is already
                     // in the corner on a Stand fiche and is the action people come back for;
                     // moving it to make room for a newcomer would cost a habit to save nothing.
-                    if (state.shareText.isNotEmpty()) {
+                    if (state.shareText != null) {
                         IconButton(onClick = onShareClick) {
                             Icon(
                                 imageVector = Icons.Filled.Share,

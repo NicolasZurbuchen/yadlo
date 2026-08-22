@@ -91,7 +91,7 @@ private fun blank(
     menu = emptyList(),
     links = emptyList(),
     wishlisted = null,
-    shareText = "",
+    shareText = null,
 )
 
 private fun artist() =

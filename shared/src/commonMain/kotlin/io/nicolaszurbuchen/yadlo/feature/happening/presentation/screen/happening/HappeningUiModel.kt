@@ -51,13 +51,18 @@ data class HappeningUiModel(
     val links: List<SocialLinkUiModel>,
     val wishlisted: Boolean?,
     /**
-     * The message the share sheet sends, built here so the screen has nothing to assemble and a
+     * The message the share sheet sends, assembled here so the screen has nothing to build and a
      * test can read the whole thing.
      *
-     * Empty while the fiche is loading or missing, which is the one state the share action is
-     * hidden in — there is no title to put in it yet.
+     * [UiText] rather than a String because the opening sentence names the kind — *viens voir ce
+     * concert*, *je te partage ce stand* — and that is copy, which lives in a resource. Everything
+     * under it is raw: names and days come from the content, times and dates are numeric, so the
+     * whole body travels as this resource’s one argument and stays testable without a composition.
+     *
+     * Null while the fiche is loading or missing, which is the one state the action hides in —
+     * there is no title to put in a message yet.
      */
-    val shareText: String,
+    val shareText: UiText?,
 )
 
 /**

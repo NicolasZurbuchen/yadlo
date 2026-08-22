@@ -8,8 +8,10 @@ import io.nicolaszurbuchen.yadlo.common.content.domain.model.Provenance
 import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotLiveStateUiModel
 import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.socialIconFor
 import io.nicolaszurbuchen.yadlo.feature.happening.domain.model.HappeningDetail
+import io.nicolaszurbuchen.yadlo.feature.happening.domain.model.HappeningKind
 import io.nicolaszurbuchen.yadlo.feature.happening.domain.model.HappeningSlot
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
+import org.jetbrains.compose.resources.StringResource
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.dietary_mark_gluten_free
 import yadlo.shared.generated.resources.dietary_mark_vegetarian
@@ -22,6 +24,9 @@ import yadlo.shared.generated.resources.happening_link_website
 import yadlo.shared.generated.resources.happening_price_deposit
 import yadlo.shared.generated.resources.month_july
 import yadlo.shared.generated.resources.price_free
+import yadlo.shared.generated.resources.share_happening_activity
+import yadlo.shared.generated.resources.share_happening_artist
+import yadlo.shared.generated.resources.share_happening_stand
 import yadlo.shared.generated.resources.slot_state_ending
 import yadlo.shared.generated.resources.slot_state_over
 import yadlo.shared.generated.resources.slot_state_running
@@ -29,6 +34,7 @@ import yadlo.shared.generated.resources.slot_state_starts_in_minutes
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertIs
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 import kotlin.time.Instant
@@ -436,36 +442,76 @@ class HappeningUiMapperTest {
     // region the share message
 
     @Test
-    fun toUiModel_shareText_namesTheThingItsDatesAndOneAddressThatWorksWithoutTheApp() {
-        val state = state(detail(slots = listOf(saturdayFourToSix())))
+    fun toUiModel_shareBody_namesTheThingWhatItIsWhenItRunsAndAnAddressThatWorksWithoutTheApp() {
+        val state = state(detail(tags = listOf("House", "Disco"), slots = listOf(saturdayFourToSix())))
 
         assertEquals(
-            "Dubside\nSamedi 16:00\nYadlo 2026 · https://www.yadlo.ch/",
-            state.toUiModel().shareText,
+            "Dubside\n" +
+                "House · Disco\n" +
+                "Samedi 11.07.2026, 16:00 – 18:00\n" +
+                "\n" +
+                "Yadlo 2026\n" +
+                "https://www.yadlo.ch/",
+            state.shareBody(),
         )
     }
 
     @Test
-    fun toUiModel_shareTextForAThingWithNoSlots_dropsTheDatesLineRatherThanLeavingItBlank() {
-        val state = state(detail(slots = emptyList()))
-
-        assertEquals("Dubside\nYadlo 2026 · https://www.yadlo.ch/", state.toUiModel().shareText)
+    fun toUiModel_shareOpening_namesTheKindBecauseThatIsTheOnePartThatIsCopy() {
+        assertEquals(Res.string.share_happening_artist, state(detail(), kind = HappeningKindUiModel.ARTIST).shareResource())
+        assertEquals(Res.string.share_happening_activity, state(detail(), kind = HappeningKindUiModel.ACTIVITY).shareResource())
+        assertEquals(Res.string.share_happening_stand, state(detail(), kind = HappeningKindUiModel.STAND).shareResource())
     }
 
     @Test
-    fun toUiModel_shareTextWhenTheContentPublishesNoWebsite_stillNamesTheEdition() {
+    fun toUiModel_shareBodyForAStand_leansOnItsOfferingBecauseItHasNoDates() {
+        // The case that sent this back for a second pass: a Stand has no Slots, so without the
+        // offering the message was a name and an address and read as though something was missing.
+        val state = state(detail(tags = listOf("Cuisine végétale"), slots = emptyList()), kind = HappeningKindUiModel.STAND)
+
+        assertEquals("Dubside\nCuisine végétale\n\nYadlo 2026\nhttps://www.yadlo.ch/", state.shareBody())
+    }
+
+    @Test
+    fun toUiModel_shareBodyForSeveralDates_putsEachOnItsOwnLine() {
+        // Joined onto one line they ran past the width of a message bubble.
+        val state = state(detail(slots = listOf(saturdayFourToSix(), sundayFourToSix())))
+
+        assertEquals(
+            "Dubside\nSamedi 11.07.2026, 16:00 – 18:00\nDimanche 12.07.2026, 16:00 – 18:00\n\nYadlo 2026\nhttps://www.yadlo.ch/",
+            state.shareBody(),
+        )
+    }
+
+    @Test
+    fun toUiModel_shareBodyWhenTheContentPublishesNoWebsite_stillNamesTheEdition() {
         // The published file always carries one — validate.js sees to that — but a bundle cached
         // by an older build does not, and that has to cost a line rather than the message.
-        val state = state(detail(festivalWebsite = null))
+        val state = state(detail(festivalWebsite = null, slots = emptyList()))
 
-        assertEquals("Dubside\nYadlo 2026", state.toUiModel().shareText)
+        assertEquals("Dubside\n\nYadlo 2026", state.shareBody())
     }
 
     @Test
-    fun toUiModel_shareTextWhileLoading_isEmptySoTheActionCanHideItself() {
+    fun toUiModel_shareTextWhileLoading_isNullSoTheActionCanHideItself() {
         val state = HappeningState(now = NOW, detail = null, isLoaded = false)
 
-        assertEquals("", state.toUiModel().shareText)
+        assertNull(state.toUiModel().shareText)
+    }
+
+    /** The one argument of the opening sentence — the whole message below its first line. */
+    private fun HappeningState.shareBody(): String {
+        val text = toUiModel().shareText
+        assertIs<UiText.Resource>(text)
+
+        return text.args.single().toString()
+    }
+
+    private fun HappeningState.shareResource(): StringResource {
+        val text = toUiModel().shareText
+        assertIs<UiText.Resource>(text)
+
+        return text.id
     }
 
     // endregion
@@ -473,9 +519,11 @@ class HappeningUiMapperTest {
     private fun state(
         detail: HappeningDetail,
         now: Instant = NOW,
-    ) = HappeningState(now = now, detail = detail, isLoaded = true)
+        kind: HappeningKindUiModel = HappeningKindUiModel.ARTIST,
+    ) = HappeningState(now = now, detail = detail, kind = kind, isLoaded = true)
 
     private fun detail(
+        kind: HappeningKind = HappeningKind.ARTIST,
         categoryId: String = "musique",
         categoryName: String = "Musique",
         imageUrl: String? = null,
@@ -494,6 +542,7 @@ class HappeningUiMapperTest {
     ) = HappeningDetail(
         id = "dubside",
         name = "Dubside",
+        kind = kind,
         categoryId = categoryId,
         categoryName = categoryName,
         imageUrl = imageUrl,
@@ -522,6 +571,16 @@ class HappeningUiMapperTest {
             start = Instant.parse("2026-07-11T16:00:00+02:00"),
             end = Instant.parse("2026-07-11T18:00:00+02:00"),
             planned = planned,
+        )
+
+    private fun sundayFourToSix() =
+        HappeningSlot(
+            id = "2026:dubside-sun",
+            dayName = "Dimanche",
+            dayStart = Instant.parse("2026-07-12T12:00:00+02:00"),
+            start = Instant.parse("2026-07-12T16:00:00+02:00"),
+            end = Instant.parse("2026-07-12T18:00:00+02:00"),
+            planned = false,
         )
 
     /** Starts on the Saturday and ends on the Sunday, which is the Saturday as far as a fiche goes. */

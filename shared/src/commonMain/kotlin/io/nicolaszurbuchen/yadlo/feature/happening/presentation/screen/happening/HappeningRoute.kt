@@ -7,6 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.nicolaszurbuchen.yadlo.infra.platform.rememberShareLauncher
+import io.nicolaszurbuchen.yadlo.infra.ui.asString
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -25,6 +26,10 @@ fun HappeningRoute(
     // already on the model and the sheet is the platform’s, exactly like opening a url.
     val shareLauncher = rememberShareLauncher()
 
+    // Resolved here rather than in the mapper: the opening sentence is a resource, and only a
+    // composition can read one. Everything else in the message is already assembled.
+    val shareText = state.shareText?.asString()
+
     LaunchedEffect(Unit) {
         viewModel.labels.collect { label ->
             when (label) {
@@ -39,7 +44,7 @@ fun HappeningRoute(
         onLinkClick = { url -> viewModel.onIntent(HappeningIntent.LinkClicked(url)) },
         onSlotHeartClick = { slotId -> viewModel.onIntent(HappeningIntent.SlotHeartClicked(slotId)) },
         onWishlistHeartClick = { viewModel.onIntent(HappeningIntent.WishlistHeartClicked) },
-        onShareClick = { shareLauncher.share(state.shareText) },
+        onShareClick = { shareText?.let(shareLauncher::share) },
         modifier = modifier,
     )
 }
