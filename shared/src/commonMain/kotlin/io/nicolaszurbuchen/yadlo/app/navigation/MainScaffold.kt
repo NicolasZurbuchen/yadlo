@@ -62,7 +62,6 @@ fun MainScaffold(modifier: Modifier = Modifier) {
     val contentRepository = koinInject<ContentRepository>()
     val derivePhase = koinInject<DerivePhaseUseCase>()
     val clock = koinInject<AppClock>()
-    val selectedTab by tabNavigator.selectedTab.collectAsStateWithLifecycle()
 
     // Read here rather than by each tab's own store: the bar belongs to the shell, and four
     // screens deriving the same two strings is four places for them to drift apart.
@@ -83,13 +82,31 @@ fun MainScaffold(modifier: Modifier = Modifier) {
         clock.jumps.collect { clockMoved++ }
     }
 
-    val isOffSeason =
+    val phase =
         remember(ready, clockMoved) {
             derivePhase(
                 days = ready?.bundle?.edition?.days.orEmpty(),
                 hasPublishedProgramme = ready?.bundle?.edition?.slots.orEmpty().isNotEmpty(),
-            ) == Phase.OFF_SEASON
+            )
         }
+
+    // **The tab the app opens on, and the only place the Phase decides navigation.** Accueil for
+    // 361 days of the year; Programme for the four the festival is running, because during LIVE
+    // the question is "what is on now" and Accueil's honest answer to it is the other tab.
+    //
+    // A `remember` rather than a `LaunchedEffect`, and above the read of the selected tab rather
+    // than below it: an effect runs after composition, so the shell would draw one frame of
+    // Accueil on the Saturday morning before replacing it. Written here, [TabNavigator.selectStart]
+    // has already moved before the flow below is first read. The same shape App.kt uses to install
+    // the image loader.
+    //
+    // The shell is not composed until the content is Ready — App.kt holds the splash until then —
+    // so the Phase is known on the first pass and there is no second chance to wait for.
+    remember(Unit) {
+        tabNavigator.selectStart(if (phase == Phase.LIVE) Tab.PROGRAMME else Tab.HOME)
+    }
+
+    val selectedTab by tabNavigator.selectedTab.collectAsStateWithLifecycle()
 
     // Declared one by one rather than built in a loop: these are composables, and the call order
     // has to be identical on every recomposition. Each rememberNavEntries call is also its own
@@ -178,7 +195,7 @@ fun MainScaffold(modifier: Modifier = Modifier) {
             // never more than a glance away and no screen has to spend a line of its own saying it.
             YadloTopAppBar(
                 title = ready?.bundle?.festival?.name.orEmpty(),
-                subtitle = ready?.bundle?.edition?.days?.takeUnless { isOffSeason }?.let(::formatEditionDates),
+                subtitle = ready?.bundle?.edition?.days?.takeUnless { phase == Phase.OFF_SEASON }?.let(::formatEditionDates),
                 modifier =
                     Modifier.onSizeChanged { size ->
                         chrome = chrome.copy(top = with(density) { size.height.toDp() })
