@@ -16,8 +16,10 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
 import org.jetbrains.compose.resources.painterResource
@@ -52,6 +54,11 @@ import yadlo.shared.generated.resources.ic_yadlo
  * "no way back" already means "tab root" here, and a second flag would let the two disagree about
  * which bar this is. The mark and a back arrow are therefore mutually exclusive by construction,
  * which is also what a detail screen wants — the way out of it is the only thing that slot may say.
+ *
+ * **On a tab root the title is a wordmark rather than a heading**, and it is set as one — sized and
+ * weighted against the mark so the two read as a single lockup rather than as a drawing with a
+ * caption. See [wordmarkStyle], where both numbers are measured rather than picked. Everywhere else
+ * the title names the screen, and stays the heading it has always been.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -61,6 +68,12 @@ fun YadloTopAppBar(
     subtitle: String? = null,
     onBackClick: (() -> Unit)? = null,
 ) {
+    // The same condition the mark is drawn off, read once: a bar with no way back is a tab root,
+    // where the title is the festival's own name and belongs in the lockup beside the mark. On a
+    // detail screen the title is that screen's name — "Annonces", "Nous écrire" — and stays the
+    // heading it has always been.
+    val isTabRoot = onBackClick == null
+
     TopAppBar(
         title = {
             Row(
@@ -71,7 +84,7 @@ fun YadloTopAppBar(
                     text = title,
                     // Set explicitly: TopAppBar defaults its title to titleLarge, which in this
                     // project is the button-label role rather than a heading.
-                    style = MaterialTheme.typography.headlineSmall,
+                    style = if (isTabRoot) wordmarkStyle() else MaterialTheme.typography.headlineSmall,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier.alignByBaseline(),
@@ -89,14 +102,7 @@ fun YadloTopAppBar(
             }
         },
         navigationIcon = {
-            if (onBackClick != null) {
-                IconButton(onClick = onBackClick) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = stringResource(Res.string.back),
-                    )
-                }
-            } else {
+            if (isTabRoot) {
                 Icon(
                     painter = painterResource(Res.drawable.ic_yadlo),
                     // Decorative: the title beside it is the word this mark stands for, so a
@@ -106,6 +112,14 @@ fun YadloTopAppBar(
                     tint = MaterialTheme.appColors.onPrimarySubtle,
                     modifier = Modifier.padding(horizontal = MARK_GUTTER).size(MARK_SIZE),
                 )
+            } else {
+                // Smart-cast through isTabRoot, which is the same null check by another name.
+                IconButton(onClick = onBackClick) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = stringResource(Res.string.back),
+                    )
+                }
             }
         },
         colors =
@@ -120,11 +134,43 @@ fun YadloTopAppBar(
 }
 
 /**
+ * The festival's name set as a lockup with the mark rather than as a heading beside it.
+ *
+ * **The size is derived, not chosen.** Barlow SemiCondensed puts its cap height and its ascender at
+ * exactly 0.70em — measured from the font, and equal because this is a grotesque — and *Yadlo* has
+ * no descender, so the word's ink is 0.70 × the font size and nothing else. [MARK_SIZE] / 0.70 is
+ * therefore what makes the word exactly as tall as the mark next to it, which is what a lockup is.
+ *
+ * **The weight is derived too, and this is why it is not the Bold it started as.** The mark's own
+ * stroke — the wave bands and the swan, not the hairline ring around them — is 11.1% of its width,
+ * which is 3.11dp at [MARK_SIZE]. Barlow SemiCondensed's stem at this size measures 2.84dp Regular,
+ * 3.84 Medium, 4.64 SemiBold and 5.64 Bold. Regular is the only one in the same ink as the mark;
+ * Bold is nearly twice it, which is what made the word read as shouting next to a drawing.
+ *
+ * The ring is thinner still, at 1.15dp, and no weight in the family reaches it. That is the right
+ * thing to miss: an outline is not what gives a mark its weight.
+ *
+ * Line height equal to the font size, which is the ordinary tight setting for display type and
+ * leaves room here regardless — the ink is 0.70em, so a 1.00em line box has three tenths of an em
+ * spare before anything could clip.
+ */
+@Composable
+private fun wordmarkStyle() =
+    MaterialTheme.typography.headlineSmall.copy(
+        fontWeight = FontWeight.Normal,
+        fontSize = WORDMARK_SIZE,
+        lineHeight = WORDMARK_SIZE,
+    )
+
+/**
  * Larger than the 24dp of an action icon, because it is not one — nothing about it is tappable, so
  * it is not competing for a touch target, and the mark is a ring with fine internal detail that
  * closes up below about this size.
  */
 private val MARK_SIZE = 28.dp
+
+/** [MARK_SIZE] ÷ 0.70, the em fraction Barlow SemiCondensed gives a capital or an ascender. */
+private val WORDMARK_SIZE = 40.sp
 
 /**
  * The twelve an `IconButton` would have put around the mark, added by hand because there is no
