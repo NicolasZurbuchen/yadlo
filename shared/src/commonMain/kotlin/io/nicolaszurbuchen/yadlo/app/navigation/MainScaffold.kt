@@ -14,8 +14,10 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -31,12 +33,15 @@ import io.nicolaszurbuchen.yadlo.app.design.component.YadloTopAppBar
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.ContentStatus
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.FestivalDay
+import io.nicolaszurbuchen.yadlo.common.content.domain.model.Phase
 import io.nicolaszurbuchen.yadlo.common.content.domain.repository.ContentRepository
+import io.nicolaszurbuchen.yadlo.common.content.domain.usecase.DerivePhaseUseCase
 import io.nicolaszurbuchen.yadlo.common.time.FESTIVAL_TIME_ZONE
 import io.nicolaszurbuchen.yadlo.infra.navigation.AppNavigator
 import io.nicolaszurbuchen.yadlo.infra.navigation.NavGraph
 import io.nicolaszurbuchen.yadlo.infra.navigation.rememberNavEntries
 import io.nicolaszurbuchen.yadlo.infra.platform.BackHandler
+import io.nicolaszurbuchen.yadlo.infra.time.AppClock
 import kotlinx.datetime.number
 import kotlinx.datetime.toLocalDateTime
 import org.jetbrains.compose.resources.stringResource
@@ -55,12 +60,36 @@ fun MainScaffold(modifier: Modifier = Modifier) {
     val appNavigator = koinInject<AppNavigator>()
     val tabNavigator = koinInject<TabNavigator>()
     val contentRepository = koinInject<ContentRepository>()
+    val derivePhase = koinInject<DerivePhaseUseCase>()
+    val clock = koinInject<AppClock>()
     val selectedTab by tabNavigator.selectedTab.collectAsStateWithLifecycle()
 
     // Read here rather than by each tab's own store: the bar belongs to the shell, and four
     // screens deriving the same two strings is four places for them to drift apart.
     val status by contentRepository.observeStatus().collectAsStateWithLifecycle()
     val ready = status as? ContentStatus.Ready
+
+    // **The dates come off the bar between editions.** They are the answer to "which weekend is
+    // this?", and off season there is no weekend to be on the way to — the countdown on Accueil is
+    // where a date eight months out belongs, next to the number of days that gives it a meaning.
+    //
+    // Recomputed when the content changes and when the debug clock is moved, but not on a ticker.
+    // Every boundary that can hide or restore the dates is content-driven — a programme published,
+    // an edition swapped — except the one at six weeks past the festival, which no session is going
+    // to be open across. [AppClock.jumps] never emits in a release build, so this costs a
+    // subscription that never fires and keeps the time-travel panel honest.
+    var clockMoved by remember { mutableIntStateOf(0) }
+    LaunchedEffect(clock) {
+        clock.jumps.collect { clockMoved++ }
+    }
+
+    val isOffSeason =
+        remember(ready, clockMoved) {
+            derivePhase(
+                days = ready?.bundle?.edition?.days.orEmpty(),
+                hasPublishedProgramme = ready?.bundle?.edition?.slots.orEmpty().isNotEmpty(),
+            ) == Phase.OFF_SEASON
+        }
 
     // Declared one by one rather than built in a loop: these are composables, and the call order
     // has to be identical on every recomposition. Each rememberNavEntries call is also its own
@@ -149,7 +178,7 @@ fun MainScaffold(modifier: Modifier = Modifier) {
             // never more than a glance away and no screen has to spend a line of its own saying it.
             YadloTopAppBar(
                 title = ready?.bundle?.festival?.name.orEmpty(),
-                subtitle = ready?.bundle?.edition?.days?.let(::formatEditionDates),
+                subtitle = ready?.bundle?.edition?.days?.takeUnless { isOffSeason }?.let(::formatEditionDates),
                 modifier =
                     Modifier.onSizeChanged { size ->
                         chrome = chrome.copy(top = with(density) { size.height.toDp() })
