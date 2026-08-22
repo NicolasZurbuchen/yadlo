@@ -3,6 +3,7 @@ package io.nicolaszurbuchen.yadlo.feature.plus.presentation.component
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -36,12 +37,13 @@ fun PlusScreenScaffold(
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
     underBar: @Composable () -> Unit = {},
+    actions: @Composable RowScope.() -> Unit = {},
     content: @Composable (PaddingValues) -> Unit,
 ) {
     Scaffold(
         topBar = {
             Column(modifier = Modifier.fillMaxWidth().background(MaterialTheme.appColors.primarySubtle)) {
-                YadloTopAppBar(title = title, onBackClick = onBackClick)
+                YadloTopAppBar(title = title, onBackClick = onBackClick, actions = actions)
 
                 underBar()
             }

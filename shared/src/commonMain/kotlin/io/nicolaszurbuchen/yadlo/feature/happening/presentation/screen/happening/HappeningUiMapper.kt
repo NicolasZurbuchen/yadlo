@@ -8,6 +8,7 @@ import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.socialIconF
 import io.nicolaszurbuchen.yadlo.common.time.FESTIVAL_TIME_ZONE
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import io.nicolaszurbuchen.yadlo.infra.ui.formatAsDayOfMonth
+import io.nicolaszurbuchen.yadlo.infra.ui.formatAsShortDate
 import io.nicolaszurbuchen.yadlo.infra.ui.formatAsTimeOfDay
 import io.nicolaszurbuchen.yadlo.infra.ui.formatMoney
 import io.nicolaszurbuchen.yadlo.infra.ui.monthName
@@ -20,6 +21,9 @@ import yadlo.shared.generated.resources.happening_fact_supervised
 import yadlo.shared.generated.resources.happening_link_website
 import yadlo.shared.generated.resources.happening_price_deposit
 import yadlo.shared.generated.resources.price_free
+import yadlo.shared.generated.resources.share_happening_activity
+import yadlo.shared.generated.resources.share_happening_artist
+import yadlo.shared.generated.resources.share_happening_stand
 import yadlo.shared.generated.resources.slot_state_ending
 import yadlo.shared.generated.resources.slot_state_over
 import yadlo.shared.generated.resources.slot_state_running
@@ -54,6 +58,7 @@ fun HappeningState.toUiModel(): HappeningUiModel {
             menu = emptyList(),
             links = emptyList(),
             wishlisted = null,
+            shareText = null,
         )
 
     val loaded = detail ?: return blank
@@ -229,5 +234,68 @@ fun HappeningState.toUiModel(): HappeningUiModel {
                 )
             },
         wishlisted = loaded.wishlisted,
+        // **What somebody actually receives, and it assumes they do not have the app.** The name,
+        // when it runs, and one address they can open — the festival's own, not this app's, which
+        // has none to give. No deep link: that needs a file served on a domain nobody here owns,
+        // and a link that only works for people who already installed the app is worse than none.
+        //
+        // The dates are the Happening's own rather than whichever row was on screen. A fiche shows
+        // every date a thing runs and the share is of the thing, not of an occurrence — the same
+        // call story 8 makes for a search result. Capped, because an activity running every day
+        // would otherwise turn a message into a timetable.
+        // **The body of what somebody receives, and it assumes they do not have the app.** The
+        // thing itself, then one address that works for a stranger — the festival's own, not this
+        // app's, which has none to give. The sentence above it is the resource this becomes the
+        // argument of; everything here is raw, which is what keeps the whole message testable.
+        //
+        // A blank line between the two halves because this is read in a chat window under somebody's
+        // name and a timestamp, where an unbroken block is the shape an eye skips.
+        //
+        // [tags] is what stops a Stand reading as a bare name. It carries the genres for an Artist
+        // and an Activity and the offering — *Cuisine végétale* — for a Stand, which is the one kind
+        // with no dates to fill the space.
+        //
+        // The dates are the Happening's own rather than whichever row was on screen, one per line:
+        // a fiche lists every date a thing runs and the share is of the thing, not of an occurrence
+        // — the same call story 8 makes for a search result. On one line they ran past the width of
+        // a message bubble, which is what sent them down the page.
+        shareText =
+            UiText.Resource(
+                when (kind) {
+                    HappeningKindUiModel.ACTIVITY -> Res.string.share_happening_activity
+
+                    HappeningKindUiModel.STAND -> Res.string.share_happening_stand
+
+                    // An Artist, and the fallback for a State that somehow has a detail without a
+                    // kind — a message is better than none, and a concert is what most of these are.
+                    HappeningKindUiModel.ARTIST, null -> Res.string.share_happening_artist
+                },
+                listOf(
+                    listOf(
+                        listOfNotNull(
+                            loaded.name,
+                            loaded.tags.joinToString(TAG_SEPARATOR).takeIf { it.isNotEmpty() },
+                            loaded.slots
+                                .take(SHARED_DATES)
+                                .joinToString("\n") { slot ->
+                                    slot.dayName + " " +
+                                        slot.dayStart.formatAsShortDate(FESTIVAL_TIME_ZONE) + ", " +
+                                        slot.start.formatAsTimeOfDay(FESTIVAL_TIME_ZONE) + " – " +
+                                        slot.end.formatAsTimeOfDay(FESTIVAL_TIME_ZONE)
+                                }.takeIf { it.isNotEmpty() },
+                        ).joinToString("\n"),
+                        listOfNotNull(loaded.editionName, loaded.festivalWebsite).joinToString("\n"),
+                    ).joinToString("\n\n"),
+                ),
+            ),
     )
 }
+
+/**
+ * Three, which is every day this festival runs. A Happening on all of them is three short lines;
+ * anything longer is a timetable somebody has to scroll through in a chat window.
+ */
+private const val SHARED_DATES = 3
+
+/** A middot, the same separator the countdown subtitle and the Plus rows use. */
+private const val TAG_SEPARATOR = " · "

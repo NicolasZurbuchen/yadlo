@@ -9,6 +9,7 @@ import io.nicolaszurbuchen.yadlo.common.plan.domain.model.SavedItem
 import io.nicolaszurbuchen.yadlo.common.plan.domain.model.SavedKind
 import io.nicolaszurbuchen.yadlo.common.plan.domain.repository.PlanRepository
 import io.nicolaszurbuchen.yadlo.feature.happening.domain.model.HappeningDetail
+import io.nicolaszurbuchen.yadlo.feature.happening.domain.model.HappeningKind
 import io.nicolaszurbuchen.yadlo.feature.happening.domain.model.HappeningSlot
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -67,6 +68,14 @@ class ObserveHappeningDetailUseCase(
         return HappeningDetail(
             id = happening.id,
             name = happening.name,
+            kind =
+                when (happening) {
+                    is Happening.Artist -> HappeningKind.ARTIST
+                    is Happening.Activity -> HappeningKind.ACTIVITY
+                    is Happening.Stand -> HappeningKind.STAND
+                },
+            editionName = edition.name,
+            festivalWebsite = festival.website,
             categoryId = happening.category.id,
             categoryName = happening.category.name,
             // The first image or none. Which one is the lead photograph is an authoring decision

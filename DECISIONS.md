@@ -1262,6 +1262,45 @@ exists it is an edition that has to be staffed, and that is when the association
 Plus's root when they back out of *Paiement*, somewhere they never chose to be. Pushed, back returns
 to Accueil — the same rule the fiche already follows when it is opened from two different tabs.
 
+**A share is plain text, and the link in it is the festival's, not the app's.** The obvious thing to
+want is a link that opens the app on the exact fiche that was shared. It is not reachable, and the
+reason is the same one that killed the live Instagram feed rather than a technical one: Android App
+Links need `assetlinks.json` and iOS Universal Links need `apple-app-site-association`, both served
+from **the domain in the link**, and nobody here owns `yadlo.ch`.
+
+The trap to avoid is a custom scheme — `yadlo://happening/dubside`. It resolves only on a phone that
+already has the app, most messaging clients will not even make it tappable, and sharing is precisely
+the case where the recipient does not have it. A custom scheme is for a notification tap, never for
+something leaving the phone.
+
+Serving the two files from the GitHub Pages host would work and is still wrong: it means texting
+somebody `nicolaszurbuchen.github.io/yadlo/...`, which looks like nothing to do with the festival
+and 404s for everyone without the app unless a web page per Happening is built to catch them. That
+is building a website to support a share button.
+
+So the message carries the name, the dates and `festival.website`. It is never broken, it is useful
+to somebody who has never heard of this app — which is every recipient — and it points at the
+festival rather than at an unofficial app. **Going official turns this on with no redesign**: the
+share text does not change shape, that one URL gains a path, and two files land on the domain.
+
+**`website` lives in the content, and it is the only field written for someone who does not have the
+app.** In the binary it would be a festival-owned fact frozen into a release, which is the thing the
+content pipeline exists to prevent — and it is exactly the field that has to change on the day the
+link becomes an App Link.
+
+**Shared is the Happening, not the Slot on screen.** A fiche lists every date a thing runs, and the
+share carries up to three of them rather than whichever row was tapped — the same call story 8 makes
+for a search result, where an activity running all weekend is one result with its dates rather than
+three. A Stand has no dates and simply loses the line.
+
+**Two surfaces, and the two that were cut are the interesting part.** The fiche, and *Devenir
+bénévole* — which shares the association's own `ehro.app` recruitment address, so the thing being
+forwarded is theirs and works for anyone. Sharing *the app itself* from Accueil was dropped: there is
+no store listing, so the button would send yadlo.ch, which the recipient can already find. It becomes
+real the day there is a Play Store URL. Sharing *l'histoire de Yadlo* was dropped too — there is no
+public page for it, so it would forward a paragraph of prose. Both are buttons that exist because
+they can rather than because anyone wants them.
+
 ## Open
 
 **The accent colour.** `#14618F` is the primary, not an accent — the terminology in earlier

@@ -439,6 +439,13 @@ for (const [p, v] of [
 if (fest.currentEditionId !== ed.id)
   warns.push(`festival.json currentEditionId=${fest.currentEditionId} but only edition ${ed.id} authored`);
 
+// The one address the app hands to somebody who does not have it. A share is the only thing that
+// leaves the phone carrying a URL nobody in this project controls, so it is checked like any other:
+// https, and none of the tracking junk DIRTY_URL knows about.
+if (typeof fest.website !== 'string' || !fest.website)
+  errors.push('festival.json website: must be a non-empty string');
+else checkUrl(fest.website, 'festival.json website');
+
 // Transport modes vary too much to share one shape beyond this: a name, then any mix of prose,
 // stated facts, links and a timetable. Swimming is prose alone; the bus is four facts and two
 // PDFs; a night shuttle laid on for one edition would be an Edition-level addition, not a mode.

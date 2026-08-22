@@ -310,6 +310,7 @@ class ObserveHomeContentUseCaseTest {
         Festival(
             name = "Yadlo",
             tagline = "Mouille ton corps, arrose ton esprit",
+            website = "https://www.yadlo.ch/",
             currentEditionId = "2026",
             minSupportedAppVersion = null,
             social = listOf(SocialLink(id = "instagram", name = "Instagram", url = "https://example.ch/insta")),

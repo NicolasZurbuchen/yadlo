@@ -14,6 +14,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -63,6 +64,7 @@ import yadlo.shared.generated.resources.happening_section_good_to_know
 import yadlo.shared.generated.resources.happening_section_links
 import yadlo.shared.generated.resources.happening_section_price
 import yadlo.shared.generated.resources.happening_section_when
+import yadlo.shared.generated.resources.share
 import yadlo.shared.generated.resources.wishlist_add
 import yadlo.shared.generated.resources.wishlist_remove
 
@@ -112,6 +114,7 @@ fun HappeningScreen(
     onLinkClick: (String) -> Unit,
     onSlotHeartClick: (String) -> Unit,
     onWishlistHeartClick: () -> Unit,
+    onShareClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val listState = rememberLazyListState()
@@ -168,9 +171,23 @@ fun HappeningScreen(
                         )
                     }
                 },
-                // Only a Stand has one, because only a Stand is kept whole — everything else keeps
-                // its Slots one at a time, on the date rows below.
+                // Only a Stand has a heart here, because only a Stand is kept whole — everything
+                // else keeps its Slots one at a time, on the date rows below. Share is on all
+                // three, which is what finally gives this slot a job on an artist and an activity.
                 actions = {
+                    // Share sits left of the heart rather than right of it. The heart is already
+                    // in the corner on a Stand fiche and is the action people come back for;
+                    // moving it to make room for a newcomer would cost a habit to save nothing.
+                    if (state.shareText != null) {
+                        IconButton(onClick = onShareClick) {
+                            Icon(
+                                imageVector = Icons.Filled.Share,
+                                contentDescription = stringResource(Res.string.share),
+                                tint = barInk,
+                            )
+                        }
+                    }
+
                     state.wishlisted?.let { isSaved ->
                         IconButton(onClick = onWishlistHeartClick) {
                             SavedHeart(

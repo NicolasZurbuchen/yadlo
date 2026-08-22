@@ -30,6 +30,16 @@ import io.nicolaszurbuchen.yadlo.common.content.domain.model.Price
 data class HappeningDetail(
     val id: String,
     val name: String,
+    /** Only the share message reads this — see [HappeningKind]. */
+    val kind: HappeningKind,
+    /**
+     * The two facts a share needs that are about the festival rather than about this Happening.
+     * They are read here rather than by a second use case because the bundle carrying the
+     * Happening already carries them, and a share that named the wrong edition would be worse
+     * than no share.
+     */
+    val editionName: String,
+    val festivalWebsite: String?,
     val categoryId: String,
     val categoryName: String,
     /**

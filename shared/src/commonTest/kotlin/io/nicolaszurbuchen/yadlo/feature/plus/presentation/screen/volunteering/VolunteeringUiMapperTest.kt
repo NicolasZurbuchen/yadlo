@@ -11,6 +11,22 @@ import kotlin.test.assertTrue
 
 class VolunteeringUiMapperTest {
     @Test
+    fun toUiModel_shareText_carriesTheAssociationsOwnSignupAddressRatherThanTheApp() {
+        // Somebody forwarding this is doing the association a favour, and what they send has to
+        // work for a recipient who has never heard of this app — which is every recipient.
+        assertEquals(
+            "Hot'Staff\nSix heures minimum.\nhttps://ehro.app/o/yadlo/",
+            loaded().shareText,
+        )
+    }
+
+    @Test
+    fun toUiModel_noSignupUrlPublished_hasNothingToShare() {
+        // The action hides itself rather than offering to send a message with nowhere to go.
+        assertNull(loaded(signupUrl = null).shareText)
+    }
+
+    @Test
     fun toUiModel_beforeTheBundleLands_isLoading() {
         assertTrue(VolunteeringState().toUiModel().isLoading)
     }

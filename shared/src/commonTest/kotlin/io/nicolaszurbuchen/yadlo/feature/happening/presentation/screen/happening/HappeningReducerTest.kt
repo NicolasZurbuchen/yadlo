@@ -1,6 +1,7 @@
 package io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening
 
 import io.nicolaszurbuchen.yadlo.feature.happening.domain.model.HappeningDetail
+import io.nicolaszurbuchen.yadlo.feature.happening.domain.model.HappeningKind
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -15,7 +16,7 @@ class HappeningReducerTest {
     fun detailUpdated_firstEmission_holdsTheFicheAndMarksTheScreenLoaded() {
         val state = HappeningState(now = NOW)
 
-        val result = with(reducer) { state.reduce(HappeningMessage.DetailUpdated(detail())) }
+        val result = with(reducer) { state.reduce(HappeningMessage.DetailUpdated(detail(), HappeningKindUiModel.ARTIST)) }
 
         assertEquals("DJ ALF", result.detail?.name)
         assertTrue(result.isLoaded)
@@ -26,7 +27,7 @@ class HappeningReducerTest {
         // "Not yet" and "no longer" are different screens, and only isLoaded separates them.
         val state = HappeningState(now = NOW)
 
-        val result = with(reducer) { state.reduce(HappeningMessage.DetailUpdated(null)) }
+        val result = with(reducer) { state.reduce(HappeningMessage.DetailUpdated(null, null)) }
 
         assertNull(result.detail)
         assertTrue(result.isLoaded)
@@ -41,7 +42,8 @@ class HappeningReducerTest {
     fun detailUpdated_aRefreshReplacesTheFiche_withoutResettingTheClock() {
         val state = HappeningState(now = NOW, detail = detail(), isLoaded = true)
 
-        val result = with(reducer) { state.reduce(HappeningMessage.DetailUpdated(detail(name = "DJ ALF (b2b)"))) }
+        val result =
+            with(reducer) { state.reduce(HappeningMessage.DetailUpdated(detail(name = "DJ ALF (b2b)"), HappeningKindUiModel.ARTIST)) }
 
         assertEquals("DJ ALF (b2b)", result.detail?.name)
         assertEquals(NOW, result.now)
@@ -62,6 +64,9 @@ class HappeningReducerTest {
     private fun detail(name: String = "DJ ALF") =
         HappeningDetail(
             id = "dj-alf",
+            kind = HappeningKind.ARTIST,
+            editionName = "Yadlo 2026",
+            festivalWebsite = "https://www.yadlo.ch/",
             name = name,
             categoryId = "musique",
             categoryName = "Musique",
