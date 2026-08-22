@@ -53,13 +53,17 @@ strings, `AppError.PokemonExplorer` and the `pokemon-explorer` commit scope all 
 five real features are the reference now; `agents/agent-architecture-convention.md` still describes
 the shape.
 
+**Local notifications now exist**, on both platforms, and they are the one part of the app that
+does **not** read the injected clock — see the rule below. Remote push still does not exist and is
+still deferred: it is what story 16's dormant-user case would need, and DECISIONS.md refuses it on
+content grounds rather than technical ones until the association is on board. Story 17, the
+end-of-slot warning, was dropped rather than deferred; the reasoning is in DECISIONS.md.
+
 One thing is deliberately **not** done yet:
 
-- **Local notifications do not exist**, on either platform: no code, no `expect`/`actual` seam, no
-  `POST_NOTIFICATIONS` permission. This is not a formality wrapping an existing capability — it is
-  the whole feature, twice. **Deferred past v1** by SPEC.md, whose blast radius is stories 16 and
-  17 alone; everything else that looks time-driven reads the injected clock. Don't build toward it
-  without reopening that decision.
+- **There is no *Plus › Notifications* screen.** The permission is asked for at the first heart tap
+  and the OS settings are the only way to turn a category off. Building the row needs a preferences
+  store the app does not have, which is the same thing *Effacer mes données* is waiting on.
 
 The other two capabilities the earlier draft assumed are settled: SQLDelight was always wired, and
 Coil3's disk cache is now configured in `infra/image/` and verified on an Android device. The
