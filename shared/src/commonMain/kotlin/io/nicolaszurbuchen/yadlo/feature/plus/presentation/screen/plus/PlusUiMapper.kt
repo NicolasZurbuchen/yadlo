@@ -85,6 +85,11 @@ fun PlusState.toUiModel(): PlusUiModel {
 
     val app =
         listOfNotNull(
+            // First in the group, and unconditional: it is the only row here that changes what the
+            // app does rather than describing it, and the only one somebody arrives at Plus looking
+            // for. Nothing gates it — a visitor who has never been asked for the permission still
+            // has an answer to give.
+            PlusRowUiModel(entry = PlusEntryUiModel.NOTIFICATIONS, subtitle = null),
             // The one row that is about the app rather than the festival, and the only one that
             // needs no content at all: it is what a committee member opens to find out who built
             // this and how to reach them.

@@ -22,6 +22,8 @@ import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.faq.FaqStoreFa
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.faq.FaqViewModel
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.hours.HoursStoreFactory
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.hours.HoursViewModel
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.notifications.NotificationsStoreFactory
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.notifications.NotificationsViewModel
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.partners.PartnersStoreFactory
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.partners.PartnersViewModel
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.payment.PaymentStoreFactory
@@ -68,6 +70,7 @@ val plusModule =
         factoryOf(::ContactStoreFactory)
         factoryOf(::VolunteeringStoreFactory)
         factoryOf(::ResponsibleStoreFactory)
+        factoryOf(::NotificationsStoreFactory)
 
         viewModelOf(::PlusViewModel)
         viewModelOf(::PaymentViewModel)
@@ -80,6 +83,7 @@ val plusModule =
         viewModelOf(::ContactViewModel)
         viewModelOf(::VolunteeringViewModel)
         viewModelOf(::ResponsibleViewModel)
+        viewModelOf(::NotificationsViewModel)
 
         // Parameterised rather than declared with viewModelOf: which half of the stands is being
         // read arrives from the NavKey, so the kind is a construction parameter rather than a

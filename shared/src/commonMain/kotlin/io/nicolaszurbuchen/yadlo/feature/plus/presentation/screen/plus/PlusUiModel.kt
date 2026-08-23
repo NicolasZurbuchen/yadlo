@@ -11,6 +11,7 @@ import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.outlined.MailOutline
 import androidx.compose.material.icons.outlined.MedicalServices
+import androidx.compose.material.icons.outlined.NotificationsNone
 import androidx.compose.material.icons.outlined.Park
 import androidx.compose.material.icons.outlined.Restaurant
 import androidx.compose.material.icons.outlined.Sailing
@@ -30,6 +31,7 @@ import yadlo.shared.generated.resources.plus_entry_contact
 import yadlo.shared.generated.resources.plus_entry_faq
 import yadlo.shared.generated.resources.plus_entry_hours
 import yadlo.shared.generated.resources.plus_entry_newsletter
+import yadlo.shared.generated.resources.plus_entry_notifications
 import yadlo.shared.generated.resources.plus_entry_partners
 import yadlo.shared.generated.resources.plus_entry_payment
 import yadlo.shared.generated.resources.plus_entry_privacy
@@ -116,6 +118,7 @@ enum class PlusEntryUiModel(
     VOLUNTEERING(Res.string.plus_entry_volunteering, Icons.Outlined.VolunteerActivism),
     CONTACT(Res.string.plus_entry_contact, Icons.Outlined.MailOutline),
     NEWSLETTER(Res.string.plus_entry_newsletter, Icons.AutoMirrored.Outlined.Send, YadloLinkMarkUiModel.EXTERNAL),
+    NOTIFICATIONS(Res.string.plus_entry_notifications, Icons.Outlined.NotificationsNone),
     ABOUT(Res.string.plus_entry_about, Icons.Outlined.Info),
     REPORT(Res.string.plus_entry_report, Icons.Outlined.Flag, YadloLinkMarkUiModel.MAIL),
     PRIVACY(Res.string.plus_entry_privacy, Icons.Outlined.Lock),

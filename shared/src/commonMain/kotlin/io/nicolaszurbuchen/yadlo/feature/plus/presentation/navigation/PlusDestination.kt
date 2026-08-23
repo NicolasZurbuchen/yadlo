@@ -63,4 +63,7 @@ internal data object VolunteeringDestination : PlusDestination
 internal data object AboutDestination : PlusDestination
 
 @Serializable
+internal data object NotificationsDestination : PlusDestination
+
+@Serializable
 internal data object PrivacyDestination : PlusDestination

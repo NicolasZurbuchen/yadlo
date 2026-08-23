@@ -7,6 +7,7 @@ import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.Assistance
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.ContactDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.FaqDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.HoursDestination
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.NotificationsDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.PartnersDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.PaymentDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.PlusNavigator
@@ -63,6 +64,10 @@ class PlusNavigatorImpl(
 
     override fun navigateToResponsible() {
         appNavigator.navigateTo(ResponsibleDestination)
+    }
+
+    override fun navigateToNotifications() {
+        appNavigator.navigateTo(NotificationsDestination)
     }
 
     override fun navigateToAbout() {

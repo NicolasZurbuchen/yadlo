@@ -231,6 +231,12 @@
     <string name="happening_link_website">Site web</string>
 
 
+    <string name="plus_entry_notifications">Notifications</string>
+    <string name="notifications_body">Yadlo peut te prévenir 30 minutes avant chaque créneau que tu as enregistré, et te signaler les grandes dates de l'édition : une semaine avant, le matin du premier jour et le lendemain du dernier.</string>
+    <string name="notifications_switch_label">Recevoir les rappels</string>
+    <string name="notifications_blocked_body">Ton téléphone bloque les notifications de Yadlo. Autorise-les dans les réglages pour recevoir tes rappels.</string>
+    <string name="notifications_blocked_action">Ouvrir les réglages</string>
+
     <string name="notification_channel_name">Rappels</string>
     <string name="notification_channel_description">Un rappel avant chaque créneau enregistré, et les grandes dates de l'édition.</string>
     <string name="notification_slot_body">Ça commence à %1$s.</string>

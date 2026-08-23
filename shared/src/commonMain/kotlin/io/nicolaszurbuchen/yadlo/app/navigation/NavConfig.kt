@@ -13,6 +13,7 @@ import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.Assistance
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.ContactDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.FaqDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.HoursDestination
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.NotificationsDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.PartnersDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.PaymentDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.PlusMainDestination
@@ -57,6 +58,7 @@ val navConfig =
                     subclass(ContactDestination::class)
                     subclass(VolunteeringDestination::class)
                     subclass(ResponsibleDestination::class)
+                    subclass(NotificationsDestination::class)
                     subclass(AboutDestination::class)
                     subclass(PrivacyDestination::class)
                     subclass(HappeningDestination::class)

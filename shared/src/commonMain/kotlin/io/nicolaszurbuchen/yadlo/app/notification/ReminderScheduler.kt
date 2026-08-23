@@ -6,6 +6,7 @@ import io.nicolaszurbuchen.yadlo.common.plan.domain.repository.PlanRepository
 import io.nicolaszurbuchen.yadlo.common.reminder.domain.model.Reminder
 import io.nicolaszurbuchen.yadlo.common.reminder.domain.model.ReminderMilestone
 import io.nicolaszurbuchen.yadlo.common.reminder.domain.model.ReminderSubject
+import io.nicolaszurbuchen.yadlo.common.reminder.domain.repository.ReminderSettingsRepository
 import io.nicolaszurbuchen.yadlo.common.reminder.domain.usecase.PlanRemindersUseCase
 import io.nicolaszurbuchen.yadlo.common.time.FESTIVAL_TIME_ZONE
 import io.nicolaszurbuchen.yadlo.infra.notification.NotificationTarget
@@ -59,6 +60,7 @@ import yadlo.shared.generated.resources.notification_slot_body
 class ReminderScheduler(
     private val planRepository: PlanRepository,
     private val contentRepository: ContentRepository,
+    private val settingsRepository: ReminderSettingsRepository,
     private val planReminders: PlanRemindersUseCase,
     private val notifier: Notifier,
     private val wallClock: WallClock,
@@ -96,9 +98,13 @@ class ReminderScheduler(
      * the one outcome worth avoiding here.
      */
     private suspend fun desiredNotifications(): List<ScheduledNotification>? {
-        // Scheduling into a permission that was never granted, or was revoked in settings since,
-        // would be work that silently does nothing. Clearing is still worth doing: the visitor may
-        // have turned notifications off precisely to stop the ones already scheduled.
+        // Two switches, checked in the order they belong to their owners. The visitor's own answer
+        // comes first — Plus > Notifications, off by their choice — and the operating system's
+        // second. Either one closed means an empty list rather than no list: clearing is the point,
+        // since somebody who has just turned the switch off is asking for the reminders already
+        // scheduled to stop, not merely for no new ones.
+        if (!settingsRepository.observeEnabled().first()) return emptyList()
+
         if (!notifier.isPermissionGranted()) return emptyList()
 
         val ready = contentRepository.observeStatus().value as? ContentStatus.Ready ?: return null
