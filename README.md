@@ -122,10 +122,10 @@ This project uses **Husky** and **Commitlint** to enforce
 **Format:** `<type>(<scope>): <description>`
 
 - **Types:** `feat`, `fix`, `refactor`, `build`, `chore`, `ci`, `docs`, `perf`, `style`, `test`, `revert`.
-- **Scopes:** `network`, `database`, `content`, `notification`, `di`, `navigation`, `theme`, `common`, `gradle`, `deps`, `home`, `programme`, `mon-yadlo`, `happening`, `plus`.
+- **Scopes:** `network`, `database`, `content`, `notification`, `di`, `navigation`, `theme`, `common`, `gradle`, `deps`, `home`, `programme`, `mon-yadlo`, `happening`, `plus`, `search`.
 - A scope is **required** for `feat`, `fix`, `refactor`, and `build`.
 
-Example: `feat(programme): add day-scoped search`
+Example: `feat(programme): add a category filter to the day list`
 
 > [!IMPORTANT]
 > The scope list lives in three places — `commitlint.config.js`, this README, and
