@@ -20,6 +20,8 @@ import yadlo.shared.generated.resources.price_free
 import yadlo.shared.generated.resources.price_from
 import yadlo.shared.generated.resources.programme_empty_filter
 import yadlo.shared.generated.resources.programme_empty_unpublished
+import yadlo.shared.generated.resources.programme_scope_all
+import yadlo.shared.generated.resources.programme_scope_catalogue
 import yadlo.shared.generated.resources.slot_state_ending
 import yadlo.shared.generated.resources.slot_state_over
 import yadlo.shared.generated.resources.slot_state_running
@@ -28,8 +30,9 @@ import kotlin.time.Duration.Companion.minutes
 
 /**
  * The Saturday at 15:45, which is the moment the prototype was argued from: five things running,
- * two ending, Dubside fifteen minutes out and the morning already dimmed. Then the Catalogue, the
- * view the same tab opens on in May, and then the two empties.
+ * two ending, Dubside fifteen minutes out and the morning already dimmed. Then the same weekend
+ * under *Tous*, where two days carry their own header and their own axis; then the Catalogue, the
+ * view the tab opens on in May; then the two empties.
  *
  * Written out rather than mapped from a ProgrammeState, because a preview may not import the domain
  * layer and that is where ProgrammeContent lives.
@@ -40,68 +43,119 @@ private class ProgrammeStateProvider : PreviewParameterProvider<ProgrammeUiModel
             // Before the first bundle reaches the screen.
             ProgrammeUiModel(
                 isLoading = true,
-                view = null,
-                days = emptyList(),
+                scopes = emptyList(),
                 categories = emptyList(),
                 scale = null,
-                rows = emptyList(),
+                sections = emptyList(),
                 catalogue = emptyList(),
                 emptyMessage = null,
             ),
+            // One day: no header, and the axis is written once in the chrome.
             ProgrammeUiModel(
                 isLoading = false,
-                view = ProgrammeViewUiModel.PROGRAMME,
-                days = days(),
+                scopes = scopes(selected = ProgrammeScopeUiModel.Day("2026:sat")),
                 categories = categories(),
                 scale = SlotScaleUiModel(startText = "10:00", middleText = "18:00", endText = "03:00"),
-                rows = saturdayAtQuarterToFour(),
+                sections =
+                    listOf(
+                        DaySectionUiModel(id = "2026:sat", header = null, rows = saturdayAtQuarterToFour()),
+                    ),
                 catalogue = emptyList(),
                 emptyMessage = null,
             ),
-            // The Catalogue: no day row and no axis, because nothing on it has an hour. An Artist
+            // *Tous*: nothing in the chrome, and each day's own reading pinned to its own header.
+            // Friday runs 16:00–02:00 and Sunday 12:00–22:00, which is why one scale could not have
+            // been right about both.
+            ProgrammeUiModel(
+                isLoading = false,
+                scopes = scopes(selected = ProgrammeScopeUiModel.AllDays),
+                categories = categories(),
+                scale = null,
+                sections =
+                    listOf(
+                        DaySectionUiModel(
+                            id = "2026:fri",
+                            header =
+                                DaySectionHeaderUiModel(
+                                    name = "Vendredi",
+                                    scale = SlotScaleUiModel(startText = "16:00", middleText = "21:00", endText = "02:00"),
+                                ),
+                            rows = saturdayAtQuarterToFour().take(2),
+                        ),
+                        DaySectionUiModel(
+                            id = "2026:sat",
+                            header =
+                                DaySectionHeaderUiModel(
+                                    name = "Samedi",
+                                    scale = SlotScaleUiModel(startText = "10:00", middleText = "18:00", endText = "03:00"),
+                                ),
+                            rows = saturdayAtQuarterToFour(),
+                        ),
+                    ),
+                catalogue = emptyList(),
+                emptyMessage = null,
+            ),
+            // The Catalogue: no axis and no headers, because nothing on it has an hour. An Artist
             // with its genres, an Activity with none, and the longest description in the edition
             // against the shortest — which is the pair the stagger exists for.
             ProgrammeUiModel(
                 isLoading = false,
-                view = ProgrammeViewUiModel.CATALOGUE,
-                days = emptyList(),
+                scopes = scopes(selected = ProgrammeScopeUiModel.Catalogue),
                 categories = categories(),
                 scale = null,
-                rows = emptyList(),
+                sections = emptyList(),
                 catalogue = theCatalogue(),
                 emptyMessage = null,
             ),
             // A filter that matched nothing — the chips stay, since the way out is to change them.
             ProgrammeUiModel(
                 isLoading = false,
-                view = ProgrammeViewUiModel.PROGRAMME,
-                days = days(),
+                scopes = scopes(selected = ProgrammeScopeUiModel.Day("2026:sat")),
                 categories = categories(selectedId = "silent"),
                 scale = null,
-                rows = emptyList(),
+                sections = emptyList(),
                 catalogue = emptyList(),
                 emptyMessage = UiText.Resource(Res.string.programme_empty_filter),
             ),
-            // Spring: dates published, nothing under them. No day chips and no toggle, because
-            // neither can help and offering them reads as a screen that failed to load.
+            // Spring: dates published, nothing under them. No selector row at all, because none of
+            // its five chips can help and offering them reads as a screen that failed to load.
             ProgrammeUiModel(
                 isLoading = false,
-                view = null,
-                days = emptyList(),
+                scopes = emptyList(),
                 categories = emptyList(),
                 scale = null,
-                rows = emptyList(),
+                sections = emptyList(),
                 catalogue = emptyList(),
                 emptyMessage = UiText.Resource(Res.string.programme_empty_unpublished),
             ),
         )
 
-    private fun days() =
+    private fun scopes(selected: ProgrammeScopeUiModel) =
         listOf(
-            DayChipUiModel(id = "2026:fri", name = "Vendredi", isSelected = false),
-            DayChipUiModel(id = "2026:sat", name = "Samedi", isSelected = true),
-            DayChipUiModel(id = "2026:sun", name = "Dimanche", isSelected = false),
+            ScopeChipUiModel(
+                scope = ProgrammeScopeUiModel.Catalogue,
+                label = UiText.Resource(Res.string.programme_scope_catalogue),
+                isSelected = selected is ProgrammeScopeUiModel.Catalogue,
+            ),
+            ScopeChipUiModel(
+                scope = ProgrammeScopeUiModel.AllDays,
+                label = UiText.Resource(Res.string.programme_scope_all),
+                isSelected = selected is ProgrammeScopeUiModel.AllDays,
+            ),
+            day(id = "2026:fri", name = "Vendredi", selected = selected),
+            day(id = "2026:sat", name = "Samedi", selected = selected),
+            day(id = "2026:sun", name = "Dimanche", selected = selected),
         )
+
+    private fun day(
+        id: String,
+        name: String,
+        selected: ProgrammeScopeUiModel,
+    ) = ScopeChipUiModel(
+        scope = ProgrammeScopeUiModel.Day(id),
+        label = UiText.Raw(name),
+        isSelected = selected is ProgrammeScopeUiModel.Day && selected.id == id,
+    )
 
     private fun categories(selectedId: String? = null) =
         listOf(
@@ -326,8 +380,7 @@ private fun ProgrammeScreenLightPreview(
         ProgrammePreviewSurface {
             ProgrammeScreen(
                 state = state,
-                onViewClick = {},
-                onDayClick = {},
+                onScopeClick = {},
                 onCategoryClick = {},
                 onAllCategoriesClick = {},
                 onSlotClick = {},
@@ -345,8 +398,7 @@ private fun ProgrammeScreenDarkPreview(
         ProgrammePreviewSurface {
             ProgrammeScreen(
                 state = state,
-                onViewClick = {},
-                onDayClick = {},
+                onScopeClick = {},
                 onCategoryClick = {},
                 onAllCategoriesClick = {},
                 onSlotClick = {},

@@ -51,12 +51,8 @@ class ProgrammeStoreFactory(
 
         override fun executeIntent(intent: ProgrammeIntent) {
             when (intent) {
-                is ProgrammeIntent.ViewSelected -> {
-                    dispatch(ProgrammeMessage.ViewSelected(intent.view))
-                }
-
-                is ProgrammeIntent.DaySelected -> {
-                    dispatch(ProgrammeMessage.DaySelected(intent.dayId))
+                is ProgrammeIntent.ScopeSelected -> {
+                    dispatch(ProgrammeMessage.ScopeSelected(intent.scope))
                 }
 
                 is ProgrammeIntent.CategoryToggled -> {
@@ -84,11 +80,7 @@ class ProgrammeStoreFactory(
             scope.launch {
                 observeProgrammeContent().collect { content ->
                     dispatch(
-                        ProgrammeMessage.ContentUpdated(
-                            content = content,
-                            defaultDayId = defaultDayFor(content),
-                            defaultView = defaultViewFor(content),
-                        ),
+                        ProgrammeMessage.ContentUpdated(content = content, defaultScope = defaultScopeFor(content)),
                     )
                 }
             }
@@ -118,44 +110,58 @@ class ProgrammeStoreFactory(
         }
 
         /**
-         * The day the visitor is standing in — the first one that has not ended.
+         * What the tab opens on, and the second place the Phase decides what a visitor sees.
          *
-         * Against the FestivalDay window rather than the calendar date, which is the same rule that
-         * keeps a 01:30 set on Friday: at 01:00 on the Saturday morning the day still on is Friday,
-         * and opening on Saturday would hide the set playing thirty metres away. Before the festival
-         * that lands on day one, after it on the last day.
-         */
-        private fun defaultDayFor(content: ProgrammeContent): String? {
-            val now = clock.now()
-
-            return content.days.firstOrNull { now < it.end }?.id ?: content.days.lastOrNull()?.id
-        }
-
-        /**
-         * The view the tab opens on, and the second place the Phase decides what a visitor sees.
+         * Three answers, one per question the year is asking:
          *
-         * **ANNOUNCED opens on the Catalogue; every other Phase opens on the timetable.** The two
-         * views answer different questions and the year decides which one is being asked. The week
-         * the programme drops, nobody knows what is on the bill yet — the useful screen is the one
-         * that says what there is, and hours nobody has read yet are noise on top of it. By
-         * APPROACHING the question has become "what am I doing on the Saturday", which is the
-         * timetable, and during LIVE it is "what is on now", which is the timetable again.
+         * - **ANNOUNCED → the Catalogue.** The week the programme drops, nobody has read the bill
+         *   yet. The useful screen is the one that says what there is; hours on top of a list nobody
+         *   can parse yet are noise.
+         * - **LIVE → the day you are standing in.** "What is on now" is the only question on site,
+         *   and it is about one day.
+         * - **everything else → the whole weekend.** Off season, the week before and the weeks after
+         *   are all read the same way — from a sofa, across all three days, deciding or
+         *   remembering. APPROACHING is the one that matters, because it is the only time anyone
+         *   realistically builds a Plan and they do not build it a day at a time.
          *
-         * Only the opening view. [ProgrammeState.selectedView] takes this once and never again, so
+         * Only the opening scope. [ProgrammeState.selectedScope] takes this once and never again, so
          * a Phase that turns over while the app is open moves nothing.
          */
-        private fun defaultViewFor(content: ProgrammeContent): ProgrammeViewUiModel {
+        private fun defaultScopeFor(content: ProgrammeContent): ProgrammeScopeUiModel {
             val phase =
                 derivePhase(
                     days = content.days,
                     hasPublishedProgramme = content.hasPublishedProgramme,
                 )
 
-            return if (phase == Phase.ANNOUNCED) {
-                ProgrammeViewUiModel.CATALOGUE
-            } else {
-                ProgrammeViewUiModel.PROGRAMME
+            return when (phase) {
+                Phase.ANNOUNCED -> {
+                    ProgrammeScopeUiModel.Catalogue
+                }
+
+                Phase.LIVE -> {
+                    liveDayFor(content)?.let { ProgrammeScopeUiModel.Day(it) } ?: ProgrammeScopeUiModel.AllDays
+                }
+
+                else -> {
+                    ProgrammeScopeUiModel.AllDays
+                }
             }
+        }
+
+        /**
+         * The day the visitor is standing in — the first one that has not ended.
+         *
+         * Against the FestivalDay window rather than the calendar date, which is the same rule that
+         * keeps a 01:30 set on Friday: at 01:00 on the Saturday morning the day still on is Friday,
+         * and opening on Saturday would hide the set playing thirty metres away. It also answers the
+         * overnight gaps, where no day is current at all — 04:00 on the Saturday lands on the
+         * Saturday, the next one to open.
+         */
+        private fun liveDayFor(content: ProgrammeContent): String? {
+            val now = clock.now()
+
+            return content.days.firstOrNull { now < it.end }?.id ?: content.days.lastOrNull()?.id
         }
     }
 
@@ -166,14 +172,16 @@ class ProgrammeStoreFactory(
                 is ProgrammeMessage.ContentUpdated -> {
                     copy(
                         content = msg.content,
-                        // Written once, by the first bundle to arrive, and then left alone: this is
-                        // a start view rather than a redirect. See ProgrammeState.
-                        selectedView = selectedView ?: msg.defaultView,
-                        // A day the visitor picked survives a refresh; one that no longer exists in
-                        // the content does not, and neither does an unmade choice.
-                        selectedDayId =
-                            selectedDayId?.takeIf { id -> msg.content.days.any { it.id == id } }
-                                ?: msg.defaultDayId,
+                        // A scope the visitor chose survives a refresh; a day that no longer exists
+                        // in the content does not, and neither does an unmade choice. See
+                        // ProgrammeState for why every other case leaves it alone.
+                        selectedScope =
+                            selectedScope
+                                ?.takeIf { scope ->
+                                    scope !is ProgrammeScopeUiModel.Day ||
+                                        msg.content.days.any { it.id == scope.id }
+                                }
+                                ?: msg.defaultScope,
                     )
                 }
 
@@ -181,12 +189,8 @@ class ProgrammeStoreFactory(
                     copy(now = msg.now)
                 }
 
-                is ProgrammeMessage.ViewSelected -> {
-                    copy(selectedView = msg.view)
-                }
-
-                is ProgrammeMessage.DaySelected -> {
-                    copy(selectedDayId = msg.dayId)
+                is ProgrammeMessage.ScopeSelected -> {
+                    copy(selectedScope = msg.scope)
                 }
 
                 is ProgrammeMessage.CategoriesChanged -> {

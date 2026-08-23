@@ -6,48 +6,111 @@ import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotSegment
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 
 /**
- * The tab in whichever of its two views is showing: layout B2 — one chronological list for the
- * selected day, no calendar column and no "now" line — or the Catalogue's grid of everything the
- * festival offers, with no hour on it.
+ * The tab, showing whichever thing its one selector row is pointing at.
  *
- * **Exactly one of [rows] and [catalogue] is ever populated**, and [view] says which. They are two
- * fields rather than one sealed body because they are genuinely different shapes over genuinely
- * different units — a Slot's day against a Happening — and a screen that had to unwrap a sealed
- * type to find out whether it was drawing a list or a grid would be spelling [view] a second way.
+ * **Exactly one of [sections] and [catalogue] is ever populated.** They are two fields rather than
+ * one sealed body because they are genuinely different shapes over genuinely different units — a
+ * day of Slots against a Happening — and a screen that had to unwrap a sealed type to find out
+ * whether it was drawing a list or a grid would be spelling [scopes] a second way.
  *
- * [days] and [scale] are empty and null in the Catalogue, which is what takes the day chips and the
- * hour axis off the chrome: a grid with no time on it has no day to be on and nothing to measure
- * against. [categories] survives both, because "montre-moi ce qui est sur l'eau" is the same
- * question either way — and it is most of what makes the Catalogue browsable at all.
+ * [scale] is the axis written once in the chrome, and it is non-null only when the list is one
+ * day: across several, each day has its own span and the scale belongs to the sticky header that
+ * comes with it. [categories] survives every scope, because "montre-moi ce qui est sur l'eau" is
+ * the same question whichever list is under it.
  *
- * [view] is null when there is nothing to switch between: before the first bundle, and when the
- * edition has published dates but no programme. Offering a control that cannot change the screen is
- * the same mistake as offering three day chips with nothing under any of them.
+ * [scopes] is empty when there is nothing to point at — before the first bundle, and when the
+ * edition has published dates but no programme. Offering a row of controls that cannot change the
+ * screen is the same mistake as offering three day chips with nothing under any of them.
  *
  * [emptyMessage] is non-null exactly when the showing half is empty, and it says which kind of
  * empty — a filter that matched nothing reads differently from a programme not yet published.
  */
 data class ProgrammeUiModel(
     val isLoading: Boolean,
-    val view: ProgrammeViewUiModel?,
-    val days: List<DayChipUiModel>,
+    val scopes: List<ScopeChipUiModel>,
     val categories: List<CategoryChipUiModel>,
     val scale: SlotScaleUiModel?,
-    val rows: List<SlotRowUiModel>,
+    val sections: List<DaySectionUiModel>,
     val catalogue: List<CatalogueCardUiModel>,
     val emptyMessage: UiText?,
 )
 
 /**
- * The two questions the tab can answer: *when is it on*, and *what is there*.
+ * What the tab is pointing at — *Découvrir · Tous · Vendredi · Samedi · Dimanche*.
  *
- * Which one it opens on follows the Phase — see ProgrammeStoreFactory — and after that it follows
- * the visitor.
+ * **One selection, not a view and a day.** These began as two controls stacked on each other: a
+ * segmented toggle over a row of day chips. Three rows of chrome plus an axis left four bands above
+ * the first row of an already short list, and the split was never real — every chip in the row
+ * answers the same question, *what am I looking at*, and it happens that three of the answers are
+ * days. Modelling it as one exclusive selection is what let the two rows become one.
+ *
+ * [Catalogue] is the odd one only in that it has no time in it at all. Tapping a day from there is
+ * how you leave it, which is a job the day chips can do precisely because they cannot filter a
+ * Catalogue: they are not filtering it, they are the way out.
  */
-enum class ProgrammeViewUiModel {
-    PROGRAMME,
-    CATALOGUE,
+sealed interface ProgrammeScopeUiModel {
+    /** Every Happening the Edition offers, no hours, no day. */
+    data object Catalogue : ProgrammeScopeUiModel
+
+    /** The whole weekend in one scroll, each day under its own sticky header. */
+    data object AllDays : ProgrammeScopeUiModel
+
+    data class Day(
+        val id: String,
+    ) : ProgrammeScopeUiModel
 }
+
+/**
+ * [label] is a [UiText] rather than a String because the row mixes two provenances: *Découvrir* and
+ * *Tous* are the app's words and are translated with it, while a day's name comes out of the
+ * content so that a day the association calls something else keeps its name.
+ */
+data class ScopeChipUiModel(
+    val scope: ProgrammeScopeUiModel,
+    val label: UiText,
+    val isSelected: Boolean,
+)
+
+data class CategoryChipUiModel(
+    val id: String,
+    val name: String,
+    val isSelected: Boolean,
+)
+
+/**
+ * One day of the list, and the unit the timetable is built out of whether it is showing one day or
+ * three.
+ *
+ * [header] is null when the list is a single day, because the chip row directly above already says
+ * which day that is and a header under it would say it twice. Across several days it is what makes
+ * the scroll readable, and it carries [DaySectionHeaderUiModel.scale] with it — see there for why
+ * the axis travels with the header rather than staying in the chrome.
+ *
+ * **A day with nothing on it after the filter is absent, not empty.** Three headers with one row
+ * under them says less about a weekend than one header does, and an empty Saturday reads as a
+ * screen that failed rather than as a Saturday nothing matched on. Same rule Mon Yadlo's timeline
+ * applies to a day with nothing saved.
+ */
+data class DaySectionUiModel(
+    val id: String,
+    val header: DaySectionHeaderUiModel?,
+    val rows: List<SlotRowUiModel>,
+)
+
+/**
+ * The day's name and the span its rows' bars are drawn against, pinned while those rows are on
+ * screen.
+ *
+ * **The axis travels with the header because a span is a fact about one day.** Friday runs
+ * 16:00–02:00 and Sunday 12:00–22:00, so a single scale in the chrome could only be right about
+ * one of them — and a scale that is wrong about the bars under it is worse than no scale, because
+ * it does not fail to answer the question, it answers it wrongly. Sticking the header is what makes
+ * that work: the reading on screen always belongs to the rows on screen.
+ */
+data class DaySectionHeaderUiModel(
+    val name: String,
+    val scale: SlotScaleUiModel,
+)
 
 /**
  * One Happening in the Catalogue, drawn as a photograph rather than as a row.
@@ -77,18 +140,6 @@ data class CatalogueCardUiModel(
     val description: String?,
     val imageUrl: String?,
     val genres: List<String>,
-)
-
-data class DayChipUiModel(
-    val id: String,
-    val name: String,
-    val isSelected: Boolean,
-)
-
-data class CategoryChipUiModel(
-    val id: String,
-    val name: String,
-    val isSelected: Boolean,
 )
 
 /**

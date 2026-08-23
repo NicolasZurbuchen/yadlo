@@ -11,78 +11,88 @@ class ProgrammeReducerTest {
     private val reducer = ProgrammeStoreFactory.ReducerImpl
 
     @Test
-    fun contentUpdated_nothingPickedYet_opensOnTheDayTheExecutorChose() {
+    fun contentUpdated_nothingPickedYet_opensOnTheScopeTheExecutorChose() {
         val state = ProgrammeState(now = NOW)
 
         val result = with(reducer) { state.reduce(contentUpdated()) }
 
-        assertEquals("2026:sat", result.selectedDayId)
+        assertEquals(ProgrammeScopeUiModel.Day("2026:sat"), result.selectedScope)
         assertEquals(content(), result.content)
     }
 
     @Test
-    fun contentUpdated_nothingPickedYet_opensOnTheViewTheExecutorChose() {
+    fun contentUpdated_theProgrammeHasJustDropped_opensOnTheCatalogue() {
         val state = ProgrammeState(now = NOW)
 
         val result =
             with(reducer) {
-                state.reduce(contentUpdated(defaultView = ProgrammeViewUiModel.CATALOGUE))
+                state.reduce(contentUpdated(defaultScope = ProgrammeScopeUiModel.Catalogue))
             }
 
-        assertEquals(ProgrammeViewUiModel.CATALOGUE, result.selectedView)
+        assertEquals(ProgrammeScopeUiModel.Catalogue, result.selectedScope)
     }
 
     @Test
-    fun contentUpdated_visitorAlreadyChoseAView_leavesItAlone() {
-        // The whole reason this is a start view rather than a redirect. A content refresh arriving
+    fun contentUpdated_visitorAlreadyChoseTheCatalogue_leavesItAlone() {
+        // The whole reason this is a start scope rather than a redirect. A content refresh arriving
         // while someone reads the Catalogue must not put them back on the timetable.
-        val state = ProgrammeState(now = NOW, content = content(), selectedView = ProgrammeViewUiModel.CATALOGUE)
+        val state = ProgrammeState(now = NOW, content = content(), selectedScope = ProgrammeScopeUiModel.Catalogue)
 
         val result =
             with(reducer) {
-                state.reduce(contentUpdated(defaultView = ProgrammeViewUiModel.PROGRAMME))
+                state.reduce(contentUpdated(defaultScope = ProgrammeScopeUiModel.AllDays))
             }
 
-        assertEquals(ProgrammeViewUiModel.CATALOGUE, result.selectedView)
-    }
-
-    @Test
-    fun viewSelected_switchesTheViewWithoutClearingTheFilters() {
-        // The Category chips filter both views, so carrying them across is the point: somebody who
-        // narrowed the timetable to "sur l'eau" and switched to browsing still means sur l'eau.
-        val state =
-            ProgrammeState(
-                now = NOW,
-                selectedView = ProgrammeViewUiModel.PROGRAMME,
-                selectedDayId = "2026:sat",
-                selectedCategoryIds = setOf("eau"),
-            )
-
-        val result = with(reducer) { state.reduce(ProgrammeMessage.ViewSelected(ProgrammeViewUiModel.CATALOGUE)) }
-
-        assertEquals(ProgrammeViewUiModel.CATALOGUE, result.selectedView)
-        assertEquals(setOf("eau"), result.selectedCategoryIds)
-        // Kept rather than cleared: switching back has to land where it was left.
-        assertEquals("2026:sat", result.selectedDayId)
+        assertEquals(ProgrammeScopeUiModel.Catalogue, result.selectedScope)
     }
 
     @Test
     fun contentUpdated_visitorAlreadyPickedADay_leavesItAlone() {
         // A refresh arriving while someone is reading Sunday must not throw them back to today.
-        val state = ProgrammeState(now = NOW, content = content(), selectedDayId = "2026:sun")
+        val state =
+            ProgrammeState(now = NOW, content = content(), selectedScope = ProgrammeScopeUiModel.Day("2026:sun"))
 
         val result = with(reducer) { state.reduce(contentUpdated()) }
 
-        assertEquals("2026:sun", result.selectedDayId)
+        assertEquals(ProgrammeScopeUiModel.Day("2026:sun"), result.selectedScope)
     }
 
     @Test
     fun contentUpdated_pickedDayIsGoneFromTheNewContent_fallsBackRatherThanShowingNothing() {
-        val state = ProgrammeState(now = NOW, content = content(), selectedDayId = "2025:sat")
+        // A scope that has stopped existing, rather than a choice being overruled — the one case
+        // the content is allowed to take back.
+        val state =
+            ProgrammeState(now = NOW, content = content(), selectedScope = ProgrammeScopeUiModel.Day("2025:sat"))
 
         val result = with(reducer) { state.reduce(contentUpdated()) }
 
-        assertEquals("2026:sat", result.selectedDayId)
+        assertEquals(ProgrammeScopeUiModel.Day("2026:sat"), result.selectedScope)
+    }
+
+    @Test
+    fun contentUpdated_visitorIsOnTous_isNotADayAndSurvivesAnythingTheContentDoes() {
+        val state = ProgrammeState(now = NOW, content = content(), selectedScope = ProgrammeScopeUiModel.AllDays)
+
+        val result = with(reducer) { state.reduce(contentUpdated()) }
+
+        assertEquals(ProgrammeScopeUiModel.AllDays, result.selectedScope)
+    }
+
+    @Test
+    fun scopeSelected_switchesTheListWithoutClearingTheFilters() {
+        // The Category chips filter every scope, so carrying them across is the point: somebody who
+        // narrowed the timetable to "sur l'eau" and switched to browsing still means sur l'eau.
+        val state =
+            ProgrammeState(
+                now = NOW,
+                selectedScope = ProgrammeScopeUiModel.Day("2026:sat"),
+                selectedCategoryIds = setOf("eau"),
+            )
+
+        val result = with(reducer) { state.reduce(ProgrammeMessage.ScopeSelected(ProgrammeScopeUiModel.Catalogue)) }
+
+        assertEquals(ProgrammeScopeUiModel.Catalogue, result.selectedScope)
+        assertEquals(setOf("eau"), result.selectedCategoryIds)
     }
 
     @Test
@@ -91,7 +101,7 @@ class ProgrammeReducerTest {
             ProgrammeState(
                 now = NOW,
                 content = content(),
-                selectedDayId = "2026:sat",
+                selectedScope = ProgrammeScopeUiModel.Day("2026:sat"),
                 selectedCategoryIds = setOf("musique"),
             )
         val later = Instant.parse("2026-07-11T16:01:00+02:00")
@@ -99,19 +109,26 @@ class ProgrammeReducerTest {
         val result = with(reducer) { state.reduce(ProgrammeMessage.Ticked(later)) }
 
         assertEquals(later, result.now)
-        assertEquals("2026:sat", result.selectedDayId)
+        assertEquals(ProgrammeScopeUiModel.Day("2026:sat"), result.selectedScope)
         assertEquals(setOf("musique"), result.selectedCategoryIds)
     }
 
     @Test
-    fun daySelected_switchesTheDayWithoutClearingTheFilters() {
-        // Switching day is not starting over: someone filtering for the children's corner wants it
-        // on Sunday too.
-        val state = ProgrammeState(now = NOW, selectedDayId = "2026:sat", selectedCategoryIds = setOf("enfants"))
+    fun scopeSelected_switchingDayDoesNotStartOver() {
+        // Someone filtering for the children's corner wants it on Sunday too.
+        val state =
+            ProgrammeState(
+                now = NOW,
+                selectedScope = ProgrammeScopeUiModel.Day("2026:sat"),
+                selectedCategoryIds = setOf("enfants"),
+            )
 
-        val result = with(reducer) { state.reduce(ProgrammeMessage.DaySelected("2026:sun")) }
+        val result =
+            with(reducer) {
+                state.reduce(ProgrammeMessage.ScopeSelected(ProgrammeScopeUiModel.Day("2026:sun")))
+            }
 
-        assertEquals("2026:sun", result.selectedDayId)
+        assertEquals(ProgrammeScopeUiModel.Day("2026:sun"), result.selectedScope)
         assertEquals(setOf("enfants"), result.selectedCategoryIds)
     }
 
@@ -124,14 +141,8 @@ class ProgrammeReducerTest {
         assertEquals(setOf("eau", "terre"), result.selectedCategoryIds)
     }
 
-    private fun contentUpdated(
-        defaultDayId: String? = "2026:sat",
-        defaultView: ProgrammeViewUiModel = ProgrammeViewUiModel.PROGRAMME,
-    ) = ProgrammeMessage.ContentUpdated(
-        content = content(),
-        defaultDayId = defaultDayId,
-        defaultView = defaultView,
-    )
+    private fun contentUpdated(defaultScope: ProgrammeScopeUiModel = ProgrammeScopeUiModel.Day("2026:sat")) =
+        ProgrammeMessage.ContentUpdated(content = content(), defaultScope = defaultScope)
 
     private fun content() =
         ProgrammeContent(

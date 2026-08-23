@@ -5,17 +5,13 @@ import kotlin.time.Instant
 
 sealed interface ProgrammeIntent {
     /**
-     * Which of the two lists the tab is showing — the timetable, or the Catalogue.
+     * A tap on the selector row — *Découvrir*, *Tous*, or one of the days.
      *
-     * Selected rather than toggled, unlike the Category chips: there are exactly two, the control
-     * names both of them, and "the other one" is never what the reader is reaching for.
+     * One intent for all five chips, because they are one exclusive choice rather than a view
+     * switch sitting above a day filter. See [ProgrammeScopeUiModel].
      */
-    data class ViewSelected(
-        val view: ProgrammeViewUiModel,
-    ) : ProgrammeIntent
-
-    data class DaySelected(
-        val dayId: String,
+    data class ScopeSelected(
+        val scope: ProgrammeScopeUiModel,
     ) : ProgrammeIntent
 
     /**
@@ -51,27 +47,20 @@ sealed interface ProgrammeAction {
 
 sealed interface ProgrammeMessage {
     /**
-     * [defaultDayId] travels with the content because it is read off it — which day the screen opens
-     * on is a question only the days themselves and the clock can answer, and the reducer has
-     * neither. [defaultView] rides along for the same reason and off the same two inputs: the view
-     * the tab opens on follows the Phase, and a Phase is the published days plus the clock.
+     * [defaultScope] travels with the content because it is read off it — what the screen opens on
+     * is a question only the published days and the clock can answer, and the reducer has neither.
      */
     data class ContentUpdated(
         val content: ProgrammeContent,
-        val defaultDayId: String?,
-        val defaultView: ProgrammeViewUiModel,
-    ) : ProgrammeMessage
-
-    data class ViewSelected(
-        val view: ProgrammeViewUiModel,
+        val defaultScope: ProgrammeScopeUiModel,
     ) : ProgrammeMessage
 
     data class Ticked(
         val now: Instant,
     ) : ProgrammeMessage
 
-    data class DaySelected(
-        val dayId: String,
+    data class ScopeSelected(
+        val scope: ProgrammeScopeUiModel,
     ) : ProgrammeMessage
 
     data class CategoriesChanged(
@@ -85,19 +74,19 @@ sealed interface ProgrammeMessage {
  * of the app asks a clock it does not own.
  *
  * [selectedCategoryIds] empty means *Tout* — an absent filter rather than a filter that excludes
- * everything, which is what makes "deselect the last chip" fall back to the whole day.
+ * everything, which is what makes "deselect the last chip" fall back to the whole list.
  *
- * **[selectedView] is null only until the first bundle arrives, and the content writes it exactly
- * once.** The view the tab opens on is a start view, not a redirect — the same distinction
+ * **[selectedScope] is null only until the first bundle arrives, and the content writes it exactly
+ * once.** What the tab opens on is a start scope, not a redirect — the same distinction
  * `TabNavigator.selectStart` exists for, and for the same reason: ANNOUNCED turns into APPROACHING
  * at midnight on J-7, and somebody reading the Catalogue at 23:59 must not have the screen pulled
  * out from under them as the date turns. Every later emission finds it already set and leaves it
- * alone; after that only a tap on the toggle moves it.
+ * alone — the one exception being a chosen day the new content no longer publishes, which is a
+ * scope that has stopped existing rather than a choice being overruled.
  */
 data class ProgrammeState(
     val now: Instant,
     val content: ProgrammeContent? = null,
-    val selectedView: ProgrammeViewUiModel? = null,
-    val selectedDayId: String? = null,
+    val selectedScope: ProgrammeScopeUiModel? = null,
     val selectedCategoryIds: Set<String> = emptySet(),
 )

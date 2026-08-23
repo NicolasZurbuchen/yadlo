@@ -86,8 +86,8 @@
     <string name="wishlist_add">Ajouter à ma liste à essayer</string>
     <string name="wishlist_remove">Retirer de ma liste à essayer</string>
 
-    <string name="programme_view_programme">Programme</string>
-    <string name="programme_view_catalogue">Découvrir</string>
+    <string name="programme_scope_catalogue">Découvrir</string>
+    <string name="programme_scope_all">Tous</string>
     <string name="programme_categories_all">Tout</string>
     <string name="programme_empty_filter">Aucune activité ne correspond à ce filtre.</string>
     <string name="programme_empty_unpublished">Le programme n'est pas encore publié.</string>

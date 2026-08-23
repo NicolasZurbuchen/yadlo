@@ -14,22 +14,25 @@ import yadlo.shared.generated.resources.price_free
 import yadlo.shared.generated.resources.price_from
 import yadlo.shared.generated.resources.programme_empty_filter
 import yadlo.shared.generated.resources.programme_empty_unpublished
+import yadlo.shared.generated.resources.programme_scope_all
+import yadlo.shared.generated.resources.programme_scope_catalogue
 import yadlo.shared.generated.resources.slot_state_ending
 import yadlo.shared.generated.resources.slot_state_over
 import yadlo.shared.generated.resources.slot_state_running
 import yadlo.shared.generated.resources.slot_state_starts_in_minutes
-import kotlin.time.Duration
 
 /**
- * Whichever of the tab's two views is showing.
+ * Whatever the selector row is pointing at.
  *
- * **The Catalogue leaves before the day is chosen**, because everything below that point — the day
- * chips, the axis the bars are measured on, the live states — is about a timetable it does not
- * have. What the two views share is the Category chips and the empty message, and both are built
- * above the branch so neither view can drift from the other on them.
+ * **The Catalogue leaves before any day is looked at**, because everything below that point — the
+ * axis the bars are measured on, the live states, the day a row belongs to — is about a timetable
+ * it does not have. What every scope shares is the selector row and the Category chips, and both
+ * are built above the branch so no scope can drift from another on them.
  *
- * The Programme half: one day's Happenings, in order, each carrying every hour it runs that day,
- * its own state against the clock and its own place on the day's span.
+ * The timetable half is one loop over the days in scope, doing exactly the same work per day
+ * whether there is one of them or three. That is what makes *Tous* cheap rather than a second
+ * layout: a day is already the unit this screen is built out of — the axis is a day's span, a row
+ * is a Happening on a day — so three days is that unit three times.
  *
  * Everything is built inside this single function: a UiMapper file is required to hold nothing but
  * the State-to-UiModel extension, so a helper here would have to be local, which Konsist reads as
@@ -41,48 +44,66 @@ fun ProgrammeState.toUiModel(): ProgrammeUiModel {
     val loaded =
         content ?: return ProgrammeUiModel(
             isLoading = true,
-            view = null,
-            days = emptyList(),
+            scopes = emptyList(),
             categories = emptyList(),
             scale = null,
-            rows = emptyList(),
+            sections = emptyList(),
             catalogue = emptyList(),
             emptyMessage = null,
         )
 
     // No Slots at all is an edition published with dates and nothing under them, which happens
-    // every spring. The day chips go with the list: offering three days to switch between when
-    // none of them has anything reads as a screen that failed to load.
+    // every spring. The whole selector row goes with the list: offering five things to point at
+    // when none of them has anything reads as a screen that failed to load.
     if (loaded.slots.isEmpty()) {
-        // The toggle goes with the chips: switching to a Catalogue of things nobody has published
-        // hours for would answer a different question than the one this screen just failed to.
         return ProgrammeUiModel(
             isLoading = false,
-            view = null,
-            days = emptyList(),
+            scopes = emptyList(),
             categories = emptyList(),
             scale = null,
-            rows = emptyList(),
+            sections = emptyList(),
             catalogue = emptyList(),
             emptyMessage = UiText.Resource(Res.string.programme_empty_unpublished),
         )
     }
 
     // Null only in the frame between the store being built and the first bundle landing, which the
-    // loading branch above has already returned for. The timetable is the fallback because it is
-    // the tab's name.
-    val view = selectedView ?: ProgrammeViewUiModel.PROGRAMME
+    // loading branch above has already returned for.
+    val scope = selectedScope ?: ProgrammeScopeUiModel.AllDays
+
+    val scopes =
+        listOf(
+            ScopeChipUiModel(
+                scope = ProgrammeScopeUiModel.Catalogue,
+                label = UiText.Resource(Res.string.programme_scope_catalogue),
+                isSelected = scope is ProgrammeScopeUiModel.Catalogue,
+            ),
+            ScopeChipUiModel(
+                scope = ProgrammeScopeUiModel.AllDays,
+                label = UiText.Resource(Res.string.programme_scope_all),
+                isSelected = scope is ProgrammeScopeUiModel.AllDays,
+            ),
+        ) +
+            loaded.days.map { day ->
+                ScopeChipUiModel(
+                    scope = ProgrammeScopeUiModel.Day(day.id),
+                    // Out of the content, so a day the association calls something else keeps its
+                    // name and nothing here has to translate a weekday.
+                    label = UiText.Raw(day.name),
+                    isSelected = scope is ProgrammeScopeUiModel.Day && scope.id == day.id,
+                )
+            }
 
     val categories =
         loaded.categories.map {
             CategoryChipUiModel(id = it.id, name = it.name, isSelected = it.id in selectedCategoryIds)
         }
 
-    if (view == ProgrammeViewUiModel.CATALOGUE) {
+    if (scope is ProgrammeScopeUiModel.Catalogue) {
         val entries =
             loaded.catalogue
-                // The same reading of an empty selection as the list below: *Tout*, not a filter
-                // that excludes everything.
+                // The same reading of an empty selection as the timetable below: *Tout*, not a
+                // filter that excludes everything.
                 .filter { selectedCategoryIds.isEmpty() || it.categoryId in selectedCategoryIds }
                 .map { entry ->
                     CatalogueCardUiModel(
@@ -98,158 +119,190 @@ fun ProgrammeState.toUiModel(): ProgrammeUiModel {
 
         return ProgrammeUiModel(
             isLoading = false,
-            view = view,
-            // Both empty on purpose: a Catalogue entry has no day and no hours, so a day chip could
-            // only filter it by something it does not carry, and an axis would measure nothing.
-            days = emptyList(),
+            scopes = scopes,
             categories = categories,
+            // Nothing here has an hour, so there is no span to write and nothing to measure on it.
             scale = null,
-            rows = emptyList(),
+            sections = emptyList(),
             catalogue = entries,
             emptyMessage = if (entries.isEmpty()) UiText.Resource(Res.string.programme_empty_filter) else null,
         )
     }
 
-    val days = loaded.days.map { DayChipUiModel(id = it.id, name = it.name, isSelected = it.id == selectedDayId) }
+    val daysInScope =
+        when (scope) {
+            is ProgrammeScopeUiModel.Day -> loaded.days.filter { it.id == scope.id }
+            else -> loaded.days
+        }
 
-    val daySlots = loaded.slots.filter { it.dayId == selectedDayId }
-    val selectedDay = loaded.days.firstOrNull { it.id == selectedDayId }
+    // One day means the chip directly above already says which, so a header would say it twice and
+    // the single axis it would carry belongs in the chrome, where it has always been.
+    val writesHeaders = daysInScope.size > 1
 
-    // The axis is the day's opening hours widened to cover anything programmed outside them: the
-    // beach at Préverenges is public, so the morning yoga runs from 10:00 on a day the site opens
-    // at 12:00 and still has to sit on the bar rather than off the left edge of it.
-    //
-    // Measured across every Slot of the day, never the filtered ones — an axis that rescaled when
-    // you tapped a chip would make two rows impossible to compare across a filter change.
-    val axisStart = (listOfNotNull(selectedDay?.start) + daySlots.map { it.start }).minOrNull()
-    val axisEnd = (listOfNotNull(selectedDay?.end) + daySlots.map { it.end }).maxOrNull()
-    val axisSpan = if (axisStart != null && axisEnd != null) axisEnd - axisStart else Duration.ZERO
-    val hasAxis = axisStart != null && axisEnd != null && axisSpan.isPositive()
+    val sections =
+        daysInScope.mapNotNull { day ->
+            val daySlots = loaded.slots.filter { it.dayId == day.id }
 
-    val rows =
-        daySlots
-            // An empty selection is *Tout*, not a filter that excludes everything.
-            .filter { selectedCategoryIds.isEmpty() || it.categoryId in selectedCategoryIds }
-            // One row per Happening, with its hours on it — DECISIONS.md § A row is a Happening on
-            // a day. `groupBy` keeps first-seen order and the Slots arrive sorted, so the rows come
-            // out in the order their first hour starts and each row's hours are chronological.
-            .groupBy { it.happeningId }
-            .map { (happeningId, slots) ->
-                val first = slots.first()
+            // The axis is the day's opening hours widened to cover anything programmed outside them:
+            // the beach at Préverenges is public, so the morning yoga runs from 10:00 on a day the
+            // site opens at 12:00 and still has to sit on the bar rather than off the left edge of it.
+            //
+            // Measured across every Slot of the day, never the filtered ones — an axis that rescaled
+            // when you tapped a chip would make two rows impossible to compare across a filter
+            // change. And per day rather than across the weekend, which is the same rule read the
+            // other way: Friday runs 16:00–02:00 and Sunday 12:00–22:00, so one axis over both would
+            // squeeze every Sunday bar into the left half of its track.
+            val axisStart = (listOf(day.start) + daySlots.map { it.start }).min()
+            val axisEnd = (listOf(day.end) + daySlots.map { it.end }).max()
+            val axisSpan = axisEnd - axisStart
+            val hasAxis = axisSpan.isPositive()
 
-                val segments =
-                    slots.map { slot ->
-                        SlotSegmentUiModel(
-                            id = slot.id,
-                            timeText =
-                                "${slot.start.formatAsTimeOfDay(FESTIVAL_TIME_ZONE)} – " +
-                                    slot.end.formatAsTimeOfDay(FESTIVAL_TIME_ZONE),
-                            state = slotLiveStateAt(now = now, start = slot.start, end = slot.end),
-                            barStart =
-                                if (hasAxis && axisStart != null) {
-                                    ((slot.start - axisStart) / axisSpan).toFloat().coerceIn(0f, 1f)
-                                } else {
-                                    0f
+            val rows =
+                daySlots
+                    // An empty selection is *Tout*, not a filter that excludes everything.
+                    .filter { selectedCategoryIds.isEmpty() || it.categoryId in selectedCategoryIds }
+                    // One row per Happening, with its hours on it — DECISIONS.md § A row is a
+                    // Happening on a day. `groupBy` keeps first-seen order and the Slots arrive
+                    // sorted, so the rows come out in the order their first hour starts and each
+                    // row's hours are chronological.
+                    .groupBy { it.happeningId }
+                    .map { (happeningId, slots) ->
+                        val first = slots.first()
+
+                        val segments =
+                            slots.map { slot ->
+                                SlotSegmentUiModel(
+                                    id = slot.id,
+                                    timeText =
+                                        "${slot.start.formatAsTimeOfDay(FESTIVAL_TIME_ZONE)} – " +
+                                            slot.end.formatAsTimeOfDay(FESTIVAL_TIME_ZONE),
+                                    state = slotLiveStateAt(now = now, start = slot.start, end = slot.end),
+                                    barStart =
+                                        if (hasAxis) {
+                                            ((slot.start - axisStart) / axisSpan).toFloat().coerceIn(0f, 1f)
+                                        } else {
+                                            0f
+                                        },
+                                    barEnd =
+                                        if (hasAxis) {
+                                            ((slot.end - axisStart) / axisSpan).toFloat().coerceIn(0f, 1f)
+                                        } else {
+                                            1f
+                                        },
+                                )
+                            }
+
+                        val state = segments.loudestState()
+
+                        SlotRowUiModel(
+                            // The day is in it because the same Happening runs on all three of them,
+                            // and a list key that repeats across days is a list that reuses a row's
+                            // scroll state for a different day's copy of it. Under *Tous* the two
+                            // copies are also on screen at the same time.
+                            id = "${day.id}/$happeningId",
+                            happeningId = happeningId,
+                            name = first.name,
+                            categoryId = first.categoryId,
+                            categoryName = first.categoryName,
+                            priceText =
+                                first.price?.let { price ->
+                                    // `tiers` is empty exactly when `free` is true, and the content
+                                    // validator holds that — so a missing cheapest tier means free too.
+                                    val cheapest = price.tiers.minByOrNull { it.amount.amount }
+                                    when {
+                                        price.free || cheapest == null -> {
+                                            UiText.Resource(Res.string.price_free)
+                                        }
+
+                                        // "dès CHF 15" rather than the adult price: the Silent Party
+                                        // is CHF 25 for adults and CHF 15 under 16, and a row that
+                                        // shows only the higher one prices a family out of something
+                                        // they can afford.
+                                        price.tiers.size > 1 -> {
+                                            UiText.Resource(
+                                                Res.string.price_from,
+                                                listOf(formatMoney(cheapest.amount.amount, cheapest.amount.currency)),
+                                            )
+                                        }
+
+                                        else -> {
+                                            UiText.Raw(formatMoney(cheapest.amount.amount, cheapest.amount.currency))
+                                        }
+                                    }
                                 },
-                            barEnd =
-                                if (hasAxis && axisStart != null) {
-                                    ((slot.end - axisStart) / axisSpan).toFloat().coerceIn(0f, 1f)
-                                } else {
-                                    1f
+                            stateLabel =
+                                when (state) {
+                                    SlotLiveStateUiModel.Upcoming -> {
+                                        null
+                                    }
+
+                                    is SlotLiveStateUiModel.StartingSoon -> {
+                                        // Always minutes, because the window is an hour: an hours
+                                        // branch could only ever fire on the single instant the
+                                        // window opens. Never "dans 0 min" either — under a minute
+                                        // out it still has not started, and one is the smallest true
+                                        // thing to say.
+                                        UiText.Resource(
+                                            Res.string.slot_state_starts_in_minutes,
+                                            listOf(state.startsIn.inWholeMinutes.coerceAtLeast(1).toString()),
+                                        )
+                                    }
+
+                                    is SlotLiveStateUiModel.Running -> {
+                                        UiText.Resource(Res.string.slot_state_running)
+                                    }
+
+                                    is SlotLiveStateUiModel.Ending -> {
+                                        UiText.Resource(
+                                            Res.string.slot_state_ending,
+                                            listOf(state.endsIn.inWholeMinutes.coerceAtLeast(1).toString()),
+                                        )
+                                    }
+
+                                    SlotLiveStateUiModel.Over -> {
+                                        UiText.Resource(Res.string.slot_state_over)
+                                    }
                                 },
+                            state = state,
+                            slots = segments,
                         )
                     }
 
-                val state = segments.loudestState()
-
-                SlotRowUiModel(
-                    // The day is in it because the same Happening runs on all three of them, and a
-                    // list key that repeats across days is a list that reuses a row's scroll state
-                    // for a different day's copy of it.
-                    id = "${first.dayId}/$happeningId",
-                    happeningId = happeningId,
-                    name = first.name,
-                    categoryId = first.categoryId,
-                    categoryName = first.categoryName,
-                    priceText =
-                        first.price?.let { price ->
-                            // `tiers` is empty exactly when `free` is true, and the content
-                            // validator holds that — so a missing cheapest tier means free too.
-                            val cheapest = price.tiers.minByOrNull { it.amount.amount }
-                            when {
-                                price.free || cheapest == null -> {
-                                    UiText.Resource(Res.string.price_free)
-                                }
-
-                                // "dès CHF 15" rather than the adult price: the Silent Party is
-                                // CHF 25 for adults and CHF 15 under 16, and a row that shows only
-                                // the higher one prices a family out of something they can afford.
-                                price.tiers.size > 1 -> {
-                                    UiText.Resource(
-                                        Res.string.price_from,
-                                        listOf(formatMoney(cheapest.amount.amount, cheapest.amount.currency)),
-                                    )
-                                }
-
-                                else -> {
-                                    UiText.Raw(formatMoney(cheapest.amount.amount, cheapest.amount.currency))
-                                }
-                            }
-                        },
-                    stateLabel =
-                        when (state) {
-                            SlotLiveStateUiModel.Upcoming -> {
-                                null
-                            }
-
-                            is SlotLiveStateUiModel.StartingSoon -> {
-                                // Always minutes, because the window is an hour: an hours branch
-                                // could only ever fire on the single instant the window opens.
-                                // Never "dans 0 min" either — under a minute out it still has not
-                                // started, and one is the smallest true thing to say.
-                                UiText.Resource(
-                                    Res.string.slot_state_starts_in_minutes,
-                                    listOf(state.startsIn.inWholeMinutes.coerceAtLeast(1).toString()),
-                                )
-                            }
-
-                            is SlotLiveStateUiModel.Running -> {
-                                UiText.Resource(Res.string.slot_state_running)
-                            }
-
-                            is SlotLiveStateUiModel.Ending -> {
-                                UiText.Resource(
-                                    Res.string.slot_state_ending,
-                                    listOf(state.endsIn.inWholeMinutes.coerceAtLeast(1).toString()),
-                                )
-                            }
-
-                            SlotLiveStateUiModel.Over -> {
-                                UiText.Resource(Res.string.slot_state_over)
-                            }
-                        },
-                    state = state,
-                    slots = segments,
-                )
+            // A day the filter emptied is absent, not an empty header — see DaySectionUiModel.
+            if (rows.isEmpty()) {
+                return@mapNotNull null
             }
+
+            DaySectionUiModel(
+                id = day.id,
+                header =
+                    if (hasAxis) {
+                        DaySectionHeaderUiModel(
+                            name = day.name,
+                            scale =
+                                SlotScaleUiModel(
+                                    startText = axisStart.formatAsTimeOfDay(FESTIVAL_TIME_ZONE),
+                                    middleText = (axisStart + axisSpan / 2).formatAsTimeOfDay(FESTIVAL_TIME_ZONE),
+                                    endText = axisEnd.formatAsTimeOfDay(FESTIVAL_TIME_ZONE),
+                                ),
+                        )
+                    } else {
+                        null
+                    },
+                rows = rows,
+            )
+        }
 
     return ProgrammeUiModel(
         isLoading = false,
-        view = view,
-        days = days,
+        scopes = scopes,
         categories = categories,
-        scale =
-            if (hasAxis && axisStart != null && axisEnd != null && rows.isNotEmpty()) {
-                SlotScaleUiModel(
-                    startText = axisStart.formatAsTimeOfDay(FESTIVAL_TIME_ZONE),
-                    middleText = (axisStart + axisSpan / 2).formatAsTimeOfDay(FESTIVAL_TIME_ZONE),
-                    endText = axisEnd.formatAsTimeOfDay(FESTIVAL_TIME_ZONE),
-                )
-            } else {
-                null
-            },
-        rows = rows,
+        // Built once, above, and then read from whichever place it belongs in: the chrome when the
+        // list is one day, the sticky headers when it is several. Two computations of the same span
+        // is two places for them to disagree about where a bar starts.
+        scale = if (writesHeaders) null else sections.singleOrNull()?.header?.scale,
+        sections = if (writesHeaders) sections else sections.map { it.copy(header = null) },
         catalogue = emptyList(),
-        emptyMessage = if (rows.isEmpty()) UiText.Resource(Res.string.programme_empty_filter) else null,
+        emptyMessage = if (sections.isEmpty()) UiText.Resource(Res.string.programme_empty_filter) else null,
     )
 }
