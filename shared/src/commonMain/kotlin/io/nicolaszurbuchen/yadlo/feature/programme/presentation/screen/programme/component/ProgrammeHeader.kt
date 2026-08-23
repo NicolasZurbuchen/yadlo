@@ -22,11 +22,17 @@ import io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme
  * Which list, then the day, the kind, and the span the bars are drawn against — everything you set
  * before you read what is below.
  *
- * **The toggle is first, and it is spaced away from the rows under it.** It decides what the list
- * *is*; the chips decide which part of it shows. Read top to bottom the block asks the two
- * questions in the order they are answered, and the gap is what stops a control that changes the
- * screen from reading as a third filter over it. In the Catalogue the day row and the scale are
- * simply absent, so the chrome shrinks to the two rows that still mean something.
+ * **Every row is the same chip, and the view row is simply the first of them.** It was briefly a
+ * segmented button, spaced away from the rest so it would not read as a filter — see [ViewChipRow]
+ * for why both halves of that were wrong. What separates a control that changes the screen from one
+ * that filters it is its position and its labels, not eight pixels of height and a different corner
+ * radius. In the Catalogue the day row and the scale are simply absent, so the chrome shrinks to the
+ * two rows that still mean something.
+ *
+ * **Each row is pulled up by one overlap for every row above it.** Every chip row pads itself so it
+ * can be used alone, and Material pads each chip again to a 48dp touch target, so two stacked rows
+ * open a gap wider than either chip is tall. One [ROW_OVERLAP] per row above closes each of those
+ * gaps to the same width, whether the block is two rows or three.
  *
  * **The bar's own blue, continuing it.** These are chrome — they do not scroll away with the list,
  * which is half the point of them: a filter you have to scroll back up to change is a filter that
@@ -55,43 +61,45 @@ fun ProgrammeHeader(
     onAllCategoriesClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    // Counted rather than derived from the flags one by one, because the Catalogue drops the day
+    // row from the middle of the stack: the Category chips are the second row there and the third
+    // on the Programme, and they have to close whichever gap is actually above them.
+    var rowsAbove = 0
+
     Column(modifier = modifier.fillMaxWidth().background(MaterialTheme.appColors.primarySubtle)) {
         selectedView?.let { view ->
-            ProgrammeViewToggle(
-                selectedView = view,
-                onViewClick = onViewClick,
-                modifier =
-                    Modifier.padding(
-                        start = MaterialTheme.spacing.md,
-                        end = MaterialTheme.spacing.md,
-                        bottom = MaterialTheme.spacing.sm,
-                    ),
-            )
+            ViewChipRow(selectedView = view, onViewClick = onViewClick)
+            rowsAbove++
         }
 
         if (days.isNotEmpty()) {
-            DayChipRow(days = days, onDayClick = onDayClick)
+            DayChipRow(
+                days = days,
+                onDayClick = onDayClick,
+                modifier = Modifier.offset(y = -ROW_OVERLAP * rowsAbove),
+            )
+            rowsAbove++
         }
 
         if (categories.isNotEmpty()) {
-            // Negative offset rather than smaller row padding: each row pads itself so it can be
-            // used alone, and stacked they add up to a gap wider than either chip is tall.
             CategoryChipRow(
                 categories = categories,
                 onCategoryClick = onCategoryClick,
                 onAllClick = onAllCategoriesClick,
-                modifier = Modifier.offset(y = -ROW_OVERLAP),
+                modifier = Modifier.offset(y = -ROW_OVERLAP * rowsAbove),
             )
         }
 
         scale?.let {
             // The readings sit over the positions they describe: the rows' own left edge, and the
             // right edge of the bar, which stops where the chevron column starts.
+            // The same shift as the Category row above rather than one more, so the readings
+            // stay glued to the row they belong to instead of climbing into it.
             SlotScaleRow(
                 scale = it,
                 modifier =
                     Modifier
-                        .offset(y = -ROW_OVERLAP)
+                        .offset(y = -ROW_OVERLAP * rowsAbove)
                         .padding(
                             PaddingValues(
                                 start = MaterialTheme.spacing.md,
@@ -104,6 +112,6 @@ fun ProgrammeHeader(
     }
 }
 
-// Half a spacing step, which is what closing the two rows' own vertical padding back up to one gap
+// Half a spacing step, which is what closing one row's own vertical padding back up to a single gap
 // costs. Any more and the chips touch.
 private val ROW_OVERLAP = 6.dp
