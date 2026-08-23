@@ -92,6 +92,19 @@
     <string name="programme_empty_filter">Aucune activité ne correspond à ce filtre.</string>
     <string name="programme_empty_unpublished">Le programme n'est pas encore publié.</string>
 
+    <!-- Search — one corpus and one screen, reached from the toolbar on three tabs and from the
+         block on Accueil, in every Phase. The placeholder is where the scope is stated: a magnifier
+         in a bar shared by four tabs cannot say on its own that it is not scoped to the tab under
+         it. -->
+    <string name="search_action">Rechercher</string>
+    <string name="search_placeholder">Rechercher dans tout le festival</string>
+    <string name="search_clear">Effacer la recherche</string>
+    <string name="search_hint">Un artiste, une activité, un stand — ou une info pratique, comme « twint » ou « parking ».</string>
+    <string name="search_empty">Aucun résultat pour « %1$s ».</string>
+    <string name="search_group_programme">Programme</string>
+    <string name="search_group_on_site">Sur place</string>
+    <string name="search_group_practical">Infos pratiques</string>
+
     <string name="mon_yadlo_empty">Rien dans ton programme pour l'instant. Ouvre le Programme et garde ce que tu ne veux pas manquer.</string>
     <string name="mon_yadlo_wishlist_title">À essayer</string>
     <string name="mon_yadlo_wishlist_empty">Garde les stands qui te font envie depuis leur fiche.</string>

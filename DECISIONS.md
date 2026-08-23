@@ -213,14 +213,18 @@ this is the kind of thing that works all year and breaks on the one weekend that
 
 **Accueil, block by block.**
 
-**Global search appears only when there is a programme to search** — ANNOUNCED, APPROACHING
-and LIVE. Between editions there is nothing to find but last year's archive, and the
-countdown deserves the top of the screen more than an empty search box does. One search,
-one results screen, reached from both Accueil and Programme — two doors, one
-implementation. Over roughly sixty items it is an in-memory filter, and it answers
-"SUP yoga", "twint" and "parking" equally well.
+**~~Global search appears only when there is a programme to search.~~ Reversed: it is there all
+year.** The original reading was ANNOUNCED, APPROACHING and LIVE, on the grounds that between
+editions there is nothing to find but last year’s archive. That undercounted the corpus. Half of
+it is *live truth rather than an edition* — paiement, horaires, comment venir, devenir bénévole,
+nous écrire, l’histoire — and none of it expires when the festival ends; off season it is the half
+a reader is most likely to want, which this Phase’s own quick-access block already concedes by
+promoting two of them. The other half is last July’s line-up, which is the edition the bundle
+holds anyway and is exactly what *revivre l’édition* would show. "An empty search box" was the
+thing being argued against, and the box is not empty. One search, one results screen, reached from
+Accueil and from the toolbar — two doors, one implementation.
 
-*OFF_SEASON* — countdown · annonces · revivre l'édition précédente · s'impliquer ·
+*OFF_SEASON* — recherche · countdown · annonces · revivre l'édition précédente · s'impliquer ·
 newsletter · l'histoire de Yadlo · réseaux sociaux
 
 *ANNOUNCED* — recherche · countdown · **hero: la programmation est là** · annonces ·
@@ -251,7 +255,7 @@ and republishing photos of identifiable people from an app that is not theirs is
 problem. So: a link-out card for now, and a real feed becomes another thing that going
 official unlocks.
 
-*ENDED* — merci · Yadlo en chiffres · annonces · archives · newsletter · réseaux sociaux
+*ENDED* — recherche · merci · Yadlo en chiffres · annonces · archives · newsletter · réseaux sociaux
 
 **The default tab follows the phase.** Accueil for 361 days; Programme, scrolled to now, for
 the four days of the festival.
@@ -1521,6 +1525,116 @@ it stores nothing: it counts what is saved and offers to remove it.
 does not have the app. A notification payload never leaves the device, so the objection does not
 apply.
 
+### Search
+
+**One corpus, and the entry points are what make that credible.** A field on Accueil; a magnifier in
+the shell toolbar on the other three tabs. Both in every Phase, and both opening the same screen
+over the same index. The alternative — a search bar per screen, scoped to that screen — was
+turned down on the shape of its failure: it fails *silently*. Type `twint` into a Programme-scoped
+search, get nothing, and the conclusion is that the app does not know what TWINT is. A global search
+reached from the Programme fails in the other direction, by returning a *Sur place* heading the
+reader did not expect, which teaches the model in under a second and loses nothing. Those are not
+the same size of mistake.
+
+**No icon on Accueil, and no field anywhere else.** They are two doors to the same room, and on one
+screen side by side they are the duplication rule. The block wins on Accueil because it is the one
+that *teaches* the app has a search; the icon covers the three tabs with no room for a field. The
+sequencing works out: the first encounter is overwhelmingly the block, so the magnifier is met as
+*that thing again* rather than cold.
+
+**Accueil-only was rejected on the LIVE case.** During LIVE the app opens on Programme and Accueil is
+deliberately thin — so a search reachable only from Accueil is a tab switch plus a scroll plus a tap
+away at exactly the moment it is worth the most: on the site, one hand, sun on the screen.
+
+**The block leads every stack, including ENDED.** It is a control rather than content, and the
+magnifier it teaches never moves either; a field that slid down the page in two Phases out of five
+would be one the reader has to hunt for. The cost is one 48dp row above the thank-you on the Monday
+after — noted, and judged smaller than a search affordance that is only sometimes where it was.
+
+**The bar can carry it because the bar is not a tab’s.** `YadloTopAppBar` at a tab root shows the
+festival’s name and the edition dates, identically on all four tabs — never a tab title. A magnifier
+beside *Yadlo · 10–12 juillet* inherits that. The same icon in the Programme’s own chip row would
+read as scoped, and there it should.
+
+**The scope is stated by the placeholder and demonstrated by the groups.** *Rechercher dans tout le
+festival*, not *Rechercher* — five words in the one place the reader is certainly looking. Then the
+results come back under *Programme*, *Sur place* and *Infos pratiques*, so a query typed from one tab
+that answers with another tab’s heading has shown its own reach without a word of explanation.
+
+**Search never inherits the screen’s filters.** A search opened from the Programme with Samedi and
+*musique* selected returns the whole festival. Inheriting them would make the scope genuinely the
+current screen with nothing on the results page saying so — the one version of this that a reader
+cannot recover from by reading the answer.
+
+**Every result is something with a screen.** Story 8 settles it for the timetable — a result is a
+thing, not an occurrence — and a dish is the same case one level down. `tofu` returns *Végémania*
+with *Ragoût de tofu* written underneath as the reason it matched. A FAQ question is titled in the
+association’s own words and opens the FAQ page. Nothing in the results dead-ends.
+
+**Practical information is indexed as rows plus aliases, not as prose.** Fifteen screens, each with a
+hand-written keyword list — `twint` → Paiement, `parking` → Comment venir. Indexing the paragraphs
+inside those screens would produce a result labelled *Paiement* for a word buried three notes down,
+with no way to show why and nowhere to scroll the reader to. The aliases live on the domain enum and
+are never displayed; the titles are the Plus tab’s own strings, so a screen keeps one name.
+
+**Dietary marks are a filter, not a query.** `vegan`, `sans-gluten` and the other four are a closed
+set the content already models per dish, and someone looking for vegan food wants *every* vegan dish
+rather than a ranked guess. That belongs on the stands list as chips. Not built.
+
+**No LLM, and it is not close.** There is no backend — the content is static JSON on a CDN — so a
+model means a server, a key and a per-query bill on an unofficial app with no revenue. It also means
+a network round-trip at the moment it is least available, which is the argument that already refuses
+live transport API calls. The corpus is about 120 strings, which is far smaller than the thing a
+model is good at. And the deciding one is standing: a generative answer invents sentences about
+somebody else’s festival, which is exactly what killed remote push. The errors are asymmetric — a
+substring search that misses is annoying, a model that confidently says the bar closes at 01:00 sends
+someone home an hour early.
+
+**No index, no FTS, no debounce.** 38 Happenings, 62 dishes, four questions and fifteen topics — a
+substring scan of it is work a phone does between two frames, and the whole edition file is 95 KB.
+SQLDelight FTS would be slower to build than the search it replaces and would put a second copy of
+the content somewhere it can go stale. A debounce would be latency the app chose to add.
+
+**The real work is the accents, and it is a table rather than `expect`/`actual`.** `preverenges` has
+to find *Préverenges*, and commonMain has no `Normalizer`. Android’s `java.text.Normalizer` and
+iOS’s `CFStringTransform` would be two implementations to keep in agreement, neither testable on the
+host JVM. French has about thirty accented letters, so `infra/text/` folds them with a positional
+table and one commonMain function covers both platforms.
+
+**The current Edition only.** Archives load on demand, so covering them would mean either fetching
+every edition at launch — which wrecks the cold start the offline story rests on — or a search that
+silently does not cover what it appears to. That is the scoped-corpus mistake again, wearing a date.
+If an archive list ever needs narrowing, that is a filter on the screen you are standing on.
+
+**A topic is offered only when its section is published**, the same rule the Plus row it opens
+follows. A result that opens an empty page is worse than no result: the reader now believes the app
+has nothing to say rather than that they asked the wrong question. *Notifications*, *Confidentialité*
+and *À propos* are the app rather than the festival, so they are always there.
+
+**The topic keywords live in the app, and moving them into `festival.json` was turned down.** The
+attraction is real — they are the one part of the corpus that needs a release to change, since every
+other searchable string already comes from the content and a stand added on the Saturday is findable
+the moment the bundle refreshes. Four reasons it still loses:
+
+- **They point at app screens.** `twint` → `PaymentDestination`. A content file carrying a topic id
+  is a content file naming the app’s internal navigation, which is exactly what CONTEXT.md refused
+  for the Annonce URL: *content outlives app versions, and a dead link into a renamed screen is a
+  worse failure than an ordinary broken web link*. Here it would fail more quietly still — a keyword
+  matching a topic the app no longer has simply stops matching.
+- **Six of the fifteen are not about the festival.** `notifications`, `rappels`, `confidentialité`,
+  `rgpd`, `à propos`, `version`. A festival’s content file listing search words for the privacy
+  policy is a category error.
+- **It buys no release.** The list only changes when a screen is added or renamed, and both of those
+  are releases anyway — as are the titles, the icons and the screens themselves. Making one of
+  sixteen app-owned things hot-updatable saves nothing.
+- **There is no telemetry to tune against.** The value of remotely editable search vocabulary is
+  "we saw two hundred misses on that word". Everything here is local by design, so the missing words
+  are a guess either way — and guessing in Kotlin costs nothing extra.
+
+The vocabulary is also the wrong kind of thing to hand to an editor: it is UI synonyms, not festival
+facts. The association’s spreadsheet has stand names and prices; it does not have the words a Vaudois
+might type to reach the timetable.
+
 ## Open
 
 **The accent colour.** `#14618F` is the primary, not an accent — the terminology in earlier
@@ -1535,11 +1649,38 @@ would also resolve the magenta/coral crowding that is currently the palette's cl
 **~~Sorting may be dropped.~~ Resolved: dropped.** See § Programme layout above. Revisit once
 the list has been used with real content.
 
-**Search granularity.** Search runs across the whole programme, not one day, and returns
-Happenings rather than Slots — so an activity running all three days is one result listing
-its three slots, not three near-identical rows. The Wishlist `+` is the same search with
-Activities filtered out. Still to settle: whether it also searches practical information
-("bus", "twint", "parking"), which is nearly free given the corpus is a few dozen items.
+**~~Search granularity.~~ Resolved: built.** See § Search above. It runs across the whole edition and
+returns Happenings rather than Slots, and it does cover practical information — the half still open
+here, and as cheap as this entry guessed. The Wishlist `+` never arrived: Mon Yadlo is recall-only,
+so its empty state points at the stands list rather than at a search of its own.
+
+**Aliases on a Happening.** Deferred, not refused — the half of "put the keywords in the content"
+that survives scrutiny (§ Search above kills the other half). An optional `aliases: []` on a
+Happening, absent meaning today’s behaviour:
+
+```json
+{ "id": "silent-party", "name": "Silent Party",
+  "aliases": ["silent disco", "casque", "silencieuse"] }
+```
+
+It clears every objection the topic keywords could not: it hangs off an id the content file already
+owns rather than an app screen, so nothing the app renames can break it; it is a genuine festival
+fact, because only the association knows people call it a silent disco or that *le bateau* means the
+trampoline flottant; and it changes per edition, with the line-up, which is the cadence content is
+for.
+
+**It is measured rather than imagined.** Thirty-four plausible French queries were run against the
+2026 file: twenty-four hit. Of the ten misses, four are correct — `kebab`, `burger`, `tacos` and
+`cocktail` are things the festival does not have — and three are missing *content* rather than
+missing vocabulary (`bière` and `apéro` find nothing because no bar is modelled; see § Content that
+does not exist yet, which already counts drink stands among the gaps). That leaves exactly four that
+an alias list would fix: `silent disco`, `foot` → *Diffusion de match*, `bateau` and `sable`.
+
+Four queries is a thin case on its own, which is why it is here rather than built. It gets stronger
+the moment the association is authoring the content themselves, since the words are theirs to know.
+Cost when it comes: one optional field in `SCHEMA.md`, one validator line, one field carried through
+the remote mapper to `Happening`, and one branch in `matchedDetail` — where the alias becomes the
+row’s reason line, so a result found that way still says why it is there.
 
 **Plan lifecycle.** SlotIds must be Edition-qualified (`2026:dubside-sat`) so a reused id
 cannot resurrect last year's favourites into this year's Plan. Local storage survives app

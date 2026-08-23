@@ -9,6 +9,7 @@ import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.ContactDes
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.PaymentDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.StoryDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.VolunteeringDestination
+import io.nicolaszurbuchen.yadlo.feature.search.presentation.navigation.SearchDestination
 import io.nicolaszurbuchen.yadlo.infra.navigation.AppNavigator
 
 class HomeNavigatorImpl(
@@ -21,6 +22,14 @@ class HomeNavigatorImpl(
      */
     override fun navigateToProgramme() {
         tabNavigator.select(Tab.PROGRAMME)
+    }
+
+    /**
+     * Pushed onto Accueil's own stack, like the annonces and the promoted Plus screens — the
+     * search itself is not a tab, and backing out of it returns to the screen that offered it.
+     */
+    override fun navigateToSearch() {
+        appNavigator.navigateTo(SearchDestination)
     }
 
     override fun navigateToAnnouncements() {

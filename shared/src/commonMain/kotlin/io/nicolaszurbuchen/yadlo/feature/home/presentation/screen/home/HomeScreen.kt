@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import io.nicolaszurbuchen.yadlo.app.design.component.YadloHero
+import io.nicolaszurbuchen.yadlo.app.design.component.YadloSearchField
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.app.navigation.tabContentPadding
 import io.nicolaszurbuchen.yadlo.common.content.presentation.component.SocialLinksRow
@@ -20,6 +21,9 @@ import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.component
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.component.FiguresBlock
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.component.QuickAccessBlock
 import io.nicolaszurbuchen.yadlo.infra.ui.asString
+import org.jetbrains.compose.resources.stringResource
+import yadlo.shared.generated.resources.Res
+import yadlo.shared.generated.resources.search_placeholder
 
 /**
  * Accueil renders the block stack it is handed, in the order it is handed. Which blocks a Phase
@@ -28,6 +32,7 @@ import io.nicolaszurbuchen.yadlo.infra.ui.asString
 @Composable
 fun HomeScreen(
     state: HomeUiModel,
+    onSearchClick: () -> Unit,
     onHeroClick: () -> Unit,
     onAnnouncementClick: (String) -> Unit,
     onSeeAllAnnouncementsClick: () -> Unit,
@@ -59,6 +64,17 @@ fun HomeScreen(
         // keying on position would re-use a countdown's slot for a thank-you when the Phase turns.
         items(state.blocks, key = { it::class.simpleName.orEmpty() }) { block ->
             when (block) {
+                HomeBlockUiModel.Search -> {
+                    YadloSearchField(
+                        value = "",
+                        placeholder = stringResource(Res.string.search_placeholder),
+                        // Never called: passing onClick makes this a button dressed as a field,
+                        // and the typing happens on the screen it opens.
+                        onValueChange = {},
+                        onClick = onSearchClick,
+                    )
+                }
+
                 is HomeBlockUiModel.Countdown -> {
                     CountdownBlock(block = block)
                 }

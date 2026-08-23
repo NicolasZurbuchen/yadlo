@@ -176,6 +176,28 @@ dropped because content outlives app versions, and a dead link into a renamed sc
 failure than an ordinary broken web link.
 _Avoid_: News, post, message, notification, banner
 
+### Finding things
+
+**Topic**:
+One practical answer the app holds — a screen behind a Plus row, reachable by search. *Paiement*,
+*Horaires d’ouverture*, *Comment venir*. A Topic is the unit the search index holds for everything
+that is not a Happening, and it exists because the alternative — indexing the prose on those screens
+— gives a result that cannot say why it matched or where in the page to look. Each Topic carries a
+list of **aliases**: `twint`, `parking`, `bénévole`. Aliases are matching vocabulary and are never
+displayed; the name on the row is the Plus tab’s own, so a screen has exactly one name.
+_Avoid_: Keyword, tag, entry, shortcut, page
+
+**Reason**:
+The text a search result writes under its own title when the query did not match the title — the
+dish, the genre, the cuisine. `tofu` returns *Végémania* with *Ragoût de tofu* as its Reason. It is
+absent when the name matched, because then the title is already the answer. A Reason is what makes a
+result honest about why it is in the list.
+_Avoid_: Snippet, excerpt, highlight, match, subtitle
+
+> **There is no "search scope".** The search covers the whole current Edition from every door, and
+> the word is deliberately not in the vocabulary — *Scope* is already taken by the Programme tab’s
+> selector row, and a second meaning for it would be the exact confusion the design is avoiding. If
+> a screen ever narrows a list of its own, that is a **filter**, on the screen you are standing on.
 ### The user's own festival
 
 **Plan**:

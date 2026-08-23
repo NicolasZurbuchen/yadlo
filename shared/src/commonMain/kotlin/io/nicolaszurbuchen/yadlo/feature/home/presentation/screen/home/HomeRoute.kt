@@ -11,6 +11,7 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun HomeRoute(
+    onNavigateToSearch: () -> Unit,
     onNavigateToProgramme: () -> Unit,
     onNavigateToAnnouncements: () -> Unit,
     onNavigateToQuickAccess: (QuickAccessEntryUiModel) -> Unit,
@@ -18,6 +19,7 @@ fun HomeRoute(
     viewModel: HomeViewModel = koinViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val onNavigateToSearchUpdated by rememberUpdatedState(onNavigateToSearch)
     val onNavigateToProgrammeUpdated by rememberUpdatedState(onNavigateToProgramme)
     val onNavigateToAnnouncementsUpdated by rememberUpdatedState(onNavigateToAnnouncements)
     val onNavigateToQuickAccessUpdated by rememberUpdatedState(onNavigateToQuickAccess)
@@ -29,6 +31,7 @@ fun HomeRoute(
     LaunchedEffect(Unit) {
         viewModel.labels.collect { label ->
             when (label) {
+                HomeLabel.NavigateToSearch -> onNavigateToSearchUpdated()
                 HomeLabel.NavigateToProgramme -> onNavigateToProgrammeUpdated()
                 HomeLabel.NavigateToAnnouncements -> onNavigateToAnnouncementsUpdated()
                 is HomeLabel.OpenUrl -> uriHandler.openUri(label.url)
@@ -38,6 +41,7 @@ fun HomeRoute(
 
     HomeScreen(
         state = state,
+        onSearchClick = { viewModel.onIntent(HomeIntent.SearchClicked) },
         onHeroClick = { viewModel.onIntent(HomeIntent.HeroClicked) },
         onAnnouncementClick = { url -> viewModel.onIntent(HomeIntent.AnnouncementClicked(url)) },
         onSeeAllAnnouncementsClick = { viewModel.onIntent(HomeIntent.AllAnnouncementsClicked) },

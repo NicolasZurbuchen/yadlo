@@ -1,4 +1,4 @@
-package io.nicolaszurbuchen.yadlo.feature.plus.domain.model
+package io.nicolaszurbuchen.yadlo.common.content.domain.model
 
 /**
  * Which half of the stands is being asked for.

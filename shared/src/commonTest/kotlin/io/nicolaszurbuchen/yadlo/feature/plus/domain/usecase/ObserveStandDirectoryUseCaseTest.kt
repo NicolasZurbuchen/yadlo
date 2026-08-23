@@ -2,7 +2,7 @@ package io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase
 
 import io.nicolaszurbuchen.yadlo.common.content.domain.fake.FakeContentRepository
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.DietaryCoverage
-import io.nicolaszurbuchen.yadlo.feature.plus.domain.model.StandKind
+import io.nicolaszurbuchen.yadlo.common.content.domain.model.StandKind
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test

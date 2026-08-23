@@ -15,6 +15,8 @@ package io.nicolaszurbuchen.yadlo.feature.home.presentation.navigation
  * is the only thing that may know both features exist.
  */
 interface HomeNavigator {
+    fun navigateToSearch()
+
     fun navigateToProgramme()
 
     fun navigateToAnnouncements()

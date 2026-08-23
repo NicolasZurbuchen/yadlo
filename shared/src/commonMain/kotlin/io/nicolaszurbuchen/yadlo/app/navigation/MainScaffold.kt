@@ -6,7 +6,10 @@ import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -39,6 +42,7 @@ import io.nicolaszurbuchen.yadlo.common.content.domain.repository.ContentReposit
 import io.nicolaszurbuchen.yadlo.common.content.domain.usecase.DerivePhaseUseCase
 import io.nicolaszurbuchen.yadlo.common.time.FESTIVAL_TIME_ZONE
 import io.nicolaszurbuchen.yadlo.feature.happening.presentation.navigation.HappeningDestination
+import io.nicolaszurbuchen.yadlo.feature.search.presentation.navigation.SearchDestination
 import io.nicolaszurbuchen.yadlo.infra.navigation.AppNavigator
 import io.nicolaszurbuchen.yadlo.infra.navigation.NavGraph
 import io.nicolaszurbuchen.yadlo.infra.navigation.rememberNavEntries
@@ -50,6 +54,8 @@ import kotlinx.datetime.number
 import kotlinx.datetime.toLocalDateTime
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
+import yadlo.shared.generated.resources.Res
+import yadlo.shared.generated.resources.search_action
 
 /**
  * The tab shell: four independent back stacks, one of which is visible.
@@ -198,6 +204,23 @@ fun MainScaffold(modifier: Modifier = Modifier) {
         }
     val isAtTabRoot = currentStack.size <= 1
 
+    // **The magnifier belongs to the shell, and that is what lets it mean "everything".** This bar
+    // is the same on all four tabs — the festival's name and the edition's dates, never a tab title
+    // — so an action in it inherits that rather than reading as a control over the tab underneath.
+    // The corpus behind it is one index, and the results say so by answering with headings from
+    // places the reader did not come from.
+    //
+    // **Not on Accueil**, which carries the search block itself: an icon and a field on one screen
+    // are two doors to the same room, side by side. The block is the one that teaches the app has a
+    // search, so it wins where they collide, and the icon covers the three tabs that have no room
+    // for a field.
+    //
+    // **No Phase gate, which is a reversal** — DECISIONS.md § Search is enabled all year. Half the
+    // corpus never expires: paiement, horaires, comment venir, devenir bénévole and nous écrire are
+    // live truth rather than an edition, and off season they are the most useful thing in the app.
+    // The other half is last July, which is the edition the bundle holds anyway.
+    val showsSearch = selectedTab != Tab.HOME
+
     // SideEffect, not LaunchedEffect: this has to be true before the frame the user can touch.
     // LaunchedEffect publishes on a coroutine after composition, which leaves a window where the
     // bar has already switched tabs but the navigator still points at the tab being left, so a
@@ -253,6 +276,18 @@ fun MainScaffold(modifier: Modifier = Modifier) {
             YadloTopAppBar(
                 title = ready?.bundle?.festival?.name.orEmpty(),
                 subtitle = ready?.bundle?.edition?.days?.takeUnless { phase == Phase.OFF_SEASON }?.let(::formatEditionDates),
+                actions = {
+                    if (showsSearch) {
+                        // Pushed onto the tab that is showing, like every other detail screen, so
+                        // backing out of a search lands on the tab it was opened from.
+                        IconButton(onClick = { appNavigator.navigateTo(SearchDestination) }) {
+                            Icon(
+                                imageVector = Icons.Outlined.Search,
+                                contentDescription = stringResource(Res.string.search_action),
+                            )
+                        }
+                    }
+                },
                 modifier =
                     Modifier.onSizeChanged { size ->
                         chrome = chrome.copy(top = with(density) { size.height.toDp() })

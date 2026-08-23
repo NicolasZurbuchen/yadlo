@@ -39,6 +39,7 @@ module.exports = {
         'mon-yadlo',
         'happening',
         'plus',
+        'search',
       ],
     ],
     'scope-empty': [0],

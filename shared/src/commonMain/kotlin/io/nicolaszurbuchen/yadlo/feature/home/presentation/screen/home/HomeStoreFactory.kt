@@ -53,6 +53,10 @@ class HomeStoreFactory(
 
         override fun executeIntent(intent: HomeIntent) {
             when (intent) {
+                HomeIntent.SearchClicked -> {
+                    publish(HomeLabel.NavigateToSearch)
+                }
+
                 HomeIntent.HeroClicked -> {
                     // Both heroes land on Programme. Mon Yadlo was the obvious target for the
                     // APPROACHING one until you follow it through: a Plan is built by saving rows

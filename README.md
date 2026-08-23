@@ -68,16 +68,17 @@ shared/
 ├── common/                           # Domain concepts genuinely shared across features
 │   └── error/                        # AppError / AppException
 ├── feature/                          # Vertical slices: data + domain + presentation each
-│   └── {home,programme,monyadlo,plus,happening}/
+│   └── {home,programme,monyadlo,plus,happening,search}/
 └── infra/                            # Reusable plumbing, zero feature knowledge
-    ├── database/  mvi/  navigation/  network/  platform/  ui/
+    ├── database/  image/  mvi/  navigation/  network/  notification/  platform/  text/  time/  ui/
 androidApp/                           # Android application module
 iosApp/                               # iOS application module
 konsistTest/                          # Architecture + coverage enforcement tests
 ```
 
-Planned Yadlo feature slices: `home` (Accueil), `programme`, `monyadlo` (Plan + Wishlist),
-`happening` (the shared fiche template for Artist / Activity / Stand) and `plus`.
+Yadlo feature slices: `home` (Accueil), `programme`, `monyadlo` (Plan + Wishlist),
+`happening` (the shared fiche template for Artist / Activity / Stand), `plus`, and `search`
+(one index over the whole edition, reached from Accueil and from the toolbar).
 
 ---
 
@@ -122,10 +123,10 @@ This project uses **Husky** and **Commitlint** to enforce
 **Format:** `<type>(<scope>): <description>`
 
 - **Types:** `feat`, `fix`, `refactor`, `build`, `chore`, `ci`, `docs`, `perf`, `style`, `test`, `revert`.
-- **Scopes:** `network`, `database`, `content`, `notification`, `di`, `navigation`, `theme`, `common`, `gradle`, `deps`, `home`, `programme`, `mon-yadlo`, `happening`, `plus`.
+- **Scopes:** `network`, `database`, `content`, `notification`, `di`, `navigation`, `theme`, `common`, `gradle`, `deps`, `home`, `programme`, `mon-yadlo`, `happening`, `plus`, `search`.
 - A scope is **required** for `feat`, `fix`, `refactor`, and `build`.
 
-Example: `feat(programme): add day-scoped search`
+Example: `feat(programme): add a category filter to the day list`
 
 > [!IMPORTANT]
 > The scope list lives in three places — `commitlint.config.js`, this README, and

@@ -23,6 +23,7 @@ import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.StandsDest
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.StoryDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.VolunteeringDestination
 import io.nicolaszurbuchen.yadlo.feature.programme.presentation.navigation.ProgrammeDestination
+import io.nicolaszurbuchen.yadlo.feature.search.presentation.navigation.SearchDestination
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
@@ -62,6 +63,7 @@ val navConfig =
                     subclass(AboutDestination::class)
                     subclass(PrivacyDestination::class)
                     subclass(HappeningDestination::class)
+                    subclass(SearchDestination::class)
                 }
             }
     }

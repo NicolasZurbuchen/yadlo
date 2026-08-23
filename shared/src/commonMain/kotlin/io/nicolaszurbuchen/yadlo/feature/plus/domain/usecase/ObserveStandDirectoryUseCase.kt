@@ -2,10 +2,10 @@ package io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase
 
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.ContentStatus
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Happening
+import io.nicolaszurbuchen.yadlo.common.content.domain.model.StandKind
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.dietaryCoverage
 import io.nicolaszurbuchen.yadlo.common.content.domain.repository.ContentRepository
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.model.StandDirectory
-import io.nicolaszurbuchen.yadlo.feature.plus.domain.model.StandKind
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.model.StandListing
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterIsInstance
