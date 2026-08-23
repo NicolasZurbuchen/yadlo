@@ -5,7 +5,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Phone
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -15,6 +19,9 @@ import androidx.compose.ui.unit.dp
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.assistance.EmergencyNumberUiModel
+import org.jetbrains.compose.resources.stringResource
+import yadlo.shared.generated.resources.Res
+import yadlo.shared.generated.resources.assistance_call
 
 /**
  * One emergency number, and the largest thing on its screen after the title.
@@ -34,6 +41,12 @@ import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.assistance.Eme
  * them landed at four different places and read as a ragged edge rather than a list.
  *
  * The whole row is the target, not the number alone: it is read under stress, sometimes one-handed.
+ *
+ * **A handset at the end says the row dials.** The same trailing-mark grammar
+ * [io.nicolaszurbuchen.yadlo.app.design.component.YadloLinkTile] uses everywhere else in Plus, and
+ * these rows were the one tappable list in the app without it — three lines of text that happened
+ * to place a call, with nothing on them saying so until one was tapped. It carries the label a
+ * screen reader needs, because unlike a link tile there is no other word here naming the action.
  */
 @Composable
 fun EmergencyNumberRow(
@@ -63,6 +76,13 @@ fun EmergencyNumberRow(
             color = MaterialTheme.appColors.textSecondary,
             modifier = Modifier.weight(1f),
         )
+
+        Icon(
+            imageVector = Icons.Outlined.Phone,
+            contentDescription = stringResource(Res.string.assistance_call),
+            tint = MaterialTheme.appColors.textTertiary,
+            modifier = Modifier.size(MARK_SIZE),
+        )
     }
 }
 
@@ -74,3 +94,7 @@ private val NUMBER_COLUMN = 46.dp
 // Same device Type.kt uses for the Programme's times, and for the same reason: without it the
 // numerals are proportional and the column they sit in is not a column.
 private const val TABULAR_FIGURES = "tnum"
+
+// The trailing mark a Plus link tile takes, so the two read as the same punctuation rather than as
+// two sizes of icon on one tab.
+private val MARK_SIZE = 20.dp
