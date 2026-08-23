@@ -67,3 +67,6 @@ internal data object NotificationsDestination : PlusDestination
 
 @Serializable
 internal data object PrivacyDestination : PlusDestination
+
+@Serializable
+internal data object ClearDataDestination : PlusDestination

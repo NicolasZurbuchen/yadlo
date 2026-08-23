@@ -15,4 +15,7 @@ interface PlanLocalDataSource {
         kind: String,
         editionId: String,
     )
+
+    /** Every row, of both kinds and every edition. */
+    suspend fun deleteAll()
 }

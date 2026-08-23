@@ -99,6 +99,9 @@ fun PlusState.toUiModel(): PlusUiModel {
             ),
             PlusRowUiModel(entry = PlusEntryUiModel.REPORT, subtitle = null).takeIf { loaded.reportEmail != null },
             PlusRowUiModel(entry = PlusEntryUiModel.PRIVACY, subtitle = null),
+            // Unconditional, like the two app-owned rows above it: what it removes is what this
+            // phone is holding, which exists whether or not the association has published anything.
+            PlusRowUiModel(entry = PlusEntryUiModel.CLEAR_DATA, subtitle = null),
         )
 
     return PlusUiModel(

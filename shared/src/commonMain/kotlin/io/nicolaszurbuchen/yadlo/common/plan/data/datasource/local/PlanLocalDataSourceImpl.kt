@@ -23,4 +23,8 @@ class PlanLocalDataSourceImpl(
             }
         }
     }
+
+    override suspend fun deleteAll() {
+        queries.deleteAll()
+    }
 }

@@ -18,6 +18,10 @@ class FakePlanRepository : PlanRepository {
 
     val toggled: MutableList<SavedItem> = mutableListOf()
 
+    /** How many times the destructive path was taken, which some tests care about on its own. */
+    var cleared: Int = 0
+        private set
+
     override fun observeSaved(): Flow<List<SavedItem>> = saved.asStateFlow()
 
     override suspend fun toggle(item: SavedItem) {
@@ -28,6 +32,12 @@ class FakePlanRepository : PlanRepository {
             } else {
                 saved.value + item
             }
+    }
+
+    /** Really empties, for the same reason [toggle] really toggles. */
+    override suspend fun clear() {
+        cleared++
+        saved.value = emptyList()
     }
 
     fun emitSaved(items: List<SavedItem>) {

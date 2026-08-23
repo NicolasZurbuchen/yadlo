@@ -42,6 +42,8 @@ interface PlusNavigator {
 
     fun navigateToPrivacy()
 
+    fun navigateToClearData()
+
     fun navigateToHappening(happeningId: String)
 
     fun navigateBack()

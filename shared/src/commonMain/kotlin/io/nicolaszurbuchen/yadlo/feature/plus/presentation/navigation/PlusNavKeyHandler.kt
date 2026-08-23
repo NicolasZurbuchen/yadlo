@@ -5,6 +5,7 @@ import androidx.navigation3.runtime.NavKey
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.about.AboutRoute
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.access.AccessRoute
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.assistance.AssistanceRoute
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.cleardata.ClearDataRoute
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.contact.ContactRoute
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.faq.FaqRoute
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.hours.HoursRoute
@@ -51,6 +52,7 @@ class PlusNavKeyHandler(
                         PlusEntryUiModel.NOTIFICATIONS -> navigator.navigateToNotifications()
                         PlusEntryUiModel.ABOUT -> navigator.navigateToAbout()
                         PlusEntryUiModel.PRIVACY -> navigator.navigateToPrivacy()
+                        PlusEntryUiModel.CLEAR_DATA -> navigator.navigateToClearData()
                         PlusEntryUiModel.NEWSLETTER, PlusEntryUiModel.REPORT -> Unit
                     }
                 },
@@ -78,5 +80,6 @@ class PlusNavKeyHandler(
         entry<AboutDestination> { AboutRoute(onNavigateBack = { navigator.navigateBack() }) }
         entry<NotificationsDestination> { NotificationsRoute(onNavigateBack = { navigator.navigateBack() }) }
         entry<PrivacyDestination> { PrivacyRoute(onNavigateBack = { navigator.navigateBack() }) }
+        entry<ClearDataDestination> { ClearDataRoute(onNavigateBack = { navigator.navigateBack() }) }
     }
 }

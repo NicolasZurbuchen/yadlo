@@ -75,6 +75,56 @@ class PlanLocalDataSourceImplTest {
         }
 
     @Test
+    fun deleteAll_removesBothKindsAtOnce() =
+        runTest {
+            dataSource.toggle(id = "2026:dj-alf-fri", kind = "SLOT", editionId = "2026")
+            dataSource.toggle(id = "vegan-fabrik", kind = "STAND", editionId = "2026")
+
+            dataSource.deleteAll()
+
+            assertTrue(dataSource.observeAll().first().isEmpty())
+        }
+
+    @Test
+    fun deleteAll_takesEveryEditionRatherThanTheCurrentOne() =
+        runTest {
+            // *Effacer mes données* is not the Plan lifecycle sweep. It answers "forget what I
+            // kept", which does not mean "forget this year's".
+            dataSource.toggle(id = "2025:old-set", kind = "SLOT", editionId = "2025")
+            dataSource.toggle(id = "2026:dj-alf-fri", kind = "SLOT", editionId = "2026")
+
+            dataSource.deleteAll()
+
+            assertTrue(dataSource.observeAll().first().isEmpty())
+        }
+
+    @Test
+    fun deleteAll_onAnEmptyTable_isAQuietNoOp() =
+        runTest {
+            // The screen disables the button at zero, but the store is reachable from a restored
+            // state and a delete of nothing must not be an error.
+            dataSource.deleteAll()
+
+            assertTrue(dataSource.observeAll().first().isEmpty())
+        }
+
+    @Test
+    fun deleteAll_publishesToAnExistingSubscriber() =
+        runTest {
+            // What makes the count on the screen fall to zero without the screen asking again.
+            dataSource.toggle(id = "vegan-fabrik", kind = "STAND", editionId = "2026")
+
+            dataSource.observeAll().test {
+                assertEquals(listOf("vegan-fabrik"), awaitItem().map { it.id })
+
+                dataSource.deleteAll()
+
+                assertTrue(awaitItem().isEmpty())
+                cancelAndIgnoreRemainingEvents()
+            }
+        }
+
+    @Test
     fun observeAll_whenNothingIsSaved_emitsEmptyRatherThanNeverEmitting() =
         runTest {
             assertEquals(emptyList(), dataSource.observeAll().first())

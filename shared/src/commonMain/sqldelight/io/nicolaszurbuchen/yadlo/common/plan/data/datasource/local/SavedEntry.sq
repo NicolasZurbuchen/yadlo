@@ -28,3 +28,9 @@ VALUES (?, ?, ?);
 
 deleteById:
 DELETE FROM SavedEntry WHERE id = ?;
+
+-- Both kinds at once, because the visitor's two verbs are one table and *Effacer mes données*
+-- offers one answer to "remove what I kept". Nothing here is edition-aware: the row that clears a
+-- previous edition's Plan on its own is DECISIONS.md § Plan lifecycle, which is still open.
+deleteAll:
+DELETE FROM SavedEntry;

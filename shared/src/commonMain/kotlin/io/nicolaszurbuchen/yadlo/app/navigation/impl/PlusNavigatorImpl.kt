@@ -4,6 +4,7 @@ import io.nicolaszurbuchen.yadlo.feature.happening.presentation.navigation.Happe
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.AboutDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.AccessDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.AssistanceDestination
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.ClearDataDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.ContactDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.FaqDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.HoursDestination
@@ -76,6 +77,10 @@ class PlusNavigatorImpl(
 
     override fun navigateToPrivacy() {
         appNavigator.navigateTo(PrivacyDestination)
+    }
+
+    override fun navigateToClearData() {
+        appNavigator.navigateTo(ClearDataDestination)
     }
 
     /**

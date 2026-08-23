@@ -1,5 +1,7 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.di
 
+import io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase.ClearImageCacheUseCase
+import io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase.ClearSavedUseCase
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase.ObserveAssistanceGuideUseCase
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase.ObserveContactRouterUseCase
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase.ObserveFaqUseCase
@@ -8,14 +10,18 @@ import io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase.ObservePartnerTiers
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase.ObservePaymentUseCase
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase.ObservePlusOverviewUseCase
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase.ObserveResponsiblePageUseCase
+import io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase.ObserveSavedCountUseCase
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase.ObserveStandDirectoryUseCase
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase.ObserveStoryPageUseCase
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase.ObserveTransportUseCase
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase.ObserveVolunteeringOfferUseCase
+import io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase.ReadImageCacheSizeUseCase
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.access.AccessStoreFactory
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.access.AccessViewModel
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.assistance.AssistanceStoreFactory
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.assistance.AssistanceViewModel
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.cleardata.ClearDataStoreFactory
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.cleardata.ClearDataViewModel
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.contact.ContactStoreFactory
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.contact.ContactViewModel
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.faq.FaqStoreFactory
@@ -58,6 +64,10 @@ val plusModule =
         factoryOf(::ObserveContactRouterUseCase)
         factoryOf(::ObserveResponsiblePageUseCase)
         factoryOf(::ObserveVolunteeringOfferUseCase)
+        factoryOf(::ObserveSavedCountUseCase)
+        factoryOf(::ClearSavedUseCase)
+        factoryOf(::ReadImageCacheSizeUseCase)
+        factoryOf(::ClearImageCacheUseCase)
 
         factoryOf(::PlusStoreFactory)
         factoryOf(::PaymentStoreFactory)
@@ -71,6 +81,7 @@ val plusModule =
         factoryOf(::VolunteeringStoreFactory)
         factoryOf(::ResponsibleStoreFactory)
         factoryOf(::NotificationsStoreFactory)
+        factoryOf(::ClearDataStoreFactory)
 
         viewModelOf(::PlusViewModel)
         viewModelOf(::PaymentViewModel)
@@ -84,6 +95,7 @@ val plusModule =
         viewModelOf(::VolunteeringViewModel)
         viewModelOf(::ResponsibleViewModel)
         viewModelOf(::NotificationsViewModel)
+        viewModelOf(::ClearDataViewModel)
 
         // Parameterised rather than declared with viewModelOf: which half of the stands is being
         // read arrives from the NavKey, so the kind is a construction parameter rather than a

@@ -25,4 +25,14 @@ class PlanRepositoryImpl(
     override suspend fun toggle(item: SavedItem) {
         localDataSource.toggle(id = item.id, kind = item.kind.name, editionId = item.editionId)
     }
+
+    /**
+     * Rows this build cannot read go too. [observeSaved] drops a row whose kind it has no bucket
+     * for, so filtering here would leave behind exactly the rows the visitor was never shown — and
+     * a delete that quietly keeps the part you could not see is the wrong answer to *effacer mes
+     * données*.
+     */
+    override suspend fun clear() {
+        localDataSource.deleteAll()
+    }
 }
