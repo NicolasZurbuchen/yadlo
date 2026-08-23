@@ -10,6 +10,7 @@ import io.nicolaszurbuchen.yadlo.feature.home.di.homeModule
 import io.nicolaszurbuchen.yadlo.feature.monyadlo.di.monYadloModule
 import io.nicolaszurbuchen.yadlo.feature.plus.di.plusModule
 import io.nicolaszurbuchen.yadlo.feature.programme.di.programmeModule
+import io.nicolaszurbuchen.yadlo.feature.search.di.searchModule
 import io.nicolaszurbuchen.yadlo.infra.database.databaseModule
 import io.nicolaszurbuchen.yadlo.infra.mvi.storeModule
 import io.nicolaszurbuchen.yadlo.infra.navigation.infraNavigationModule
@@ -33,6 +34,7 @@ val appModule =
         programmeModule,
         reminderModule,
         reminderSchedulerModule,
+        searchModule,
         storeModule,
         timeModule,
     )

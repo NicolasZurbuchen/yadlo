@@ -4,6 +4,12 @@ import io.nicolaszurbuchen.yadlo.feature.home.domain.model.HomeContent
 import kotlin.time.Instant
 
 sealed interface HomeIntent {
+    /**
+     * The block is a button dressed as a field, so this is a tap rather than a keystroke — the
+     * typing happens on the search screen, which owns the only query state there is.
+     */
+    data object SearchClicked : HomeIntent
+
     data object HeroClicked : HomeIntent
 
     data class AnnouncementClicked(
@@ -28,6 +34,8 @@ sealed interface HomeIntent {
 }
 
 sealed interface HomeLabel {
+    data object NavigateToSearch : HomeLabel
+
     data object NavigateToProgramme : HomeLabel
 
     data object NavigateToAnnouncements : HomeLabel

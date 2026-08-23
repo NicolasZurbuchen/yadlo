@@ -13,6 +13,7 @@ class HomeNavKeyHandler(
     override fun EntryProviderScope<NavKey>.registerEntries() {
         entry<HomeMainDestination> {
             HomeRoute(
+                onNavigateToSearch = { navigator.navigateToSearch() },
                 onNavigateToProgramme = { navigator.navigateToProgramme() },
                 onNavigateToAnnouncements = { navigator.navigateToAnnouncements() },
                 // Exhaustive over the enum, so a promoted entry added later without a destination

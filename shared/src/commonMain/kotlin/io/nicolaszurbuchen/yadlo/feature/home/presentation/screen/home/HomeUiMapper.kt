@@ -49,11 +49,16 @@ import kotlin.time.Duration.Companion.hours
 /**
  * The block stack, decided per Phase, following the published Accueil prototype.
  *
- * Blocks the prototype shows that are still absent have nowhere to send anyone yet: recherche,
- * revivre l'édition and les réservations. Recherche waits on Slot state; the other two wait on a
- * screen that does not exist — there is no archive of past editions, and nothing in the published
- * content is a booking. S'impliquer, la newsletter, l'histoire and préparer sa venue have arrived,
- * as the tiles of [HomeBlockUiModel.QuickAccess], and the quiet hours as [liveHero].
+ * Blocks the prototype shows that are still absent have nowhere to send anyone yet: revivre
+ * l'édition and les réservations. Both wait on a screen that does not exist — there is no archive
+ * of past editions, and nothing in the published content is a booking. S'impliquer, la newsletter,
+ * l'histoire and préparer sa venue have arrived, as the tiles of [HomeBlockUiModel.QuickAccess],
+ * and the quiet hours as [liveHero].
+ *
+ * **La recherche has arrived too**, as [HomeBlockUiModel.Search] — a button dressed as a field, and
+ * the first block in each of the three phases DECISIONS.md gives it. The three tabs that are not
+ * Accueil reach the same screen through the magnifier in the shell's toolbar; here it is a block,
+ * because this is the screen with room to teach that the app has a search at all.
  *
  * The phases they belong to are where they go; the ordering below is not a suggestion, it is the
  * prototype's.
@@ -342,20 +347,30 @@ fun HomeState.toUiModel(): HomeUiModel {
             // APPROACHING, which is the prototype's ordering and follows from what each is for:
             // in June the annonces are the news and these are the sidelines, while at J-3 they are
             // the errand and the annonces are the news about it.
-            PhaseUiModel.OFF_SEASON -> listOfNotNull(countdown, announcements, quickAccess, social)
+            PhaseUiModel.OFF_SEASON -> {
+                listOfNotNull(countdown, announcements, quickAccess, social)
+            }
 
-            PhaseUiModel.ANNOUNCED -> listOfNotNull(countdown, hero, announcements, quickAccess, social)
+            PhaseUiModel.ANNOUNCED -> {
+                listOfNotNull(HomeBlockUiModel.Search, countdown, hero, announcements, quickAccess, social)
+            }
 
             // No networks in this one phase, and that is the prototype's call rather than an
             // omission: it is the only phase with something to do, and it ends on the annonces
             // instead of offering a way off the app three days before the gates open.
-            PhaseUiModel.APPROACHING -> listOfNotNull(countdown, hero, quickAccess, announcements)
+            PhaseUiModel.APPROACHING -> {
+                listOfNotNull(HomeBlockUiModel.Search, countdown, hero, quickAccess, announcements)
+            }
 
             // The hero leads, because during the festival the first question is whether the site
             // is open at all, and the annonces underneath are the answer to a different one.
-            PhaseUiModel.LIVE -> listOfNotNull(liveHero, announcements, social)
+            PhaseUiModel.LIVE -> {
+                listOfNotNull(HomeBlockUiModel.Search, liveHero, announcements, social)
+            }
 
-            PhaseUiModel.ENDED -> listOfNotNull(thankYou, figures, announcements, quickAccess, social)
+            PhaseUiModel.ENDED -> {
+                listOfNotNull(thankYou, figures, announcements, quickAccess, social)
+            }
         }
 
     return HomeUiModel(isLoading = false, blocks = blocks)

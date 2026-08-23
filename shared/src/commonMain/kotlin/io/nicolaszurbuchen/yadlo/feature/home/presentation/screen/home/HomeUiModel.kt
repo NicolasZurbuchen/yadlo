@@ -18,6 +18,20 @@ data class HomeUiModel(
 
 sealed interface HomeBlockUiModel {
     /**
+     * The field you cannot type into — see
+     * [io.nicolaszurbuchen.yadlo.app.design.component.YadloSearchField], which draws this and the
+     * real one so a reader meets the second already knowing what it is.
+     *
+     * **It carries nothing, which is why it is an object.** The placeholder is the app’s own
+     * words and the scope it states is fixed, so there is no content that could change what this
+     * block says.
+     *
+     * First in the three phases that have it, above even the countdown: it is the one thing on
+     * Accueil answering a question the reader arrived with rather than one the screen is offering.
+     */
+    data object Search : HomeBlockUiModel
+
+    /**
      * A day count, not a clock. The prototype is unambiguous — one large `J-19` — and it is the
      * right unit: nobody plans around the seconds until a festival nineteen days away.
      */

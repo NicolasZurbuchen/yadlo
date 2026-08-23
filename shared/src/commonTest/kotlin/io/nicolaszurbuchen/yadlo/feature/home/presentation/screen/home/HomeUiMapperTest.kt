@@ -51,10 +51,13 @@ class HomeUiMapperTest {
     }
 
     @Test
-    fun toUiModel_announced_stacksCountdownThenHeroThenAnnoncesThenQuickAccessThenLesReseaux() {
+    fun toUiModel_announced_stacksRechercheThenCountdownThenHeroThenAnnoncesThenQuickAccessThenLesReseaux() {
         val state = state(phase = PhaseUiModel.ANNOUNCED, now = THREE_DAYS_BEFORE)
 
-        assertEquals(listOf("Countdown", "Hero", "Announcements", "QuickAccess", "Social"), state.toUiModel().blockNames())
+        assertEquals(
+            listOf("Search", "Countdown", "Hero", "Announcements", "QuickAccess", "Social"),
+            state.toUiModel().blockNames(),
+        )
     }
 
     @Test
@@ -63,14 +66,50 @@ class HomeUiMapperTest {
         // three days out is the only moment the screen has something for the reader to do.
         val state = state(phase = PhaseUiModel.APPROACHING, now = THREE_DAYS_BEFORE)
 
-        assertEquals(listOf("Countdown", "Hero", "QuickAccess", "Announcements"), state.toUiModel().blockNames())
+        assertEquals(
+            listOf("Search", "Countdown", "Hero", "QuickAccess", "Announcements"),
+            state.toUiModel().blockNames(),
+        )
     }
 
     @Test
-    fun toUiModel_live_isDeliberatelyThinAndCarriesOnlyAnnoncesAndLesReseaux() {
+    fun toUiModel_live_isDeliberatelyThinAndCarriesOnlyRechercheAnnoncesAndLesReseaux() {
         val state = state(phase = PhaseUiModel.LIVE, now = DURING)
 
-        assertEquals(listOf("Announcements", "Social"), state.toUiModel().blockNames())
+        assertEquals(listOf("Search", "Announcements", "Social"), state.toUiModel().blockNames())
+    }
+
+    @Test
+    fun toUiModel_search_appearsOnlyInThePhasesWithSomethingToSearch() {
+        // Between editions there is nothing to find but last year’s archive, and the countdown
+        // deserves the top of the screen more than an empty search box does.
+        val phases =
+            listOf(
+                PhaseUiModel.OFF_SEASON,
+                PhaseUiModel.ANNOUNCED,
+                PhaseUiModel.APPROACHING,
+                PhaseUiModel.LIVE,
+                PhaseUiModel.ENDED,
+            )
+
+        val withSearch =
+            phases.filter { phase ->
+                state(phase = phase, now = THREE_DAYS_BEFORE).toUiModel().blocks.contains(HomeBlockUiModel.Search)
+            }
+
+        assertEquals(
+            listOf(PhaseUiModel.ANNOUNCED, PhaseUiModel.APPROACHING, PhaseUiModel.LIVE),
+            withSearch,
+        )
+    }
+
+    @Test
+    fun toUiModel_search_leadsEveryStackItIsIn() {
+        // It is the one block answering a question the reader arrived with rather than one the
+        // screen is offering them, so nothing goes above it — not even the countdown.
+        listOf(PhaseUiModel.ANNOUNCED, PhaseUiModel.APPROACHING, PhaseUiModel.LIVE).forEach { phase ->
+            assertEquals("Search", state(phase = phase, now = THREE_DAYS_BEFORE).toUiModel().blockNames().first())
+        }
     }
 
     @Test
@@ -233,7 +272,7 @@ class HomeUiMapperTest {
                 announcements = listOf(announcement("vieille", PUBLISHED_EARLY)),
             )
 
-        assertEquals(listOf("Social"), state.toUiModel().blockNames())
+        assertEquals(listOf("Search", "Social"), state.toUiModel().blockNames())
     }
 
     // endregion
@@ -369,14 +408,14 @@ class HomeUiMapperTest {
     fun toUiModel_live_leadsWithTheHeroAndKeepsTheAnnoncesUnderIt() {
         val state = state(phase = PhaseUiModel.LIVE, now = DURING, siteMoment = SiteMomentUiModel.Finished)
 
-        assertEquals(listOf("Hero", "Announcements", "Social"), state.toUiModel().blockNames())
+        assertEquals(listOf("Search", "Hero", "Announcements", "Social"), state.toUiModel().blockNames())
     }
 
     @Test
     fun toUiModel_liveWithNoDaysPublished_drawsNoHeroRatherThanAnEmptyOne() {
         val state = state(phase = PhaseUiModel.LIVE, now = DURING, siteMoment = null)
 
-        assertEquals(listOf("Announcements", "Social"), state.toUiModel().blockNames())
+        assertEquals(listOf("Search", "Announcements", "Social"), state.toUiModel().blockNames())
     }
 
     @Test

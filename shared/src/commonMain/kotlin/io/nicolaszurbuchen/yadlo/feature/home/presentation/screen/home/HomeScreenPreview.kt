@@ -280,6 +280,7 @@ private fun HomeScreenLightPreview(
         HomePreviewSurface {
             HomeScreen(
                 state = state,
+                onSearchClick = {},
                 onHeroClick = {},
                 onAnnouncementClick = {},
                 onSeeAllAnnouncementsClick = {},
@@ -299,6 +300,7 @@ private fun HomeScreenDarkPreview(
         HomePreviewSurface {
             HomeScreen(
                 state = state,
+                onSearchClick = {},
                 onHeroClick = {},
                 onAnnouncementClick = {},
                 onSeeAllAnnouncementsClick = {},
