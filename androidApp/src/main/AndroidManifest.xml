@@ -29,9 +29,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@android:style/Theme.Material.Light.NoActionBar">
+        <!--
+            Portrait only. Every screen in the app is a single scrolling column measured against a
+            phone held upright, and nothing here gains a second pane in landscape — a wider Programme
+            row is the same row with more empty middle. `portrait` rather than `sensorPortrait`, so
+            a phone lying flat on a table cannot flip the app upside down.
+
+            Note this is a request, not a guarantee: from Android 16 the system ignores orientation
+            restrictions on displays 600dp and wider, which this app targets. A tablet or an unfolded
+            foldable will therefore rotate, and the layouts hold there because they are all one
+            column — this stops a phone rotating, which is what it is for.
+        -->
         <activity
             android:exported="true"
-            android:name=".MainActivity">
+            android:name=".MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

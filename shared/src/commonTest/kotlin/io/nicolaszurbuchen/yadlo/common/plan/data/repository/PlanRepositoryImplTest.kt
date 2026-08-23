@@ -82,12 +82,26 @@ class PlanRepositoryImplTest {
 
             assertEquals(listOf(Triple("vegan-fabrik", "STAND", "2026")), local.toggled)
         }
+
+    @Test
+    fun clear_goesStraightToTheTableRatherThanRemovingWhatItCanRead() =
+        runTest {
+            // The read drops a row whose kind this build has no bucket for, so a clear built out of
+            // reads would leave behind exactly the rows the visitor was never shown. `deleteAll` is
+            // one statement over the table, and that is the point of it.
+            repository.clear()
+
+            assertEquals(1, local.deletedAll)
+        }
 }
 
 private class StubPlanLocal : PlanLocalDataSource {
     private val rows = MutableStateFlow<List<SavedEntry>>(emptyList())
 
     val toggled: MutableList<Triple<String, String, String>> = mutableListOf()
+
+    var deletedAll: Int = 0
+        private set
 
     override fun observeAll(): Flow<List<SavedEntry>> = rows.asStateFlow()
 
@@ -97,6 +111,11 @@ private class StubPlanLocal : PlanLocalDataSource {
         editionId: String,
     ) {
         toggled += Triple(id, kind, editionId)
+    }
+
+    override suspend fun deleteAll() {
+        deletedAll++
+        rows.value = emptyList()
     }
 
     fun emit(value: List<SavedEntry>) {

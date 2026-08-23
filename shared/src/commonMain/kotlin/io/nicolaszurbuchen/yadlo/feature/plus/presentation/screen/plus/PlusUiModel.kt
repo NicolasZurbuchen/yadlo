@@ -4,6 +4,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.HelpOutline
 import androidx.compose.material.icons.automirrored.outlined.Send
 import androidx.compose.material.icons.outlined.CreditCard
+import androidx.compose.material.icons.outlined.DeleteOutline
 import androidx.compose.material.icons.outlined.DirectionsBus
 import androidx.compose.material.icons.outlined.Flag
 import androidx.compose.material.icons.outlined.Groups
@@ -27,6 +28,7 @@ import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.plus_entry_about
 import yadlo.shared.generated.resources.plus_entry_access
 import yadlo.shared.generated.resources.plus_entry_assistance
+import yadlo.shared.generated.resources.plus_entry_clear_data
 import yadlo.shared.generated.resources.plus_entry_contact
 import yadlo.shared.generated.resources.plus_entry_faq
 import yadlo.shared.generated.resources.plus_entry_hours
@@ -122,6 +124,17 @@ enum class PlusEntryUiModel(
     ABOUT(Res.string.plus_entry_about, Icons.Outlined.Info),
     REPORT(Res.string.plus_entry_report, Icons.Outlined.Flag, YadloLinkMarkUiModel.MAIL),
     PRIVACY(Res.string.plus_entry_privacy, Icons.Outlined.Lock),
+
+    /**
+     * *Effacer mes données* — the one row on this tab that writes, and the only destructive control
+     * in the app.
+     *
+     * **Last, and under *Confidentialité* on purpose.** It is the answer to the question that
+     * screen raises: it says the app keeps nothing but what you kept, and this is where you take
+     * that back. Placed above it, beside *Notifications*, it would read as a preference, which is
+     * the one thing it is not.
+     */
+    CLEAR_DATA(Res.string.plus_entry_clear_data, Icons.Outlined.DeleteOutline),
 }
 
 data class PlusGroupUiModel(

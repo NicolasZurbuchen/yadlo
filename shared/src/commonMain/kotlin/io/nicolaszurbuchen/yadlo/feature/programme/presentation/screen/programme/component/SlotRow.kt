@@ -61,6 +61,11 @@ import io.nicolaszurbuchen.yadlo.infra.ui.asString
  * because three ranges do not fit on one line at the largest text sizes and wrapping is the right
  * way for that to fail.
  *
+ * **The bar dims the same hour at the same moment**, which it did not: the 14:00 greyed out in the
+ * text while the mark standing for it kept full colour, so the row answered "which of these has
+ * gone" one way in words and another way in the picture — and the picture is the half that is read
+ * at a glance.
+ *
  * Past rows dim and stay — bar included — and a row is past only when every hour on it is. By 21:00
  * on the Saturday that is most of the list, and that is accepted: reading what has already happened
  * is part of reading the day you are in.
@@ -179,7 +184,10 @@ fun SlotRow(
                 }
             }
 
-            SlotTimeBar(segments = row.slots, categoryFill = category.fill)
+            // Per segment, and only while the row itself is not already dimmed — the same rule the
+            // times above follow, so a bar and the line over it never disagree about which of the
+            // three hours has gone.
+            SlotTimeBar(segments = row.slots, categoryFill = category.fill, dimsPastSegments = !isOver)
         }
 
         // The row already opens the fiche; the chevron says so before it is tapped. Every other list

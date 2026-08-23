@@ -10,6 +10,7 @@ import io.nicolaszurbuchen.yadlo.feature.monyadlo.presentation.navigation.Wishli
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.AboutDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.AccessDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.AssistanceDestination
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.ClearDataDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.ContactDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.FaqDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.HoursDestination
@@ -62,6 +63,7 @@ val navConfig =
                     subclass(NotificationsDestination::class)
                     subclass(AboutDestination::class)
                     subclass(PrivacyDestination::class)
+                    subclass(ClearDataDestination::class)
                     subclass(HappeningDestination::class)
                     subclass(SearchDestination::class)
                 }

@@ -22,4 +22,15 @@ interface PlanRepository {
      * about which of the two it is asking for.
      */
     suspend fun toggle(item: SavedItem)
+
+    /**
+     * Forgets everything, of both kinds. The one destructive operation in the app, and the reason
+     * *Effacer mes données* could not be built until now.
+     *
+     * There is nothing to undo it with, which is a property of the design rather than an omission:
+     * the Plan is ids in a local table and nothing leaves the device, so a copy kept for an undo
+     * would be the same data under another name (SPEC.md § Confidentialité). The screen that calls
+     * this asks first instead.
+     */
+    suspend fun clear()
 }

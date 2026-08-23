@@ -633,11 +633,11 @@ user situation, not by tidiness. Most remaining entries share one text-page temp
 >
 > **Two rows of the prototype are deliberately absent.** *Plan du site* has no content at all —
 > only a parking PDF exists and the booth map has to be drawn. *Langue* would open a picker with one
-> language in it. *Notifications* is now built — one switch over the reminders. A row that opens
-> nothing is worse than no row. **Two more are outside this pass**:
-> *Éditions précédentes* needs the on-demand third file, the only non-offline feature in the app;
-> *Effacer mes données* needs a repository capability that does not exist yet and is the one row
-> that writes.
+> language in it. A row that opens nothing is worse than no row. *Notifications* is now built — one
+> switch over the reminders — and so is *Effacer mes données*, the one row that writes: two counted
+> things and a button against each, with a confirmation on the half that cannot be undone. **One
+> more is outside this pass**: *Éditions précédentes* needs the on-demand third file, the only
+> non-offline feature in the app.
 
 **Partenaires** — logos grouped by tier. **Tapping a logo opens that partner's site in the
 browser; a partner with no URL shows a toast saying it has none.** Five of the 39 have no website —

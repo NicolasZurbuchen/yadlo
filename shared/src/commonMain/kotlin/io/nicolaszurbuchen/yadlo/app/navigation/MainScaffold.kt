@@ -14,6 +14,7 @@ import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -353,13 +354,33 @@ internal fun formatEditionDates(days: List<FestivalDay>): String? {
     }
 }
 
+/**
+ * **The same blue as the bar at the top, which is what makes the two read as one frame.** It was
+ * Material's own `surfaceContainer` — a near-white in light and a near-black in dark — so the app
+ * had a coloured band above the page and a neutral one below it, and the ground the tabs are drawn
+ * on ran out at a different place from the chrome that holds them.
+ *
+ * **The accent stays, and it had to change step to survive the move.** The selected tab keeps its
+ * rose pill; what it cannot keep is `accentSubtle`, which is chosen against a page ground and
+ * measures 1.34:1 on the dark bandeau blue — an indicator that is simply not there. See
+ * [io.nicolaszurbuchen.yadlo.app.design.theme.AppColors.accentChrome], which is the same accent at
+ * the step each theme's bar can actually carry.
+ *
+ * Everything not in the pill takes the bar's own ink, selected and unselected alike, exactly as the
+ * top bar does with its title and its actions. The pill is the selection cue; a second one in the
+ * label would only be legible to someone comparing two labels, which is not how a tab bar is read.
+ */
 @Composable
 private fun MainNavigationBar(
     selectedTab: Tab,
     onTabClick: (Tab) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    NavigationBar(modifier = modifier) {
+    NavigationBar(
+        containerColor = MaterialTheme.appColors.primarySubtle,
+        contentColor = MaterialTheme.appColors.onPrimarySubtle,
+        modifier = modifier,
+    ) {
         Tab.entries.forEach { tab ->
             val isSelected = tab == selectedTab
             NavigationBarItem(
@@ -372,6 +393,14 @@ private fun MainNavigationBar(
                     )
                 },
                 label = { Text(text = stringResource(tab.label)) },
+                colors =
+                    NavigationBarItemDefaults.colors(
+                        selectedIconColor = MaterialTheme.appColors.onAccentChrome,
+                        selectedTextColor = MaterialTheme.appColors.onPrimarySubtle,
+                        indicatorColor = MaterialTheme.appColors.accentChrome,
+                        unselectedIconColor = MaterialTheme.appColors.onPrimarySubtle,
+                        unselectedTextColor = MaterialTheme.appColors.onPrimarySubtle,
+                    ),
             )
         }
     }

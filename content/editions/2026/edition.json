@@ -2696,7 +2696,7 @@
           "name": "MBC — Transports de la région Morges-Bière-Cossonay",
           "url": "https://www.mbc.ch/",
           "logo": {
-            "src": "shared/logos/mbc.svg",
+            "src": "shared/logos/mbc.webp",
             "credit": null
           }
         }
@@ -2980,7 +2980,7 @@
           "name": "Commune de Préverenges",
           "url": "https://www.preverenges.ch/",
           "logo": {
-            "src": "shared/logos/preverenges.svg",
+            "src": "shared/logos/preverenges.webp",
             "credit": null
           }
         },
@@ -2989,7 +2989,7 @@
           "name": "Morges Région Slow Tourisme",
           "url": "https://www.morges-tourisme.ch/",
           "logo": {
-            "src": "shared/logos/morges-region.svg",
+            "src": "shared/logos/morges-region.webp",
             "credit": null
           }
         }

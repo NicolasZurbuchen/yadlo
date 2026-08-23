@@ -30,6 +30,23 @@ class AppColorTest {
             assertMeetsAa(colors.onLive, colors.live, "$theme: onLive")
             assertMeetsAa(colors.onWarning, colors.warning, "$theme: onWarning")
             assertMeetsAa(colors.onUrgent, colors.urgent, "$theme: onUrgent")
+            assertMeetsAa(colors.onAccentChrome, colors.accentChrome, "$theme: onAccentChrome")
+        }
+    }
+
+    @Test
+    fun accentChrome_meetsTheNonTextFloorAgainstTheBarItIsDrawnOn() {
+        // The whole reason this pair exists. `accentSubtle` is 1.34:1 on the dark bandeau blue and
+        // `accent` is 1.16:1 on the light one — a selected-tab pill nobody can see, in one theme or
+        // the other. Held to the non-text floor because a pill is a shape rather than a word; what
+        // has to clear the text bar is the icon inside it, which the assertion above covers.
+        listOf(LightAppColors to "light", DarkAppColors to "dark").forEach { (colors, theme) ->
+            val ratio = contrastRatio(colors.accentChrome, colors.primarySubtle)
+
+            assertTrue(
+                ratio >= WCAG_AA_NON_TEXT,
+                "$theme: accentChrome on primarySubtle is ${ratio.format()}:1, below $WCAG_AA_NON_TEXT:1",
+            )
         }
     }
 

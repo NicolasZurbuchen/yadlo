@@ -62,6 +62,23 @@ data class AppColors(
      */
     val accentInk: Color,
     /**
+     * The accent as a fill **on the chrome's blue** — the selected tab's pill, and so far only that.
+     *
+     * A pair of its own for the same reason [accentInk] is one: [accent] and [accentSubtle] are
+     * chosen against the page grounds, and the bar is neither of them. Measured on
+     * [primarySubtle]: `accentSubtle` lands at 1.95:1 in light and **1.34:1 in dark**, which is a
+     * selected-tab indicator that cannot be seen at all; `accent` itself is 1.16:1 in light, the
+     * same luminance as the bar in a different hue, so the shape survives colour and vanishes in
+     * greyscale.
+     *
+     * It swaps ends with the theme like every other pair here, and for the ordinary reason: the two
+     * bars sit at opposite ends of the ramp, so the step that clears one cannot clear the other.
+     * The ink follows the step rather than the theme — white on the deep light-mode pill, near-black
+     * on the vivid dark-mode one.
+     */
+    val accentChrome: Color,
+    val onAccentChrome: Color,
+    /**
      * A Slot running now — the filled `en cours` pill on a Programme or Mon Yadlo row.
      *
      * A role of its own rather than [primary] because the two appear on the same row and mean
@@ -148,6 +165,11 @@ val LightAppColors =
         accentSubtle = RosePalette.rose100,
         onAccentSubtle = RosePalette.rose900,
         accentInk = RosePalette.rose700,
+        // The same step accentInk takes, arrived at from the other direction: on skyBlue400 it is
+        // the first one deep enough to be a shape at 3.45:1, and it carries white at 8.16:1 — the
+        // one place in the light theme where the accent takes white rather than the navy `onAccent`.
+        accentChrome = RosePalette.rose700,
+        onAccentChrome = Color.White,
         // Two steps darker than the `terre` anchor, not the anchor itself: a filled pill has to
         // carry white, and emerald600 is a category fill chosen to sit beside four other hues
         // rather than to be written on.
@@ -195,6 +217,11 @@ val DarkAppColors =
         // The ramp swaps ends in dark, like every other pair here: rose700 is invisible on a dark
         // ground, and rose400 — the accent itself — lands just under 4.5:1 on the raised one.
         accentInk = RosePalette.rose300,
+        // The anchor itself, which the dark bar is deep enough to carry: rose400 is 3.76:1 on
+        // skyBlue900 and takes the theme's own `onAccent` at 7.48:1. The one role whose dark half
+        // is the accent unmodified.
+        accentChrome = RosePalette.rose400,
+        onAccentChrome = SlatePalette.slate950,
         // Both swap ends in dark for the same reason the blue does: the light steps are too deep to
         // read as anything against a dark ground, whether they are being written on or written in.
         live = EmeraldPalette.emerald400,

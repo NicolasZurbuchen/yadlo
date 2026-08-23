@@ -137,6 +137,7 @@
     <string name="plus_entry_about">À propos de cette app</string>
     <string name="plus_entry_report">Signaler une information</string>
     <string name="plus_entry_privacy">Confidentialité</string>
+    <string name="plus_entry_clear_data">Effacer mes données</string>
     <string name="plus_stands_count">%1$s stands</string>
     <string name="plus_payment_no_cash">Pas d'espèces</string>
     <string name="plus_assistance_subtitle">Urgences et objets trouvés</string>
@@ -182,6 +183,7 @@
     <string name="stands_filter_all">Tout</string>
     <string name="stands_no_match">Aucun stand ne porte cette mention.</string>
     <string name="stands_empty">Les stands ne sont pas encore publiés.</string>
+    <string name="stands_card_options">Options :</string>
 
     <string name="dietary_mark_vegan">Végan</string>
     <string name="dietary_mark_vegetarian">Végétarien</string>
@@ -223,6 +225,7 @@
     <string name="assistance_section_lost">Objets trouvés</string>
     <string name="assistance_lost_body">Pendant le festival, au poste de secours. Après, écrivez-nous.</string>
     <string name="assistance_empty">Les numéros ne sont pas encore publiés.</string>
+    <string name="assistance_call">Appeler</string>
 
     <string name="faq_title">Questions fréquentes</string>
     <string name="faq_empty">Aucune question n'a encore été publiée.</string>
@@ -251,6 +254,31 @@
     <string name="notifications_switch_label">Recevoir les rappels</string>
     <string name="notifications_blocked_body">Ton téléphone bloque les notifications de Yadlo. Autorise-les dans les réglages pour recevoir tes rappels.</string>
     <string name="notifications_blocked_action">Ouvrir les réglages</string>
+
+    <!-- Effacer mes données. The Plan half is deliberately never called "favoris" — CONTEXT.md
+         rules the word out for both verbs, and this is the screen where naming them precisely
+         matters most. -->
+    <string name="clear_data_body">Yadlo garde deux choses sur ce téléphone, et rien ailleurs : ce que tu as enregistré, et les photos qu'il a téléchargées. Tu peux effacer l'une ou l'autre ici.</string>
+    <string name="clear_data_saved_title">Mon programme et mes envies</string>
+    <string name="clear_data_saved_body">Les créneaux et les stands que tu as gardés. C'est définitif : rien n'est sauvegardé ailleurs, donc rien ne peut être récupéré.</string>
+    <string name="clear_data_saved_empty">Rien d'enregistré</string>
+    <!-- Two strings rather than one with a (s), because French puts 1 in the singular. Each half is
+         shown only when it is non-zero, so neither ever has to say "0". -->
+    <string name="clear_data_saved_slots_one">%1$s créneau</string>
+    <string name="clear_data_saved_slots_other">%1$s créneaux</string>
+    <string name="clear_data_saved_stands_one">%1$s stand</string>
+    <string name="clear_data_saved_stands_other">%1$s stands</string>
+    <string name="clear_data_saved_action">Effacer</string>
+    <string name="clear_data_images_title">Images téléchargées</string>
+    <string name="clear_data_images_body">Les photos des artistes, des activités et des stands, gardées pour que l'application fonctionne sans réseau. Elles reviendront à la prochaine connexion.</string>
+    <string name="clear_data_images_empty">Aucune image téléchargée</string>
+    <string name="clear_data_images_kilobytes">%1$s Ko</string>
+    <string name="clear_data_images_megabytes">%1$s Mo</string>
+    <string name="clear_data_images_action">Vider</string>
+    <string name="clear_data_confirm_title">Tout effacer ?</string>
+    <string name="clear_data_confirm_body">Tes créneaux et tes stands seront supprimés de ce téléphone. Il n'y a pas de retour en arrière.</string>
+    <string name="clear_data_confirm_confirm">Effacer</string>
+    <string name="clear_data_confirm_cancel">Annuler</string>
 
     <string name="notification_channel_name">Rappels</string>
     <string name="notification_channel_description">Un rappel avant chaque créneau enregistré, et les grandes dates de l'édition.</string>

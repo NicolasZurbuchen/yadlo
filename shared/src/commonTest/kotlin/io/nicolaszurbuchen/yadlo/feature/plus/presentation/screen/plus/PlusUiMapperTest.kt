@@ -77,6 +77,7 @@ class PlusUiMapperTest {
                 PlusEntryUiModel.ABOUT,
                 PlusEntryUiModel.REPORT,
                 PlusEntryUiModel.PRIVACY,
+                PlusEntryUiModel.CLEAR_DATA,
             ),
             rowsOf(PlusGroupIdUiModel.APP, published()),
         )
@@ -118,11 +119,17 @@ class PlusUiMapperTest {
 
     @Test
     fun toUiModel_theAppGroup_standsWithNoContentAtAll() {
-        // Notifications, À propos and Confidentialité are the app's own words, not the festival's.
-        // They are the one part of this tab that cannot go missing when a publish does — and
-        // Notifications least of all, since it is the only row here that changes what the app does.
+        // Notifications, À propos, Confidentialité and Effacer mes données are the app's own words,
+        // not the festival's. They are the one part of this tab that cannot go missing when a
+        // publish does — and the first and last least of all, since those are the two rows here
+        // that change something rather than describing it.
         assertEquals(
-            listOf(PlusEntryUiModel.NOTIFICATIONS, PlusEntryUiModel.ABOUT, PlusEntryUiModel.PRIVACY),
+            listOf(
+                PlusEntryUiModel.NOTIFICATIONS,
+                PlusEntryUiModel.ABOUT,
+                PlusEntryUiModel.PRIVACY,
+                PlusEntryUiModel.CLEAR_DATA,
+            ),
             rowsOf(PlusGroupIdUiModel.APP, nothing()),
         )
     }
