@@ -142,9 +142,9 @@ private class ProgrammeStateProvider : PreviewParameterProvider<ProgrammeUiModel
                 label = UiText.Resource(Res.string.programme_scope_all),
                 isSelected = selected is ProgrammeScopeUiModel.AllDays,
             ),
-            day(id = "2026:fri", name = "Vendredi", selected = selected),
-            day(id = "2026:sat", name = "Samedi", selected = selected),
-            day(id = "2026:sun", name = "Dimanche", selected = selected),
+            day(id = "2026:fri", name = "Ven", selected = selected),
+            day(id = "2026:sat", name = "Sam", selected = selected),
+            day(id = "2026:sun", name = "Dim", selected = selected),
         )
 
     private fun day(

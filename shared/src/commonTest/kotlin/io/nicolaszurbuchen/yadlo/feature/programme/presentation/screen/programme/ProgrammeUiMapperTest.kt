@@ -93,13 +93,13 @@ class ProgrammeUiMapperTest {
     }
 
     @Test
-    fun toUiModel_dayLabels_comeOutOfTheContentRatherThanFromAWeekday() {
-        // So a day the association calls something else keeps its name, and nothing here has to
-        // translate one.
+    fun toUiModel_dayLabels_comeOutOfTheContentAndAreShortenedToFitTheRow() {
+        // The name is the content's, so a day the association calls something else keeps it and
+        // nothing here has to translate a weekday. Three letters because the row holds five chips.
         val model = state(selectedDayId = "2026:sat").toUiModel()
 
         assertEquals(
-            listOf("Vendredi", "Samedi"),
+            listOf("Ven", "Sam"),
             model.scopes.mapNotNull { (it.label as? UiText.Raw)?.value },
         )
     }

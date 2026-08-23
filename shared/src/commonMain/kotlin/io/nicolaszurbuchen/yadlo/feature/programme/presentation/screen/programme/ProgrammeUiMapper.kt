@@ -87,9 +87,12 @@ fun ProgrammeState.toUiModel(): ProgrammeUiModel {
             loaded.days.map { day ->
                 ScopeChipUiModel(
                     scope = ProgrammeScopeUiModel.Day(day.id),
-                    // Out of the content, so a day the association calls something else keeps its
-                    // name and nothing here has to translate a weekday.
-                    label = UiText.Raw(day.name),
+                    // Out of the content, so a day the association calls something else keeps
+                    // its name and nothing here has to translate a weekday — shortened to fit five
+                    // chips on one row. Ven, Sam, Dim, which is how a French weekday is abbreviated
+                    // anyway; the full name survives everywhere it has room, including Mon Yadlo's
+                    // rail, where *le samedi* is what people think in.
+                    label = UiText.Raw(day.name.take(DAY_ABBREVIATION_LENGTH)),
                     isSelected = scope is ProgrammeScopeUiModel.Day && scope.id == day.id,
                 )
             }
@@ -306,3 +309,13 @@ fun ProgrammeState.toUiModel(): ProgrammeUiModel {
         emptyMessage = if (sections.isEmpty()) UiText.Resource(Res.string.programme_empty_filter) else null,
     )
 }
+
+/**
+ * Three, because that is the length of every French weekday abbreviation and the row has five
+ * chips to fit — four once the edition adds a day.
+ *
+ * A truncation rather than an authored short name: the content publishes one name per day and a
+ * second one would be a field to keep in sync for a gain of three characters. It does assume the
+ * name is a weekday, which every edition since 2015 has published.
+ */
+private const val DAY_ABBREVIATION_LENGTH = 3
