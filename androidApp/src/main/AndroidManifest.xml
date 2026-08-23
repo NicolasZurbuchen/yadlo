@@ -19,6 +19,13 @@
     -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
+    <!--
+        Android keeps no record of an alarm across a restart, so without this a Slot hearted on the
+        Thursday loses its reminder to a phone restarted on the Friday. Normal permission, granted at
+        install; see BootReceiver for what it does with it.
+    -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
     <application
         android:name=".YadloApplication"
         android:allowBackup="false"
@@ -46,6 +53,20 @@
         <receiver
             android:name="io.nicolaszurbuchen.yadlo.infra.notification.ReminderReceiver"
             android:exported="false" />
+
+        <!--
+            Exported, unlike the one above, because the sender is the system and a manifest receiver
+            has to be visible to it. Safe to open: BOOT_COMPLETED is a protected broadcast, so no
+            other app on the device can send it.
+        -->
+        <receiver
+            android:name=".BootReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
