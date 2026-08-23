@@ -666,11 +666,9 @@ parameterised screen rather than a folder of near-identical ones. It is delibera
 language: a section is a heading, a paragraph and some links, and an entry needing more has earned
 its own screen. Horaires and Paiement both did.
 
-**Three rows of the prototype are not built, and the reason is the same each time**: a row that
+**Two rows of the prototype are not built, and the reason is the same each time**: a row that
 opens nothing is worse than no row. *Plan du site* has no content at all — only a parking PDF
-exists. *Langue* would open a picker with one language in it. *Notifications* now has something to
-show — the reminders are built — but no way to store an answer; it is waiting on the same
-preferences store as *Effacer mes données*, and until then the OS settings are the switch. Two more are outside this pass rather than refused: *Éditions précédentes* needs the
+exists. *Langue* would open a picker with one language in it. *Notifications* is now built. Two more are outside this pass rather than refused: *Éditions précédentes* needs the
 on-demand third file, and *Effacer mes données* needs a repository capability that does not exist.
 
 *L'application*
@@ -1383,6 +1381,38 @@ minutes ago about a set starting in twenty-eight is the opposite of stale. Andro
 when the alarm is scheduled and dismisses it itself; iOS has no equivalent and sweeps on next
 launch, which is the only moment it can. Neither is worth more engineering than that — a stale
 reminder is one swipe.
+
+**The switch on *Plus › Notifications* is one switch, and it shows the conjunction of two answers.**
+
+Categories were considered and refused. The app sends two sorts of notification — the reminder
+before a saved Slot, and the three that mark the festival year — and somebody who wants to be told a
+set is starting is not a different person from somebody who wants to be told the festival is
+tomorrow. A settings screen earns a second row when the two rows would be answered differently, and
+these would not.
+
+The harder question is that **two switches govern a notification and the app owns only one of them**.
+The other is the OS permission, which Yadlo can ask for and never set, which the visitor can revoke
+from outside the app, and which both platforms treat as final once refused. A switch showing only
+the stored preference would sit at *on* while the system dropped everything the app posted, which is
+a control that lies. So it reads on only when both halves agree, and when they disagree in the one
+direction the visitor cannot fix from here — wanted in the app, refused by the phone — the screen
+says so and offers the system settings. That button is why a fourth file exists in
+`infra/notification/`: without it the primary control on a screen called *Notifications* can be dead
+with no recourse, which is a bug rather than a simplification.
+
+Turning the switch on **writes the preference before asking for the permission, and keeps it written
+whether or not the prompt succeeds.** What is recorded is that the visitor asked for reminders, which
+stays true when the operating system refuses — and it is what makes the switch come on by itself if
+they later allow notifications in system settings and come back.
+
+**An unwritten store means on.** Reminders were already being scheduled for everybody who had granted
+the permission before this screen existed, so the default cannot be off without turning the feature
+off for its existing users on an upgrade. Only an explicit tap writes.
+
+**One table for one fact, not a settings store.** `ReminderSetting` is a single row under
+`common/reminder/`, keyed by a constant. A generic key/value store is the shape to reach for when
+there is a second preference rather than before, and the two rows that might have wanted one —
+*Langue* and *Effacer mes données* — are each waiting on something else entirely.
 
 **A custom scheme is right here and wrong for a share, which is the same rule read twice.** §
 *A share is plain text* refused `yadlo://` because a share is precisely the case where the recipient

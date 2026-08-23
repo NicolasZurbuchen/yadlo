@@ -59,11 +59,9 @@ still deferred: it is what story 16's dormant-user case would need, and DECISION
 content grounds rather than technical ones until the association is on board. Story 17, the
 end-of-slot warning, was dropped rather than deferred; the reasoning is in DECISIONS.md.
 
-One thing is deliberately **not** done yet:
-
-- **There is no *Plus › Notifications* screen.** The permission is asked for at the first heart tap
-  and the OS settings are the only way to turn a category off. Building the row needs a preferences
-  store the app does not have, which is the same thing *Effacer mes données* is waiting on.
+*Plus › Notifications* is built: one switch, stored in its own SQLDelight table under
+`common/reminder/`. It is **not** a generic settings store, and *Effacer mes données* is still
+waiting on one — a second preference is when that table earns its shape, not before.
 
 The other two capabilities the earlier draft assumed are settled: SQLDelight was always wired, and
 Coil3's disk cache is now configured in `infra/image/` and verified on an Android device. The
