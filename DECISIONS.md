@@ -1411,8 +1411,10 @@ off for its existing users on an upgrade. Only an explicit tap writes.
 
 **One table for one fact, not a settings store.** `ReminderSetting` is a single row under
 `common/reminder/`, keyed by a constant. A generic key/value store is the shape to reach for when
-there is a second preference rather than before, and the two rows that might have wanted one —
-*Langue* and *Effacer mes données* — are each waiting on something else entirely.
+there is a second preference rather than before. *Langue* is the one row that would be a second, and
+it is waiting on a second language rather than on somewhere to put the answer. *Effacer mes données*
+is not a preference at all — it is an action wanting a repository that can delete, and the screen for
+it stores nothing: it counts what is saved and offers to remove it.
 
 **A custom scheme is right here and wrong for a share, which is the same rule read twice.** §
 *A share is plain text* refused `yadlo://` because a share is precisely the case where the recipient
