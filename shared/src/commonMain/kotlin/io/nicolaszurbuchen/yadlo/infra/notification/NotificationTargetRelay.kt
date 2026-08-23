@@ -1,4 +1,4 @@
-package io.nicolaszurbuchen.yadlo.infra.platform
+package io.nicolaszurbuchen.yadlo.infra.notification
 
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

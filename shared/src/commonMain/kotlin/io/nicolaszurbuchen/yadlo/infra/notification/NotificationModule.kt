@@ -1,4 +1,4 @@
-package io.nicolaszurbuchen.yadlo.infra.platform
+package io.nicolaszurbuchen.yadlo.infra.notification
 
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module

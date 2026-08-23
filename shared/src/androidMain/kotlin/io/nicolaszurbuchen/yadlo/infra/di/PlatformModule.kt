@@ -1,7 +1,7 @@
 package io.nicolaszurbuchen.yadlo.infra.di
 
 import io.nicolaszurbuchen.yadlo.infra.database.DatabaseDriverFactory
-import io.nicolaszurbuchen.yadlo.infra.platform.Notifier
+import io.nicolaszurbuchen.yadlo.infra.notification.Notifier
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 

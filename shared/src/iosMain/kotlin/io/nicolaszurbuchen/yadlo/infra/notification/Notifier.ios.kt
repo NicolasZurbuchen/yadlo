@@ -1,4 +1,4 @@
-package io.nicolaszurbuchen.yadlo.infra.platform
+package io.nicolaszurbuchen.yadlo.infra.notification
 
 import platform.Foundation.NSDate
 import platform.Foundation.timeIntervalSince1970

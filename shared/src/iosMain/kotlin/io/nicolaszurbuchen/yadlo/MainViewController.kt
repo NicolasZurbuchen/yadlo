@@ -4,8 +4,8 @@ import androidx.compose.ui.window.ComposeUIViewController
 import io.nicolaszurbuchen.yadlo.app.App
 import io.nicolaszurbuchen.yadlo.app.di.initKoin
 import io.nicolaszurbuchen.yadlo.infra.di.platformModule
-import io.nicolaszurbuchen.yadlo.infra.platform.NotificationTargetRelay
-import io.nicolaszurbuchen.yadlo.infra.platform.startNotificationTapRouting
+import io.nicolaszurbuchen.yadlo.infra.notification.NotificationTargetRelay
+import io.nicolaszurbuchen.yadlo.infra.notification.startNotificationTapRouting
 import org.koin.mp.KoinPlatform
 import platform.Foundation.NSBundle
 import platform.UIKit.UIViewController

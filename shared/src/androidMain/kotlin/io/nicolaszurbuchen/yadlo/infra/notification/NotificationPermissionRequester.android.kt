@@ -1,4 +1,4 @@
-package io.nicolaszurbuchen.yadlo.infra.platform
+package io.nicolaszurbuchen.yadlo.infra.notification
 
 import android.Manifest
 import android.os.Build

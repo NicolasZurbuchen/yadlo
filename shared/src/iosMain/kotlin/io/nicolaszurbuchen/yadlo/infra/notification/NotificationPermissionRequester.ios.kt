@@ -1,4 +1,4 @@
-package io.nicolaszurbuchen.yadlo.infra.platform
+package io.nicolaszurbuchen.yadlo.infra.notification
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember

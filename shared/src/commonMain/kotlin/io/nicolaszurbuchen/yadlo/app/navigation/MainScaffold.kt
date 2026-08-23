@@ -42,9 +42,9 @@ import io.nicolaszurbuchen.yadlo.feature.happening.presentation.navigation.Happe
 import io.nicolaszurbuchen.yadlo.infra.navigation.AppNavigator
 import io.nicolaszurbuchen.yadlo.infra.navigation.NavGraph
 import io.nicolaszurbuchen.yadlo.infra.navigation.rememberNavEntries
+import io.nicolaszurbuchen.yadlo.infra.notification.NotificationTarget
+import io.nicolaszurbuchen.yadlo.infra.notification.NotificationTargetRelay
 import io.nicolaszurbuchen.yadlo.infra.platform.BackHandler
-import io.nicolaszurbuchen.yadlo.infra.platform.NotificationTarget
-import io.nicolaszurbuchen.yadlo.infra.platform.NotificationTargetRelay
 import io.nicolaszurbuchen.yadlo.infra.time.AppClock
 import kotlinx.datetime.number
 import kotlinx.datetime.toLocalDateTime

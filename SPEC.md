@@ -276,7 +276,7 @@ Built unofficially, with the explicit aim of becoming the association's official
   - *Offline-first disk caching* — **there.** SQLDelight is fully wired with an `expect`/`actual`
     driver factory on both platforms, so persisting a fetched bundle is routine. The bundled
     snapshot this draft once assumed is no longer wanted, so nothing is missing here.
-  - *Local notifications* — **now built, on both platforms.** `infra/platform/` holds a `Notifier`
+  - *Local notifications* — **now built, on both platforms.** `infra/notification/` holds a `Notifier`
     `expect` class over `AlarmManager` and `UNUserNotificationCenter`, a composable permission
     seam, and a relay that carries a tap back into the shell. Story 16 is met. Story 17 was dropped
     rather than deferred — see DECISIONS.md. Remote push is still absent and still deferred.

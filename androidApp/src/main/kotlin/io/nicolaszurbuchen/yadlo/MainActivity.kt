@@ -8,8 +8,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import io.nicolaszurbuchen.yadlo.app.App
-import io.nicolaszurbuchen.yadlo.infra.platform.NotificationTargetRelay
-import io.nicolaszurbuchen.yadlo.infra.platform.notificationTarget
+import io.nicolaszurbuchen.yadlo.infra.notification.NotificationTargetRelay
+import io.nicolaszurbuchen.yadlo.infra.notification.notificationTarget
 import org.koin.android.ext.android.inject
 
 class MainActivity : ComponentActivity() {

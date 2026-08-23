@@ -12,7 +12,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.nicolaszurbuchen.yadlo.common.content.domain.repository.ContentRepository
 import io.nicolaszurbuchen.yadlo.common.plan.domain.model.SavedKind
 import io.nicolaszurbuchen.yadlo.common.plan.domain.repository.PlanRepository
-import io.nicolaszurbuchen.yadlo.infra.platform.rememberNotificationPermissionRequester
+import io.nicolaszurbuchen.yadlo.infra.notification.rememberNotificationPermissionRequester
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 

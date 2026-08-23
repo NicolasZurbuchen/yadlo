@@ -1,4 +1,4 @@
-package io.nicolaszurbuchen.yadlo.infra.platform
+package io.nicolaszurbuchen.yadlo.infra.notification
 
 /**
  * The platform's notification scheduler, reduced to the two things this app does with one.
@@ -12,7 +12,7 @@ package io.nicolaszurbuchen.yadlo.infra.platform
  * passed then stop being three cases and become one: absent from the list.
  *
  * Requesting permission is deliberately *not* here — it needs an Activity on Android, so it lives on
- * a composable seam beside [rememberShareLauncher] for the same reason that one does.
+ * a composable factory, for the same reason `rememberShareLauncher` is one.
  */
 expect class Notifier {
     /**

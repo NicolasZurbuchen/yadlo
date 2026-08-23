@@ -33,11 +33,11 @@ import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.ContentStatus
 import io.nicolaszurbuchen.yadlo.common.content.domain.repository.ContentRepository
 import io.nicolaszurbuchen.yadlo.common.time.FESTIVAL_TIME_ZONE
+import io.nicolaszurbuchen.yadlo.infra.notification.NotificationTarget
+import io.nicolaszurbuchen.yadlo.infra.notification.Notifier
+import io.nicolaszurbuchen.yadlo.infra.notification.ScheduledNotification
+import io.nicolaszurbuchen.yadlo.infra.notification.rememberNotificationPermissionRequester
 import io.nicolaszurbuchen.yadlo.infra.platform.BuildFlags
-import io.nicolaszurbuchen.yadlo.infra.platform.NotificationTarget
-import io.nicolaszurbuchen.yadlo.infra.platform.Notifier
-import io.nicolaszurbuchen.yadlo.infra.platform.ScheduledNotification
-import io.nicolaszurbuchen.yadlo.infra.platform.rememberNotificationPermissionRequester
 import io.nicolaszurbuchen.yadlo.infra.time.TimeTravelClock
 import io.nicolaszurbuchen.yadlo.infra.time.WallClock
 import io.nicolaszurbuchen.yadlo.infra.ui.formatAsShortDate
