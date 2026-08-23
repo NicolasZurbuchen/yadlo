@@ -13,6 +13,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -41,6 +42,14 @@ import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotSegment
  * They are laid out with weights against a cursor rather than positioned absolutely, so the gaps
  * between them are real layout rather than arithmetic on a width this composable does not know.
  *
+ * **[dimsPastSegments] is what makes a finished hour look finished on the bar as well as in the
+ * text.** SUP Yoga's 14:00 greys out on the third line the moment it is over, and the mark standing
+ * for it kept its full colour — so the row said "one of these has gone" in words and "all three are
+ * still ahead of you" in the one part of it that is read at a glance. It is a parameter rather than
+ * something read off the segment because a row whose every Slot is over already dims as a whole:
+ * dimming again inside it would take the finished bar to 20% and out of the day it is drawn to
+ * describe. Callers pass false when they have done it themselves.
+ *
  * It sits in `common/content` because Mon Yadlo draws the same segment against the same axis. It
  * moved up here for that second caller rather than in anticipation of it, the way the live-state
  * vocabulary and the pill did before it.
@@ -50,6 +59,7 @@ fun SlotTimeBar(
     segments: List<SlotSegmentUiModel>,
     categoryFill: Color,
     modifier: Modifier = Modifier,
+    dimsPastSegments: Boolean = false,
 ) {
     Box(
         contentAlignment = Alignment.CenterStart,
@@ -79,6 +89,9 @@ fun SlotTimeBar(
 
                 val lead = (segment.barStart - cursor).coerceAtLeast(0f)
                 val width = (segment.barEnd - segment.barStart).coerceIn(MINIMUM_SEGMENT, 1f)
+                // Only the finished ones, and only when the caller has not dimmed the whole row.
+                // A raised segment is never past, so this can only ever reach the flat branch.
+                val isPast = dimsPastSegments && segment.state is SlotLiveStateUiModel.Over
 
                 if (lead > 0f) {
                     Spacer(modifier = Modifier.weight(lead))
@@ -91,6 +104,7 @@ fun SlotTimeBar(
                                 .weight(width)
                                 .align(Alignment.CenterVertically)
                                 .height(TRACK_HEIGHT)
+                                .alpha(if (isPast) PAST_ALPHA else 1f)
                                 .clip(TRACK_SHAPE)
                                 .background(categoryFill),
                     )
@@ -148,3 +162,10 @@ private const val RAISED_GROUND_ALPHA = 0.26f
  * one-hour set on the Sunday is 0.7% of the axis.
  */
 private const val MINIMUM_SEGMENT = 0.012f
+
+/**
+ * The rows' own past treatment, so an hour that has gone on a row still to come looks exactly as
+ * past as a row that has gone entirely. Repeated here rather than shared, because the value belongs
+ * to a look rather than to a component and the three copies are meant to be read as agreeing.
+ */
+private const val PAST_ALPHA = 0.45f
