@@ -2,6 +2,8 @@ package io.nicolaszurbuchen.yadlo.app.navigation
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 class TabNavigatorTest {
     @Test
@@ -57,6 +59,39 @@ class TabNavigatorTest {
         navigator.selectStart(Tab.PROGRAMME)
 
         assertEquals(Tab.MON_YADLO, navigator.selectedTab.value)
+    }
+
+    // endregion
+
+    // region telling a cold start from a rotation
+
+    @Test
+    fun selectStart_theFirstTimeInAProcess_saysSo() {
+        // What the shell resets the tab back stacks on. This object lives as long as the process, so
+        // the first call is the only moment the process itself is known to be new.
+        assertTrue(TabNavigator().selectStart(Tab.HOME))
+    }
+
+    @Test
+    fun selectStart_everyTimeAfter_saysItIsNotTheFirst() {
+        // A rotation, or the content going away and coming back. The stacks were restored for a
+        // reason in that case and must be left alone.
+        val navigator = TabNavigator()
+
+        navigator.selectStart(Tab.HOME)
+
+        assertFalse(navigator.selectStart(Tab.HOME))
+    }
+
+    @Test
+    fun selectStart_afterTheVisitorHasChosenATab_isAlsoNotTheFirst() {
+        // A tap means the shell has been on screen, so whatever brings it back is not a cold start —
+        // and popping the stacks under somebody who is using them would be the worst version of this.
+        val navigator = TabNavigator()
+
+        navigator.select(Tab.PLUS)
+
+        assertFalse(navigator.selectStart(Tab.HOME))
     }
 
     // endregion
