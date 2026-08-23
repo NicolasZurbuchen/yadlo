@@ -213,14 +213,18 @@ this is the kind of thing that works all year and breaks on the one weekend that
 
 **Accueil, block by block.**
 
-**Global search appears only when there is a programme to search** — ANNOUNCED, APPROACHING
-and LIVE. Between editions there is nothing to find but last year's archive, and the
-countdown deserves the top of the screen more than an empty search box does. One search,
-one results screen, reached from both Accueil and Programme — two doors, one
-implementation. Over roughly sixty items it is an in-memory filter, and it answers
-"SUP yoga", "twint" and "parking" equally well.
+**~~Global search appears only when there is a programme to search.~~ Reversed: it is there all
+year.** The original reading was ANNOUNCED, APPROACHING and LIVE, on the grounds that between
+editions there is nothing to find but last year’s archive. That undercounted the corpus. Half of
+it is *live truth rather than an edition* — paiement, horaires, comment venir, devenir bénévole,
+nous écrire, l’histoire — and none of it expires when the festival ends; off season it is the half
+a reader is most likely to want, which this Phase’s own quick-access block already concedes by
+promoting two of them. The other half is last July’s line-up, which is the edition the bundle
+holds anyway and is exactly what *revivre l’édition* would show. "An empty search box" was the
+thing being argued against, and the box is not empty. One search, one results screen, reached from
+Accueil and from the toolbar — two doors, one implementation.
 
-*OFF_SEASON* — countdown · annonces · revivre l'édition précédente · s'impliquer ·
+*OFF_SEASON* — recherche · countdown · annonces · revivre l'édition précédente · s'impliquer ·
 newsletter · l'histoire de Yadlo · réseaux sociaux
 
 *ANNOUNCED* — recherche · countdown · **hero: la programmation est là** · annonces ·
@@ -251,7 +255,7 @@ and republishing photos of identifiable people from an app that is not theirs is
 problem. So: a link-out card for now, and a real feed becomes another thing that going
 official unlocks.
 
-*ENDED* — merci · Yadlo en chiffres · annonces · archives · newsletter · réseaux sociaux
+*ENDED* — recherche · merci · Yadlo en chiffres · annonces · archives · newsletter · réseaux sociaux
 
 **The default tab follows the phase.** Accueil for 361 days; Programme, scrolled to now, for
 the four days of the festival.
@@ -1523,9 +1527,9 @@ apply.
 
 ### Search
 
-**One corpus, and the entry points are what make that credible.** A field on Accueil in the three
-phases that have one; a magnifier in the shell toolbar on the other three tabs. Both open the same
-screen over the same index. The alternative — a search bar per screen, scoped to that screen — was
+**One corpus, and the entry points are what make that credible.** A field on Accueil; a magnifier in
+the shell toolbar on the other three tabs. Both in every Phase, and both opening the same screen
+over the same index. The alternative — a search bar per screen, scoped to that screen — was
 turned down on the shape of its failure: it fails *silently*. Type `twint` into a Programme-scoped
 search, get nothing, and the conclusion is that the app does not know what TWINT is. A global search
 reached from the Programme fails in the other direction, by returning a *Sur place* heading the
@@ -1541,6 +1545,11 @@ sequencing works out: the first encounter is overwhelmingly the block, so the ma
 **Accueil-only was rejected on the LIVE case.** During LIVE the app opens on Programme and Accueil is
 deliberately thin — so a search reachable only from Accueil is a tab switch plus a scroll plus a tap
 away at exactly the moment it is worth the most: on the site, one hand, sun on the screen.
+
+**The block leads every stack, including ENDED.** It is a control rather than content, and the
+magnifier it teaches never moves either; a field that slid down the page in two Phases out of five
+would be one the reader has to hunt for. The cost is one 48dp row above the thank-you on the Monday
+after — noted, and judged smaller than a search affordance that is only sometimes where it was.
 
 **The bar can carry it because the bar is not a tab’s.** `YadloTopAppBar` at a tab root shows the
 festival’s name and the edition dates, identically on all four tabs — never a tab title. A magnifier

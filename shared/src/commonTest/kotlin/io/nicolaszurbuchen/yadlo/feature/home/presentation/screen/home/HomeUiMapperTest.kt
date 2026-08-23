@@ -47,7 +47,10 @@ class HomeUiMapperTest {
     fun toUiModel_offSeason_stacksCountdownThenAnnoncesThenQuickAccessThenLesReseaux() {
         val state = state(phase = PhaseUiModel.OFF_SEASON, now = THREE_DAYS_BEFORE)
 
-        assertEquals(listOf("Countdown", "Announcements", "QuickAccess", "Social"), state.toUiModel().blockNames())
+        assertEquals(
+            listOf("Search", "Countdown", "Announcements", "QuickAccess", "Social"),
+            state.toUiModel().blockNames(),
+        )
     }
 
     @Test
@@ -80,9 +83,10 @@ class HomeUiMapperTest {
     }
 
     @Test
-    fun toUiModel_search_appearsOnlyInThePhasesWithSomethingToSearch() {
-        // Between editions there is nothing to find but last year’s archive, and the countdown
-        // deserves the top of the screen more than an empty search box does.
+    fun toUiModel_search_leadsEveryStackInEveryPhase() {
+        // Reversed from three phases to five: half the corpus is practical information that never
+        // expires, so off season the search still answers "twint" and "bénévole" — and it stays at
+        // the top because it is a control, and a control that moves is one the reader has to hunt for.
         val phases =
             listOf(
                 PhaseUiModel.OFF_SEASON,
@@ -92,22 +96,7 @@ class HomeUiMapperTest {
                 PhaseUiModel.ENDED,
             )
 
-        val withSearch =
-            phases.filter { phase ->
-                state(phase = phase, now = THREE_DAYS_BEFORE).toUiModel().blocks.contains(HomeBlockUiModel.Search)
-            }
-
-        assertEquals(
-            listOf(PhaseUiModel.ANNOUNCED, PhaseUiModel.APPROACHING, PhaseUiModel.LIVE),
-            withSearch,
-        )
-    }
-
-    @Test
-    fun toUiModel_search_leadsEveryStackItIsIn() {
-        // It is the one block answering a question the reader arrived with rather than one the
-        // screen is offering them, so nothing goes above it — not even the countdown.
-        listOf(PhaseUiModel.ANNOUNCED, PhaseUiModel.APPROACHING, PhaseUiModel.LIVE).forEach { phase ->
+        phases.forEach { phase ->
             assertEquals("Search", state(phase = phase, now = THREE_DAYS_BEFORE).toUiModel().blockNames().first())
         }
     }
@@ -116,7 +105,10 @@ class HomeUiMapperTest {
     fun toUiModel_ended_stacksMerciThenLesChiffresThenAnnoncesThenQuickAccessThenLesReseaux() {
         val state = state(phase = PhaseUiModel.ENDED, now = AFTER)
 
-        assertEquals(listOf("ThankYou", "Figures", "Announcements", "QuickAccess", "Social"), state.toUiModel().blockNames())
+        assertEquals(
+            listOf("Search", "ThankYou", "Figures", "Announcements", "QuickAccess", "Social"),
+            state.toUiModel().blockNames(),
+        )
     }
 
     // endregion
@@ -158,14 +150,14 @@ class HomeUiMapperTest {
     fun toUiModel_theFirstDayHasAlreadyPassed_dropsTheCountdownRatherThanRunningItBackwards() {
         val state = state(phase = PhaseUiModel.OFF_SEASON, now = AFTER)
 
-        assertEquals(listOf("Announcements", "QuickAccess", "Social"), state.toUiModel().blockNames())
+        assertEquals(listOf("Search", "Announcements", "QuickAccess", "Social"), state.toUiModel().blockNames())
     }
 
     @Test
     fun toUiModel_noDaysPublished_dropsTheCountdown() {
         val state = state(phase = PhaseUiModel.OFF_SEASON, now = THREE_DAYS_BEFORE, days = emptyList())
 
-        assertEquals(listOf("Announcements", "QuickAccess", "Social"), state.toUiModel().blockNames())
+        assertEquals(listOf("Search", "Announcements", "QuickAccess", "Social"), state.toUiModel().blockNames())
     }
 
     // endregion
@@ -314,7 +306,7 @@ class HomeUiMapperTest {
     fun toUiModel_noNetworksPublished_dropsTheBlock() {
         val state = state(phase = PhaseUiModel.OFF_SEASON, now = THREE_DAYS_BEFORE, social = emptyList())
 
-        assertEquals(listOf("Countdown", "Announcements", "QuickAccess"), state.toUiModel().blockNames())
+        assertEquals(listOf("Search", "Countdown", "Announcements", "QuickAccess"), state.toUiModel().blockNames())
     }
 
     // endregion
@@ -343,7 +335,10 @@ class HomeUiMapperTest {
     fun toUiModel_endedWithNoFiguresPublished_dropsTheFiguresBlock() {
         val state = state(phase = PhaseUiModel.ENDED, now = AFTER, figures = emptyList())
 
-        assertEquals(listOf("ThankYou", "Announcements", "QuickAccess", "Social"), state.toUiModel().blockNames())
+        assertEquals(
+            listOf("Search", "ThankYou", "Announcements", "QuickAccess", "Social"),
+            state.toUiModel().blockNames(),
+        )
     }
 
     @Test
@@ -517,7 +512,7 @@ class HomeUiMapperTest {
                 newsletterUrl = null,
             )
 
-        assertEquals(listOf("Countdown", "Announcements", "Social"), state.toUiModel().blockNames())
+        assertEquals(listOf("Search", "Countdown", "Announcements", "Social"), state.toUiModel().blockNames())
     }
 
     @Test
@@ -564,7 +559,7 @@ class HomeUiMapperTest {
         val result = state(phase = PhaseUiModel.ENDED, now = AFTER).toUiModel()
 
         assertEquals(false, result.isLoading)
-        assertIs<HomeBlockUiModel.ThankYou>(result.blocks.first())
+        assertIs<HomeBlockUiModel.ThankYou>(result.blocks[1])
     }
 
     private fun HomeUiModel.blockNames(): List<String> = blocks.map { it::class.simpleName.orEmpty() }

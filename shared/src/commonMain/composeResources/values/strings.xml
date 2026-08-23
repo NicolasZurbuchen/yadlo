@@ -93,8 +93,9 @@
     <string name="programme_empty_unpublished">Le programme n'est pas encore publié.</string>
 
     <!-- Search — one corpus and one screen, reached from the toolbar on three tabs and from the
-         block on Accueil. The placeholder is where the scope is stated: a magnifier in a bar shared
-         by four tabs cannot say on its own that it is not scoped to the tab under it. -->
+         block on Accueil, in every Phase. The placeholder is where the scope is stated: a magnifier
+         in a bar shared by four tabs cannot say on its own that it is not scoped to the tab under
+         it. -->
     <string name="search_action">Rechercher</string>
     <string name="search_placeholder">Rechercher dans tout le festival</string>
     <string name="search_clear">Effacer la recherche</string>

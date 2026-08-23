@@ -507,8 +507,8 @@ ENDED         then                             →  +6 weeks
 
 ### Screens
 
-**Accueil** — a block stack per phase (blocks enumerated in DECISIONS.md). Global search
-appears only in ANNOUNCED / APPROACHING / LIVE. LIVE is deliberately thin because the app
+**Accueil** — a block stack per phase (blocks enumerated in DECISIONS.md). Global search leads
+every stack, in all five phases. LIVE is deliberately thin because the app
 opens on Programme then, and carries one hero saying where the weekend is up to — before the
 gates, open until X, shut until Y, or a light goodbye once the last day has closed (story 61). ENDED's thank-you carries the association's *À tout bientôt*
 photograph, bundled — the only hero in the app with a picture behind it (DECISIONS.md § The
@@ -547,9 +547,11 @@ empties is absent, not an empty header.
 during LIVE, the whole weekend otherwise — decided once per process, never as a redirect**
 (DECISIONS.md § The Programme tab answers two questions).
 
-**Recherche** — one screen over one corpus, reached from two kinds of door: the field on Accueil in
-ANNOUNCED / APPROACHING / LIVE, and a magnifier in the shell toolbar on the other three tabs. There
-is no per-tab search and no per-tab corpus. The bar is a back chevron and the field, with no title —
+**Recherche** — one screen over one corpus, reached from two kinds of door: the field that leads
+Accueil, and a magnifier in the shell toolbar on the other three tabs. Both in every phase — half
+the corpus is practical information that never expires, so off season the search still answers
+`twint` and `bénévole` even though the programme it also covers is last July’s. There is no
+per-tab search and no per-tab corpus. The bar is a back chevron and the field, with no title —
 the placeholder *Rechercher dans tout le festival* is both the label and the statement of scope, and
 the keyboard is up on arrival.
 

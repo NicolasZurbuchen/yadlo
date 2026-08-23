@@ -26,8 +26,9 @@ sealed interface HomeBlockUiModel {
      * words and the scope it states is fixed, so there is no content that could change what this
      * block says.
      *
-     * First in the three phases that have it, above even the countdown: it is the one thing on
-     * Accueil answering a question the reader arrived with rather than one the screen is offering.
+     * First in every Phase, above even the countdown and the thank-you: it is a control rather than
+     * content, and a control that moved down the page in two Phases out of five would be one the
+     * reader has to hunt for — which is the opposite of what a teaching affordance is for.
      */
     data object Search : HomeBlockUiModel
 

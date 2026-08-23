@@ -56,9 +56,16 @@ import kotlin.time.Duration.Companion.hours
  * and the quiet hours as [liveHero].
  *
  * **La recherche has arrived too**, as [HomeBlockUiModel.Search] — a button dressed as a field, and
- * the first block in each of the three phases DECISIONS.md gives it. The three tabs that are not
- * Accueil reach the same screen through the magnifier in the shell's toolbar; here it is a block,
- * because this is the screen with room to teach that the app has a search at all.
+ * the first block of every stack. The three tabs that are not Accueil reach the same screen through
+ * the magnifier in the shell's toolbar; here it is a block, because this is the screen with room to
+ * teach that the app has a search at all.
+ *
+ * **It is in all five Phases, which is a reversal.** DECISIONS.md gave it three, on the grounds
+ * that between editions there is nothing to find but last year's archive. That undercounted the
+ * corpus: paiement, horaires, comment venir, devenir bénévole and nous écrire are live truth rather
+ * than an edition, they never expire, and off season they are the half a reader is most likely to
+ * want — this Phase’s own quick-access block already promotes two of them. The programme half is
+ * last July, which is the edition on hand regardless.
  *
  * The phases they belong to are where they go; the ordering below is not a suggestion, it is the
  * prototype's.
@@ -348,7 +355,7 @@ fun HomeState.toUiModel(): HomeUiModel {
             // in June the annonces are the news and these are the sidelines, while at J-3 they are
             // the errand and the annonces are the news about it.
             PhaseUiModel.OFF_SEASON -> {
-                listOfNotNull(countdown, announcements, quickAccess, social)
+                listOfNotNull(HomeBlockUiModel.Search, countdown, announcements, quickAccess, social)
             }
 
             PhaseUiModel.ANNOUNCED -> {
@@ -369,7 +376,7 @@ fun HomeState.toUiModel(): HomeUiModel {
             }
 
             PhaseUiModel.ENDED -> {
-                listOfNotNull(thankYou, figures, announcements, quickAccess, social)
+                listOfNotNull(HomeBlockUiModel.Search, thankYou, figures, announcements, quickAccess, social)
             }
         }
 

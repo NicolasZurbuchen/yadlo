@@ -215,9 +215,11 @@ fun MainScaffold(modifier: Modifier = Modifier) {
     // search, so it wins where they collide, and the icon covers the three tabs that have no room
     // for a field.
     //
-    // The three phases are DECISIONS.md's: between editions there is nothing to find but last
-    // year's archive, and an empty search box is worse there than no search box.
-    val showsSearch = phase in SEARCHABLE_PHASES && selectedTab != Tab.HOME
+    // **No Phase gate, which is a reversal** — DECISIONS.md § Search is enabled all year. Half the
+    // corpus never expires: paiement, horaires, comment venir, devenir bénévole and nous écrire are
+    // live truth rather than an edition, and off season they are the most useful thing in the app.
+    // The other half is last July, which is the edition the bundle holds anyway.
+    val showsSearch = selectedTab != Tab.HOME
 
     // SideEffect, not LaunchedEffect: this has to be true before the frame the user can touch.
     // LaunchedEffect publishes on a coroutine after composition, which leaves a window where the
@@ -374,10 +376,3 @@ private fun MainNavigationBar(
         }
     }
 }
-
-/**
- * The three phases with something to search — DECISIONS.md § Accueil, block by block. OFF_SEASON
- * and ENDED have a countdown and a thank-you to offer instead, and neither deserves a magnifier
- * over a programme that has been taken down or has not gone up.
- */
-private val SEARCHABLE_PHASES = setOf(Phase.ANNOUNCED, Phase.APPROACHING, Phase.LIVE)
