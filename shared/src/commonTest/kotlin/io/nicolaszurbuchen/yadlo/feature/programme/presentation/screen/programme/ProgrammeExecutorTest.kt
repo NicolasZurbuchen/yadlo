@@ -14,6 +14,7 @@ import io.nicolaszurbuchen.yadlo.common.content.domain.model.Happening
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Provenance
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Slot
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Venue
+import io.nicolaszurbuchen.yadlo.common.content.domain.usecase.DerivePhaseUseCase
 import io.nicolaszurbuchen.yadlo.feature.programme.domain.usecase.ObserveProgrammeContentUseCase
 import io.nicolaszurbuchen.yadlo.infra.time.AppClock
 import kotlinx.coroutines.Dispatchers
@@ -80,12 +81,14 @@ class ProgrammeExecutorTest {
         }
 
     @Test
-    fun onCreate_beforeTheFestival_opensOnDayOne() =
-        programmeTest(startingAt = A_MONTH_BEFORE) { store, repository, _ ->
+    fun onCreate_theWeekBefore_opensOnTheWholeWeekend() =
+        programmeTest(startingAt = THREE_DAYS_BEFORE) { store, repository, _ ->
             repository.emitStatus(ready())
             testDispatcher.scheduler.runCurrent()
 
-            assertEquals("2026:fri", store.state.selectedDayId)
+            // APPROACHING is the only time anyone realistically builds a Plan, and nobody builds one
+            // a day at a time — DECISIONS.md § APPROACHING exists for one reason.
+            assertEquals(ProgrammeScopeUiModel.AllDays, store.state.selectedScope)
         }
 
     @Test
@@ -96,25 +99,108 @@ class ProgrammeExecutorTest {
 
             // The FestivalDay window is the hours the site is open, and Friday's runs to 02:00.
             // Opening on Saturday would hide the set playing thirty metres away.
-            assertEquals("2026:fri", store.state.selectedDayId)
+            assertEquals(ProgrammeScopeUiModel.Day("2026:fri"), store.state.selectedScope)
         }
 
     @Test
-    fun onCreate_afterTheFestival_opensOnTheLastDayRatherThanNoDayAtAll() =
+    fun onCreate_inTheGapBetweenTwoDays_opensOnTheNextOneToOpen() =
+        programmeTest(startingAt = SATURDAY_BEFORE_DAWN) { store, repository, _ ->
+            repository.emitStatus(ready())
+            testDispatcher.scheduler.runCurrent()
+
+            // 04:00: Friday closed at 02:00 and Saturday opens at 12:00, so no day is current at
+            // all. LIVE spans the gap, and the useful answer in it is the day about to start.
+            assertEquals(ProgrammeScopeUiModel.Day("2026:sat"), store.state.selectedScope)
+        }
+
+    @Test
+    fun onCreate_afterTheFestival_opensOnTheWholeWeekend() =
         programmeTest(startingAt = A_WEEK_AFTER) { store, repository, _ ->
             repository.emitStatus(ready())
             testDispatcher.scheduler.runCurrent()
 
-            assertEquals("2026:sun", store.state.selectedDayId)
+            // ENDED is read the way OFF_SEASON is — from a sofa, across all three days, remembering
+            // rather than deciding.
+            assertEquals(ProgrammeScopeUiModel.AllDays, store.state.selectedScope)
         }
 
     @Test
-    fun onCreate_nothingPublishedYet_holdsNoContentAndNoDay() =
+    fun onCreate_nothingPublishedYet_holdsNoContentAndNoScope() =
         programmeTest(startingAt = A_MONTH_BEFORE) { store, _, _ ->
             testDispatcher.scheduler.runCurrent()
 
             assertEquals(null, store.state.content)
-            assertEquals(null, store.state.selectedDayId)
+            assertEquals(null, store.state.selectedScope)
+        }
+
+    // endregion
+
+    // region the scope it opens on
+
+    @Test
+    fun onCreate_theProgrammeHasJustDropped_opensOnTheCatalogue() =
+        programmeTest(startingAt = A_MONTH_BEFORE) { store, repository, _ ->
+            repository.emitStatus(ready())
+            testDispatcher.scheduler.runCurrent()
+
+            // ANNOUNCED. Nobody has read the bill yet, so the useful screen is the one that says
+            // what there is rather than the one that says when it is.
+            assertEquals(ProgrammeScopeUiModel.Catalogue, store.state.selectedScope)
+        }
+
+    @Test
+    fun onCreate_duringTheFestival_opensOnTheDayYouAreStandingIn() =
+        programmeTest(startingAt = SATURDAY_AFTERNOON) { store, repository, _ ->
+            repository.emitStatus(ready())
+            testDispatcher.scheduler.runCurrent()
+
+            // "What is on now" is the only question on site, and it is about one day.
+            assertEquals(ProgrammeScopeUiModel.Day("2026:sat"), store.state.selectedScope)
+        }
+
+    @Test
+    fun thePhaseTurnsOverWhileTheAppIsOpen_doesNotMoveTheScopeUnderTheReader() =
+        programmeTest(startingAt = A_MONTH_BEFORE) { store, repository, clock ->
+            repository.emitStatus(ready())
+            testDispatcher.scheduler.runCurrent()
+            assertEquals(ProgrammeScopeUiModel.Catalogue, store.state.selectedScope)
+
+            // Midnight on J-7, with a content refresh landing on the other side of it. A start
+            // scope, not a redirect — the distinction TabNavigator.selectStart exists for.
+            clock.instant = THREE_DAYS_BEFORE
+            repository.emitStatus(ready())
+            testDispatcher.scheduler.runCurrent()
+
+            assertEquals(ProgrammeScopeUiModel.Catalogue, store.state.selectedScope)
+        }
+
+    @Test
+    fun scopeSelected_switchesIt() =
+        programmeTest(startingAt = SATURDAY_AFTERNOON) { store, repository, _ ->
+            repository.emitStatus(ready())
+            testDispatcher.scheduler.runCurrent()
+
+            store.accept(ProgrammeIntent.ScopeSelected(ProgrammeScopeUiModel.Catalogue))
+
+            assertEquals(ProgrammeScopeUiModel.Catalogue, store.state.selectedScope)
+
+            store.accept(ProgrammeIntent.ScopeSelected(ProgrammeScopeUiModel.AllDays))
+
+            assertEquals(ProgrammeScopeUiModel.AllDays, store.state.selectedScope)
+        }
+
+    @Test
+    fun catalogueClicked_opensTheSameFicheTheTimetableDoes() =
+        programmeTest(startingAt = A_MONTH_BEFORE) { store, repository, _ ->
+            repository.emitStatus(ready())
+            testDispatcher.scheduler.runCurrent()
+
+            // One destination for a Happening however it was found, which is what keeps the
+            // Catalogue a second way of looking rather than a second door.
+            store.labels.test {
+                store.accept(ProgrammeIntent.SlotClicked("dubside"))
+                assertEquals(ProgrammeLabel.NavigateToHappening("dubside"), awaitItem())
+            }
         }
 
     // endregion
@@ -188,14 +274,15 @@ class ProgrammeExecutorTest {
         }
 
     @Test
-    fun daySelected_switchesTheDay() =
+    fun scopeSelected_aDayFromTheCatalogue_isHowYouLeaveIt() =
         programmeTest(startingAt = A_MONTH_BEFORE) { store, repository, _ ->
             repository.emitStatus(ready())
             testDispatcher.scheduler.runCurrent()
+            assertEquals(ProgrammeScopeUiModel.Catalogue, store.state.selectedScope)
 
-            store.accept(ProgrammeIntent.DaySelected("2026:sun"))
+            store.accept(ProgrammeIntent.ScopeSelected(ProgrammeScopeUiModel.Day("2026:sun")))
 
-            assertEquals("2026:sun", store.state.selectedDayId)
+            assertEquals(ProgrammeScopeUiModel.Day("2026:sun"), store.state.selectedScope)
         }
 
     // endregion
@@ -226,6 +313,7 @@ class ProgrammeExecutorTest {
             ProgrammeStoreFactory(
                 storeFactory = DefaultStoreFactory(),
                 observeProgrammeContent = ObserveProgrammeContentUseCase(repository),
+                derivePhase = DerivePhaseUseCase(clock),
                 clock = clock,
             ).create()
 
@@ -264,7 +352,7 @@ class ProgrammeExecutorTest {
                                 ),
                             days = listOf(friday(), saturday(), sunday()),
                             categories = listOf(MUSIQUE),
-                            happenings = emptyList(),
+                            happenings = listOf(dubside().happening),
                             slots = listOf(dubside()),
                             partners = emptyList(),
                             figures = emptyList(),
@@ -328,7 +416,9 @@ class ProgrammeExecutorTest {
         val MUSIQUE = Category(id = "musique", name = "Musique", order = 1)
 
         val A_MONTH_BEFORE = Instant.parse("2026-06-08T12:00:00+02:00")
+        val THREE_DAYS_BEFORE = Instant.parse("2026-07-07T12:00:00+02:00")
         val SATURDAY_SMALL_HOURS = Instant.parse("2026-07-11T01:00:00+02:00")
+        val SATURDAY_BEFORE_DAWN = Instant.parse("2026-07-11T04:00:00+02:00")
         val SATURDAY_AFTERNOON = Instant.parse("2026-07-11T15:45:00+02:00")
         val SATURDAY_EVENING = Instant.parse("2026-07-11T20:00:00+02:00")
         val A_WEEK_AFTER = Instant.parse("2026-07-19T12:00:00+02:00")

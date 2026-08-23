@@ -5,6 +5,8 @@ import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
+import io.nicolaszurbuchen.yadlo.common.content.domain.model.Phase
+import io.nicolaszurbuchen.yadlo.common.content.domain.usecase.DerivePhaseUseCase
 import io.nicolaszurbuchen.yadlo.feature.programme.domain.model.ProgrammeContent
 import io.nicolaszurbuchen.yadlo.feature.programme.domain.usecase.ObserveProgrammeContentUseCase
 import io.nicolaszurbuchen.yadlo.infra.time.AppClock
@@ -17,6 +19,7 @@ interface ProgrammeStore : Store<ProgrammeIntent, ProgrammeState, ProgrammeLabel
 class ProgrammeStoreFactory(
     private val storeFactory: StoreFactory,
     private val observeProgrammeContent: ObserveProgrammeContentUseCase,
+    private val derivePhase: DerivePhaseUseCase,
     private val clock: AppClock,
 ) {
     fun create(): ProgrammeStore =
@@ -48,8 +51,8 @@ class ProgrammeStoreFactory(
 
         override fun executeIntent(intent: ProgrammeIntent) {
             when (intent) {
-                is ProgrammeIntent.DaySelected -> {
-                    dispatch(ProgrammeMessage.DaySelected(intent.dayId))
+                is ProgrammeIntent.ScopeSelected -> {
+                    dispatch(ProgrammeMessage.ScopeSelected(intent.scope))
                 }
 
                 is ProgrammeIntent.CategoryToggled -> {
@@ -77,7 +80,7 @@ class ProgrammeStoreFactory(
             scope.launch {
                 observeProgrammeContent().collect { content ->
                     dispatch(
-                        ProgrammeMessage.ContentUpdated(content = content, defaultDayId = defaultDayFor(content)),
+                        ProgrammeMessage.ContentUpdated(content = content, defaultScope = defaultScopeFor(content)),
                     )
                 }
             }
@@ -107,14 +110,55 @@ class ProgrammeStoreFactory(
         }
 
         /**
+         * What the tab opens on, and the second place the Phase decides what a visitor sees.
+         *
+         * Three answers, one per question the year is asking:
+         *
+         * - **ANNOUNCED → the Catalogue.** The week the programme drops, nobody has read the bill
+         *   yet. The useful screen is the one that says what there is; hours on top of a list nobody
+         *   can parse yet are noise.
+         * - **LIVE → the day you are standing in.** "What is on now" is the only question on site,
+         *   and it is about one day.
+         * - **everything else → the whole weekend.** Off season, the week before and the weeks after
+         *   are all read the same way — from a sofa, across all three days, deciding or
+         *   remembering. APPROACHING is the one that matters, because it is the only time anyone
+         *   realistically builds a Plan and they do not build it a day at a time.
+         *
+         * Only the opening scope. [ProgrammeState.selectedScope] takes this once and never again, so
+         * a Phase that turns over while the app is open moves nothing.
+         */
+        private fun defaultScopeFor(content: ProgrammeContent): ProgrammeScopeUiModel {
+            val phase =
+                derivePhase(
+                    days = content.days,
+                    hasPublishedProgramme = content.hasPublishedProgramme,
+                )
+
+            return when (phase) {
+                Phase.ANNOUNCED -> {
+                    ProgrammeScopeUiModel.Catalogue
+                }
+
+                Phase.LIVE -> {
+                    liveDayFor(content)?.let { ProgrammeScopeUiModel.Day(it) } ?: ProgrammeScopeUiModel.AllDays
+                }
+
+                else -> {
+                    ProgrammeScopeUiModel.AllDays
+                }
+            }
+        }
+
+        /**
          * The day the visitor is standing in — the first one that has not ended.
          *
          * Against the FestivalDay window rather than the calendar date, which is the same rule that
          * keeps a 01:30 set on Friday: at 01:00 on the Saturday morning the day still on is Friday,
-         * and opening on Saturday would hide the set playing thirty metres away. Before the festival
-         * that lands on day one, after it on the last day.
+         * and opening on Saturday would hide the set playing thirty metres away. It also answers the
+         * overnight gaps, where no day is current at all — 04:00 on the Saturday lands on the
+         * Saturday, the next one to open.
          */
-        private fun defaultDayFor(content: ProgrammeContent): String? {
+        private fun liveDayFor(content: ProgrammeContent): String? {
             val now = clock.now()
 
             return content.days.firstOrNull { now < it.end }?.id ?: content.days.lastOrNull()?.id
@@ -128,11 +172,16 @@ class ProgrammeStoreFactory(
                 is ProgrammeMessage.ContentUpdated -> {
                     copy(
                         content = msg.content,
-                        // A day the visitor picked survives a refresh; one that no longer exists in
-                        // the content does not, and neither does an unmade choice.
-                        selectedDayId =
-                            selectedDayId?.takeIf { id -> msg.content.days.any { it.id == id } }
-                                ?: msg.defaultDayId,
+                        // A scope the visitor chose survives a refresh; a day that no longer exists
+                        // in the content does not, and neither does an unmade choice. See
+                        // ProgrammeState for why every other case leaves it alone.
+                        selectedScope =
+                            selectedScope
+                                ?.takeIf { scope ->
+                                    scope !is ProgrammeScopeUiModel.Day ||
+                                        msg.content.days.any { it.id == scope.id }
+                                }
+                                ?: msg.defaultScope,
                     )
                 }
 
@@ -140,8 +189,8 @@ class ProgrammeStoreFactory(
                     copy(now = msg.now)
                 }
 
-                is ProgrammeMessage.DaySelected -> {
-                    copy(selectedDayId = msg.dayId)
+                is ProgrammeMessage.ScopeSelected -> {
+                    copy(selectedScope = msg.scope)
                 }
 
                 is ProgrammeMessage.CategoriesChanged -> {

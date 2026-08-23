@@ -9,6 +9,7 @@ import io.nicolaszurbuchen.yadlo.common.content.domain.model.Edition
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Festival
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.FestivalDay
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Happening
+import io.nicolaszurbuchen.yadlo.common.content.domain.model.Image
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Money
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Price
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Provenance
@@ -18,6 +19,8 @@ import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
+import kotlin.test.assertTrue
+import kotlin.time.Duration.Companion.hours
 import kotlin.time.Instant
 
 class ObserveProgrammeContentUseCaseTest {
@@ -149,9 +152,127 @@ class ObserveProgrammeContentUseCaseTest {
             }
         }
 
+    @Test
+    fun invoke_bundleIsReady_buildsTheCatalogueFromTheHappeningsRatherThanFromTheSlots() =
+        runTest {
+            useCase().test {
+                // SUP Yoga three times on one day is three Slots and one thing to do.
+                repository.emitStatus(ready(slots = listOf(supYogaAt("14:00"), supYogaAt("16:00"), supYogaAt("18:00"))))
+
+                assertEquals(listOf("sup-yoga"), awaitItem().catalogue.map { it.id })
+                cancel()
+            }
+        }
+
+    @Test
+    fun invoke_standsArePublished_keepsThemOutOfTheCatalogue() =
+        runTest {
+            useCase().test {
+                repository.emitStatus(ready(slots = listOf(dubside(), barOpeningHours())))
+
+                // A Stand is browsed in Plus, with this screen's own card. A second door onto the
+                // same eight stalls is what "one place to browse a thing" forbids.
+                assertEquals(listOf("dubside"), awaitItem().catalogue.map { it.id })
+                cancel()
+            }
+        }
+
+    @Test
+    fun invoke_artistIsInTheCatalogue_carriesThePictureAndTheGenresARowHasNoRoomFor() =
+        runTest {
+            useCase().test {
+                repository.emitStatus(ready(slots = listOf(dubside())))
+
+                val entry = awaitItem().catalogue.single()
+
+                assertEquals("Dubside", entry.name)
+                assertEquals("Musique", entry.categoryName)
+                assertEquals("Techno-house", entry.genres.single())
+                assertEquals("https://example.test/dubside.webp", entry.imageUrl)
+                cancel()
+            }
+        }
+
+    @Test
+    fun invoke_catalogueIsOrdered_byTheContentsCategoryOrderThenByName() =
+        runTest {
+            useCase().test {
+                // `terre` is order 4 and `musique` order 1, and the land activity is the earlier
+                // Slot — so a Catalogue ordered by the timetable would put it first.
+                repository.emitStatus(ready(slots = listOf(unoTournament(), dubside())))
+
+                assertEquals(listOf("dubside", "uno"), awaitItem().catalogue.map { it.id })
+                cancel()
+            }
+        }
+
+    @Test
+    fun invoke_happeningIsInTheCatalogueButHasNoSlotYet_stillOffersItsCategoryChip() =
+        runTest {
+            useCase().test {
+                repository.emitStatus(
+                    ready(
+                        slots = listOf(dubside()),
+                        happenings = listOf(dubside().happening, unoTournament().happening),
+                    ),
+                )
+
+                // The chips filter both views, so they have to cover both. Without the union, an
+                // Activity published before its hours would sit in the Catalogue with no way to
+                // filter to it.
+                assertEquals(listOf("musique", "terre"), awaitItem().categories.map { it.id })
+                cancel()
+            }
+        }
+
+    @Test
+    fun invoke_editionHasSlots_saysTheProgrammeIsPublished() =
+        runTest {
+            useCase().test {
+                repository.emitStatus(ready(slots = listOf(dubside())))
+
+                // Read off the Edition rather than off the filtered list, so the three places that
+                // derive a Phase derive the same one.
+                assertEquals(true, awaitItem().hasPublishedProgramme)
+                cancel()
+            }
+        }
+
+    @Test
+    fun invoke_onlyAStandPublishesHours_isNotAPublishedProgrammeToThisScreenAlone() =
+        runTest {
+            useCase().test {
+                repository.emitStatus(ready(slots = listOf(barOpeningHours())))
+
+                val content = awaitItem()
+
+                // The list is empty, but the Edition has Slots — and the shell and Accueil both
+                // read it that way, so this must too or the app would sit in two Phases at once.
+                assertTrue(content.slots.isEmpty())
+                assertEquals(true, content.hasPublishedProgramme)
+                cancel()
+            }
+        }
+
+    private fun supYogaAt(time: String) =
+        Slot(
+            id = "2026:sup-yoga-sat-$time",
+            happening = activity(id = "sup-yoga", name = "SUP Yoga", price = null),
+            day = saturday(),
+            start = Instant.parse("2026-07-11T$time:00+02:00"),
+            end = Instant.parse("2026-07-11T$time:00+02:00").plus(1.hours),
+            provenance = Provenance.CONFIRMED,
+        )
+
+    /**
+     * [happenings] defaults to the ones the Slots hang off, which is what a real bundle holds: the
+     * remote mapper resolves every Slot against the Edition's own list, so a Slot whose Happening
+     * were missing from it could not exist.
+     */
     private fun ready(
         slots: List<Slot>,
         days: List<FestivalDay> = listOf(friday(), saturday(), sunday()),
+        happenings: List<Happening> = slots.map { it.happening }.distinctBy { it.id },
     ) = ContentStatus.Ready(
         bundle =
             ContentBundle(
@@ -179,7 +300,7 @@ class ObserveProgrammeContentUseCaseTest {
                             ),
                         days = days,
                         categories = listOf(MUSIQUE, LAND, RESTAURATION),
-                        happenings = emptyList(),
+                        happenings = happenings,
                         slots = slots,
                         partners = emptyList(),
                         figures = emptyList(),
@@ -228,9 +349,9 @@ class ObserveProgrammeContentUseCaseTest {
                     name = "Dubside",
                     category = MUSIQUE,
                     description = null,
-                    images = emptyList(),
+                    images = listOf(Image(url = "https://example.test/dubside.webp", credit = null)),
                     provenance = Provenance.CONFIRMED,
-                    genres = emptyList(),
+                    genres = listOf("Techno-house"),
                     links = emptyList(),
                 ),
             day = saturday(),
