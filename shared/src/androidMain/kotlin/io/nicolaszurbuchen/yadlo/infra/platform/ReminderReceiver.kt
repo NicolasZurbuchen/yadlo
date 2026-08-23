@@ -6,6 +6,8 @@ import android.content.Context
 import android.content.Intent
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
+import io.nicolaszurbuchen.yadlo.shared.R
 
 /**
  * Posts one reminder, at the moment its alarm goes off.
@@ -30,7 +32,11 @@ class ReminderReceiver : BroadcastReceiver() {
 
         val builder =
             NotificationCompat.Builder(context, REMINDER_CHANNEL_ID)
-                .setSmallIcon(android.R.drawable.ic_dialog_info)
+                .setSmallIcon(R.drawable.ic_notification)
+                // Tints the icon and the app name on the notification itself. The small icon in the
+                // status bar is not affected — the system owns that one and paints it to match
+                // whatever is around it.
+                .setColor(ContextCompat.getColor(context, R.color.notification_accent))
                 .setContentTitle(title)
                 .setContentText(body)
                 .setAutoCancel(true)
