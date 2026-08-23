@@ -13,6 +13,7 @@ import io.nicolaszurbuchen.yadlo.common.content.domain.repository.ContentReposit
 import io.nicolaszurbuchen.yadlo.common.plan.domain.model.SavedKind
 import io.nicolaszurbuchen.yadlo.common.plan.domain.repository.PlanRepository
 import io.nicolaszurbuchen.yadlo.common.reminder.domain.repository.ReminderSettingsRepository
+import io.nicolaszurbuchen.yadlo.infra.notification.NotificationPermissionSignal
 import io.nicolaszurbuchen.yadlo.infra.notification.rememberNotificationPermissionRequester
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
@@ -51,6 +52,7 @@ fun ReminderEffects() {
     val contentRepository = koinInject<ContentRepository>()
     val scheduler = koinInject<ReminderScheduler>()
     val settingsRepository = koinInject<ReminderSettingsRepository>()
+    val permissionSignal = koinInject<NotificationPermissionSignal>()
     val permissionRequester = rememberNotificationPermissionRequester()
     val scope = rememberCoroutineScope()
 
@@ -80,7 +82,11 @@ fun ReminderEffects() {
         if (known == null || count <= known || hasAsked) return@LaunchedEffect
 
         hasAsked = true
-        permissionRequester.request { scope.launch { scheduler.sync() } }
+
+        // The answer is deliberately not read here. rememberNotificationPermissionRequester
+        // publishes it, and the collector below is what schedules — one rule for all three ways the
+        // permission can be granted rather than this one being special.
+        permissionRequester.request { }
     }
 
     // Three things can alter the answer while the app is open: a heart tapped, a refresh that moves
@@ -90,6 +96,14 @@ fun ReminderEffects() {
         if (saved == null || remindersEnabled == null) return@LaunchedEffect
 
         scheduler.sync()
+    }
+
+    // **The permission, which is the one input to this that cannot be observed.** The Plan, the
+    // content and the visitor's own switch all publish when they change; the operating system only
+    // answers when asked. This is every answer the app receives, from the first heart, from the
+    // switch on Plus > Notifications, and from the debug panel alike.
+    LaunchedEffect(permissionSignal) {
+        permissionSignal.answers.collect { scheduler.sync() }
     }
 
     // And on every resume, for everything that changed while the app was not running: notifications

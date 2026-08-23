@@ -10,7 +10,7 @@ import platform.darwin.dispatch_async
 import platform.darwin.dispatch_get_main_queue
 
 @Composable
-actual fun rememberNotificationPermissionRequester(): NotificationPermissionRequester =
+internal actual fun rememberPlatformNotificationPermissionRequester(): NotificationPermissionRequester =
     remember {
         NotificationPermissionRequester { onResult ->
             UNUserNotificationCenter.currentNotificationCenter().requestAuthorizationWithOptions(
