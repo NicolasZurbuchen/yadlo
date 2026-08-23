@@ -528,15 +528,24 @@ dims when past. `terminé` and the dimming wait for every hour on the row to be 
 past hour dims on its own. Past rows are never collapsed. Countdowns appear only within a one-hour
 window.
 
-**The same tab carries a second view, the Catalogue** — *Programme · Découvrir*, a segmented
-toggle above the filter chips. It is one entry per Happening with no hour and no day on it: the
-photograph, the Category, the name, the description clamped to three lines, and the genres behind
-a rule — the Stand card's three bands, in the same staggered two-column grid. The day chips and
-the hour axis are absent there, because nothing on it has an hour; the Category chips stay,
-because they are what makes it browsable. Every card opens the fiche the Programme row opens.
-**The view the tab opens on follows the Phase — the Catalogue in ANNOUNCED, the timetable in every
-other Phase — decided once per process, never as a redirect** (DECISIONS.md § The Programme tab
-answers two questions).
+**One selector row says what the tab is pointing at** — *Découvrir · Tous · Vendredi · Samedi ·
+Dimanche* — above the Category chips. Five chips, one exclusive choice, no separate view switch.
+
+*Découvrir* is **the Catalogue**: one entry per Happening with no hour and no day on it — the
+photograph, the Category, the name, the description clamped to three lines, and the genres behind a
+rule, which is the Stand card's three bands in the same staggered two-column grid. The hour axis is
+absent there because nothing on it has an hour; the Category chips stay, because they are what makes
+it browsable, and the day chips stay because they are how you leave it. Every card opens the fiche
+the Programme row opens.
+
+*Tous* is **the whole weekend in one scroll**, each day under a sticky header carrying that day's
+name and that day's axis — a span is a fact about one day, and Friday's 16:00–02:00 against Sunday's
+12:00–22:00 is why a single reading in the chrome could not be right about both. A day the filter
+empties is absent, not an empty header.
+
+**What the tab opens on follows the Phase — the Catalogue in ANNOUNCED, the day you are standing in
+during LIVE, the whole weekend otherwise — decided once per process, never as a redirect**
+(DECISIONS.md § The Programme tab answers two questions).
 
 **Mon Yadlo** — the rail variant: date pinned left, items scrolling past, time written once
 as a range, same row vocabulary as Programme — **span bar included**, on one axis shared by every

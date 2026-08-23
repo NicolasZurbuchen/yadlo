@@ -120,9 +120,16 @@ Every Happening the Edition offers, with no hour on it — the answer to *what i
 here*, where the Programme answers *what is on at four o'clock*. One entry per Happening, so
 an activity running six times over two days appears once; the Programme's own rows are Slots
 merged per day, which is a different count of the same festival and not a contradiction.
-Stands are not in it — they are browsed in Plus. Shown as *découvrir*, as the second view of
-the Programme tab rather than as a tab or a screen of its own.
+Stands are not in it — they are browsed in Plus. Shown as *découvrir*, and reached from the
+Programme tab's own selector row rather than from a tab or a screen of its own.
 _Avoid_: Line-up, directory, index, listing, all activities
+
+**Scope**:
+What the Programme tab is pointing at — the Catalogue, the whole weekend, or one FestivalDay.
+One exclusive selection rather than a view switch and a day filter, because every chip in that
+row answers the same question and three of the answers happen to be days. Shown as
+*Découvrir · Tous · Vendredi · Samedi · Dimanche*.
+_Avoid_: View, mode, tab, filter
 
 ### How things are grouped
 

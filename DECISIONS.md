@@ -435,11 +435,45 @@ what the festival offers in one place, and a visitor who does not yet know what 
 for it. That is a discovery problem, and search is the wrong instrument for it: a search field is
 retrieval for somebody who already has a word.
 
-**A toggle rather than a fifth tab, and rather than a screen behind the search icon.** The two
-views share the tab, the Category chips and the fiche every item opens, and a second navigation
-entry onto the same thirty Happenings is what "one place to browse a thing, one place to see what
-you kept" forbids. Behind a magnifying glass it would have been a browse surface nobody finds,
-which is the failure the Catalogue exists to fix.
+**One selector row rather than a fifth tab, a screen behind the search icon, or a control of its
+own.** The scopes share the tab, the Category chips and the fiche every item opens, and a second
+navigation entry onto the same thirty Happenings is what "one place to browse a thing, one place to
+see what you kept" forbids. Behind a magnifying glass it would have been a browse surface nobody
+finds, which is the failure the Catalogue exists to fix.
+
+*Reversed twice on the way to one row.* It shipped first as a Material segmented control above the
+day chips, spaced away from them so it would not read as a third filter. That was wrong on the
+premise — the day chips are exclusive too, and nobody reads *Vendredi · Samedi · Dimanche* as three
+independent switches — and it paid for the distinction in the wrong currency: 40dp against a 32dp
+chip, fully rounded ends against an 8dp corner, at the top of the chrome. Redrawn as a chip row it
+was still a row, which left three rows and an axis above the first of fifteen. Merging it into the
+day chips cost nothing, because the split was never real: every chip there answers *what am I
+looking at*, and three of the answers happen to be days.
+
+**An icon pair in the top app bar was refused, and a FAB with it.** Icon-only removes the reason the
+Catalogue exists — the visitor it is for does not know there is a second list, so there is nothing
+for a glyph to remind them of, and two words are the whole discovery affordance. The bar is also the
+shell's, read once for four tabs so the two strings on it cannot drift; a per-tab action means
+hoisting one store into the shell and three tabs carrying an empty slot, which is the hero icon slot
+argument again. A FAB does not save the space either, it covers it — over the bottom of a scrolling
+list, beside the nav bar — and one control with one label can only ever show one of the states,
+so the first press is a guess.
+
+**Tous exists because a day was never the only unit.** The Programme was unconditionally scoped to
+one day, so the app could show 14, 15 or 15 rows and never the weekend. It is the default in every
+phase but LIVE: off season, the week before and the weeks after are all read from a sofa across all
+three days, and APPROACHING is the one that matters, because it is the only time anyone builds a
+Plan and nobody builds one a day at a time. LIVE is the exception — on site the question is "what is
+on now", which is about the day you are standing in, taken off the FestivalDay window so 01:00 on
+the Saturday is still Friday and 04:00 lands on the day about to open.
+
+**Each day keeps its own axis, and that is what makes the sticky header load-bearing.** A span is a
+fact about one day: Friday runs 16:00–02:00 and Sunday 12:00–22:00, so a single reading in the
+chrome could only be right about one of the three, and a scale that is wrong about the bars under it
+does not fail to answer the question — it answers it wrongly. Pinning the header keeps the reading
+on screen belonging to the rows on screen. It wears the chrome's blue so it reads as the toolbar
+briefly growing a line rather than as a card wedged into the list, and because [SlotScaleRow]'s ink
+is the one that blue carries.
 
 **The card is not the row minus the time.** A Programme row carries the name, the Category, the
 price, the hours, a live-state pill and a bar; it has no room for the photograph, the genres or the
