@@ -1405,6 +1405,19 @@ whether or not the prompt succeeds.** What is recorded is that the visitor asked
 stays true when the operating system refuses — and it is what makes the switch come on by itself if
 they later allow notifications in system settings and come back.
 
+**Granting the permission publishes an event, because the permission is the one input to scheduling
+that cannot be observed.** The Plan is a database, the content is a StateFlow, the visitor's own
+switch is a table — all three say when they change. The operating system says nothing; it can only be
+asked, at a moment somebody chose. So every request goes through one wrapper that emits the answer,
+and the shell reschedules off that.
+
+It is a wrapper rather than a line at each call site because the version with three call sites was
+already wrong once: the switch here granted the permission and told nothing, and the reminders were
+scheduled only because the Android system dialog happens to pause the activity underneath it. On iOS
+the alert is drawn in-app, nothing pauses, and nothing would have been scheduled until the next
+foregrounding. A rule a fourth call site cannot fail to follow is worth more than three that
+remembered.
+
 **An unwritten store means on.** Reminders were already being scheduled for everybody who had granted
 the permission before this screen existed, so the default cannot be off without turning the feature
 off for its existing users on an upgrade. Only an explicit tap writes.
