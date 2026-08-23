@@ -31,7 +31,6 @@ actual class Notifier {
         // rather than reconciles: iOS will not answer synchronously what is pending, and cancelling
         // the lot costs nothing.
         center.removeAllPendingNotificationRequests()
-        sweepStaleDelivered(center)
 
         val now = NSDate().timeIntervalSince1970
 
@@ -85,8 +84,13 @@ actual class Notifier {
      * iOS has no equivalent, so the only moment it can be swept is a moment the app is running —
      * which is this one. A notification that fired two minutes ago for a set starting in twenty-eight
      * is deliberately left alone: staleness is the Slot's *end*, not the reminder's own instant.
+     *
+     * Fire-and-forget rather than awaited. Nothing depends on the answer, and a shade tidied a
+     * fraction of a second after the app opened is indistinguishable from one tidied before.
      */
-    private fun sweepStaleDelivered(center: UNUserNotificationCenter) {
+    actual suspend fun clearStaleDelivered() {
+        val center = UNUserNotificationCenter.currentNotificationCenter()
+
         center.getDeliveredNotificationsWithCompletionHandler { delivered ->
             val now = NSDate().timeIntervalSince1970
 

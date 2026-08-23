@@ -14,6 +14,8 @@ import io.nicolaszurbuchen.yadlo.infra.notification.ScheduledNotification
 import io.nicolaszurbuchen.yadlo.infra.time.WallClock
 import io.nicolaszurbuchen.yadlo.infra.ui.formatAsTimeOfDay
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import org.jetbrains.compose.resources.getString
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.notification_approaching_body
@@ -35,8 +37,17 @@ import yadlo.shared.generated.resources.notification_slot_body
  * **Called on every start and every resume, and that is the whole reconciliation strategy.** A pass
  * replaces everything, so an unhearted Slot, a Slot the content dropped, a set whose hours moved and
  * a reminder whose moment has passed are not four cases — they are one, and it is "absent from the
- * list this time". The cost is rescheduling a few dozen alarms on resume, which is not measurable;
- * what it buys is that there is no state to get wrong.
+ * list this time". What it buys is that there is no state to get wrong.
+ *
+ * **[lastScheduled] is what stops that costing something on every resume.** Replacing is cheap to
+ * reason about and not cheap to perform: on Android each id is a `PendingIntent` lookup, a cancel and
+ * a second lookup before the alarm is even set, so a Plan with forty Slots is a couple of hundred
+ * binder calls to `AlarmManager` — every time the visitor flips back to the app. Nothing in the
+ * desired list is relative to now, so an unchanged Plan and unchanged content produce a list that is
+ * equal in the data-class sense, and there is nothing to say to the system.
+ *
+ * It is held in memory rather than persisted, which is deliberate: after process death nothing here
+ * can know what the OS still holds, so the first pass of a new process always talks to it.
  *
  * **On testing this by hand.** Time travel does not reach it: [WallClock] is deliberately not the
  * clock the debug panel moves, so simulating the Saturday evening changes every screen and no alarm.
@@ -52,16 +63,45 @@ class ReminderScheduler(
     private val notifier: Notifier,
     private val wallClock: WallClock,
 ) {
+    /**
+     * Two callers can arrive at once — a heart tapped as the app resumes — and a pass is a
+     * cancel-everything followed by a schedule-everything. Interleaved, two of those can leave
+     * [lastScheduled] describing a set the system does not actually hold, which is worse than the
+     * work the lock costs.
+     */
+    private val mutex = Mutex()
+
+    private var lastScheduled: List<ScheduledNotification>? = null
+
     suspend fun sync() {
+        mutex.withLock {
+            // Before the short-circuit below, never after it: what is delivered goes stale on the
+            // festival's clock, not on whether the Plan changed, and the ordinary resume is exactly
+            // the case where the schedule is identical and the shade is not.
+            notifier.clearStaleDelivered()
+
+            val desired = desiredNotifications() ?: return@withLock
+
+            if (desired == lastScheduled) return@withLock
+
+            notifier.replaceScheduled(desired)
+            lastScheduled = desired
+        }
+    }
+
+    /**
+     * What should be scheduled right now, or null for "no answer" — which is not the same as an
+     * empty list and must not be treated as one. Content that has not loaded yet cannot say what a
+     * visitor's reminders are, and wiping the alarms of a cold start to find out a moment later is
+     * the one outcome worth avoiding here.
+     */
+    private suspend fun desiredNotifications(): List<ScheduledNotification>? {
         // Scheduling into a permission that was never granted, or was revoked in settings since,
         // would be work that silently does nothing. Clearing is still worth doing: the visitor may
         // have turned notifications off precisely to stop the ones already scheduled.
-        if (!notifier.isPermissionGranted()) {
-            notifier.replaceScheduled(emptyList())
-            return
-        }
+        if (!notifier.isPermissionGranted()) return emptyList()
 
-        val ready = contentRepository.observeStatus().value as? ContentStatus.Ready ?: return
+        val ready = contentRepository.observeStatus().value as? ContentStatus.Ready ?: return null
         val edition = ready.bundle.edition
 
         val reminders =
@@ -73,7 +113,7 @@ class ReminderScheduler(
                 now = wallClock.now(),
             )
 
-        notifier.replaceScheduled(reminders.map { it.toScheduledNotification() })
+        return reminders.map { it.toScheduledNotification() }
     }
 
     private suspend fun Reminder.toScheduledNotification(): ScheduledNotification =

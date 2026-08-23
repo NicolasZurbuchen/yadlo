@@ -47,6 +47,13 @@ actual class Notifier(
         }
     }
 
+    /**
+     * Nothing to do. Android is told the timeout when the alarm is scheduled — see
+     * [ReminderReceiver] — and dismisses the notification itself when the Slot ends, without the app
+     * running or even existing. The seam carries this method for iOS, which has no such thing.
+     */
+    actual suspend fun clearStaleDelivered() = Unit
+
     private fun schedule(
         alarmManager: AlarmManager,
         notification: ScheduledNotification,

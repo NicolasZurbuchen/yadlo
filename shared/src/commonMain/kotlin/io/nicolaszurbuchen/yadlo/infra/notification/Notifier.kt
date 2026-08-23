@@ -22,9 +22,16 @@ expect class Notifier {
      */
     suspend fun isPermissionGranted(): Boolean
 
-    /**
-     * Cancels everything this app has scheduled, schedules [notifications] in its place, and clears
-     * anything already delivered that [ScheduledNotification.staleAfter] says is past.
-     */
+    /** Cancels everything this app has scheduled and schedules [notifications] in its place. */
     suspend fun replaceScheduled(notifications: List<ScheduledNotification>)
+
+    /**
+     * Clears anything already *delivered* whose [ScheduledNotification.staleAfter] has passed.
+     *
+     * Separate from [replaceScheduled] because the two go stale on different clocks: the schedule
+     * changes only when the Plan or the content does, while the shade fills up as reminders fire. A
+     * caller that skips the reschedule when nothing moved — which is the ordinary case on resume —
+     * still has to run this one.
+     */
+    suspend fun clearStaleDelivered()
 }
