@@ -59,11 +59,10 @@ still deferred: it is what story 16's dormant-user case would need, and DECISION
 content grounds rather than technical ones until the association is on board. Story 17, the
 end-of-slot warning, was dropped rather than deferred; the reasoning is in DECISIONS.md.
 
-One thing is deliberately **not** done yet:
-
-- **There is no *Plus › Notifications* screen.** The permission is asked for at the first heart tap
-  and the OS settings are the only way to turn a category off. Building the row needs a preferences
-  store the app does not have, which is the same thing *Effacer mes données* is waiting on.
+*Plus › Notifications* is built: one switch, stored in its own SQLDelight table under
+`common/reminder/`. It is **not** a generic settings store — a second preference is when that shape
+is earned. *Effacer mes données* is unrelated and needs no storage at all: it is an action wanting a
+repository that can delete, and the screen for it only has to count what is saved.
 
 The other two capabilities the earlier draft assumed are settled: SQLDelight was always wired, and
 Coil3's disk cache is now configured in `infra/image/` and verified on an Android device. The
@@ -125,8 +124,19 @@ to get wrong once.
 ./gradlew ktlintCheck
 ```
 
-Run all three, not just the one you think is relevant — `ktlintCheck` in particular has a
+```bash
+./gradlew :shared:verifyCommonMainAppDatabaseMigration
+```
+
+Run all four, not just the one you think is relevant — `ktlintCheck` in particular has a
 history of catching violations across files a narrower, filtered test run never touches.
+
+The migration check is the odd one out and the reason it is on this list: **a table added to a `.sq`
+file without a matching `.sqm` compiles, runs, and passes every other command here.** It only breaks
+on a device that already had the database, because SQLDelight takes the schema version from the
+migration files rather than the schema files. It has been shipped that way once. Regenerate the
+snapshot with `:shared:generateCommonMainAppDatabaseSchema` whenever a `.sq` file changes, and commit
+the `.db` it writes.
 
 If a Konsist rule fails and you're tempted to change the rule to make it pass: don't. See
 `agents/agent-architecture-convention.md`'s last section.

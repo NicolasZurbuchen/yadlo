@@ -1,0 +1,25 @@
+-- Whether the visitor wants reminders at all.
+--
+-- One row, and its key is a constant. A settings table keyed by name would hold the same single
+-- fact behind a string nobody can typo-check, and a generic key/value store is a shape to reach for
+-- when there is a second preference rather than before — DECISIONS.md is explicit that *Effacer mes
+-- données* and *Langue* are waiting on other things, not on this table.
+--
+-- **The absence of the row is the default, and the default is on.** Reminders were scheduled for
+-- everyone who granted the permission before this switch existed, and a table that has never been
+-- written must not silently turn them off. Only an explicit tap writes here.
+--
+-- Stored as 0/1 rather than declared `AS Boolean`, which SQLDelight treats as a custom type and
+-- would have this table dragging a column adapter through AppDatabase's constructor for one bit.
+-- The conversion lives in the data source, where it is one expression each way.
+CREATE TABLE ReminderSetting (
+    id INTEGER NOT NULL PRIMARY KEY,
+    enabled INTEGER NOT NULL
+);
+
+selectEnabled:
+SELECT enabled FROM ReminderSetting WHERE id = 0;
+
+setEnabled:
+INSERT OR REPLACE INTO ReminderSetting(id, enabled)
+VALUES (0, ?);

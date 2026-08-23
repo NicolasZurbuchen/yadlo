@@ -12,6 +12,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.nicolaszurbuchen.yadlo.common.content.domain.repository.ContentRepository
 import io.nicolaszurbuchen.yadlo.common.plan.domain.model.SavedKind
 import io.nicolaszurbuchen.yadlo.common.plan.domain.repository.PlanRepository
+import io.nicolaszurbuchen.yadlo.common.reminder.domain.repository.ReminderSettingsRepository
 import io.nicolaszurbuchen.yadlo.infra.notification.rememberNotificationPermissionRequester
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
@@ -39,12 +40,17 @@ import org.koin.compose.koinInject
  *
  * Neither platform prompts twice, so this can ask without first checking whether it already has an
  * answer: on Android the contract returns the existing one, on iOS so does `requestAuthorization`.
+ *
+ * **A visitor who has turned the switch off in *Plus › Notifications* is never asked**, which is the
+ * one case where hearting something must not produce a prompt: they have already answered this
+ * question, in the app's own words, and asking again in the system's would be ignoring it.
  */
 @Composable
 fun ReminderEffects() {
     val planRepository = koinInject<PlanRepository>()
     val contentRepository = koinInject<ContentRepository>()
     val scheduler = koinInject<ReminderScheduler>()
+    val settingsRepository = koinInject<ReminderSettingsRepository>()
     val permissionRequester = rememberNotificationPermissionRequester()
     val scope = rememberCoroutineScope()
 
@@ -52,6 +58,7 @@ fun ReminderEffects() {
     // list would say "nothing is saved" a beat before the plan says otherwise.
     val saved by planRepository.observeSaved().collectAsStateWithLifecycle(null)
     val status by contentRepository.observeStatus().collectAsStateWithLifecycle()
+    val remindersEnabled by settingsRepository.observeEnabled().collectAsStateWithLifecycle(null)
 
     val savedSlotCount = saved?.count { it.kind == SavedKind.SLOT }
 
@@ -62,10 +69,12 @@ fun ReminderEffects() {
     // once per composition of the shell is the smaller mistake in both directions.
     var hasAsked by remember { mutableStateOf(false) }
 
-    LaunchedEffect(savedSlotCount) {
+    LaunchedEffect(savedSlotCount, remindersEnabled) {
         val count = savedSlotCount ?: return@LaunchedEffect
         val known = knownSlotCount
         knownSlotCount = count
+
+        if (remindersEnabled != true) return@LaunchedEffect
 
         // known == null is the plan as it already was, not something the visitor just did.
         if (known == null || count <= known || hasAsked) return@LaunchedEffect
@@ -74,10 +83,11 @@ fun ReminderEffects() {
         permissionRequester.request { scope.launch { scheduler.sync() } }
     }
 
-    // The plan changing and the content changing are the two things that can alter the answer while
-    // the app is open — a heart tapped, a refresh that moves a set. Both land here.
-    LaunchedEffect(saved, status) {
-        if (saved == null) return@LaunchedEffect
+    // Three things can alter the answer while the app is open: a heart tapped, a refresh that moves
+    // a set, and the switch on Plus > Notifications. All of them land here, which is what makes the
+    // switch take effect on the same screen rather than on the next launch.
+    LaunchedEffect(saved, status, remindersEnabled) {
+        if (saved == null || remindersEnabled == null) return@LaunchedEffect
 
         scheduler.sync()
     }

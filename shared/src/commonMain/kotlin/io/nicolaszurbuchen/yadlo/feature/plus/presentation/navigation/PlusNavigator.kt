@@ -36,6 +36,8 @@ interface PlusNavigator {
 
     fun navigateToResponsible()
 
+    fun navigateToNotifications()
+
     fun navigateToAbout()
 
     fun navigateToPrivacy()

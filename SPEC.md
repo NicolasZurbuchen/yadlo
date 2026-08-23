@@ -593,11 +593,10 @@ user situation, not by tidiness. Most remaining entries share one text-page temp
 > on them is an app string rather than content, which is exactly what makes them the two rows that
 > survive a publish going missing.
 >
-> **Three rows of the prototype are deliberately absent.** *Plan du site* has no content at all —
+> **Two rows of the prototype are deliberately absent.** *Plan du site* has no content at all —
 > only a parking PDF exists and the booth map has to be drawn. *Langue* would open a picker with one
-> language in it. *Notifications* now has reminders behind it, but nowhere to store an answer — it
-> waits on the same preferences store as *Effacer mes données*, and until then the OS settings are
-> the switch. A row that opens nothing is worse than no row. **Two more are outside this pass**:
+> language in it. *Notifications* is now built — one switch over the reminders. A row that opens
+> nothing is worse than no row. **Two more are outside this pass**:
 > *Éditions précédentes* needs the on-demand third file, the only non-offline feature in the app;
 > *Effacer mes données* needs a repository capability that does not exist yet and is the one row
 > that writes.

@@ -8,6 +8,7 @@ import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.assistance.Ass
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.contact.ContactRoute
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.faq.FaqRoute
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.hours.HoursRoute
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.notifications.NotificationsRoute
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.partners.PartnersRoute
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.payment.PaymentRoute
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.plus.PlusEntryUiModel
@@ -47,6 +48,7 @@ class PlusNavKeyHandler(
                         PlusEntryUiModel.PARTNERS -> navigator.navigateToPartners()
                         PlusEntryUiModel.CONTACT -> navigator.navigateToContact()
                         PlusEntryUiModel.VOLUNTEERING -> navigator.navigateToVolunteering()
+                        PlusEntryUiModel.NOTIFICATIONS -> navigator.navigateToNotifications()
                         PlusEntryUiModel.ABOUT -> navigator.navigateToAbout()
                         PlusEntryUiModel.PRIVACY -> navigator.navigateToPrivacy()
                         PlusEntryUiModel.NEWSLETTER, PlusEntryUiModel.REPORT -> Unit
@@ -74,6 +76,7 @@ class PlusNavKeyHandler(
         entry<ContactDestination> { ContactRoute(onNavigateBack = { navigator.navigateBack() }) }
         entry<VolunteeringDestination> { VolunteeringRoute(onNavigateBack = { navigator.navigateBack() }) }
         entry<AboutDestination> { AboutRoute(onNavigateBack = { navigator.navigateBack() }) }
+        entry<NotificationsDestination> { NotificationsRoute(onNavigateBack = { navigator.navigateBack() }) }
         entry<PrivacyDestination> { PrivacyRoute(onNavigateBack = { navigator.navigateBack() }) }
     }
 }

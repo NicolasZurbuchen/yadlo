@@ -1,0 +1,15 @@
+-- Version 2 held the content cache and the Plan. ReminderSetting arrives with the switch on
+-- Plus > Notifications.
+--
+-- The same reasoning as 1.sqm, and the same trap: SQLDelight takes the schema version from the
+-- migration files, not from the .sq files, so adding a table without one leaves the version where it
+-- was and every already-installed app reading a table that was never created for it. A fresh install
+-- would have been fine, which is exactly why it survives testing.
+--
+-- The table is left empty rather than seeded. Absence is what the repository reads as the default,
+-- and writing `enabled = 1` here would say the same thing today and the wrong thing the moment the
+-- default is reconsidered.
+CREATE TABLE ReminderSetting (
+    id INTEGER NOT NULL PRIMARY KEY,
+    enabled INTEGER NOT NULL
+);
