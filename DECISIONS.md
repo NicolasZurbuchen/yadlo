@@ -1611,6 +1611,30 @@ follows. A result that opens an empty page is worse than no result: the reader n
 has nothing to say rather than that they asked the wrong question. *Notifications*, *Confidentialité*
 and *À propos* are the app rather than the festival, so they are always there.
 
+**The topic keywords live in the app, and moving them into `festival.json` was turned down.** The
+attraction is real — they are the one part of the corpus that needs a release to change, since every
+other searchable string already comes from the content and a stand added on the Saturday is findable
+the moment the bundle refreshes. Four reasons it still loses:
+
+- **They point at app screens.** `twint` → `PaymentDestination`. A content file carrying a topic id
+  is a content file naming the app’s internal navigation, which is exactly what CONTEXT.md refused
+  for the Annonce URL: *content outlives app versions, and a dead link into a renamed screen is a
+  worse failure than an ordinary broken web link*. Here it would fail more quietly still — a keyword
+  matching a topic the app no longer has simply stops matching.
+- **Six of the fifteen are not about the festival.** `notifications`, `rappels`, `confidentialité`,
+  `rgpd`, `à propos`, `version`. A festival’s content file listing search words for the privacy
+  policy is a category error.
+- **It buys no release.** The list only changes when a screen is added or renamed, and both of those
+  are releases anyway — as are the titles, the icons and the screens themselves. Making one of
+  sixteen app-owned things hot-updatable saves nothing.
+- **There is no telemetry to tune against.** The value of remotely editable search vocabulary is
+  "we saw two hundred misses on that word". Everything here is local by design, so the missing words
+  are a guess either way — and guessing in Kotlin costs nothing extra.
+
+The vocabulary is also the wrong kind of thing to hand to an editor: it is UI synonyms, not festival
+facts. The association’s spreadsheet has stand names and prices; it does not have the words a Vaudois
+might type to reach the timetable.
+
 ## Open
 
 **The accent colour.** `#14618F` is the primary, not an accent — the terminology in earlier
@@ -1629,6 +1653,34 @@ the list has been used with real content.
 returns Happenings rather than Slots, and it does cover practical information — the half still open
 here, and as cheap as this entry guessed. The Wishlist `+` never arrived: Mon Yadlo is recall-only,
 so its empty state points at the stands list rather than at a search of its own.
+
+**Aliases on a Happening.** Deferred, not refused — the half of "put the keywords in the content"
+that survives scrutiny (§ Search above kills the other half). An optional `aliases: []` on a
+Happening, absent meaning today’s behaviour:
+
+```json
+{ "id": "silent-party", "name": "Silent Party",
+  "aliases": ["silent disco", "casque", "silencieuse"] }
+```
+
+It clears every objection the topic keywords could not: it hangs off an id the content file already
+owns rather than an app screen, so nothing the app renames can break it; it is a genuine festival
+fact, because only the association knows people call it a silent disco or that *le bateau* means the
+trampoline flottant; and it changes per edition, with the line-up, which is the cadence content is
+for.
+
+**It is measured rather than imagined.** Thirty-four plausible French queries were run against the
+2026 file: twenty-four hit. Of the ten misses, four are correct — `kebab`, `burger`, `tacos` and
+`cocktail` are things the festival does not have — and three are missing *content* rather than
+missing vocabulary (`bière` and `apéro` find nothing because no bar is modelled; see § Content that
+does not exist yet, which already counts drink stands among the gaps). That leaves exactly four that
+an alias list would fix: `silent disco`, `foot` → *Diffusion de match*, `bateau` and `sable`.
+
+Four queries is a thin case on its own, which is why it is here rather than built. It gets stronger
+the moment the association is authoring the content themselves, since the words are theirs to know.
+Cost when it comes: one optional field in `SCHEMA.md`, one validator line, one field carried through
+the remote mapper to `Happening`, and one branch in `matchedDetail` — where the alias becomes the
+row’s reason line, so a result found that way still says why it is there.
 
 **Plan lifecycle.** SlotIds must be Edition-qualified (`2026:dubside-sat`) so a reused id
 cannot resurrect last year's favourites into this year's Plan. Local storage survives app
