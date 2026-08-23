@@ -547,6 +547,23 @@ empties is absent, not an empty header.
 during LIVE, the whole weekend otherwise — decided once per process, never as a redirect**
 (DECISIONS.md § The Programme tab answers two questions).
 
+**Recherche** — one screen over one corpus, reached from two kinds of door: the field on Accueil in
+ANNOUNCED / APPROACHING / LIVE, and a magnifier in the shell toolbar on the other three tabs. There
+is no per-tab search and no per-tab corpus. The bar is a back chevron and the field, with no title —
+the placeholder *Rechercher dans tout le festival* is both the label and the statement of scope, and
+the keyboard is up on arrival.
+
+It matches names, descriptions, genres, an activity’s suitability line, a stand’s cuisine and every
+dish on every menu, plus the questions and answers of the FAQ and a keyword list per practical
+screen — so `twint` and `parking` are answered as well as `sup`. Matching is diacritic-insensitive
+in both directions. **Every result is something with a fiche or a screen**: a dish resolves to the
+stand that sells it, a question to the page that answers it, and the row writes the text that
+matched underneath itself when it was not the title.
+
+Results come back in three groups — *Programme*, *Sur place*, *Infos pratiques* — which is also how
+the screen demonstrates its own reach. **Nothing about the tab the search was opened from narrows
+it**: the Programme’s day and Category chips are not inherited. Current Edition only
+(DECISIONS.md § Search).
 **Mon Yadlo** — the rail variant: date pinned left, items scrolling past, time written once
 as a range, same row vocabulary as Programme — **span bar included**, on one axis shared by every
 day on screen, with its scale written once in the chrome and inset to where the bars begin
@@ -889,7 +906,8 @@ Listed in full in DECISIONS.md § Open. The ones that will bite soonest:
 
 1. **The accent colour** `#E27BA6` versus `musique` `#DD3B7A` — a pink accent and a magenta
    kind-dot may read as one signal.
-2. **Whether search covers practical information** — nearly free at this corpus size.
+2. ~~**Whether search covers practical information.**~~ Resolved: it does, and it was as cheap as
+   this line guessed. See DECISIONS.md § Search.
 3. **Whether dietary marks stay coloured** in the stand list, where category colour was
    deliberately removed.
 4. Facts to verify with the association: is there an ATM nearby; is there a glass deposit and

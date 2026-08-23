@@ -50,7 +50,7 @@ is `YadloTheme`, and the Compose generated-resources package is now `yadlo.share
 side-by-side reference and deleted once all four tabs had been built against the pattern six times
 over. Nothing of it remains — feature tree, `.sq` file, navigator, DI entry, `NavConfig` entries,
 strings, `AppError.PokemonExplorer` and the `pokemon-explorer` commit scope all went together. The
-five real features are the reference now; `agents/agent-architecture-convention.md` still describes
+six real features are the reference now; `agents/agent-architecture-convention.md` still describes
 the shape.
 
 **Local notifications now exist**, on both platforms, and they are the one part of the app that

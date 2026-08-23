@@ -1521,6 +1521,87 @@ it stores nothing: it counts what is saved and offers to remove it.
 does not have the app. A notification payload never leaves the device, so the objection does not
 apply.
 
+### Search
+
+**One corpus, and the entry points are what make that credible.** A field on Accueil in the three
+phases that have one; a magnifier in the shell toolbar on the other three tabs. Both open the same
+screen over the same index. The alternative — a search bar per screen, scoped to that screen — was
+turned down on the shape of its failure: it fails *silently*. Type `twint` into a Programme-scoped
+search, get nothing, and the conclusion is that the app does not know what TWINT is. A global search
+reached from the Programme fails in the other direction, by returning a *Sur place* heading the
+reader did not expect, which teaches the model in under a second and loses nothing. Those are not
+the same size of mistake.
+
+**No icon on Accueil, and no field anywhere else.** They are two doors to the same room, and on one
+screen side by side they are the duplication rule. The block wins on Accueil because it is the one
+that *teaches* the app has a search; the icon covers the three tabs with no room for a field. The
+sequencing works out: the first encounter is overwhelmingly the block, so the magnifier is met as
+*that thing again* rather than cold.
+
+**Accueil-only was rejected on the LIVE case.** During LIVE the app opens on Programme and Accueil is
+deliberately thin — so a search reachable only from Accueil is a tab switch plus a scroll plus a tap
+away at exactly the moment it is worth the most: on the site, one hand, sun on the screen.
+
+**The bar can carry it because the bar is not a tab’s.** `YadloTopAppBar` at a tab root shows the
+festival’s name and the edition dates, identically on all four tabs — never a tab title. A magnifier
+beside *Yadlo · 10–12 juillet* inherits that. The same icon in the Programme’s own chip row would
+read as scoped, and there it should.
+
+**The scope is stated by the placeholder and demonstrated by the groups.** *Rechercher dans tout le
+festival*, not *Rechercher* — five words in the one place the reader is certainly looking. Then the
+results come back under *Programme*, *Sur place* and *Infos pratiques*, so a query typed from one tab
+that answers with another tab’s heading has shown its own reach without a word of explanation.
+
+**Search never inherits the screen’s filters.** A search opened from the Programme with Samedi and
+*musique* selected returns the whole festival. Inheriting them would make the scope genuinely the
+current screen with nothing on the results page saying so — the one version of this that a reader
+cannot recover from by reading the answer.
+
+**Every result is something with a screen.** Story 8 settles it for the timetable — a result is a
+thing, not an occurrence — and a dish is the same case one level down. `tofu` returns *Végémania*
+with *Ragoût de tofu* written underneath as the reason it matched. A FAQ question is titled in the
+association’s own words and opens the FAQ page. Nothing in the results dead-ends.
+
+**Practical information is indexed as rows plus aliases, not as prose.** Fifteen screens, each with a
+hand-written keyword list — `twint` → Paiement, `parking` → Comment venir. Indexing the paragraphs
+inside those screens would produce a result labelled *Paiement* for a word buried three notes down,
+with no way to show why and nowhere to scroll the reader to. The aliases live on the domain enum and
+are never displayed; the titles are the Plus tab’s own strings, so a screen keeps one name.
+
+**Dietary marks are a filter, not a query.** `vegan`, `sans-gluten` and the other four are a closed
+set the content already models per dish, and someone looking for vegan food wants *every* vegan dish
+rather than a ranked guess. That belongs on the stands list as chips. Not built.
+
+**No LLM, and it is not close.** There is no backend — the content is static JSON on a CDN — so a
+model means a server, a key and a per-query bill on an unofficial app with no revenue. It also means
+a network round-trip at the moment it is least available, which is the argument that already refuses
+live transport API calls. The corpus is about 120 strings, which is far smaller than the thing a
+model is good at. And the deciding one is standing: a generative answer invents sentences about
+somebody else’s festival, which is exactly what killed remote push. The errors are asymmetric — a
+substring search that misses is annoying, a model that confidently says the bar closes at 01:00 sends
+someone home an hour early.
+
+**No index, no FTS, no debounce.** 38 Happenings, 62 dishes, four questions and fifteen topics — a
+substring scan of it is work a phone does between two frames, and the whole edition file is 95 KB.
+SQLDelight FTS would be slower to build than the search it replaces and would put a second copy of
+the content somewhere it can go stale. A debounce would be latency the app chose to add.
+
+**The real work is the accents, and it is a table rather than `expect`/`actual`.** `preverenges` has
+to find *Préverenges*, and commonMain has no `Normalizer`. Android’s `java.text.Normalizer` and
+iOS’s `CFStringTransform` would be two implementations to keep in agreement, neither testable on the
+host JVM. French has about thirty accented letters, so `infra/text/` folds them with a positional
+table and one commonMain function covers both platforms.
+
+**The current Edition only.** Archives load on demand, so covering them would mean either fetching
+every edition at launch — which wrecks the cold start the offline story rests on — or a search that
+silently does not cover what it appears to. That is the scoped-corpus mistake again, wearing a date.
+If an archive list ever needs narrowing, that is a filter on the screen you are standing on.
+
+**A topic is offered only when its section is published**, the same rule the Plus row it opens
+follows. A result that opens an empty page is worse than no result: the reader now believes the app
+has nothing to say rather than that they asked the wrong question. *Notifications*, *Confidentialité*
+and *À propos* are the app rather than the festival, so they are always there.
+
 ## Open
 
 **The accent colour.** `#14618F` is the primary, not an accent — the terminology in earlier
@@ -1535,11 +1616,10 @@ would also resolve the magenta/coral crowding that is currently the palette's cl
 **~~Sorting may be dropped.~~ Resolved: dropped.** See § Programme layout above. Revisit once
 the list has been used with real content.
 
-**Search granularity.** Search runs across the whole programme, not one day, and returns
-Happenings rather than Slots — so an activity running all three days is one result listing
-its three slots, not three near-identical rows. The Wishlist `+` is the same search with
-Activities filtered out. Still to settle: whether it also searches practical information
-("bus", "twint", "parking"), which is nearly free given the corpus is a few dozen items.
+**~~Search granularity.~~ Resolved: built.** See § Search above. It runs across the whole edition and
+returns Happenings rather than Slots, and it does cover practical information — the half still open
+here, and as cheap as this entry guessed. The Wishlist `+` never arrived: Mon Yadlo is recall-only,
+so its empty state points at the stands list rather than at a search of its own.
 
 **Plan lifecycle.** SlotIds must be Edition-qualified (`2026:dubside-sat`) so a reused id
 cannot resurrect last year's favourites into this year's Plan. Local storage survives app

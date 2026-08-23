@@ -1,6 +1,6 @@
 # Agent Architecture Convention
 
-This file exists so an agent can place a new file in the right package and shape a new screen or feature correctly, without re-deriving the architecture from scratch or asking a human. The concrete examples throughout are the five real features; the pattern is what's fixed, not any one feature or its file count.
+This file exists so an agent can place a new file in the right package and shape a new screen or feature correctly, without re-deriving the architecture from scratch or asking a human. The concrete examples throughout are the six real features; the pattern is what's fixed, not any one feature or its file count.
 
 ## Package placement — decision procedure
 
@@ -37,6 +37,7 @@ infra/
 ├── navigation/                  # AppNavigator, NavKeyHandler, NavGraph — feature-agnostic, zero feature imports
 ├── network/                     # Ktor client configuration (expect/actual engine)
 ├── platform/                    # expect/actual platform utilities (BackHandler, Platform)
+├── text/                        # String utilities with no domain vocabulary (diacritic folding for search)
 └── ui/                          # UiText — resource/raw/composite text abstraction
 ```
 
