@@ -6,6 +6,7 @@ import io.nicolaszurbuchen.yadlo.common.content.domain.model.Money
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Price
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Provenance
 import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotLiveStateUiModel
+import io.nicolaszurbuchen.yadlo.feature.programme.domain.model.CatalogueEntry
 import io.nicolaszurbuchen.yadlo.feature.programme.domain.model.ProgrammeContent
 import io.nicolaszurbuchen.yadlo.feature.programme.domain.model.ProgrammeSlot
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
@@ -393,6 +394,82 @@ class ProgrammeUiMapperTest {
 
     // endregion
 
+    // region the Catalogue
+
+    @Test
+    fun toUiModel_catalogueView_dropsTheDayChipsAndTheAxisWithThem() {
+        val model = state(selectedView = ProgrammeViewUiModel.CATALOGUE, selectedDayId = "2026:sat").toUiModel()
+
+        // Nothing in the Catalogue has an hour, so a day chip could only filter it by something it
+        // does not carry and the axis would be measuring nothing.
+        assertTrue(model.days.isEmpty())
+        assertNull(model.scale)
+        assertTrue(model.rows.isEmpty())
+        assertEquals(listOf("amc", "sup-yoga"), model.catalogue.map { it.id })
+    }
+
+    @Test
+    fun toUiModel_catalogueView_keepsTheCategoryChipsBecauseTheyFilterBothViews() {
+        val model =
+            state(
+                selectedView = ProgrammeViewUiModel.CATALOGUE,
+                selectedCategoryIds = setOf("eau"),
+            ).toUiModel()
+
+        assertTrue(model.categories.isNotEmpty())
+        assertEquals(listOf("sup-yoga"), model.catalogue.map { it.id })
+    }
+
+    @Test
+    fun toUiModel_catalogueViewWithNoCategoryChosen_showsEverything() {
+        // Empty is *Tout* here too, and it is the state the view opens in.
+        val model = state(selectedView = ProgrammeViewUiModel.CATALOGUE).toUiModel()
+
+        assertEquals(2, model.catalogue.size)
+        assertNull(model.emptyMessage)
+    }
+
+    @Test
+    fun toUiModel_catalogueFilterMatchesNothing_saysSoRatherThanShowingAnEmptyGrid() {
+        val model =
+            state(
+                selectedView = ProgrammeViewUiModel.CATALOGUE,
+                selectedCategoryIds = setOf("silent"),
+            ).toUiModel()
+
+        assertTrue(model.catalogue.isEmpty())
+        assertEquals(Res.string.programme_empty_filter, model.emptyMessage.resourceId())
+        assertTrue(model.categories.isNotEmpty())
+    }
+
+    @Test
+    fun toUiModel_catalogueCard_carriesThePictureAndTheGenresARowHasNoRoomFor() {
+        val card = state(selectedView = ProgrammeViewUiModel.CATALOGUE).toUiModel().catalogue.first()
+
+        assertEquals("AMC", card.name)
+        assertEquals("Musique", card.categoryName)
+        assertEquals("https://example.test/amc.webp", card.imageUrl)
+        assertEquals(listOf("Electro"), card.genres)
+        assertEquals("Electro lausannoise.", card.description)
+    }
+
+    @Test
+    fun toUiModel_editionPublishedWithNoSlots_offersNoViewToSwitchTo() {
+        val model = state(content = content(slots = emptyList()), selectedDayId = "2026:sat").toUiModel()
+
+        // A control that cannot change the screen is the same mistake as three day chips with
+        // nothing under any of them.
+        assertNull(model.view)
+        assertTrue(model.catalogue.isEmpty())
+    }
+
+    @Test
+    fun toUiModel_noBundleYet_offersNoViewEither() {
+        assertNull(ProgrammeState(now = QUARTER_TO_FOUR).toUiModel().view)
+    }
+
+    // endregion
+
     private fun rowAt(
         now: Instant,
         happeningId: String,
@@ -407,14 +484,38 @@ class ProgrammeUiMapperTest {
     private fun state(
         now: Instant = QUARTER_TO_FOUR,
         content: ProgrammeContent = content(),
+        selectedView: ProgrammeViewUiModel? = ProgrammeViewUiModel.PROGRAMME,
         selectedDayId: String? = null,
         selectedCategoryIds: Set<String> = emptySet(),
     ) = ProgrammeState(
         now = now,
         content = content,
+        selectedView = selectedView,
         selectedDayId = selectedDayId,
         selectedCategoryIds = selectedCategoryIds,
     )
+
+    private fun catalogue() =
+        listOf(
+            CatalogueEntry(
+                id = "amc",
+                name = "AMC",
+                categoryId = "musique",
+                categoryName = "Musique",
+                description = "Electro lausannoise.",
+                imageUrl = "https://example.test/amc.webp",
+                genres = listOf("Electro"),
+            ),
+            CatalogueEntry(
+                id = "sup-yoga",
+                name = "SUP Yoga",
+                categoryId = "eau",
+                categoryName = "Sur l'eau",
+                description = null,
+                imageUrl = null,
+                genres = emptyList(),
+            ),
+        )
 
     private fun content(slots: List<ProgrammeSlot> = saturdaySlots() + amc()) =
         ProgrammeContent(
@@ -430,6 +531,8 @@ class ProgrammeUiMapperTest {
                     Category(id = "eau", name = "Sur l'eau", order = 3),
                 ),
             slots = slots,
+            catalogue = catalogue(),
+            hasPublishedProgramme = slots.isNotEmpty(),
         )
 
     private fun day(

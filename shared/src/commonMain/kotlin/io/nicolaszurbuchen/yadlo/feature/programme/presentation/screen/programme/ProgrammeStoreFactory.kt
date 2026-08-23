@@ -5,6 +5,8 @@ import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
+import io.nicolaszurbuchen.yadlo.common.content.domain.model.Phase
+import io.nicolaszurbuchen.yadlo.common.content.domain.usecase.DerivePhaseUseCase
 import io.nicolaszurbuchen.yadlo.feature.programme.domain.model.ProgrammeContent
 import io.nicolaszurbuchen.yadlo.feature.programme.domain.usecase.ObserveProgrammeContentUseCase
 import io.nicolaszurbuchen.yadlo.infra.time.AppClock
@@ -17,6 +19,7 @@ interface ProgrammeStore : Store<ProgrammeIntent, ProgrammeState, ProgrammeLabel
 class ProgrammeStoreFactory(
     private val storeFactory: StoreFactory,
     private val observeProgrammeContent: ObserveProgrammeContentUseCase,
+    private val derivePhase: DerivePhaseUseCase,
     private val clock: AppClock,
 ) {
     fun create(): ProgrammeStore =
@@ -48,6 +51,10 @@ class ProgrammeStoreFactory(
 
         override fun executeIntent(intent: ProgrammeIntent) {
             when (intent) {
+                is ProgrammeIntent.ViewSelected -> {
+                    dispatch(ProgrammeMessage.ViewSelected(intent.view))
+                }
+
                 is ProgrammeIntent.DaySelected -> {
                     dispatch(ProgrammeMessage.DaySelected(intent.dayId))
                 }
@@ -77,7 +84,11 @@ class ProgrammeStoreFactory(
             scope.launch {
                 observeProgrammeContent().collect { content ->
                     dispatch(
-                        ProgrammeMessage.ContentUpdated(content = content, defaultDayId = defaultDayFor(content)),
+                        ProgrammeMessage.ContentUpdated(
+                            content = content,
+                            defaultDayId = defaultDayFor(content),
+                            defaultView = defaultViewFor(content),
+                        ),
                     )
                 }
             }
@@ -119,6 +130,33 @@ class ProgrammeStoreFactory(
 
             return content.days.firstOrNull { now < it.end }?.id ?: content.days.lastOrNull()?.id
         }
+
+        /**
+         * The view the tab opens on, and the second place the Phase decides what a visitor sees.
+         *
+         * **ANNOUNCED opens on the Catalogue; every other Phase opens on the timetable.** The two
+         * views answer different questions and the year decides which one is being asked. The week
+         * the programme drops, nobody knows what is on the bill yet — the useful screen is the one
+         * that says what there is, and hours nobody has read yet are noise on top of it. By
+         * APPROACHING the question has become "what am I doing on the Saturday", which is the
+         * timetable, and during LIVE it is "what is on now", which is the timetable again.
+         *
+         * Only the opening view. [ProgrammeState.selectedView] takes this once and never again, so
+         * a Phase that turns over while the app is open moves nothing.
+         */
+        private fun defaultViewFor(content: ProgrammeContent): ProgrammeViewUiModel {
+            val phase =
+                derivePhase(
+                    days = content.days,
+                    hasPublishedProgramme = content.hasPublishedProgramme,
+                )
+
+            return if (phase == Phase.ANNOUNCED) {
+                ProgrammeViewUiModel.CATALOGUE
+            } else {
+                ProgrammeViewUiModel.PROGRAMME
+            }
+        }
     }
 
     // internal (not private) so ProgrammeReducerTest can exercise it directly
@@ -128,6 +166,9 @@ class ProgrammeStoreFactory(
                 is ProgrammeMessage.ContentUpdated -> {
                     copy(
                         content = msg.content,
+                        // Written once, by the first bundle to arrive, and then left alone: this is
+                        // a start view rather than a redirect. See ProgrammeState.
+                        selectedView = selectedView ?: msg.defaultView,
                         // A day the visitor picked survives a refresh; one that no longer exists in
                         // the content does not, and neither does an unmade choice.
                         selectedDayId =
@@ -138,6 +179,10 @@ class ProgrammeStoreFactory(
 
                 is ProgrammeMessage.Ticked -> {
                     copy(now = msg.now)
+                }
+
+                is ProgrammeMessage.ViewSelected -> {
+                    copy(selectedView = msg.view)
                 }
 
                 is ProgrammeMessage.DaySelected -> {

@@ -27,6 +27,7 @@ fun ProgrammeRoute(
 
     ProgrammeScreen(
         state = state,
+        onViewClick = { view -> viewModel.onIntent(ProgrammeIntent.ViewSelected(view)) },
         onDayClick = { dayId -> viewModel.onIntent(ProgrammeIntent.DaySelected(dayId)) },
         onCategoryClick = { categoryId -> viewModel.onIntent(ProgrammeIntent.CategoryToggled(categoryId)) },
         onAllCategoriesClick = { viewModel.onIntent(ProgrammeIntent.AllCategoriesSelected) },

@@ -16,10 +16,17 @@ import io.nicolaszurbuchen.yadlo.common.content.presentation.component.SlotScale
 import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotScaleUiModel
 import io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme.CategoryChipUiModel
 import io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme.DayChipUiModel
+import io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme.ProgrammeViewUiModel
 
 /**
- * The day, the kind, and the span the bars are drawn against — everything you set before you read
- * the list.
+ * Which list, then the day, the kind, and the span the bars are drawn against — everything you set
+ * before you read what is below.
+ *
+ * **The toggle is first, and it is spaced away from the rows under it.** It decides what the list
+ * *is*; the chips decide which part of it shows. Read top to bottom the block asks the two
+ * questions in the order they are answered, and the gap is what stops a control that changes the
+ * screen from reading as a third filter over it. In the Catalogue the day row and the scale are
+ * simply absent, so the chrome shrinks to the two rows that still mean something.
  *
  * **The bar's own blue, continuing it.** These are chrome — they do not scroll away with the list,
  * which is half the point of them: a filter you have to scroll back up to change is a filter that
@@ -38,15 +45,30 @@ import io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme
  */
 @Composable
 fun ProgrammeHeader(
+    selectedView: ProgrammeViewUiModel?,
     days: List<DayChipUiModel>,
     categories: List<CategoryChipUiModel>,
     scale: SlotScaleUiModel?,
+    onViewClick: (ProgrammeViewUiModel) -> Unit,
     onDayClick: (String) -> Unit,
     onCategoryClick: (String) -> Unit,
     onAllCategoriesClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier.fillMaxWidth().background(MaterialTheme.appColors.primarySubtle)) {
+        selectedView?.let { view ->
+            ProgrammeViewToggle(
+                selectedView = view,
+                onViewClick = onViewClick,
+                modifier =
+                    Modifier.padding(
+                        start = MaterialTheme.spacing.md,
+                        end = MaterialTheme.spacing.md,
+                        bottom = MaterialTheme.spacing.sm,
+                    ),
+            )
+        }
+
         if (days.isNotEmpty()) {
             DayChipRow(days = days, onDayClick = onDayClick)
         }

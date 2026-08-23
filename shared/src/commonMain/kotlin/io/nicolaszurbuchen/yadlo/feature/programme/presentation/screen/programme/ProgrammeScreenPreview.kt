@@ -28,7 +28,8 @@ import kotlin.time.Duration.Companion.minutes
 
 /**
  * The Saturday at 15:45, which is the moment the prototype was argued from: five things running,
- * two ending, Dubside fifteen minutes out and the morning already dimmed. Then the two empties.
+ * two ending, Dubside fifteen minutes out and the morning already dimmed. Then the Catalogue, the
+ * view the same tab opens on in May, and then the two empties.
  *
  * Written out rather than mapped from a ProgrammeState, because a preview may not import the domain
  * layer and that is where ProgrammeContent lives.
@@ -39,37 +40,58 @@ private class ProgrammeStateProvider : PreviewParameterProvider<ProgrammeUiModel
             // Before the first bundle reaches the screen.
             ProgrammeUiModel(
                 isLoading = true,
+                view = null,
                 days = emptyList(),
                 categories = emptyList(),
                 scale = null,
                 rows = emptyList(),
+                catalogue = emptyList(),
                 emptyMessage = null,
             ),
             ProgrammeUiModel(
                 isLoading = false,
+                view = ProgrammeViewUiModel.PROGRAMME,
                 days = days(),
                 categories = categories(),
                 scale = SlotScaleUiModel(startText = "10:00", middleText = "18:00", endText = "03:00"),
                 rows = saturdayAtQuarterToFour(),
+                catalogue = emptyList(),
+                emptyMessage = null,
+            ),
+            // The Catalogue: no day row and no axis, because nothing on it has an hour. An Artist
+            // with its genres, an Activity with none, and the longest description in the edition
+            // against the shortest — which is the pair the stagger exists for.
+            ProgrammeUiModel(
+                isLoading = false,
+                view = ProgrammeViewUiModel.CATALOGUE,
+                days = emptyList(),
+                categories = categories(),
+                scale = null,
+                rows = emptyList(),
+                catalogue = theCatalogue(),
                 emptyMessage = null,
             ),
             // A filter that matched nothing — the chips stay, since the way out is to change them.
             ProgrammeUiModel(
                 isLoading = false,
+                view = ProgrammeViewUiModel.PROGRAMME,
                 days = days(),
                 categories = categories(selectedId = "silent"),
                 scale = null,
                 rows = emptyList(),
+                catalogue = emptyList(),
                 emptyMessage = UiText.Resource(Res.string.programme_empty_filter),
             ),
-            // Spring: dates published, nothing under them. No day chips, because switching days
-            // cannot help and offering it reads as a screen that failed to load.
+            // Spring: dates published, nothing under them. No day chips and no toggle, because
+            // neither can help and offering them reads as a screen that failed to load.
             ProgrammeUiModel(
                 isLoading = false,
+                view = null,
                 days = emptyList(),
                 categories = emptyList(),
                 scale = null,
                 rows = emptyList(),
+                catalogue = emptyList(),
                 emptyMessage = UiText.Resource(Res.string.programme_empty_unpublished),
             ),
         )
@@ -88,6 +110,64 @@ private class ProgrammeStateProvider : PreviewParameterProvider<ProgrammeUiModel
             CategoryChipUiModel(id = "eau", name = "Sur l'eau", isSelected = selectedId == "eau"),
             CategoryChipUiModel(id = "terre", name = "Sur terre", isSelected = selectedId == "terre"),
             CategoryChipUiModel(id = "enfants", name = "Enfants", isSelected = selectedId == "enfants"),
+        )
+
+    private fun theCatalogue() =
+        listOf(
+            CatalogueCardUiModel(
+                id = "dubside",
+                name = "Dubside",
+                categoryId = "musique",
+                categoryName = "Musique",
+                description =
+                    "Duo lausannois formé en 2019, connu pour ses sets aux frontières de la techno " +
+                        "mélodique et de la house profonde.",
+                imageUrl = null,
+                genres = listOf("Techno-house"),
+            ),
+            CatalogueCardUiModel(
+                id = "gauthier-quenis",
+                name = "Gauthier Quenis",
+                categoryId = "musique",
+                categoryName = "Musique",
+                // The shortest description in the edition, beside the longest below it.
+                description = "Le retour des tubes qui ont bercé une génération.",
+                imageUrl = null,
+                genres = listOf("Années 2000"),
+            ),
+            CatalogueCardUiModel(
+                id = "silent-party",
+                name = "Silent Party",
+                categoryId = "silent",
+                categoryName = "Silent Party",
+                description =
+                    "Trois ambiances, un seul dancefloor et des centaines de casques illuminés. " +
+                        "Choisissez votre canal et changez-en quand l'envie vous prend.",
+                imageUrl = null,
+                genres = listOf("All style"),
+            ),
+            // No genres at all, which is most of the Activities: the band and its rule are absent
+            // rather than empty.
+            CatalogueCardUiModel(
+                id = "sup-yoga",
+                name = "SUP Yoga",
+                categoryId = "eau",
+                categoryName = "Sur l'eau",
+                description = "Une séance de yoga sur paddle, au large de la plage.",
+                imageUrl = null,
+                genres = emptyList(),
+            ),
+            CatalogueCardUiModel(
+                id = "mur-de-grimpe",
+                name = "Le mur de grimpe",
+                categoryId = "enfants",
+                categoryName = "Enfants",
+                description =
+                    "Envie de prendre de la hauteur ? Un mur de grimpe encadré par Totem Escalade, " +
+                        "pour découvrir l'escalade en toute sécurité.",
+                imageUrl = null,
+                genres = emptyList(),
+            ),
         )
 
     /** Bar fractions are measured against the Saturday axis in the scale above: 10:00 to 03:00. */
@@ -246,6 +326,7 @@ private fun ProgrammeScreenLightPreview(
         ProgrammePreviewSurface {
             ProgrammeScreen(
                 state = state,
+                onViewClick = {},
                 onDayClick = {},
                 onCategoryClick = {},
                 onAllCategoriesClick = {},
@@ -264,6 +345,7 @@ private fun ProgrammeScreenDarkPreview(
         ProgrammePreviewSurface {
             ProgrammeScreen(
                 state = state,
+                onViewClick = {},
                 onDayClick = {},
                 onCategoryClick = {},
                 onAllCategoriesClick = {},

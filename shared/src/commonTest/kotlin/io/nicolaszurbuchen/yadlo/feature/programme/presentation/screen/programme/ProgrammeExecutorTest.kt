@@ -14,6 +14,7 @@ import io.nicolaszurbuchen.yadlo.common.content.domain.model.Happening
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Provenance
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Slot
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Venue
+import io.nicolaszurbuchen.yadlo.common.content.domain.usecase.DerivePhaseUseCase
 import io.nicolaszurbuchen.yadlo.feature.programme.domain.usecase.ObserveProgrammeContentUseCase
 import io.nicolaszurbuchen.yadlo.infra.time.AppClock
 import kotlinx.coroutines.Dispatchers
@@ -115,6 +116,82 @@ class ProgrammeExecutorTest {
 
             assertEquals(null, store.state.content)
             assertEquals(null, store.state.selectedDayId)
+        }
+
+    // endregion
+
+    // region the view it opens on
+
+    @Test
+    fun onCreate_theProgrammeHasJustDropped_opensOnTheCatalogue() =
+        programmeTest(startingAt = A_MONTH_BEFORE) { store, repository, _ ->
+            repository.emitStatus(ready())
+            testDispatcher.scheduler.runCurrent()
+
+            // ANNOUNCED. Nobody has read the bill yet, so the useful screen is the one that says
+            // what there is rather than the one that says when it is.
+            assertEquals(ProgrammeViewUiModel.CATALOGUE, store.state.selectedView)
+        }
+
+    @Test
+    fun onCreate_theWeekBefore_opensOnTheTimetable() =
+        programmeTest(startingAt = THREE_DAYS_BEFORE) { store, repository, _ ->
+            repository.emitStatus(ready())
+            testDispatcher.scheduler.runCurrent()
+
+            // APPROACHING: the question has become "what am I doing on the Saturday", and that is
+            // the timetable — DECISIONS.md § APPROACHING exists for one reason.
+            assertEquals(ProgrammeViewUiModel.PROGRAMME, store.state.selectedView)
+        }
+
+    @Test
+    fun onCreate_duringTheFestival_opensOnTheTimetable() =
+        programmeTest(startingAt = SATURDAY_AFTERNOON) { store, repository, _ ->
+            repository.emitStatus(ready())
+            testDispatcher.scheduler.runCurrent()
+
+            assertEquals(ProgrammeViewUiModel.PROGRAMME, store.state.selectedView)
+        }
+
+    @Test
+    fun thePhaseTurnsOverWhileTheAppIsOpen_doesNotMoveTheViewUnderTheReader() =
+        programmeTest(startingAt = A_MONTH_BEFORE) { store, repository, clock ->
+            repository.emitStatus(ready())
+            testDispatcher.scheduler.runCurrent()
+            assertEquals(ProgrammeViewUiModel.CATALOGUE, store.state.selectedView)
+
+            // Midnight on J-7, with a content refresh landing on the other side of it. A start view,
+            // not a redirect — the same distinction TabNavigator.selectStart exists for.
+            clock.instant = THREE_DAYS_BEFORE
+            repository.emitStatus(ready())
+            testDispatcher.scheduler.runCurrent()
+
+            assertEquals(ProgrammeViewUiModel.CATALOGUE, store.state.selectedView)
+        }
+
+    @Test
+    fun viewSelected_switchesIt() =
+        programmeTest(startingAt = SATURDAY_AFTERNOON) { store, repository, _ ->
+            repository.emitStatus(ready())
+            testDispatcher.scheduler.runCurrent()
+
+            store.accept(ProgrammeIntent.ViewSelected(ProgrammeViewUiModel.CATALOGUE))
+
+            assertEquals(ProgrammeViewUiModel.CATALOGUE, store.state.selectedView)
+        }
+
+    @Test
+    fun catalogueClicked_opensTheSameFicheTheTimetableDoes() =
+        programmeTest(startingAt = A_MONTH_BEFORE) { store, repository, _ ->
+            repository.emitStatus(ready())
+            testDispatcher.scheduler.runCurrent()
+
+            // One destination for a Happening however it was found, which is what keeps the
+            // Catalogue a second way of looking rather than a second door.
+            store.labels.test {
+                store.accept(ProgrammeIntent.SlotClicked("dubside"))
+                assertEquals(ProgrammeLabel.NavigateToHappening("dubside"), awaitItem())
+            }
         }
 
     // endregion
@@ -226,6 +303,7 @@ class ProgrammeExecutorTest {
             ProgrammeStoreFactory(
                 storeFactory = DefaultStoreFactory(),
                 observeProgrammeContent = ObserveProgrammeContentUseCase(repository),
+                derivePhase = DerivePhaseUseCase(clock),
                 clock = clock,
             ).create()
 
@@ -264,7 +342,7 @@ class ProgrammeExecutorTest {
                                 ),
                             days = listOf(friday(), saturday(), sunday()),
                             categories = listOf(MUSIQUE),
-                            happenings = emptyList(),
+                            happenings = listOf(dubside().happening),
                             slots = listOf(dubside()),
                             partners = emptyList(),
                             figures = emptyList(),
@@ -328,6 +406,7 @@ class ProgrammeExecutorTest {
         val MUSIQUE = Category(id = "musique", name = "Musique", order = 1)
 
         val A_MONTH_BEFORE = Instant.parse("2026-06-08T12:00:00+02:00")
+        val THREE_DAYS_BEFORE = Instant.parse("2026-07-07T12:00:00+02:00")
         val SATURDAY_SMALL_HOURS = Instant.parse("2026-07-11T01:00:00+02:00")
         val SATURDAY_AFTERNOON = Instant.parse("2026-07-11T15:45:00+02:00")
         val SATURDAY_EVENING = Instant.parse("2026-07-11T20:00:00+02:00")

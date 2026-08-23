@@ -21,8 +21,15 @@ import yadlo.shared.generated.resources.slot_state_starts_in_minutes
 import kotlin.time.Duration
 
 /**
- * One day's Happenings, in order, each carrying every hour it runs that day, its own state against
- * the clock and its own place on the day's span.
+ * Whichever of the tab's two views is showing.
+ *
+ * **The Catalogue leaves before the day is chosen**, because everything below that point — the day
+ * chips, the axis the bars are measured on, the live states — is about a timetable it does not
+ * have. What the two views share is the Category chips and the empty message, and both are built
+ * above the branch so neither view can drift from the other on them.
+ *
+ * The Programme half: one day's Happenings, in order, each carrying every hour it runs that day,
+ * its own state against the clock and its own place on the day's span.
  *
  * Everything is built inside this single function: a UiMapper file is required to hold nothing but
  * the State-to-UiModel extension, so a helper here would have to be local, which Konsist reads as
@@ -34,10 +41,12 @@ fun ProgrammeState.toUiModel(): ProgrammeUiModel {
     val loaded =
         content ?: return ProgrammeUiModel(
             isLoading = true,
+            view = null,
             days = emptyList(),
             categories = emptyList(),
             scale = null,
             rows = emptyList(),
+            catalogue = emptyList(),
             emptyMessage = null,
         )
 
@@ -45,22 +54,63 @@ fun ProgrammeState.toUiModel(): ProgrammeUiModel {
     // every spring. The day chips go with the list: offering three days to switch between when
     // none of them has anything reads as a screen that failed to load.
     if (loaded.slots.isEmpty()) {
+        // The toggle goes with the chips: switching to a Catalogue of things nobody has published
+        // hours for would answer a different question than the one this screen just failed to.
         return ProgrammeUiModel(
             isLoading = false,
+            view = null,
             days = emptyList(),
             categories = emptyList(),
             scale = null,
             rows = emptyList(),
+            catalogue = emptyList(),
             emptyMessage = UiText.Resource(Res.string.programme_empty_unpublished),
         )
     }
 
-    val days = loaded.days.map { DayChipUiModel(id = it.id, name = it.name, isSelected = it.id == selectedDayId) }
+    // Null only in the frame between the store being built and the first bundle landing, which the
+    // loading branch above has already returned for. The timetable is the fallback because it is
+    // the tab's name.
+    val view = selectedView ?: ProgrammeViewUiModel.PROGRAMME
 
     val categories =
         loaded.categories.map {
             CategoryChipUiModel(id = it.id, name = it.name, isSelected = it.id in selectedCategoryIds)
         }
+
+    if (view == ProgrammeViewUiModel.CATALOGUE) {
+        val entries =
+            loaded.catalogue
+                // The same reading of an empty selection as the list below: *Tout*, not a filter
+                // that excludes everything.
+                .filter { selectedCategoryIds.isEmpty() || it.categoryId in selectedCategoryIds }
+                .map { entry ->
+                    CatalogueCardUiModel(
+                        id = entry.id,
+                        name = entry.name,
+                        categoryId = entry.categoryId,
+                        categoryName = entry.categoryName,
+                        description = entry.description,
+                        imageUrl = entry.imageUrl,
+                        genres = entry.genres,
+                    )
+                }
+
+        return ProgrammeUiModel(
+            isLoading = false,
+            view = view,
+            // Both empty on purpose: a Catalogue entry has no day and no hours, so a day chip could
+            // only filter it by something it does not carry, and an axis would measure nothing.
+            days = emptyList(),
+            categories = categories,
+            scale = null,
+            rows = emptyList(),
+            catalogue = entries,
+            emptyMessage = if (entries.isEmpty()) UiText.Resource(Res.string.programme_empty_filter) else null,
+        )
+    }
+
+    val days = loaded.days.map { DayChipUiModel(id = it.id, name = it.name, isSelected = it.id == selectedDayId) }
 
     val daySlots = loaded.slots.filter { it.dayId == selectedDayId }
     val selectedDay = loaded.days.firstOrNull { it.id == selectedDayId }
@@ -185,6 +235,7 @@ fun ProgrammeState.toUiModel(): ProgrammeUiModel {
 
     return ProgrammeUiModel(
         isLoading = false,
+        view = view,
         days = days,
         categories = categories,
         scale =
@@ -198,6 +249,7 @@ fun ProgrammeState.toUiModel(): ProgrammeUiModel {
                 null
             },
         rows = rows,
+        catalogue = emptyList(),
         emptyMessage = if (rows.isEmpty()) UiText.Resource(Res.string.programme_empty_filter) else null,
     )
 }
