@@ -528,6 +528,16 @@ dims when past. `terminé` and the dimming wait for every hour on the row to be 
 past hour dims on its own. Past rows are never collapsed. Countdowns appear only within a one-hour
 window.
 
+**The same tab carries a second view, the Catalogue** — *Programme · Découvrir*, a segmented
+toggle above the filter chips. It is one entry per Happening with no hour and no day on it: the
+photograph, the Category, the name, the description clamped to three lines, and the genres behind
+a rule — the Stand card's three bands, in the same staggered two-column grid. The day chips and
+the hour axis are absent there, because nothing on it has an hour; the Category chips stay,
+because they are what makes it browsable. Every card opens the fiche the Programme row opens.
+**The view the tab opens on follows the Phase — the Catalogue in ANNOUNCED, the timetable in every
+other Phase — decided once per process, never as a redirect** (DECISIONS.md § The Programme tab
+answers two questions).
+
 **Mon Yadlo** — the rail variant: date pinned left, items scrolling past, time written once
 as a range, same row vocabulary as Programme — **span bar included**, on one axis shared by every
 day on screen, with its scale written once in the chrome and inset to where the bars begin

@@ -115,6 +115,15 @@ that could contradict each other, and one content edit adding a non-vegan dish w
 Stand's list quietly false. A dish with no Mark counts against every one of them.
 _Avoid_: Stand mark, stand-level mark
 
+**Catalogue**:
+Every Happening the Edition offers, with no hour on it — the answer to *what is there to do
+here*, where the Programme answers *what is on at four o'clock*. One entry per Happening, so
+an activity running six times over two days appears once; the Programme's own rows are Slots
+merged per day, which is a different count of the same festival and not a contradiction.
+Stands are not in it — they are browsed in Plus. Shown as *découvrir*, as the second view of
+the Programme tab rather than as a tab or a screen of its own.
+_Avoid_: Line-up, directory, index, listing, all activities
+
 ### How things are grouped
 
 **Category**:
