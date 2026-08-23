@@ -11,18 +11,15 @@ around May 2027. Roughly eleven months of runway, with no live event to test aga
 **Status.** Unofficial / portfolio build now, aiming to become the official app for 2027.
 Consequence: no broadcast push and no volunteer features until the association is on board.
 
-**Comms.** An in-app feed of annonces from `announcements.json`, and **notifications deferred past
-v1 — local ones included.** There is no notification code on either platform, no `expect`/`actual`
-seam and no `POST_NOTIFICATIONS` permission, so the `Notifier` interface is the whole feature
-rather than a wrapper over something that exists.
+**Comms.** An in-app feed of annonces from `announcements.json`, **local notifications on both
+platforms**, and **remote push still deferred**. The local half is built: a reminder before each
+saved Slot, and three that mark the turns of the year. Story 17 was dropped and story 16's
+dormant-user case is what push would buy — see § Notifications below.
 
-Deferring it costs exactly two user stories, 16 and 17 — the reminder before a saved Slot and the
-warning as one ends. Everything else that looks time-driven reads the injected clock and recomputes
-on the ticker, so Phase, the live-state pills, the countdowns and Mon Yadlo are all unaffected. That
-is a small enough blast radius to be worth taking, given the feature is two platform
-implementations and a permission prompt.
+Everything else that looks time-driven reads the injected clock and recomputes on the ticker, so
+Phase, the live-state pills, the countdowns and Mon Yadlo are unaffected by any of it.
 
-When it lands it is local only, with remote push behind the same interface so FCM can drop in
+Push stays behind the same interface so FCM can drop in
 without a rewrite. Volunteer group chat stays out of scope — it is a second product and requires
 being official.
 
@@ -671,8 +668,9 @@ its own screen. Horaires and Paiement both did.
 
 **Three rows of the prototype are not built, and the reason is the same each time**: a row that
 opens nothing is worse than no row. *Plan du site* has no content at all — only a parking PDF
-exists. *Langue* would open a picker with one language in it. *Notifications* are a settled deferral
-past v1. Two more are outside this pass rather than refused: *Éditions précédentes* needs the
+exists. *Langue* would open a picker with one language in it. *Notifications* now has something to
+show — the reminders are built — but no way to store an answer; it is waiting on the same
+preferences store as *Effacer mes données*, and until then the OS settings are the switch. Two more are outside this pass rather than refused: *Éditions précédentes* needs the
 on-demand third file, and *Effacer mes données* needs a repository capability that does not exist.
 
 *L'application*
@@ -1300,6 +1298,96 @@ no store listing, so the button would send yadlo.ch, which the recipient can alr
 real the day there is a Play Store URL. Sharing *l'histoire de Yadlo* was dropped too — there is no
 public page for it, so it would forward a paragraph of prose. Both are buttons that exist because
 they can rather than because anyone wants them.
+
+### Notifications
+
+**Local only, and hand-rolled rather than taken from a library.** The two real KMP candidates are
+Alarmee and KMPNotifier. Neither solves the two parts that are actually hard — rescheduling after an
+Android reboot, and the iOS cap on pending requests — so the reconciliation layer gets written
+either way, and what a library would save is the two `actual` bodies. Alarmee's documentation also
+contradicts itself about whether iOS *local* notifications need Firebase; pulling the Firebase SDK
+into an app whose *Confidentialité* screen says it sends nothing is a documentation problem before
+it is a technical one. The seam is five methods and the codebase already had three like it.
+
+**The scheduler reads `WallClock`, and it is the only thing in the app that does not read
+`AppClock`.** This is a real exception to the injected-clock rule, not a lapse. `AlarmManager` and
+`UNUserNotificationCenter` take an absolute instant and compare it to wall time, so a reminder
+planned from a simulated Saturday evening would be handed a July instant and fire in eleven months,
+or never. `Clock.System` is still constructed exactly once, in `timeModule`; what changed is that
+it now has two names, and the naming is what stops a call site getting the wrong one by accident.
+
+The consequence is that **reminders cannot be checked by time travel**, which is how everything else
+in this app is checked. Three layers replace it. The planner is a pure function taking `now` as a
+parameter, so its whole contract — the lead time, the cap, unhearting, milestone instants — is host
+tests at any date. The debug panel fires one in sixty seconds, which proves the pipe. And the real
+end-to-end test is moving the *device* clock to 21:25 on the Friday before opening the app, which
+makes both clocks agree and leaves the alarm genuinely five minutes out.
+
+**Inexact alarms on Android, and the lead time is what pays for it.** `setExactAndAllowWhileIdle`
+needs `SCHEDULE_EXACT_ALARM`, denied by default since Android 14 and returnable only through a
+system settings screen; `USE_EXACT_ALARM` is restricted by Play policy to alarm clocks and
+calendars and reviewed at submission. A festival companion arguing it is a calendar app is a fight
+to lose at the worst possible moment. `setAndAllowWhileIdle` needs no permission, fires in Doze, and
+drifts a few minutes — invisible inside a thirty-minute warning. Shortening the lead would quietly
+break that, which is why the constant carries the reasoning.
+
+For the same reason the notification says *ça commence à 22:00* rather than *dans 30 minutes*: a
+clock time is true whenever it arrives, and a countdown baked in at schedule time is a promise the
+scheduler is not making.
+
+**Thirty minutes, not sixty, and no picker.** The site is one beach you can cross in four minutes.
+The reminder is not travel time, it is not losing track of something while you are at the bar. A
+minutes picker is the kind of knob that reads as configurability and never gets moved.
+
+**Replace, never reconcile.** Every pass cancels everything and schedules the desired set. Asking
+each platform what it holds is awkward — iOS answers asynchronously, Android does not answer at all
+— and every caller would then need diffing logic that has to be right about cancellation. At tens
+of items on app start the cost is not measurable, and it collapses four questions into one: an
+unhearted Slot, a Slot the content dropped, a set whose hours moved and a reminder whose moment has
+passed are all just absent from the next list.
+
+Android cannot be asked which alarms it holds, so cancelling requires remembering; that is the only
+reason a preferences file exists in `Notifier.android.kt`, and it holds ids and nothing else.
+
+**A cap of sixty, protecting against iOS.** iOS drops local notification requests past 64 silently —
+no error, no log. The 2026 Edition has 48 Slots, so hearting every single one already fits and the
+cap never bites; it is there because the count is content-driven and nothing else in the app would
+notice an Edition that doubled.
+
+**Permission is asked at the first heart tap, never at launch.** Both platforms treat a refusal as
+final, so there is one attempt to spend. Asked at startup it is an app the visitor has not used yet
+asking to interrupt them; asked at the first heart it is a prompt about the thing they just did. The
+cost is that somebody who saves nothing never gets the milestone notifications, which is the right
+trade — they are the ones who wanted them least.
+
+**Three milestones, and the LIVE one deliberately does not fire at its own Phase boundary.** LIVE
+begins at midnight on the Friday. A phone buzzing at 00:00 to say the festival is today wakes
+somebody the night before it starts, so that one fires at 10:00 instead. APPROACHING and ENDED sit
+on their boundaries, which are already J-7 and 11:00 the morning after — both chosen to be humane
+hours for other reasons.
+
+ANNOUNCED is missing from the list and is the one worth wanting. It is the moment a dormant app
+would most like to speak and precisely the one it cannot reach: the phone has to learn the dates
+exist while the app is closed. A daily background poll was considered and works on Android; on iOS,
+background refresh is granted on predicted engagement, so an app unopened for eight months is
+deprioritised to approximately never — it fails exactly for the user it targets. That leaves push,
+which is refused above on content grounds rather than technical ones.
+
+**Story 17 — the warning as a Slot ends — is dropped, not deferred.** § The Plan already argues that
+at a site you can cross in two minutes, catching half of two overlapping things is a normal evening
+rather than a mistake the app should flag. A notification telling somebody that what they are
+currently enjoying is nearly over is the same idea wearing a worse costume.
+
+**Staleness is the Slot's end, never the reminder's own instant.** A notification delivered two
+minutes ago about a set starting in twenty-eight is the opposite of stale. Android is told a timeout
+when the alarm is scheduled and dismisses it itself; iOS has no equivalent and sweeps on next
+launch, which is the only moment it can. Neither is worth more engineering than that — a stale
+reminder is one swipe.
+
+**A custom scheme is right here and wrong for a share, which is the same rule read twice.** §
+*A share is plain text* refused `yadlo://` because a share is precisely the case where the recipient
+does not have the app. A notification payload never leaves the device, so the objection does not
+apply.
 
 ## Open
 

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+        Primaire, from DECISIONS.md § Visual identity. Duplicated out of the Compose palette rather
+        than read from it because a NotificationCompat.Builder runs in a BroadcastReceiver, where
+        there is no composition and therefore no theme to ask.
+    -->
+    <color name="notification_accent">#14618F</color>
+</resources>

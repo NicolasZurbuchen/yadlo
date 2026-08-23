@@ -276,13 +276,13 @@ Built unofficially, with the explicit aim of becoming the association's official
   - *Offline-first disk caching* — **there.** SQLDelight is fully wired with an `expect`/`actual`
     driver factory on both platforms, so persisting a fetched bundle is routine. The bundled
     snapshot this draft once assumed is no longer wanted, so nothing is missing here.
-  - *Local notifications* — **absent entirely.** `infra/platform/` contains only `BackHandler`
-    and `Platform`; there is no notification code, no `expect`/`actual` seam, and no
-    `POST_NOTIFICATIONS` permission in the manifest. The `Notifier` interface is not a
-    formality wrapping an existing capability — it is the whole feature, on two platforms.
-    **Deferred past v1.** The blast radius is exactly one user story — 16, the reminder before a
-    saved item — plus the end-of-slot warnings of story 17. Everything else that looks time-driven
-    (Phase, live pills, countdowns, Mon Yadlo) reads the injected clock and needs no notification.
+  - *Local notifications* — **now built, on both platforms.** `infra/notification/` holds a `Notifier`
+    `expect` class over `AlarmManager` and `UNUserNotificationCenter`, a composable permission
+    seam, and a relay that carries a tap back into the shell. Story 16 is met. Story 17 was dropped
+    rather than deferred — see DECISIONS.md. Remote push is still absent and still deferred.
+    Everything else that looks time-driven (Phase, live pills, countdowns, Mon Yadlo) reads the
+    injected clock and needs no notification; the scheduler is the single exception, and reads
+    `WallClock` because the OS scheduler it hands instants to compares them against wall time.
   - *Disk-cached remote images* — **now configured.** Coil3 was wired to the shared Ktor client
     but built with no `diskCache { }` block, and Coil3 defaults that to null: every image was
     re-fetched on each cold start. It is now built in `infra/image/`, with the cache root behind an
@@ -595,10 +595,12 @@ user situation, not by tidiness. Most remaining entries share one text-page temp
 >
 > **Three rows of the prototype are deliberately absent.** *Plan du site* has no content at all —
 > only a parking PDF exists and the booth map has to be drawn. *Langue* would open a picker with one
-> language in it. *Notifications* are a settled deferral past v1. A row that opens nothing is worse
-> than no row. **Two more are outside this pass**: *Éditions précédentes* needs the on-demand third
-> file, the only non-offline feature in the app; *Effacer mes données* needs a repository capability
-> that does not exist yet and is the one row that writes.
+> language in it. *Notifications* now has reminders behind it, but nowhere to store an answer — it
+> waits on the same preferences store as *Effacer mes données*, and until then the OS settings are
+> the switch. A row that opens nothing is worse than no row. **Two more are outside this pass**:
+> *Éditions précédentes* needs the on-demand third file, the only non-offline feature in the app;
+> *Effacer mes données* needs a repository capability that does not exist yet and is the one row
+> that writes.
 
 **Partenaires** — logos grouped by tier. **Tapping a logo opens that partner's site in the
 browser; a partner with no URL shows a toast saying it has none.** Five of the 39 have no website —
@@ -688,14 +690,16 @@ figures. Accent `#E27BA6` is still open (see DECISIONS.md).
 
 ### Notifications and i18n
 
-- **Notifications are deferred past v1**, local ones included. There is no notification code on
-  either platform, no `expect`/`actual` seam and no `POST_NOTIFICATIONS` permission, so the
-  `Notifier` interface is the whole feature rather than a wrapper over something that exists.
-  When they land they are **local only** — countdown, per-slot reminders, end-of-slot warnings —
-  with remote push behind the same interface so FCM can arrive without a rewrite.
-- **What deferring them actually costs is two user stories**, 16 and 17. Everything else that looks
-  time-driven — Phase, the live-state pills, the countdowns, Mon Yadlo — reads the injected clock
-  and recomputes on the ticker, so it needs no notification and is unaffected.
+- **Local notifications are built; remote push is still deferred.** A reminder fires thirty minutes
+  before each saved Slot, and three more mark the turns of the festival year — a week out, the
+  morning of the first day, the morning after the last. All of them are planned by a pure function
+  and replaced wholesale on every app start, so unhearting, a Slot the content dropped and a
+  reminder whose moment has passed are one case rather than three.
+- **What is still deferred costs one story and a half.** Story 16's dormant-user case — telling
+  somebody in March that next year's dates exist — needs push, and nothing local can learn a date
+  while the app is closed. Story 17, the end-of-slot warning, was dropped outright. Everything else
+  that looks time-driven — Phase, the live-state pills, the countdowns, Mon Yadlo — reads the
+  injected clock and recomputes on the ticker, so it is unaffected either way.
 - **Content is French-only.** Revised after authoring the real 2026 bundle: every human-readable
   field in the content files is a plain string, not a `{fr, en}` object. The festival is French,
   its programme is French, and carrying an `en` key that is empty on all 29 happenings bought
@@ -807,9 +811,11 @@ reducer test, `ContentApiImplTest` before an API test, `FakeContentRepository` b
   section headers — which is the half that matters least. It stays cheap to reverse: strings live in
   `composeResources/values/`, so a second language is a second folder, and the one thing that would
   have made it expensive — localized objects in the content schema — was already rejected.
-- **Notifications of every kind, local included** — deferred past v1. Neither the interface nor the
-  implementation exists today. For remote push specifically there is a second reason on top of the
-  work: an unofficial app broadcasting operational claims is a content problem, not a technical one.
+- **Remote push** — deferred past v1; local notifications are built. The reason is not the work: an
+  unofficial app broadcasting operational claims is a content problem, not a technical one, and next
+  year's dates are exactly the kind of claim it has no standing to make. The `Notifier` seam is
+  written so FCM arrives as a second implementation rather than a rewrite.
+- **The end-of-slot warning (story 17)** — dropped, not deferred. See DECISIONS.md.
 - **Volunteer group chat** — a second product: identity, roles, moderation, retention, and
   someone on call at 02:00. Requires being official.
 - **Personal transport reminders** — dropped from v1. Timetables stay as static content. The
