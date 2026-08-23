@@ -745,8 +745,9 @@ its own screen. Horaires and Paiement both did.
 
 **Two rows of the prototype are not built, and the reason is the same each time**: a row that
 opens nothing is worse than no row. *Plan du site* has no content at all — only a parking PDF
-exists. *Langue* would open a picker with one language in it. *Notifications* is now built. Two more are outside this pass rather than refused: *Éditions précédentes* needs the
-on-demand third file, and *Effacer mes données* needs a repository capability that does not exist.
+exists. *Langue* would open a picker with one language in it. *Notifications* and *Effacer mes
+données* are now both built. One row is outside this pass rather than refused: *Éditions
+précédentes* needs the on-demand third file.
 
 *L'application*
 - Langue · Notifications · Effacer mes données
@@ -1518,7 +1519,8 @@ off for its existing users on an upgrade. Only an explicit tap writes.
 there is a second preference rather than before. *Langue* is the one row that would be a second, and
 it is waiting on a second language rather than on somewhere to put the answer. *Effacer mes données*
 is not a preference at all — it is an action wanting a repository that can delete, and the screen for
-it stores nothing: it counts what is saved and offers to remove it.
+it stores nothing: it counts what is saved and offers to remove it. That is exactly what it turned
+out to be — see § *Effacer mes données* below.
 
 **A custom scheme is right here and wrong for a share, which is the same rule read twice.** §
 *A share is plain text* refused `yadlo://` because a share is precisely the case where the recipient
@@ -1634,6 +1636,117 @@ the moment the bundle refreshes. Four reasons it still loses:
 The vocabulary is also the wrong kind of thing to hand to an editor: it is UI synonyms, not festival
 facts. The association’s spreadsheet has stand names and prices; it does not have the words a Vaudois
 might type to reach the timetable.
+
+### Effacer mes données
+
+**Two things the app holds, two buttons, and only one of them asks first.** The Plan and the
+Wishlist are something the visitor built over a weekend, kept as ids in a local table with nothing
+anywhere else — so removing them cannot be undone, and there is nothing to offer an undo *from*
+without keeping a copy of the very data the screen is emptying. The downloaded photographs are a
+copy of something the network still has. A single *tout effacer* would price the cheap loss at the
+cost of the expensive one, and anybody who only wanted the storage back would be asked to give up
+their festival to get it.
+
+So the confirmation goes on the destructive half alone. Putting one on both is how a confirmation
+stops being one: the second dialog teaches the answer to the first.
+
+**It counts rather than lists, and it counts the two verbs separately.** *7 créneaux · 2 stands*,
+not *9 éléments*. CONTEXT.md keeps *mon programme* and *à essayer* apart everywhere else in the app,
+and the screen that offers to delete them is the last place they should become one undifferentiated
+pile — it is where somebody most needs to know what they are about to lose. A half that is zero is
+absent rather than written as zero: *0 créneaux · 2 stands* spends the loudest half of the line on
+something the reader does not have.
+
+**Neither of them is ever called *favoris*.** The word is on the *Avoid* list for both verbs in
+CONTEXT.md, and this screen is the one most likely to reach for it.
+
+**The clear goes to the table, not through the read.** `observeSaved` drops a row whose `kind` this
+build has no bucket for — a row written by a later version, which is the ordinary consequence of
+local storage outliving the app. A clear built out of what can be read would leave behind exactly
+the rows the visitor was never shown, which is the wrong answer to *effacer mes données*. One
+`DELETE FROM`, every edition included: this is not the Plan lifecycle sweep, which is still open
+below and is about a *previous* edition rather than about what somebody asked to forget.
+
+**Nothing here cancels a reminder, and that is the design rather than an omission.**
+`PlanRemindersUseCase` returns the complete desired schedule rather than a delta, and
+`ReminderEffects` recomputes it whenever the Plan changes — so an emptied Plan cancels its reminders
+by omission, on the path an unhearted Slot already takes. A cancellation written into the clear
+would be a second mechanism doing the first one’s job, noticed only when the two disagreed.
+
+**The picture cache is a port in `infra/`, not a call to Coil from the screen.** It knows no
+Happening, no Edition and no Stand — it is a directory of bytes the app can always fetch again,
+which is the placement rule read straight off. It empties the memory cache with the disk one,
+because leaving the decoded bitmaps behind would have the screens already showing them keep drawing
+pictures the app has just been told to forget, beside a size that has dropped to zero. And the size
+is read back afterwards rather than assumed: a directory Coil could not fully delete has to be
+reported as what is left, not as the zero it hoped for.
+
+**The size is rounded, and it rounds up below a megabyte.** A cache holding one byte is not "0 Ko"
+— that is the same reading as an empty one, on a row whose button is enabled, which is the single
+contradiction this screen can produce. Above a megabyte it keeps one decimal, because the disk cache
+is capped at 128 MB and a realistic edition fills single digits: whole megabytes would put most of
+the picture bank at the same number whatever it held.
+
+**The row is last on the tab, under *Confidentialité*.** It is the answer to the question that
+screen raises — the app keeps nothing but what you kept, and this is where you take it back. Beside
+*Notifications* it would read as a preference, which is the one thing it is not.
+
+### Portrait only
+
+**Locked on both platforms.** Every screen in the app is a single scrolling column measured against
+a phone held upright, and none of them gains a second pane in landscape — a wider Programme row is
+the same row with more empty middle. `portrait` rather than `sensorPortrait`, so a phone lying flat
+on a table cannot flip the app upside down.
+
+It is a request rather than a guarantee on Android: from API 36 the system ignores orientation
+restrictions on displays 600dp and wider, which this app targets. A tablet or an unfolded foldable
+therefore rotates, and the layouts survive it for the same reason they do not benefit from it. The
+declaration is what stops a phone rotating, which is what it is for.
+
+### The chrome is one frame
+
+**The bottom bar takes the top bar's blue.** It was Material's own `surfaceContainer` — a near-white
+in light and a near-black in dark — so the app had a coloured band above the page and a neutral one
+below it, and the ground the tabs are drawn on ran out at a different place from the chrome holding
+them.
+
+**The accent stays as the selected tab's pill, and it had to change step to survive the move.**
+`accentSubtle` is chosen against a page ground and measures **1.34:1 on the dark bandeau blue** — an
+indicator nobody can see. `accent` itself is 1.16:1 on the light one, the same luminance in a
+different hue, so the shape survives colour and vanishes in greyscale. Neither single step of the
+rose ramp clears the 3:1 non-text floor on both bars, because the two bars sit at opposite ends of
+the luminance range. So it became a pair of its own — `accentChrome` / `onAccentChrome`, rose700
+with white ink in light (3.45:1 on the bar) and rose400 with near-black in dark (3.76:1) — swapping
+ends with the theme like every other pair in the file, and asserted in `AppColorTest` rather than
+left as prose.
+
+Everything not inside the pill takes the bar's own ink, selected and unselected alike, exactly as
+the top bar does with its title and its actions. The pill is the selection cue; a second one in the
+label would only be legible to somebody comparing two labels, which is not how a tab bar is read.
+
+### A stand card says *Options*, not the coverage
+
+**Reversed: the card carried the full dietary tags.** *100 % végan · Options sans gluten · Tout sans
+lactose* is three lines of small print under a name and an offering that take two, so the smallest
+thing on the card outweighed what the card is for. None of it is information a browser acts on
+either: how *much* of a carte is vegan matters when choosing a dish, and on a grid of eight trucks
+the question is only whether there is anything here at all.
+
+*Options :* followed by the glyphs is the honest reduction of the three wordings to the one fact
+they share. The coverage is on the fiche one tap away, in full, where the dish list needs it as a
+legend anyway — and the filter row directly above the grid names every mark in words, so a reader
+arriving at these glyphs has already been given the vocabulary. That is the same argument
+`YadloDietaryMarks` makes for a carte, one screen further in.
+
+### A finished hour looks finished on the bar
+
+SUP Yoga runs three hours on the Saturday and the row draws all three, as times on its third line
+and as marks on its bar. The 14:00 greyed out in the text the moment it was over and the mark
+standing for it kept full colour — so the row answered *which of these has gone* one way in words
+and another way in the picture, and the picture is the half that is read at a glance. The segment
+now dims with its time, at the same value, and only while the row itself is not already dimmed: a
+row whose every hour is past dims as a whole, and dimming again inside it would take the bar to 20%
+and out of the day it exists to describe.
 
 ## Open
 
