@@ -112,6 +112,16 @@ sqldelight {
     databases {
         create("AppDatabase") {
             packageName.set("io.nicolaszurbuchen.yadlo.cache")
+
+            // Fails the build when the .sq schema and the migrations disagree, which is the only
+            // thing that catches a table added without a migration file — the app compiles, runs and
+            // tests green either way, and only breaks on a device that already had the database.
+            // Where the .db snapshot of the current schema is kept. Verification replays the
+            // migrations against it, so it is the baseline that makes the check above mean
+            // anything — regenerate it with :shared:generateCommonMainAppDatabaseSchema whenever
+            // a .sq file changes.
+            schemaOutputDirectory.set(file("src/commonMain/sqldelight/databases"))
+            verifyMigrations.set(true)
         }
     }
 }
