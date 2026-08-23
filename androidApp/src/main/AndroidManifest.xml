@@ -19,13 +19,6 @@
     -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
-    <!--
-        Android keeps no record of an alarm across a restart, so without this a Slot hearted on the
-        Thursday loses its reminder to a phone restarted on the Friday. Normal permission, granted at
-        install; see BootReceiver for what it does with it.
-    -->
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-
     <application
         android:name=".YadloApplication"
         android:allowBackup="false"
