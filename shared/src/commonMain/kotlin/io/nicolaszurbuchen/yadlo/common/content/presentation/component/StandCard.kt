@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -11,17 +12,20 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import coil3.compose.AsyncImage
-import io.nicolaszurbuchen.yadlo.app.design.component.YadloDietaryTags
+import io.nicolaszurbuchen.yadlo.app.design.component.YadloDietaryMarks
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.StandCardUiModel
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.img_placeholder
+import yadlo.shared.generated.resources.stands_card_options
 
 /**
  * One Stand, wherever Stands are listed. Opens the fiche, which holds the menu and the single heart
@@ -44,6 +48,19 @@ import yadlo.shared.generated.resources.img_placeholder
  * the disclosure mark has nothing left to add. Colour stays out because the five measured hues
  * belong to what kind of thing a Happening is, and a second colour system on the same screen makes
  * both of them mean less.
+ *
+ * **The third band is one word and the marks, not the marks written out.** *Reversed: it was the
+ * full [YadloDietaryTags].* On a card the tags were the layout — *100 % végan · Options sans gluten
+ * · Tout sans lactose* is three lines of small print under a name and an offering that take two,
+ * so the smallest thing on the card outweighed what the card is for. None of it was information a
+ * browser acts on either: how *much* of a carte is vegan matters when choosing a dish, and on a
+ * grid of eight trucks the question is only whether there is anything here at all. *Options* is
+ * the honest reduction of the three wordings to the one fact they share, and the coverage is on
+ * the fiche one tap away, in full, where the dish list needs it as a legend anyway.
+ *
+ * The filter row above the grid names every mark in words, so a reader arriving at these glyphs
+ * has already been given the vocabulary — which is the same argument [YadloDietaryMarks] makes for
+ * a carte, one screen further in.
  *
  * The dietary band is absent rather than empty when nothing is published, which is every Stand on
  * *Créateurs* and one of the six on *Nourriture & boissons* — a rule under a name with nothing
@@ -114,14 +131,25 @@ fun StandCard(
         if (stand.dietary.isNotEmpty()) {
             HorizontalDivider(color = MaterialTheme.appColors.borderSubtle)
 
-            YadloDietaryTags(
-                tags = stand.dietary,
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm),
+                verticalAlignment = Alignment.CenterVertically,
                 modifier =
-                    Modifier.padding(
-                        horizontal = MaterialTheme.spacing.md,
-                        vertical = MaterialTheme.spacing.sm,
-                    ),
-            )
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            horizontal = MaterialTheme.spacing.md,
+                            vertical = MaterialTheme.spacing.sm,
+                        ),
+            ) {
+                Text(
+                    text = stringResource(Res.string.stands_card_options),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.appColors.textSecondary,
+                )
+
+                YadloDietaryMarks(tags = stand.dietary)
+            }
         }
     }
 }
