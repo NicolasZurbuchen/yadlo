@@ -10,7 +10,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.core.app.NotificationManagerCompat
 
 @Composable
-actual fun rememberNotificationPermissionRequester(): NotificationPermissionRequester {
+internal actual fun rememberPlatformNotificationPermissionRequester(): NotificationPermissionRequester {
     val context = LocalContext.current
 
     // Held outside the contract callback because the launcher gives the result to a lambda it was

@@ -11,6 +11,7 @@ import org.koin.dsl.module
 val notificationModule =
     module {
         singleOf(::NotificationTargetRelay)
+        singleOf(::NotificationPermissionSignal)
 
         // Resolved lazily rather than captured, because Notifier is bound in each platform's own
         // module and may not exist yet when this one is built.

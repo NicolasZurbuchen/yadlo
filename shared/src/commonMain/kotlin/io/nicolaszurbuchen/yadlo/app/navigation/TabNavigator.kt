@@ -33,12 +33,20 @@ class TabNavigator {
      *
      * Idempotent rather than guarded at the call site, because the caller is a composition and
      * cannot promise to run exactly once.
+     *
+     * **Returns whether this call was the first**, which is the shell's only way to tell a cold
+     * start from a rotation. This object is a singleton for the life of the process, so a false
+     * here means the composition came back — a configuration change, the content going away and
+     * returning — while a true means the process itself is new. The tab back stacks are restored
+     * from saved state either way, and only one of those two cases wants them restored.
      */
-    fun selectStart(tab: Tab) {
-        if (hasStarted) return
+    fun selectStart(tab: Tab): Boolean {
+        if (hasStarted) return false
 
         hasStarted = true
         _selectedTab.value = tab
+
+        return true
     }
 
     fun select(tab: Tab) {

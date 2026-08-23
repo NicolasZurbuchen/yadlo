@@ -1254,6 +1254,20 @@ than an inconsistency. Between editions there is nothing to volunteer *for* yet 
 is a way to reach the association during the months it can actually answer; once the programme
 exists it is an edition that has to be staffed, and that is when the association is recruiting.
 
+**A cold start opens every tab at its root, and the saved back stacks are for rotation only.**
+
+Navigation 3 restores each tab's stack from saved state, which cannot tell a rotation from a process
+Android killed while the app was in the background — and the two want opposite things. The selected
+tab is *not* saved and goes back to the Phase's answer, so the half-restored result was the worst of
+both: the visitor came back to Accueil, and the Plus tab underneath was still four screens deep on a
+page they had left days earlier.
+
+Android's own guidance is the other resolution — save the tab too, and make process death invisible.
+It was rejected for a festival app whose screens are all one or two taps from a tab root: coming back
+to a clean shell costs nothing to undo, and coming back somewhere you did not put yourself is
+disorienting in a way no amount of correctness fixes. The signal is [TabNavigator.selectStart]'s
+return value, since that object lives exactly as long as the process does.
+
 **They push onto Accueil's stack, not into the Plus tab.** A tab switch would leave the reader on
 Plus's root when they back out of *Paiement*, somewhere they never chose to be. Pushed, back returns
 to Accueil — the same rule the fiche already follows when it is opened from two different tabs.
@@ -1404,6 +1418,19 @@ Turning the switch on **writes the preference before asking for the permission, 
 whether or not the prompt succeeds.** What is recorded is that the visitor asked for reminders, which
 stays true when the operating system refuses — and it is what makes the switch come on by itself if
 they later allow notifications in system settings and come back.
+
+**Granting the permission publishes an event, because the permission is the one input to scheduling
+that cannot be observed.** The Plan is a database, the content is a StateFlow, the visitor's own
+switch is a table — all three say when they change. The operating system says nothing; it can only be
+asked, at a moment somebody chose. So every request goes through one wrapper that emits the answer,
+and the shell reschedules off that.
+
+It is a wrapper rather than a line at each call site because the version with three call sites was
+already wrong once: the switch here granted the permission and told nothing, and the reminders were
+scheduled only because the Android system dialog happens to pause the activity underneath it. On iOS
+the alert is drawn in-app, nothing pauses, and nothing would have been scheduled until the next
+foregrounding. A rule a fourth call site cannot fail to follow is worth more than three that
+remembered.
 
 **An unwritten store means on.** Reminders were already being scheduled for everybody who had granted
 the permission before this screen existed, so the default cannot be off without turning the feature

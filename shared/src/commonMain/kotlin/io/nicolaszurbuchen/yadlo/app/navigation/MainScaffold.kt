@@ -107,9 +107,10 @@ fun MainScaffold(modifier: Modifier = Modifier) {
     //
     // The shell is not composed until the content is Ready — App.kt holds the splash until then —
     // so the Phase is known on the first pass and there is no second chance to wait for.
-    remember(Unit) {
-        tabNavigator.selectStart(if (phase == Phase.LIVE) Tab.PROGRAMME else Tab.HOME)
-    }
+    val isColdStart =
+        remember(Unit) {
+            tabNavigator.selectStart(if (phase == Phase.LIVE) Tab.PROGRAMME else Tab.HOME)
+        }
 
     val selectedTab by tabNavigator.selectedTab.collectAsStateWithLifecycle()
 
@@ -170,6 +171,21 @@ fun MainScaffold(modifier: Modifier = Modifier) {
         }
 
         notificationRelay.consume()
+    }
+
+    // **A cold start opens each tab at its root, and the saved stacks are for rotation only.**
+    // Navigation 3 restores every stack from saved state, which does not distinguish a rotation from
+    // a process Android killed while the app was in the background — and the two want opposite
+    // things. Restoring after a rotation is the whole point; restoring after a kill dropped the
+    // visitor several screens deep into a tab they had not chosen, since the selected tab is not
+    // saved and had already gone back to the Phase's answer. Half-restored was the worst of both, so
+    // this makes a cold start clean: the Phase's tab, every stack at its root.
+    //
+    // In a `remember` rather than an effect, and above the reads below, because an effect runs after
+    // composition — NavDisplay would draw one frame of the screen being popped. The same reason
+    // selectStart is written where it is.
+    remember(Unit) {
+        if (isColdStart) stacks.values.forEach { it.popToRoot() }
     }
 
     val currentStack = stacks.getValue(selectedTab)
