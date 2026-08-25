@@ -553,8 +553,21 @@ class PresentationLayerTest {
             }
     }
 
+    /**
+     * **The four, plus whatever the State is made of.**
+     *
+     * The fifth kind is the case `ProgrammeScopeState` is: a type the Store holds that is neither
+     * domain nor rendered. It cannot go in the domain, which never sees a scope — no use case takes
+     * one — and it cannot be a UiModel, because nothing renders it and a Contract may not name one.
+     * A screen package has no other file it could live in either: the eight allowed suffixes are the
+     * MVI files and the two mappers.
+     *
+     * So it lives here, suffixed `State`, and the suffix is the law: **everything a Contract
+     * declares beyond the four MVI interfaces is `State`.** The rule did not allow this before
+     * because `HomeState` is made entirely of domain types and the case had not come up.
+     */
     @Test
-    fun `top-level interfaces in Contract files must be the four MVI sealed interfaces`() {
+    fun `top-level interfaces in Contract files must be the four MVI sealed interfaces or a State`() {
         scope.files
             .withNameEndingWith("Contract")
             .withPackage("..presentation.screen..")
@@ -569,7 +582,7 @@ class PresentationLayerTest {
                     )
                 file.interfaces()
                     .filter { it.isTopLevel }
-                    .all { it.name in allowedNames }
+                    .all { it.name in allowedNames || it.name.endsWith("State") }
             }
     }
 

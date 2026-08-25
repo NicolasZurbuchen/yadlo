@@ -47,7 +47,7 @@ private class ProgrammeScreenStateProvider : PreviewParameterProvider<ProgrammeU
             // One day: no header, and the axis is written once in the chrome.
             ProgrammeUiModel(
                 isLoading = false,
-                scopes = scopes(selected = ProgrammeScopeUiModel.Day("2026:sat")),
+                scopes = scopes(selected = ProgrammeScopeState.Day("2026:sat")),
                 categories = categories(),
                 scale = SlotScaleUiModel(startText = "10:00", middleText = "18:00", endText = "03:00"),
                 sections =
@@ -62,7 +62,7 @@ private class ProgrammeScreenStateProvider : PreviewParameterProvider<ProgrammeU
             // been right about both.
             ProgrammeUiModel(
                 isLoading = false,
-                scopes = scopes(selected = ProgrammeScopeUiModel.AllDays),
+                scopes = scopes(selected = ProgrammeScopeState.AllDays),
                 categories = categories(),
                 scale = null,
                 sections =
@@ -94,7 +94,7 @@ private class ProgrammeScreenStateProvider : PreviewParameterProvider<ProgrammeU
             // against the shortest — which is the pair the stagger exists for.
             ProgrammeUiModel(
                 isLoading = false,
-                scopes = scopes(selected = ProgrammeScopeUiModel.Catalogue),
+                scopes = scopes(selected = ProgrammeScopeState.Catalogue),
                 categories = categories(),
                 scale = null,
                 sections = emptyList(),
@@ -104,7 +104,7 @@ private class ProgrammeScreenStateProvider : PreviewParameterProvider<ProgrammeU
             // A filter that matched nothing — the chips stay, since the way out is to change them.
             ProgrammeUiModel(
                 isLoading = false,
-                scopes = scopes(selected = ProgrammeScopeUiModel.Day("2026:sat")),
+                scopes = scopes(selected = ProgrammeScopeState.Day("2026:sat")),
                 categories = categories(selectedId = "silent"),
                 scale = null,
                 sections = emptyList(),
@@ -124,17 +124,17 @@ private class ProgrammeScreenStateProvider : PreviewParameterProvider<ProgrammeU
             ),
         )
 
-    private fun scopes(selected: ProgrammeScopeUiModel) =
+    private fun scopes(selected: ProgrammeScopeState) =
         listOf(
             ScopeChipUiModel(
-                scope = ProgrammeScopeUiModel.Catalogue,
+                id = ProgrammeScopeState.Catalogue.id,
                 label = UiText.Resource(Res.string.programme_scope_catalogue),
-                isSelected = selected is ProgrammeScopeUiModel.Catalogue,
+                isSelected = selected is ProgrammeScopeState.Catalogue,
             ),
             ScopeChipUiModel(
-                scope = ProgrammeScopeUiModel.AllDays,
+                id = ProgrammeScopeState.AllDays.id,
                 label = UiText.Resource(Res.string.programme_scope_all),
-                isSelected = selected is ProgrammeScopeUiModel.AllDays,
+                isSelected = selected is ProgrammeScopeState.AllDays,
             ),
             day(id = "2026:fri", name = "Ven", selected = selected),
             day(id = "2026:sat", name = "Sam", selected = selected),
@@ -144,11 +144,11 @@ private class ProgrammeScreenStateProvider : PreviewParameterProvider<ProgrammeU
     private fun day(
         id: String,
         name: String,
-        selected: ProgrammeScopeUiModel,
+        selected: ProgrammeScopeState,
     ) = ScopeChipUiModel(
-        scope = ProgrammeScopeUiModel.Day(id),
+        id = id,
         label = UiText.Raw(name),
-        isSelected = selected is ProgrammeScopeUiModel.Day && selected.id == id,
+        isSelected = selected is ProgrammeScopeState.Day && selected.id == id,
     )
 
     private fun categories(selectedId: String? = null) =
