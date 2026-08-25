@@ -4,6 +4,7 @@ import app.cash.turbine.test
 import com.arkivanov.mvikotlin.extensions.coroutines.labels
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import io.nicolaszurbuchen.yadlo.common.content.domain.fake.FakeContentRepository
+import io.nicolaszurbuchen.yadlo.common.content.domain.model.StandKind
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase.CREATEURS
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase.ObserveStandDirectoryUseCase
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase.ready
@@ -43,7 +44,7 @@ class StandsExecutorTest {
 
             // Translated once at construction so neither the navigation package nor the mapper has
             // to name a domain type.
-            assertEquals(StandsKindUiModel.MAKERS, store.state.kind)
+            assertEquals(StandKind.MAKERS, store.state.kind)
             assertNull(store.state.directory)
             store.dispose()
         }

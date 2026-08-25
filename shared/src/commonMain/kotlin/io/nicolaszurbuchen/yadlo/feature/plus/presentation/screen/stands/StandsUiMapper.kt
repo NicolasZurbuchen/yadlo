@@ -3,6 +3,7 @@ package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands
 import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloDietaryMarkUiModel
 import io.nicolaszurbuchen.yadlo.app.design.uimodel.toDietaryTags
 import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.StandCardUiModel
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands.mapper.toUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.stands_empty
@@ -10,7 +11,7 @@ import yadlo.shared.generated.resources.stands_filter_all
 import yadlo.shared.generated.resources.stands_no_match
 
 fun StandsState.toUiModel(): StandsUiModel {
-    val title = UiText.Resource(kind.title)
+    val title = UiText.Resource(kind.toUiModel().title)
 
     val loaded =
         directory ?: return StandsUiModel(

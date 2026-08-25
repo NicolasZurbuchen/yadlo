@@ -1,6 +1,7 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands
 
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.DietaryCoverage
+import io.nicolaszurbuchen.yadlo.common.content.domain.model.StandKind
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.model.StandDirectory
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.model.StandListing
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
@@ -21,7 +22,7 @@ import kotlin.test.assertTrue
 class StandsUiMapperTest {
     @Test
     fun toUiModel_beforeAnythingIsRead_isLoadingButAlreadyKnowsItsTitle() {
-        val model = StandsState(kind = StandsKindUiModel.FOOD).toUiModel()
+        val model = StandsState(kind = StandKind.FOOD).toUiModel()
 
         // The title comes from the entry that was tapped, not from the content, so the bar reads
         // correctly while the list is still arriving.
@@ -40,7 +41,7 @@ class StandsUiMapperTest {
 
     @Test
     fun toUiModel_theTitle_matchesTheRowThatOpenedIt() {
-        val model = StandsState(kind = StandsKindUiModel.MAKERS, directory = directory()).toUiModel()
+        val model = StandsState(kind = StandKind.MAKERS, directory = directory()).toUiModel()
 
         assertEquals(UiText.Resource(StandsKindUiModel.MAKERS.title), model.title)
     }
@@ -49,7 +50,7 @@ class StandsUiMapperTest {
     fun toUiModel_nothingPublished_saysSoRatherThanBlamingTheFilter() {
         val model =
             StandsState(
-                kind = StandsKindUiModel.FOOD,
+                kind = StandKind.FOOD,
                 directory = StandDirectory(stands = emptyList(), marks = emptyList()),
             ).toUiModel()
 
@@ -86,7 +87,7 @@ class StandsUiMapperTest {
         // drawing a lone *Tout* that filters nothing.
         val model =
             StandsState(
-                kind = StandsKindUiModel.MAKERS,
+                kind = StandKind.MAKERS,
                 directory = StandDirectory(stands = listOf(listing("la-fanfrelucherie")), marks = emptyList()),
             ).toUiModel()
 
@@ -149,7 +150,7 @@ class StandsUiMapperTest {
 
     @Test
     fun toUiModel_aMarkThisBuildHasNoGlyphFor_losesItsChipRatherThanShowingASlug() {
-        val state = StandsState(kind = StandsKindUiModel.FOOD, directory = directory(marks = listOf("sans-noix")))
+        val state = StandsState(kind = StandKind.FOOD, directory = directory(marks = listOf("sans-noix")))
 
         assertEquals(listOf(Res.string.stands_filter_all), state.toUiModel().chips.map { (it.label as UiText.Resource).id })
     }
@@ -186,7 +187,7 @@ class StandsUiMapperTest {
     }
 
     private fun state(selectedMarks: Set<String> = emptySet()) =
-        StandsState(kind = StandsKindUiModel.FOOD, directory = directory(), selectedMarks = selectedMarks)
+        StandsState(kind = StandKind.FOOD, directory = directory(), selectedMarks = selectedMarks)
 
     private fun directory(marks: List<String> = listOf("vegan", "vegetarien")) =
         StandDirectory(
