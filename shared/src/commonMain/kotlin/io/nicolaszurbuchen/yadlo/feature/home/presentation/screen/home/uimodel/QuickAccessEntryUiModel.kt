@@ -1,4 +1,4 @@
-package io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home
+package io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.uimodel
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.Send

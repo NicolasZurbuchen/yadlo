@@ -1,4 +1,4 @@
-package io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home
+package io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.uimodel
 
 import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloLinkMarkUiModel
 import kotlin.test.Test

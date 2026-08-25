@@ -1,6 +1,8 @@
 package io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home
 
+import io.nicolaszurbuchen.yadlo.common.content.domain.model.Phase
 import io.nicolaszurbuchen.yadlo.feature.home.domain.model.HomeContent
+import io.nicolaszurbuchen.yadlo.feature.home.domain.model.SiteMoment
 import kotlin.time.Instant
 
 sealed interface HomeIntent {
@@ -58,14 +60,14 @@ sealed interface HomeMessage {
      */
     data class ContentUpdated(
         val content: HomeContent,
-        val phase: PhaseUiModel,
-        val siteMoment: SiteMomentUiModel?,
+        val phase: Phase,
+        val siteMoment: SiteMoment?,
     ) : HomeMessage
 
     data class Ticked(
         val now: Instant,
-        val phase: PhaseUiModel,
-        val siteMoment: SiteMomentUiModel?,
+        val phase: Phase,
+        val siteMoment: SiteMoment?,
     ) : HomeMessage
 }
 
@@ -75,13 +77,13 @@ sealed interface HomeMessage {
  */
 data class HomeState(
     val now: Instant,
-    val phase: PhaseUiModel,
+    val phase: Phase,
     val content: HomeContent? = null,
     /**
-     * Null until an Edition with days is loaded, and meaningless outside [PhaseUiModel.LIVE] — the
+     * Null until an Edition with days is loaded, and meaningless outside [Phase.LIVE] — the
      * mapper reads it only in that Phase. Carried beside the Phase rather than derived from it
      * because the two answer different questions: LIVE says the visitor is at the festival, this
      * says whether the beach is currently open.
      */
-    val siteMoment: SiteMomentUiModel? = null,
+    val siteMoment: SiteMoment? = null,
 )

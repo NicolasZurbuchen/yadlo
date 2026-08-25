@@ -4,7 +4,7 @@ import androidx.navigation3.runtime.EntryProviderScope
 import androidx.navigation3.runtime.NavKey
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.announcements.AnnouncementsRoute
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.HomeRoute
-import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.QuickAccessEntryUiModel
+import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.uimodel.QuickAccessEntryUiModel
 import io.nicolaszurbuchen.yadlo.infra.navigation.NavKeyHandler
 
 class HomeNavKeyHandler(

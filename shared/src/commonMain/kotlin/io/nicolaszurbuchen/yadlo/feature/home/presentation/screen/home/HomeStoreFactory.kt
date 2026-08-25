@@ -8,7 +8,6 @@ import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Phase
 import io.nicolaszurbuchen.yadlo.common.content.domain.usecase.DerivePhaseUseCase
 import io.nicolaszurbuchen.yadlo.feature.home.domain.model.HomeContent
-import io.nicolaszurbuchen.yadlo.feature.home.domain.model.SiteMoment
 import io.nicolaszurbuchen.yadlo.feature.home.domain.usecase.DeriveSiteMomentUseCase
 import io.nicolaszurbuchen.yadlo.feature.home.domain.usecase.ObserveHomeContentUseCase
 import io.nicolaszurbuchen.yadlo.infra.time.AppClock
@@ -30,7 +29,7 @@ class HomeStoreFactory(
             HomeStore,
             Store<HomeIntent, HomeState, HomeLabel> by storeFactory.create(
                 name = "HomeStore",
-                initialState = HomeState(now = clock.now(), phase = PhaseUiModel.OFF_SEASON),
+                initialState = HomeState(now = clock.now(), phase = Phase.OFF_SEASON),
                 bootstrapper = BootstrapperImpl(),
                 executorFactory = { ExecutorImpl() },
                 reducer = ReducerImpl,
@@ -130,13 +129,19 @@ class HomeStoreFactory(
             )
         }
 
-        private fun siteMomentOf(content: HomeContent?) = deriveSiteMoment(days = content?.days.orEmpty())?.toUiModel()
+        /**
+         * Both stay domain types all the way into the State. The Store is the wrong place to
+         * convert: a UiModel on a Message is a rendering decision taken before anything has been
+         * rendered, and it drags the presentation type back through the Reducer. `HomeUiMapper`
+         * converts on the way out, which is the only direction that crossing goes.
+         */
+        private fun siteMomentOf(content: HomeContent?) = deriveSiteMoment(days = content?.days.orEmpty())
 
-        private fun phaseOf(content: HomeContent?): PhaseUiModel =
+        private fun phaseOf(content: HomeContent?): Phase =
             derivePhase(
                 days = content?.days.orEmpty(),
                 hasPublishedProgramme = content?.hasPublishedProgramme == true,
-            ).toUiModel()
+            )
     }
 
     // internal (not private) so HomeReducerTest can exercise it directly
@@ -163,20 +168,3 @@ class HomeStoreFactory(
         val TICK_INTERVAL = 1.minutes
     }
 }
-
-private fun SiteMoment.toUiModel(): SiteMomentUiModel =
-    when (this) {
-        is SiteMoment.BeforeFirstDay -> SiteMomentUiModel.BeforeFirstDay(opensAt)
-        is SiteMoment.Open -> SiteMomentUiModel.Open(closesAt)
-        is SiteMoment.Closed -> SiteMomentUiModel.Closed(reopensAt)
-        SiteMoment.Finished -> SiteMomentUiModel.Finished
-    }
-
-private fun Phase.toUiModel(): PhaseUiModel =
-    when (this) {
-        Phase.OFF_SEASON -> PhaseUiModel.OFF_SEASON
-        Phase.ANNOUNCED -> PhaseUiModel.ANNOUNCED
-        Phase.APPROACHING -> PhaseUiModel.APPROACHING
-        Phase.LIVE -> PhaseUiModel.LIVE
-        Phase.ENDED -> PhaseUiModel.ENDED
-    }

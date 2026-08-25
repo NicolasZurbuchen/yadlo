@@ -4,6 +4,10 @@ import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloFigureUiModel
 import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SocialLinkUiModel
 import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.socialIconFor
 import io.nicolaszurbuchen.yadlo.common.time.FESTIVAL_TIME_ZONE
+import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.mapper.toUiModel
+import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.uimodel.PhaseUiModel
+import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.uimodel.QuickAccessEntryUiModel
+import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.uimodel.SiteMomentUiModel
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.uimodel.AnnouncementUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import io.nicolaszurbuchen.yadlo.infra.ui.formatAsShortDate
@@ -77,6 +81,12 @@ import kotlin.time.Duration.Companion.hours
  */
 fun HomeState.toUiModel(): HomeUiModel {
     val loaded = content ?: return HomeUiModel(isLoading = true, blocks = emptyList())
+
+    // **The one crossing, and it happens here.** The Store holds the domain Phase and SiteMoment,
+    // so this is where they become something a Composable can be handed — once, at the top, rather
+    // than at each of the six places below that ask what phase it is.
+    val phase = this.phase.toUiModel()
+    val siteMoment = this.siteMoment?.toUiModel()
 
     // Counted in calendar days in the festival's own zone, never by dividing a Duration: "J-3"
     // means three sleeps away, and it has to say the same thing at 23:00 as it did at 09:00.
