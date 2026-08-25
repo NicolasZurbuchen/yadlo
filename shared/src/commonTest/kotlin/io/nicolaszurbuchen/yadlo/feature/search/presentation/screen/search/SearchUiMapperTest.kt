@@ -72,7 +72,7 @@ class SearchUiMapperTest {
                 query = "sup",
                 programme = listOf(hit(artist("dj-alf"))),
                 onSite = listOf(hit(stand("vegemania"))),
-                topics = listOf(SearchTopicUiModel.PAYMENT),
+                topics = listOf(SearchTopic.PAYMENT),
             ).toUiModel()
 
         assertEquals(listOf("programme", "on-site", "practical"), result.groups.map { it.id })
@@ -94,7 +94,7 @@ class SearchUiMapperTest {
                 query = "sup",
                 programme = listOf(hit(artist("sup"))),
                 onSite = listOf(hit(stand("sup"))),
-                topics = listOf(SearchTopicUiModel.PAYMENT),
+                topics = listOf(SearchTopic.PAYMENT),
                 faq = listOf(question("sup", "Un SUP ?")),
             ).toUiModel()
 
@@ -143,7 +143,7 @@ class SearchUiMapperTest {
 
     @Test
     fun toUiModel_aTopicRow_takesThePlusTabsOwnNameForTheScreen() {
-        val result = state(query = "twint", topics = listOf(SearchTopicUiModel.PAYMENT)).toUiModel()
+        val result = state(query = "twint", topics = listOf(SearchTopic.PAYMENT)).toUiModel()
 
         val row = assertIs<SearchRowUiModel.Practical>(result.groups.single().rows.single())
 
@@ -169,7 +169,7 @@ class SearchUiMapperTest {
         val result =
             state(
                 query = "twint",
-                topics = listOf(SearchTopicUiModel.PAYMENT),
+                topics = listOf(SearchTopic.PAYMENT),
                 faq = listOf(question("entree", "L'entrée est-elle payante ?")),
             ).toUiModel()
 
@@ -194,7 +194,7 @@ class SearchUiMapperTest {
         query: String = "",
         programme: List<SearchHit> = emptyList(),
         onSite: List<SearchHit> = emptyList(),
-        topics: List<SearchTopicUiModel> = emptyList(),
+        topics: List<SearchTopic> = emptyList(),
         faq: List<FaqEntry> = emptyList(),
     ) = SearchState(
         query = query,
@@ -203,10 +203,8 @@ class SearchUiMapperTest {
             SearchResults(
                 programme = programme,
                 onSite = onSite,
-                // The domain form of the topics; the mapper reads the converted list beside it.
-                topics = topics.map { SearchTopic.valueOf(it.name) },
+                topics = topics,
                 faq = faq,
             ),
-        topics = topics,
     )
 }

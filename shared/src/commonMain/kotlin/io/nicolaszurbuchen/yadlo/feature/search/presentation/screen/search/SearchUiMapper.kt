@@ -1,5 +1,6 @@
 package io.nicolaszurbuchen.yadlo.feature.search.presentation.screen.search
 
+import io.nicolaszurbuchen.yadlo.feature.search.presentation.screen.search.mapper.toUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.search_empty
@@ -51,11 +52,13 @@ fun SearchState.toUiModel(): SearchUiModel {
         }
 
     val practicalRows =
-        topics.map { topic ->
+        results?.topics.orEmpty().map { topic ->
+            val matched = topic.toUiModel()
+
             SearchRowUiModel.Practical(
-                id = "topic-${topic.name}",
-                topic = topic,
-                title = UiText.Resource(topic.title),
+                id = "topic-${matched.name}",
+                topic = matched,
+                title = UiText.Resource(matched.title),
             )
         } +
             results?.faq.orEmpty().map { entry ->

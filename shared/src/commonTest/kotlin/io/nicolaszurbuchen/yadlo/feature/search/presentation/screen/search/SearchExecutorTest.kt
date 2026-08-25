@@ -4,6 +4,7 @@ import app.cash.turbine.test
 import com.arkivanov.mvikotlin.extensions.coroutines.labels
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import io.nicolaszurbuchen.yadlo.common.content.domain.fake.FakeContentRepository
+import io.nicolaszurbuchen.yadlo.feature.search.domain.model.SearchTopic
 import io.nicolaszurbuchen.yadlo.feature.search.domain.usecase.MatchSearchQueryUseCase
 import io.nicolaszurbuchen.yadlo.feature.search.domain.usecase.ObserveSearchIndexUseCase
 import io.nicolaszurbuchen.yadlo.feature.search.domain.usecase.activity
@@ -149,7 +150,7 @@ class SearchExecutorTest {
             store.accept(SearchIntent.QueryChanged("questions"))
             testDispatcher.scheduler.runCurrent()
 
-            assertEquals(listOf(SearchTopicUiModel.FAQ), store.state.topics)
+            assertEquals(listOf(SearchTopic.FAQ), store.state.results?.topics)
             store.dispose()
         }
 

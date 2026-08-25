@@ -44,13 +44,8 @@ sealed interface SearchMessage {
         val query: String,
     ) : SearchMessage
 
-    /**
-     * [topics] travels beside [results] because it is the same list converted — see
-     * [SearchState.topics] for why the conversion happens at this boundary rather than in the mapper.
-     */
     data class ResultsUpdated(
         val results: SearchResults,
-        val topics: List<SearchTopicUiModel>,
     ) : SearchMessage
 }
 
@@ -64,13 +59,9 @@ sealed interface SearchMessage {
  *
  * [results] is null until the first bundle arrives, which is also the only state in which the screen
  * cannot answer at all.
- *
- * [topics] is `results.topics` converted at the Store boundary, so the UiMapper can read it without
- * importing the domain — the same arrangement `HappeningState.kind` uses beside its own detail.
  */
 data class SearchState(
     val query: String = "",
     val index: SearchIndex? = null,
     val results: SearchResults? = null,
-    val topics: List<SearchTopicUiModel> = emptyList(),
 )
