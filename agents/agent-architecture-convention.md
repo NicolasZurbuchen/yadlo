@@ -96,6 +96,8 @@ by `konsistTest/PreviewTest.kt`.
   *inside* the provider, where it is visibly in service of the sequence it feeds. The pull is
   always to add a third, and each one is individually reasonable while the file stops being
   readable as "here are the states, here is the screen".
+  A fixture that has to be a `const val` goes in the provider's `companion object` — still inside
+  it, and still not a top-level property the screen looks like it depends on.
 - **One function, not one per theme.** `@PreviewThemes` is the multipreview carrying light and
   dark, so the body is written once. The old shape — `FooScreenPreview` and `FooScreenDarkPreview`
   side by side — meant a fixture change had to be made twice and a preview that drifted from its
