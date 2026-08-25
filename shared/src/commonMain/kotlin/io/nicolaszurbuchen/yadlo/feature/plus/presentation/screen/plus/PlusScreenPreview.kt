@@ -1,18 +1,12 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.plus
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
-import io.nicolaszurbuchen.yadlo.app.design.theme.YadloTheme
-import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
+import io.nicolaszurbuchen.yadlo.app.design.preview.YadloPreview
 import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SocialLinkUiModel
 import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.socialIconFor
+import io.nicolaszurbuchen.yadlo.infra.preview.PreviewThemes
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.plus_about_unofficial
@@ -31,125 +25,109 @@ import yadlo.shared.generated.resources.plus_stands_count
  * usually falls apart, and rows with and without a subtitle sit side by side in it, so the equal
  * heights are something you can see rather than something the code claims.
  */
-private class PlusStateProvider : PreviewParameterProvider<PlusUiModel> {
+private class PlusScreenStateProvider : PreviewParameterProvider<PlusUiModel> {
     override val values =
         sequenceOf(
             PlusUiModel(isLoading = true, groups = emptyList(), socials = emptyList()),
             oneGroup(),
             threeGroups(),
         )
-}
 
-@Preview
-@Composable
-private fun PlusScreenPreview(
-    @PreviewParameter(PlusStateProvider::class) state: PlusUiModel,
-) {
-    YadloTheme {
-        Box(modifier = Modifier.fillMaxSize().background(MaterialTheme.appColors.background)) {
-            PlusScreen(state = state, onEntryClick = {}, onSocialClick = {})
-        }
-    }
+    private fun oneGroup() =
+        PlusUiModel(
+            isLoading = false,
+            groups =
+                listOf(
+                    PlusGroupUiModel(
+                        id = PlusGroupIdUiModel.ON_SITE,
+                        rows =
+                            listOf(
+                                PlusRowUiModel(
+                                    entry = PlusEntryUiModel.STANDS_FOOD,
+                                    subtitle = UiText.Resource(Res.string.plus_stands_count, listOf(6)),
+                                ),
+                                PlusRowUiModel(
+                                    entry = PlusEntryUiModel.PAYMENT,
+                                    subtitle = UiText.Resource(Res.string.plus_payment_no_cash),
+                                ),
+                                PlusRowUiModel(entry = PlusEntryUiModel.HOURS, subtitle = null),
+                            ),
+                    ),
+                ),
+            socials = socials(),
+        )
+
+    private fun threeGroups() =
+        PlusUiModel(
+            isLoading = false,
+            groups =
+                listOf(
+                    PlusGroupUiModel(
+                        id = PlusGroupIdUiModel.ON_SITE,
+                        rows =
+                            listOf(
+                                // A row with a subtitle beside one without: the second must not be
+                                // shorter, or a card of sixteen combs up and down as the content
+                                // publishes one line here and two there.
+                                PlusRowUiModel(
+                                    entry = PlusEntryUiModel.STANDS_FOOD,
+                                    subtitle = UiText.Resource(Res.string.plus_stands_count, listOf(6)),
+                                ),
+                                PlusRowUiModel(entry = PlusEntryUiModel.HOURS, subtitle = null),
+                            ),
+                    ),
+                    PlusGroupUiModel(
+                        id = PlusGroupIdUiModel.FESTIVAL,
+                        rows =
+                            listOf(
+                                PlusRowUiModel(
+                                    entry = PlusEntryUiModel.PARTNERS,
+                                    subtitle = UiText.Resource(Res.string.plus_partners_count, listOf(24)),
+                                ),
+                            ),
+                    ),
+                    PlusGroupUiModel(
+                        id = PlusGroupIdUiModel.APP,
+                        rows =
+                            listOf(
+                                PlusRowUiModel(
+                                    entry = PlusEntryUiModel.ABOUT,
+                                    subtitle = UiText.Resource(Res.string.plus_about_unofficial),
+                                ),
+                                // The mail mark against the chevrons above it, which is the only place
+                                // the difference between the two is readable at a glance.
+                                PlusRowUiModel(entry = PlusEntryUiModel.REPORT, subtitle = null),
+                                PlusRowUiModel(
+                                    entry = PlusEntryUiModel.ASSISTANCE,
+                                    subtitle = UiText.Resource(Res.string.plus_assistance_subtitle),
+                                ),
+                            ),
+                    ),
+                ),
+            socials = socials(),
+        )
+
+    private fun socials() =
+        listOf(
+            SocialLinkUiModel("instagram", UiText.Raw("Instagram"), socialIconFor("instagram"), "https://example.com/i"),
+            SocialLinkUiModel("facebook", UiText.Raw("Facebook"), socialIconFor("facebook"), "https://example.com/f"),
+            SocialLinkUiModel("youtube", UiText.Raw("YouTube"), socialIconFor("youtube"), "https://example.com/y"),
+            SocialLinkUiModel("tiktok", UiText.Raw("TikTok"), socialIconFor("tiktok"), "https://example.com/t"),
+        )
 }
 
 /**
- * The same three in the dark palette.
- *
- * Worth its own preview rather than trusted to the tokens: this screen is the app's densest use of
+ * The dark rendering carries this file's real question: this screen is the app's densest use of
  * `surface` on `background`, and the two sit a few percent apart in the dark theme where they are
- * plainly different in the light one. If the cards ever stop reading as raised, it shows here first
+ * plainly different in the light one. If the cards ever stop reading as raised it shows here first
  * — and so does a skeleton block tuned against a light ground.
  */
-@Preview
+@PreviewThemes
 @Composable
-private fun PlusScreenDarkPreview(
-    @PreviewParameter(PlusStateProvider::class) state: PlusUiModel,
+private fun PlusScreenPreview(
+    @PreviewParameter(PlusScreenStateProvider::class) state: PlusUiModel,
 ) {
-    YadloTheme(darkTheme = true) {
-        Box(modifier = Modifier.fillMaxSize().background(MaterialTheme.appColors.background)) {
-            PlusScreen(state = state, onEntryClick = {}, onSocialClick = {})
-        }
+    YadloPreview {
+        PlusScreen(state = state, onEntryClick = {}, onSocialClick = {})
     }
 }
-
-private fun oneGroup() =
-    PlusUiModel(
-        isLoading = false,
-        groups =
-            listOf(
-                PlusGroupUiModel(
-                    id = PlusGroupIdUiModel.ON_SITE,
-                    rows =
-                        listOf(
-                            PlusRowUiModel(
-                                entry = PlusEntryUiModel.STANDS_FOOD,
-                                subtitle = UiText.Resource(Res.string.plus_stands_count, listOf(6)),
-                            ),
-                            PlusRowUiModel(
-                                entry = PlusEntryUiModel.PAYMENT,
-                                subtitle = UiText.Resource(Res.string.plus_payment_no_cash),
-                            ),
-                            PlusRowUiModel(entry = PlusEntryUiModel.HOURS, subtitle = null),
-                        ),
-                ),
-            ),
-        socials = socials(),
-    )
-
-private fun threeGroups() =
-    PlusUiModel(
-        isLoading = false,
-        groups =
-            listOf(
-                PlusGroupUiModel(
-                    id = PlusGroupIdUiModel.ON_SITE,
-                    rows =
-                        listOf(
-                            // A row with a subtitle beside one without: the second must not be
-                            // shorter, or a card of sixteen combs up and down as the content
-                            // publishes one line here and two there.
-                            PlusRowUiModel(
-                                entry = PlusEntryUiModel.STANDS_FOOD,
-                                subtitle = UiText.Resource(Res.string.plus_stands_count, listOf(6)),
-                            ),
-                            PlusRowUiModel(entry = PlusEntryUiModel.HOURS, subtitle = null),
-                        ),
-                ),
-                PlusGroupUiModel(
-                    id = PlusGroupIdUiModel.FESTIVAL,
-                    rows =
-                        listOf(
-                            PlusRowUiModel(
-                                entry = PlusEntryUiModel.PARTNERS,
-                                subtitle = UiText.Resource(Res.string.plus_partners_count, listOf(24)),
-                            ),
-                        ),
-                ),
-                PlusGroupUiModel(
-                    id = PlusGroupIdUiModel.APP,
-                    rows =
-                        listOf(
-                            PlusRowUiModel(
-                                entry = PlusEntryUiModel.ABOUT,
-                                subtitle = UiText.Resource(Res.string.plus_about_unofficial),
-                            ),
-                            // The mail mark against the chevrons above it, which is the only place
-                            // the difference between the two is readable at a glance.
-                            PlusRowUiModel(entry = PlusEntryUiModel.REPORT, subtitle = null),
-                            PlusRowUiModel(
-                                entry = PlusEntryUiModel.ASSISTANCE,
-                                subtitle = UiText.Resource(Res.string.plus_assistance_subtitle),
-                            ),
-                        ),
-                ),
-            ),
-        socials = socials(),
-    )
-
-private fun socials() =
-    listOf(
-        SocialLinkUiModel("instagram", UiText.Raw("Instagram"), socialIconFor("instagram"), "https://example.com/i"),
-        SocialLinkUiModel("facebook", UiText.Raw("Facebook"), socialIconFor("facebook"), "https://example.com/f"),
-        SocialLinkUiModel("youtube", UiText.Raw("YouTube"), socialIconFor("youtube"), "https://example.com/y"),
-        SocialLinkUiModel("tiktok", UiText.Raw("TikTok"), socialIconFor("tiktok"), "https://example.com/t"),
-    )

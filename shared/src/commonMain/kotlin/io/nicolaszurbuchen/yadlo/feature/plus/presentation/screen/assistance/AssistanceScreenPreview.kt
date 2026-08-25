@@ -1,18 +1,12 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.assistance
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
-import io.nicolaszurbuchen.yadlo.app.design.theme.YadloTheme
-import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
+import io.nicolaszurbuchen.yadlo.app.design.preview.YadloPreview
+import io.nicolaszurbuchen.yadlo.infra.preview.PreviewThemes
 
-private class AssistanceStateProvider : PreviewParameterProvider<AssistanceUiModel> {
+private class AssistanceScreenStateProvider : PreviewParameterProvider<AssistanceUiModel> {
     override val values =
         sequenceOf(
             AssistanceUiModel(
@@ -24,31 +18,29 @@ private class AssistanceStateProvider : PreviewParameterProvider<AssistanceUiMod
             ),
             published(),
         )
+
+    private fun published() =
+        AssistanceUiModel(
+            isLoading = false,
+            numbers =
+                listOf(
+                    EmergencyNumberUiModel(id = "urgences", number = "112", label = "Urgences (numéro européen)"),
+                    EmergencyNumberUiModel(id = "ambulance", number = "144", label = "Ambulance"),
+                    EmergencyNumberUiModel(id = "police", number = "117", label = "Police"),
+                    EmergencyNumberUiModel(id = "pompiers", number = "118", label = "Pompiers"),
+                ),
+            recognition = listOf("T-shirts Hot’Staff — il y en a 160 sur le site"),
+            lostPropertyEmail = "hello@yadlo.ch",
+            emptyMessage = null,
+        )
 }
 
-@Preview
+@PreviewThemes
 @Composable
 private fun AssistanceScreenPreview(
-    @PreviewParameter(AssistanceStateProvider::class) state: AssistanceUiModel,
+    @PreviewParameter(AssistanceScreenStateProvider::class) state: AssistanceUiModel,
 ) {
-    YadloTheme {
-        Box(modifier = Modifier.fillMaxSize().background(MaterialTheme.appColors.background)) {
-            AssistanceScreen(state = state, onBackClick = {}, onNumberClick = {}, onLostPropertyClick = {})
-        }
+    YadloPreview {
+        AssistanceScreen(state = state, onBackClick = {}, onNumberClick = {}, onLostPropertyClick = {})
     }
 }
-
-private fun published() =
-    AssistanceUiModel(
-        isLoading = false,
-        numbers =
-            listOf(
-                EmergencyNumberUiModel(id = "urgences", number = "112", label = "Urgences (numéro européen)"),
-                EmergencyNumberUiModel(id = "ambulance", number = "144", label = "Ambulance"),
-                EmergencyNumberUiModel(id = "police", number = "117", label = "Police"),
-                EmergencyNumberUiModel(id = "pompiers", number = "118", label = "Pompiers"),
-            ),
-        recognition = listOf("T-shirts Hot’Staff — il y en a 160 sur le site"),
-        lostPropertyEmail = "hello@yadlo.ch",
-        emptyMessage = null,
-    )

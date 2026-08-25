@@ -1,19 +1,13 @@
 package io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
-import io.nicolaszurbuchen.yadlo.app.design.theme.YadloTheme
-import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
+import io.nicolaszurbuchen.yadlo.app.design.preview.YadloPreview
 import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotLiveStateUiModel
 import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotScaleUiModel
 import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotSegmentUiModel
+import io.nicolaszurbuchen.yadlo.infra.preview.PreviewThemes
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.price_free
@@ -37,7 +31,7 @@ import kotlin.time.Duration.Companion.minutes
  * Written out rather than mapped from a ProgrammeState, because a preview may not import the domain
  * layer and that is where ProgrammeContent lives.
  */
-private class ProgrammeStateProvider : PreviewParameterProvider<ProgrammeUiModel> {
+private class ProgrammeScreenStateProvider : PreviewParameterProvider<ProgrammeUiModel> {
     override val values =
         sequenceOf(
             // Before the first bundle reaches the screen.
@@ -360,49 +354,18 @@ private class ProgrammeStateProvider : PreviewParameterProvider<ProgrammeUiModel
     )
 }
 
-/**
- * The Scaffold paints the ground under this screen, so a preview without it shows the rows floating
- * on whatever the tooling happens to use — which is not what anyone will see.
- */
+@PreviewThemes
 @Composable
-private fun ProgrammePreviewSurface(content: @Composable () -> Unit) {
-    Box(modifier = Modifier.fillMaxSize().background(MaterialTheme.appColors.background)) {
-        content()
-    }
-}
-
-@Preview
-@Composable
-private fun ProgrammeScreenLightPreview(
-    @PreviewParameter(ProgrammeStateProvider::class) state: ProgrammeUiModel,
+private fun ProgrammeScreenPreview(
+    @PreviewParameter(ProgrammeScreenStateProvider::class) state: ProgrammeUiModel,
 ) {
-    YadloTheme(darkTheme = false) {
-        ProgrammePreviewSurface {
-            ProgrammeScreen(
-                state = state,
-                onScopeClick = {},
-                onCategoryClick = {},
-                onAllCategoriesClick = {},
-                onSlotClick = {},
-            )
-        }
-    }
-}
-
-@Preview
-@Composable
-private fun ProgrammeScreenDarkPreview(
-    @PreviewParameter(ProgrammeStateProvider::class) state: ProgrammeUiModel,
-) {
-    YadloTheme(darkTheme = true) {
-        ProgrammePreviewSurface {
-            ProgrammeScreen(
-                state = state,
-                onScopeClick = {},
-                onCategoryClick = {},
-                onAllCategoriesClick = {},
-                onSlotClick = {},
-            )
-        }
+    YadloPreview {
+        ProgrammeScreen(
+            state = state,
+            onScopeClick = {},
+            onCategoryClick = {},
+            onAllCategoriesClick = {},
+            onSlotClick = {},
+        )
     }
 }
