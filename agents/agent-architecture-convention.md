@@ -59,14 +59,80 @@ feature/<name>/
     ├── navigation/                   # *Destination, *Navigator (interface), *NavKeyHandler — a feature only ever knows its own destinations
     ├── component/                    # composables reused across screens *within this feature only*; take a UiModel, never raw primitives. Cross-feature reuse goes in app/design/component/ instead
     └── screen/<screen>/
-        ├── *Contract.kt              # exactly Intent/Label/Action/Message (sealed interfaces) + State (data class) — nothing else lives here
-        ├── *StoreFactory.kt          # Bootstrapper + Executor + a nested `internal object ReducerImpl` — never a standalone *Reducer.kt file, never `private` (internal is what makes it directly unit-testable from commonTest)
+        ├── *Contract.kt              # exactly Intent/Label/Action/Message (sealed interfaces) + State (data class) — nothing else lives here. Written in **domain** types: a UiModel here is a rendering decision taken before anything is rendered
+        ├── *StoreFactory.kt          # Bootstrapper + Executor + a nested `internal object ReducerImpl` — never a standalone *Reducer.kt file, never `private` (internal is what makes it directly unit-testable from commonTest). The Store interface and the factory, and nothing else: no top-level functions
         ├── *UiMapper.kt               # a single top-level extension function, State -> UiModel — the only place that conversion happens
-        ├── *UiModel.kt                # the Composable's actual input type — no domain types as field types
+        ├── *UiModel.kt                # the Composable's actual input type — no domain types as field types. Only the screen's own; every other UiModel goes in uimodel/
         ├── *ViewModel.kt              # wraps the StoreFactory; exposes `state: StateFlow<*UiModel>` and `labels: Flow<*Label>` — never State
         ├── *Route.kt / *Screen.kt     # the Screen's public function takes only Modifier, the matching *UiModel, or lambdas — never *State
-        └── component/                 # composables reused only within this screen; take a UiModel, never raw primitives
+        ├── *ScreenPreview.kt          # exactly two top-level declarations: a private `<Screen>StateProvider : PreviewParameterProvider` holding every fixture, and one private `@PreviewThemes` function rendering inside `YadloPreview`
+        ├── component/                 # composables reused only within this screen; take a UiModel, never raw primitives
+        ├── uimodel/                   # the pieces of the screen's vocabulary that are not the model itself — PhaseUiModel, SiteMomentUiModel. The screen's own *UiModel must not be in here
+        └── mapper/                    # *UiMapper.kt, one per converted type, each a top-level extension function returning a UiModel. **The only place in presentation/ allowed to import the domain layer**
 ```
+
+### The three screen subfolders
+
+All three are optional and appear when there is more than one of something. A screen package with
+none of them is still the common case.
+
+`uimodel/` and `mapper/` exist because a screen that converts a domain enum needs somewhere to put
+both halves, and the alternatives are worse: the twin sitting loose in the screen package puts the
+type the Composable is handed between two enums it merely mentions, and the converter sitting at
+the bottom of the StoreFactory makes a file about wiring the only place that answer is written
+down. Both were the actual state of `feature/home/` before this convention existed.
+
+**The domain crossing happens on the way out, once.** The Store holds domain types all the way
+into the State; the screen's `*UiMapper` converts at the top of its single function. That is why
+the Contract may not name a UiModel — a `PhaseUiModel` on a Message drags the presentation type
+backwards through the Executor and the Reducer.
+
+### Previews
+
+Every screen package has a `*ScreenPreview.kt`, and it has a shape rather than a habit — enforced
+by `konsistTest/PreviewTest.kt`.
+
+- **Two top-level declarations.** The provider and the preview function. Every fixture goes
+  *inside* the provider, where it is visibly in service of the sequence it feeds. The pull is
+  always to add a third, and each one is individually reasonable while the file stops being
+  readable as "here are the states, here is the screen".
+- **One function, not one per theme.** `@PreviewThemes` is the multipreview carrying light and
+  dark, so the body is written once. The old shape — `FooScreenPreview` and `FooScreenDarkPreview`
+  side by side — meant a fixture change had to be made twice and a preview that drifted from its
+  own dark twin looked fine in review.
+- **`YadloPreview` supplies the theme and the ground.** Compose's preview pane paints its own
+  white whatever the theme says, so a screen that does not fill its background renders dark-theme
+  text on a white sheet and passes a glance.
+
+The vocabulary lives once, and in two places, because the placement rule splits it.
+`PreviewThemes` and `PreviewUiMode` know nothing about this app — an annotation setting a system
+ui-mode flag, and two Android constants commonMain cannot import — so they are `infra/preview/`,
+beside `infra/ui/UiText` and `infra/platform/BackHandler`. `YadloPreview` imports the theme and the
+palette, so it *is* the design system and gets `app/design/preview/`.
+
+Not `app/design/component/`: a component is something a screen draws, and this is never drawn in a
+shipped screen. The Konsist rule forbidding a screen suffix in a component package says the same
+thing mechanically.
+
+All three were born inside `HomeScreenPreview`, which is how twenty-three screens end up each owning
+a private copy of the same annotation.
+
+### Waiting
+
+**A screen waits as its own silhouette, never as a spinner.** A centred `CircularProgressIndicator`
+is the same picture on every screen and says only that something is happening; a shimmer skeleton
+says what is about to arrive and in what shape, so the content lands in a layout the eye has
+already settled on. `ShimmerPulse` and `Modifier.shimmerBlock()` are the tools; one `ShimmerPulse`
+around the whole skeleton, so every block breathes off a single animated value.
+
+### Module files are grouped by screen, not by declaration type
+
+Each `StoreFactory` sits directly above the `ViewModel` that wraps it, under the screen they belong
+to — see `HomeModule.kt`. Grouping by type instead (`factoryOf` for everything, then `viewModelOf`
+for everything) means adding a screen edits two places and reading one scans two lists.
+
+Not enforceable by Konsist: it is the order of DSL calls inside a lambda, which the API does not
+expose. Convention only.
 
 ## MVI vocabulary
 

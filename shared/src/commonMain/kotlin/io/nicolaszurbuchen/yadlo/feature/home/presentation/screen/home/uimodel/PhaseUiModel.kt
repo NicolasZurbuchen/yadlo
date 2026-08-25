@@ -1,4 +1,4 @@
-package io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home
+package io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.uimodel
 
 /**
  * The presentation twin of the domain `Phase`.

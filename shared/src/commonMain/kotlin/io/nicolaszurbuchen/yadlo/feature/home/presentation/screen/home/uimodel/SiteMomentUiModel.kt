@@ -1,4 +1,4 @@
-package io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home
+package io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.uimodel
 
 import kotlin.time.Instant
 

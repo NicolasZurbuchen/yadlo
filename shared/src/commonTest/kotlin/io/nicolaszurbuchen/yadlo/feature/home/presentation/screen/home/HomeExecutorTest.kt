@@ -11,6 +11,7 @@ import io.nicolaszurbuchen.yadlo.common.content.domain.model.Edition
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Festival
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.FestivalDay
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Happening
+import io.nicolaszurbuchen.yadlo.common.content.domain.model.Phase
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Provenance
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Slot
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.SocialLink
@@ -82,7 +83,7 @@ class HomeExecutorTest {
             testDispatcher.scheduler.runCurrent()
 
             assertEquals("Yadlo 2026", store.state.content?.editionName)
-            assertEquals(PhaseUiModel.ENDED, store.state.phase)
+            assertEquals(Phase.ENDED, store.state.phase)
         }
 
     @Test
@@ -91,7 +92,7 @@ class HomeExecutorTest {
             testDispatcher.scheduler.runCurrent()
 
             assertEquals(null, store.state.content)
-            assertEquals(PhaseUiModel.OFF_SEASON, store.state.phase)
+            assertEquals(Phase.OFF_SEASON, store.state.phase)
         }
 
     @Test
@@ -102,7 +103,7 @@ class HomeExecutorTest {
             )
             testDispatcher.scheduler.runCurrent()
 
-            assertEquals(PhaseUiModel.OFF_SEASON, store.state.phase)
+            assertEquals(Phase.OFF_SEASON, store.state.phase)
         }
 
     // endregion
@@ -114,13 +115,13 @@ class HomeExecutorTest {
         homeTest(startingAt = JUST_BEFORE_MIDNIGHT) { store, repository, clock ->
             repository.emitStatus(ContentStatus.Ready(bundle = bundle(), updateRequired = false))
             testDispatcher.scheduler.runCurrent()
-            assertEquals(PhaseUiModel.APPROACHING, store.state.phase)
+            assertEquals(Phase.APPROACHING, store.state.phase)
 
             clock.instant = JUST_AFTER_MIDNIGHT
             testDispatcher.scheduler.advanceTimeBy(TWO_TICKS_MILLIS)
             testDispatcher.scheduler.runCurrent()
 
-            assertEquals(PhaseUiModel.LIVE, store.state.phase)
+            assertEquals(Phase.LIVE, store.state.phase)
         }
 
     @Test
@@ -141,14 +142,14 @@ class HomeExecutorTest {
         homeTest(startingAt = SIX_DAYS_BEFORE) { store, repository, clock ->
             repository.emitStatus(ContentStatus.Ready(bundle = bundle(), updateRequired = false))
             testDispatcher.scheduler.runCurrent()
-            assertEquals(PhaseUiModel.APPROACHING, store.state.phase)
+            assertEquals(Phase.APPROACHING, store.state.phase)
 
             // What the debug time-travel panel does. The block stack on this screen is the whole
             // point of being able to jump, so a minute of lag per jump would defeat it.
             clock.jumpTo(A_WEEK_AFTER)
             testDispatcher.scheduler.runCurrent()
 
-            assertEquals(PhaseUiModel.ENDED, store.state.phase)
+            assertEquals(Phase.ENDED, store.state.phase)
         }
 
     // endregion
@@ -160,7 +161,7 @@ class HomeExecutorTest {
         homeTest(startingAt = SIX_DAYS_BEFORE) { store, repository, _ ->
             repository.emitStatus(ContentStatus.Ready(bundle = bundle(), updateRequired = false))
             testDispatcher.scheduler.runCurrent()
-            assertEquals(PhaseUiModel.APPROACHING, store.state.phase)
+            assertEquals(Phase.APPROACHING, store.state.phase)
 
             store.labels.test {
                 store.accept(HomeIntent.HeroClicked)
@@ -173,7 +174,7 @@ class HomeExecutorTest {
         homeTest(startingAt = A_MONTH_BEFORE) { store, repository, _ ->
             repository.emitStatus(ContentStatus.Ready(bundle = bundle(), updateRequired = false))
             testDispatcher.scheduler.runCurrent()
-            assertEquals(PhaseUiModel.ANNOUNCED, store.state.phase)
+            assertEquals(Phase.ANNOUNCED, store.state.phase)
 
             store.labels.test {
                 store.accept(HomeIntent.HeroClicked)

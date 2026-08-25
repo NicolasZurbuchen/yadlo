@@ -135,15 +135,25 @@ class PackageHierarchyTest {
             }
     }
 
+    /**
+     * Three, and each is a different kind of thing the screen owns: composables it reuses
+     * (`component`), the pieces of its vocabulary that are not the model itself (`uimodel`), and
+     * the domain-to-presentation converters (`mapper`). A screen package with no subfolders is
+     * still the common case — these appear when there is more than one of something.
+     */
     @Test
-    fun `Screen name packages must not have child packages other than component`() {
+    fun `Screen name packages must not have child packages other than component, uimodel or mapper`() {
         scope.files
             .filter { file ->
                 file.packagee?.name?.contains(".presentation.screen.") == true
             }
             .assertTrue { file ->
                 file.packagee?.name
-                    ?.matches(Regex(".*\\.(feature|common)\\.[^.]+\\.presentation\\.screen\\.[^.]+(\\.component)?$")) == true
+                    ?.matches(
+                        Regex(
+                            ".*\\.(feature|common)\\.[^.]+\\.presentation\\.screen\\.[^.]+(\\.(component|uimodel|mapper))?$",
+                        ),
+                    ) == true
             }
     }
 }

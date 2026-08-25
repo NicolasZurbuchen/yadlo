@@ -6,6 +6,7 @@ import io.nicolaszurbuchen.yadlo.app.design.component.YadloEntryCard
 import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloEntryUiModel
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.HomeBlockUiModel
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.QuickAccessItemUiModel
+import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.uimodel.QuickAccessEntryUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import io.nicolaszurbuchen.yadlo.infra.ui.asString
 
