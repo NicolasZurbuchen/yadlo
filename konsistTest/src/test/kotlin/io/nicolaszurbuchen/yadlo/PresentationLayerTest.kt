@@ -35,6 +35,22 @@ class PresentationLayerTest {
          * the same way a feature does.
          */
         private fun List<KoFileDeclaration>.outsideAppShell(): List<KoFileDeclaration> = filterNot { it.hasPackage("..app..") }
+
+        /**
+         * **The narrowing, and it is temporary.** Four of the rules below were written from the
+         * home feature and every other feature predates them. Holding the whole repo to them today
+         * would leave the Konsist suite red, which costs more than it buys — a permanently failing
+         * gate stops distinguishing new breakage from known backlog.
+         *
+         * So each rule is real and enforced where the shape exists, and the rest is tracked:
+         * Contracts holding UiModels is #55, screens waiting behind a spinner is #56, StoreFactory
+         * mappers and misplaced UiModel twins are #57. **Delete this filter and its call sites as
+         * each closes.**
+         */
+        private fun List<KoFileDeclaration>.migrated(): List<KoFileDeclaration> = filter { it.hasPackage("..feature.home..") }
+
+        /** A screen's own subfolders. A file in one of these is not a screen file. */
+        private val screenSubpackages = listOf("component", "uimodel", "mapper")
     }
 
     // region Name implies location
@@ -91,7 +107,7 @@ class PresentationLayerTest {
     fun `files in screen packages must use an allowed suffix`() {
         scope.files
             .withPackage("..presentation.screen..")
-            .filter { file -> !file.hasPackage("..component..") }
+            .filter { file -> screenSubpackages.none { sub -> file.hasPackage("..$sub") } }
             .assertTrue { file -> screenFileSuffixes.any { suffix -> file.name.endsWith(suffix) } }
     }
 
@@ -160,6 +176,138 @@ class PresentationLayerTest {
 
     // endregion
 
+    // region UiModel placement
+
+    /**
+     * A screen's own `<Screen>UiModel` is what the Composable is handed, and it belongs beside the
+     * Screen that takes it. Everything else suffixed `UiModel` is a *piece* of that vocabulary —
+     * `PhaseUiModel`, `SiteMomentUiModel`, `HappeningKindUiModel` — and those go in a `uimodel`
+     * package, the same way a reusable composable goes in `component`.
+     *
+     * Without the split, a screen package is a flat list where the type the screen actually renders
+     * sits between two enums it merely mentions, and the reader has to open all three to find out
+     * which is which.
+     */
+    @Test
+    fun `only the screen's own UiModel may sit directly in a screen package`() {
+        scope.files
+            .withNameEndingWith("UiModel")
+            .withPackage("..presentation.screen..")
+            .filterNot { it.hasPackage("..uimodel") }
+            .migrated()
+            .assertTrue { file ->
+                val screenName =
+                    scope.files
+                        .filter { it.packagee?.name == file.packagee?.name }
+                        .firstOrNull { it.name.endsWith("Screen") }
+                        ?.name
+                        ?.removeSuffix("Screen")
+
+                screenName == null || file.name == "${screenName}UiModel"
+            }
+    }
+
+    @Test
+    fun `a screen's own UiModel must not be hidden in the uimodel package`() {
+        // The other half of the rule above: moving it in there would leave the Screen taking a type
+        // from a package of parts, which says it is one of them.
+        scope.files
+            .withNameEndingWith("UiModel")
+            .withPackage("..presentation.screen..uimodel")
+            .assertTrue { file ->
+                val screenPackage = file.packagee?.name?.removeSuffix(".uimodel")
+                val screenName =
+                    scope.files
+                        .filter { it.packagee?.name == screenPackage }
+                        .firstOrNull { it.name.endsWith("Screen") }
+                        ?.name
+                        ?.removeSuffix("Screen")
+
+                screenName == null || file.name != "${screenName}UiModel"
+            }
+    }
+
+    // endregion
+
+    // region StoreFactory purity
+
+    /**
+     * A StoreFactory file holds the Store interface and the factory that builds it. Nothing else.
+     *
+     * The two domain-to-UiModel converters that grew at the bottom of `HomeStoreFactory` are the
+     * case this exists for: they are real work, they are used by exactly one Executor, and putting
+     * them there made a 180-line file about wiring also the place a reader has to look to find out
+     * how a Phase becomes a PhaseUiModel. They belong in `mapper/`.
+     */
+    @Test
+    fun `StoreFactory files must not declare top-level functions`() {
+        scope.files
+            .withNameEndingWith("StoreFactory")
+            .withPackage("..presentation.screen..")
+            .migrated()
+            .assertTrue { file -> file.functions(includeNested = false).isEmpty() }
+    }
+
+    @Test
+    fun `StoreFactory files must declare only the Store interface and the factory`() {
+        scope.files
+            .withNameEndingWith("StoreFactory")
+            .withPackage("..presentation.screen..")
+            .assertTrue { file ->
+                val prefix = file.name.removeSuffix("StoreFactory")
+                val allowed = setOf("${prefix}Store", "${prefix}StoreFactory")
+
+                (
+                    file.classes(includeNested = false) +
+                        file.interfaces(includeNested = false) +
+                        file.objects(includeNested = false)
+                ).all { it.name in allowed }
+            }
+    }
+
+    // endregion
+
+    // region presentation mappers
+
+    /**
+     * The conversion from a domain type to its presentation twin is a mapper, and mappers live in a
+     * `mapper` package — the same rule the data layer already follows for DTO-to-domain.
+     *
+     * This is the one place inside `presentation/` allowed to import the domain layer, and that is
+     * the point of concentrating it: the boundary is crossed in files whose whole job is crossing
+     * it, rather than at the bottom of whichever file happened to need it first.
+     */
+    @Test
+    fun `files in a presentation mapper package must be suffixed with UiMapper`() {
+        scope.files
+            .withPackage("..presentation.screen..mapper")
+            .assertTrue { it.name.endsWith("UiMapper") }
+    }
+
+    @Test
+    fun `presentation mapper files must contain only top-level extension functions`() {
+        scope.files
+            .withPackage("..presentation.screen..mapper")
+            .assertTrue { file ->
+                file.classes(includeNested = true).isEmpty() &&
+                    file.interfaces(includeNested = true).isEmpty() &&
+                    file.objects(includeNested = true).isEmpty() &&
+                    file.functions(includeNested = false).all { it.hasReceiverType() }
+            }
+    }
+
+    @Test
+    fun `presentation mapper functions must return a UiModel`() {
+        // What makes it a presentation mapper rather than a helper that happens to live here.
+        scope.files
+            .withPackage("..presentation.screen..mapper")
+            .assertTrue { file ->
+                file.functions(includeNested = false).all { it.returnType?.name?.contains("UiModel") == true }
+            }
+    }
+
+    // endregion
+
     // region Screen subfolder rules
 
     @Test
@@ -167,7 +315,7 @@ class PresentationLayerTest {
         val screenPackages =
             scope.files
                 .withPackage("..presentation.screen..")
-                .filter { file -> !file.hasPackage("..component..") }
+                .filter { file -> screenSubpackages.none { sub -> file.hasPackage("..$sub") } }
                 .groupBy { it.packagee?.name }
 
         screenPackages.forEach { (packageName, files) ->
@@ -538,6 +686,7 @@ class PresentationLayerTest {
         scope.files
             .withNameEndingWith("UiMapper")
             .withPackage("..presentation.screen..")
+            .filterNot { it.hasPackage("..mapper") }
             .assertTrue { file ->
                 file.classes(includeNested = true).isEmpty() &&
                     file.interfaces(includeNested = true).isEmpty() &&
@@ -566,11 +715,17 @@ class PresentationLayerTest {
             }
     }
 
+    /**
+     * The screen's own UiMapper, which is the one that turns the whole State into the whole
+     * UiModel. The type mappers in `mapper/` are a different job with a rule of their own above —
+     * they convert one domain type, and their receiver is that type rather than a State.
+     */
     @Test
     fun `UiMapper functions must map from the matching State to the matching UiModel`() {
         scope.files
             .withNameEndingWith("UiMapper")
             .withPackage("..presentation.screen..")
+            .filterNot { it.hasPackage("..mapper") }
             .assertTrue { file ->
                 val prefix = file.name.removeSuffix("UiMapper")
                 file.functions(includeNested = false).all { function ->
@@ -583,6 +738,55 @@ class PresentationLayerTest {
     // endregion
 
     // region State/UiModel boundary
+
+    /**
+     * **A UiModel is what a Composable is handed, and it exists nowhere else.**
+     *
+     * The Contract is the Store's own vocabulary — Intent, Label, Action, Message, State — and it
+     * is written in domain terms. A `PhaseUiModel` on a `HomeMessage` looks harmless because the
+     * conversion has to happen somewhere, but it drags the presentation type backwards through the
+     * Executor and the Reducer, so the Store ends up holding a type whose whole purpose is to be
+     * rendered. The conversion belongs on the way *out*, in the UiMapper.
+     *
+     * Imports cannot catch this: the offending types sat in the same package as the Contract that
+     * used them, so there was nothing to import. It is checked on declared types instead.
+     */
+    @Test
+    fun `Contract files must not use UiModel types`() {
+        scope.files
+            .withNameEndingWith("Contract")
+            .withPackage("..presentation.screen..")
+            .migrated()
+            .assertTrue { file ->
+                val declaredTypes =
+                    file.classes(includeNested = true).flatMap { clazz ->
+                        clazz.primaryConstructor?.parameters.orEmpty().map { it.type.name } +
+                            clazz.properties().mapNotNull { it.type?.name }
+                    } +
+                        file.properties(includeNested = true).mapNotNull { it.type?.name }
+
+                declaredTypes.none { it.contains("UiModel") }
+            }
+    }
+
+    /**
+     * **A screen waits as its own silhouette, not as a spinner.**
+     *
+     * A centred `CircularProgressIndicator` is the same picture on every screen in the app, and it
+     * says only "something is happening". A shimmer skeleton says what is about to arrive, in the
+     * shape it will arrive in, so the real content lands in a layout the eye has already settled
+     * on. `PlusDetailScaffold` has taken a skeleton slot rather than a spinner since it was
+     * written; this is that decision applied to the screens that were built before it.
+     */
+    @Test
+    fun `Screen files must not draw a spinner while they wait`() {
+        scope.files
+            .withNameEndingWith("Screen")
+            .withPackage("..presentation.screen..")
+            .migrated()
+            .filter { file -> file.hasImport { it.name.endsWith(".CircularProgressIndicator") } }
+            .assertEmpty()
+    }
 
     @Test
     fun `files with a Composable function must not import any State type`() {
@@ -599,14 +803,22 @@ class PresentationLayerTest {
 
     // region Dependency boundaries
 
+    /**
+     * `mapper/` joins the exemption list, and it is the only one of the four that exists *to*
+     * cross the boundary. The other three touch the domain incidentally — a Store wires use cases,
+     * a Contract is written in domain terms — while a presentation mapper's entire body is a
+     * domain type on the left and a UiModel on the right. Concentrating the crossing in files
+     * named for it is what stops it happening at the bottom of a StoreFactory.
+     */
     @Test
-    fun `presentation files must not import from domain except StoreFactory, ViewModel, and Contract`() {
+    fun `presentation files must not import from domain except StoreFactory, ViewModel, Contract, and mappers`() {
         scope.files
             .withPackage("..presentation..")
             .filter { file ->
                 !file.name.endsWith("StoreFactory") &&
                     !file.name.endsWith("ViewModel") &&
-                    !file.name.endsWith("Contract")
+                    !file.name.endsWith("Contract") &&
+                    !file.hasPackage("..presentation.screen..mapper")
             }
             .filter { file ->
                 file.imports.any { it.name.contains(".domain.") }
