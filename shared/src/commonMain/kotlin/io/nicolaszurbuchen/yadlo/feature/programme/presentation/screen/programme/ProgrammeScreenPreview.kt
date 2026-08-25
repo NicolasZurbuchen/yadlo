@@ -58,7 +58,7 @@ private class ProgrammeScreenStateProvider : PreviewParameterProvider<ProgrammeU
                 emptyMessage = null,
             ),
             // *Tous*: nothing in the chrome, and each day's own reading pinned to its own header.
-            // Friday runs 16:00–02:00 and Sunday 12:00–22:00, which is why one scale could not have
+            // Friday runs 16:00–02:00 and Saturday 12:00–03:00, which is why one scale could not have
             // been right about both.
             ProgrammeUiModel(
                 isLoading = false,
@@ -74,7 +74,7 @@ private class ProgrammeScreenStateProvider : PreviewParameterProvider<ProgrammeU
                                     name = "Vendredi",
                                     scale = SlotScaleUiModel(startText = "16:00", middleText = "21:00", endText = "02:00"),
                                 ),
-                            rows = saturdayAtQuarterToFour().take(2),
+                            rows = fridayAlreadyOver(),
                         ),
                         DaySectionUiModel(
                             id = "2026:sat",
@@ -215,6 +215,40 @@ private class ProgrammeScreenStateProvider : PreviewParameterProvider<ProgrammeU
                         "pour découvrir l'escalade en toute sécurité.",
                 imageUrl = null,
                 genres = emptyList(),
+            ),
+        )
+
+    /**
+     * Friday, read from the same Saturday afternoon as everything else — so every row on it is Over
+     * and the whole section is dimmed, which is the state *Tous* spends most of the weekend in.
+     *
+     * **Its own rows rather than a slice of Saturday's.** A Slot id is Edition- *and* day-qualified
+     * precisely so one cannot stand in for another, and *Tous* flattens every section into one
+     * LazyColumn keyed by row id: two sections sharing an id is a duplicate key, which throws before
+     * anything is drawn.
+     */
+    private fun fridayAlreadyOver() =
+        listOf(
+            row(
+                id = "2026:mini-escape-game-fri",
+                name = "Mini Escape Game",
+                categoryId = "terre",
+                categoryName = "Sur terre",
+                priceText = UiText.Resource(Res.string.price_free),
+                stateLabel = UiText.Resource(Res.string.slot_state_over),
+                state = SlotLiveStateUiModel.Over,
+                // Fractions of Friday's own ten-hour window, which is what the section header carries.
+                slots = listOf(segment("16:00 – 19:00", SlotLiveStateUiModel.Over, 0f, 0.3f)),
+            ),
+            row(
+                id = "2026:carlos-willengton-fri",
+                name = "Carlos Willengton",
+                categoryId = "musique",
+                categoryName = "Musique",
+                priceText = null,
+                stateLabel = UiText.Resource(Res.string.slot_state_over),
+                state = SlotLiveStateUiModel.Over,
+                slots = listOf(segment("23:30 – 01:30", SlotLiveStateUiModel.Over, 0.75f, 0.95f)),
             ),
         )
 
