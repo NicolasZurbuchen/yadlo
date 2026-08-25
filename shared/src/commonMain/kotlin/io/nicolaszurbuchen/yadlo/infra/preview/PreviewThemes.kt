@@ -1,4 +1,4 @@
-package io.nicolaszurbuchen.yadlo.app.design.preview
+package io.nicolaszurbuchen.yadlo.infra.preview
 
 import androidx.compose.ui.tooling.preview.Preview
 
@@ -16,6 +16,11 @@ import androidx.compose.ui.tooling.preview.Preview
  * `isSystemInDarkTheme()`, and the tooling sets exactly that from `uiMode`. So the dark rendering
  * is the real dark theme rather than a preview-only override, which is the point of not passing
  * `darkTheme` by hand.
+ *
+ * **It is `infra/` rather than `app/design/` because it does not know this app exists.** It sets a
+ * system flag; that `YadloTheme` happens to read the flag is the theme's business, not this
+ * file's. Nothing here names a colour, a font or a screen, and the whole annotation would work
+ * unchanged in any Compose app — which is the placement rule's definition of plumbing.
  */
 @Preview(name = "Light")
 @Preview(name = "Dark", uiMode = PreviewUiMode.NIGHT_YES)

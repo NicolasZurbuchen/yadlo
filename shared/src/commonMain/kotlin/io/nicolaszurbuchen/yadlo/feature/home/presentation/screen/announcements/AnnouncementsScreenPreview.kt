@@ -3,9 +3,9 @@ package io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.announcements
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
-import io.nicolaszurbuchen.yadlo.app.design.preview.PreviewThemes
 import io.nicolaszurbuchen.yadlo.app.design.preview.YadloPreview
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.uimodel.AnnouncementUiModel
+import io.nicolaszurbuchen.yadlo.infra.preview.PreviewThemes
 
 /**
  * The three states the feed has: arriving, published, and a festival that has not posted yet.

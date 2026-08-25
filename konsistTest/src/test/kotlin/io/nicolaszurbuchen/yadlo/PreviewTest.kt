@@ -195,17 +195,33 @@ class PreviewTest {
 
     // region where the vocabulary lives
 
+    /**
+     * **The vocabulary is split, and the split is the placement rule applied literally.**
+     *
+     * `PreviewThemes` and `PreviewUiMode` know nothing about Yadlo. The annotation sets a system
+     * ui-mode flag and the object names two Android constants commonMain cannot import; both would
+     * work unchanged in any Compose app, which is the definition of plumbing in CLAUDE.md. They sit
+     * beside `infra/ui/UiText` and `infra/platform/BackHandler`, which are Compose code in `infra/`
+     * for exactly the same reason.
+     *
+     * `YadloPreview` is the opposite: it imports `YadloTheme` and `appColors`, so it *is* the design
+     * system and could not live in `infra/` without inverting the layering.
+     *
+     * It is deliberately **not** in `app/design/component/`. Two reasons, and the first is
+     * mechanical: `PresentationLayerTest` forbids a screen file suffix in a component package, and
+     * `YadloPreview.kt` ends in one. The second is why that rule is right here — a component is
+     * something a screen draws, and this is never drawn in a shipped screen. Filing it beside
+     * `YadloHero` would offer it to anyone browsing for parts to build a screen from.
+     */
     @Test
-    fun `the preview vocabulary must be declared once, in the design system`() {
-        // PreviewThemes, PreviewUiMode and YadloPreview are one file in app/design/preview/. They
-        // were born inside HomeScreenPreview, which is how twenty-three screens end up each owning
-        // a private copy of the same annotation.
+    fun `the preview vocabulary must be declared once, in one place each`() {
         scope.files
-            .filter { file ->
-                file.name in setOf("PreviewThemes", "PreviewUiMode", "YadloPreview")
-            }
+            .filter { it.name in setOf("PreviewThemes", "PreviewUiMode") }
+            .assertTrue { it.hasPackage("..infra.preview") }
+
+        scope.files
+            .filter { it.name == "YadloPreview" }
             .assertTrue { it.hasPackage("..app.design.preview") }
     }
-
     // endregion
 }

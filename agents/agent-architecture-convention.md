@@ -104,9 +104,18 @@ by `konsistTest/PreviewTest.kt`.
   white whatever the theme says, so a screen that does not fill its background renders dark-theme
   text on a white sheet and passes a glance.
 
-The vocabulary — `PreviewThemes`, `PreviewUiMode`, `YadloPreview` — lives once, in
-`app/design/preview/`. It was born inside `HomeScreenPreview`, which is how twenty-three screens
-end up each owning a private copy of the same annotation.
+The vocabulary lives once, and in two places, because the placement rule splits it.
+`PreviewThemes` and `PreviewUiMode` know nothing about this app — an annotation setting a system
+ui-mode flag, and two Android constants commonMain cannot import — so they are `infra/preview/`,
+beside `infra/ui/UiText` and `infra/platform/BackHandler`. `YadloPreview` imports the theme and the
+palette, so it *is* the design system and gets `app/design/preview/`.
+
+Not `app/design/component/`: a component is something a screen draws, and this is never drawn in a
+shipped screen. The Konsist rule forbidding a screen suffix in a component package says the same
+thing mechanically.
+
+All three were born inside `HomeScreenPreview`, which is how twenty-three screens end up each owning
+a private copy of the same annotation.
 
 ### Waiting
 

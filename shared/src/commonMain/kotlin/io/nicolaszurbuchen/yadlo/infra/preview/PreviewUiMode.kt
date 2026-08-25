@@ -1,4 +1,4 @@
-package io.nicolaszurbuchen.yadlo.app.design.preview
+package io.nicolaszurbuchen.yadlo.infra.preview
 
 /**
  * The two values `@Preview(uiMode = ...)` understands, named.

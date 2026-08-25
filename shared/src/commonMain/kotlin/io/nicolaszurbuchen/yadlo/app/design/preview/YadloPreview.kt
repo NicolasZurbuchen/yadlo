@@ -24,7 +24,15 @@ import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
  * with no scaffold at all, so it needs the ground more, not less.
  *
  * Paired with [PreviewThemes] rather than taking a `darkTheme` flag: the annotation sets the ui
- * mode, `YadloTheme` reads it, and this only has to provide the surface.
+ * mode, `YadloTheme` reads it, and this only has to provide the surface. The annotation lives in
+ * `infra/preview/` because it knows nothing about this app; this file cannot follow it there,
+ * because it imports the theme and the palette and would invert the layering.
+ *
+ * **A package of its own rather than `app/design/component/`.** A component is something a screen
+ * draws, and this is never drawn in a shipped screen — filing it beside [YadloHero] would offer it
+ * to anyone browsing for parts to build a screen from. `PresentationLayerTest` says the same thing
+ * mechanically: a component package may not hold a file with a screen suffix, and this one ends in
+ * `Preview`.
  */
 @Composable
 fun YadloPreview(
