@@ -1,19 +1,13 @@
 package io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
-import io.nicolaszurbuchen.yadlo.app.design.theme.YadloTheme
-import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
+import io.nicolaszurbuchen.yadlo.app.design.preview.YadloPreview
 import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotLiveStateUiModel
 import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotScaleUiModel
 import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotSegmentUiModel
+import io.nicolaszurbuchen.yadlo.infra.preview.PreviewThemes
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.price_free
@@ -37,7 +31,7 @@ import kotlin.time.Duration.Companion.minutes
  * Written out rather than mapped from a ProgrammeState, because a preview may not import the domain
  * layer and that is where ProgrammeContent lives.
  */
-private class ProgrammeStateProvider : PreviewParameterProvider<ProgrammeUiModel> {
+private class ProgrammeScreenStateProvider : PreviewParameterProvider<ProgrammeUiModel> {
     override val values =
         sequenceOf(
             // Before the first bundle reaches the screen.
@@ -64,7 +58,7 @@ private class ProgrammeStateProvider : PreviewParameterProvider<ProgrammeUiModel
                 emptyMessage = null,
             ),
             // *Tous*: nothing in the chrome, and each day's own reading pinned to its own header.
-            // Friday runs 16:00–02:00 and Sunday 12:00–22:00, which is why one scale could not have
+            // Friday runs 16:00–02:00 and Saturday 12:00–03:00, which is why one scale could not have
             // been right about both.
             ProgrammeUiModel(
                 isLoading = false,
@@ -80,7 +74,7 @@ private class ProgrammeStateProvider : PreviewParameterProvider<ProgrammeUiModel
                                     name = "Vendredi",
                                     scale = SlotScaleUiModel(startText = "16:00", middleText = "21:00", endText = "02:00"),
                                 ),
-                            rows = saturdayAtQuarterToFour().take(2),
+                            rows = fridayAlreadyOver(),
                         ),
                         DaySectionUiModel(
                             id = "2026:sat",
@@ -224,6 +218,40 @@ private class ProgrammeStateProvider : PreviewParameterProvider<ProgrammeUiModel
             ),
         )
 
+    /**
+     * Friday, read from the same Saturday afternoon as everything else — so every row on it is Over
+     * and the whole section is dimmed, which is the state *Tous* spends most of the weekend in.
+     *
+     * **Its own rows rather than a slice of Saturday's.** A Slot id is Edition- *and* day-qualified
+     * precisely so one cannot stand in for another, and *Tous* flattens every section into one
+     * LazyColumn keyed by row id: two sections sharing an id is a duplicate key, which throws before
+     * anything is drawn.
+     */
+    private fun fridayAlreadyOver() =
+        listOf(
+            row(
+                id = "2026:mini-escape-game-fri",
+                name = "Mini Escape Game",
+                categoryId = "terre",
+                categoryName = "Sur terre",
+                priceText = UiText.Resource(Res.string.price_free),
+                stateLabel = UiText.Resource(Res.string.slot_state_over),
+                state = SlotLiveStateUiModel.Over,
+                // Fractions of Friday's own ten-hour window, which is what the section header carries.
+                slots = listOf(segment("16:00 – 19:00", SlotLiveStateUiModel.Over, 0f, 0.3f)),
+            ),
+            row(
+                id = "2026:carlos-willengton-fri",
+                name = "Carlos Willengton",
+                categoryId = "musique",
+                categoryName = "Musique",
+                priceText = null,
+                stateLabel = UiText.Resource(Res.string.slot_state_over),
+                state = SlotLiveStateUiModel.Over,
+                slots = listOf(segment("23:30 – 01:30", SlotLiveStateUiModel.Over, 0.75f, 0.95f)),
+            ),
+        )
+
     /** Bar fractions are measured against the Saturday axis in the scale above: 10:00 to 03:00. */
     private fun saturdayAtQuarterToFour() =
         listOf(
@@ -360,49 +388,18 @@ private class ProgrammeStateProvider : PreviewParameterProvider<ProgrammeUiModel
     )
 }
 
-/**
- * The Scaffold paints the ground under this screen, so a preview without it shows the rows floating
- * on whatever the tooling happens to use — which is not what anyone will see.
- */
+@PreviewThemes
 @Composable
-private fun ProgrammePreviewSurface(content: @Composable () -> Unit) {
-    Box(modifier = Modifier.fillMaxSize().background(MaterialTheme.appColors.background)) {
-        content()
-    }
-}
-
-@Preview
-@Composable
-private fun ProgrammeScreenLightPreview(
-    @PreviewParameter(ProgrammeStateProvider::class) state: ProgrammeUiModel,
+private fun ProgrammeScreenPreview(
+    @PreviewParameter(ProgrammeScreenStateProvider::class) state: ProgrammeUiModel,
 ) {
-    YadloTheme(darkTheme = false) {
-        ProgrammePreviewSurface {
-            ProgrammeScreen(
-                state = state,
-                onScopeClick = {},
-                onCategoryClick = {},
-                onAllCategoriesClick = {},
-                onSlotClick = {},
-            )
-        }
-    }
-}
-
-@Preview
-@Composable
-private fun ProgrammeScreenDarkPreview(
-    @PreviewParameter(ProgrammeStateProvider::class) state: ProgrammeUiModel,
-) {
-    YadloTheme(darkTheme = true) {
-        ProgrammePreviewSurface {
-            ProgrammeScreen(
-                state = state,
-                onScopeClick = {},
-                onCategoryClick = {},
-                onAllCategoriesClick = {},
-                onSlotClick = {},
-            )
-        }
+    YadloPreview {
+        ProgrammeScreen(
+            state = state,
+            onScopeClick = {},
+            onCategoryClick = {},
+            onAllCategoriesClick = {},
+            onSlotClick = {},
+        )
     }
 }

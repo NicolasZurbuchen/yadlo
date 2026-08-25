@@ -1,16 +1,10 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.cleardata
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
-import io.nicolaszurbuchen.yadlo.app.design.theme.YadloTheme
-import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
+import io.nicolaszurbuchen.yadlo.app.design.preview.YadloPreview
+import io.nicolaszurbuchen.yadlo.infra.preview.PreviewThemes
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.clear_data_images_action
@@ -33,7 +27,7 @@ import yadlo.shared.generated.resources.clear_data_saved_title
  * interesting states are combinations — a preview here may not import a domain type, and the
  * arithmetic those states would exercise is held by `ClearDataUiMapperTest` instead.
  */
-private class ClearDataStateProvider : PreviewParameterProvider<ClearDataUiModel> {
+private class ClearDataScreenStateProvider : PreviewParameterProvider<ClearDataUiModel> {
     override val values =
         sequenceOf(
             populated(isConfirming = false),
@@ -94,40 +88,19 @@ private class ClearDataStateProvider : PreviewParameterProvider<ClearDataUiModel
     )
 }
 
-@Preview
+@PreviewThemes
 @Composable
 private fun ClearDataScreenPreview(
-    @PreviewParameter(ClearDataStateProvider::class) state: ClearDataUiModel,
+    @PreviewParameter(ClearDataScreenStateProvider::class) state: ClearDataUiModel,
 ) {
-    YadloTheme {
-        Box(modifier = Modifier.fillMaxSize().background(MaterialTheme.appColors.background)) {
-            ClearDataScreen(
-                state = state,
-                onBackClick = {},
-                onSavedClick = {},
-                onSavedConfirm = {},
-                onSavedDismiss = {},
-                onImagesClick = {},
-            )
-        }
-    }
-}
-
-@Preview
-@Composable
-private fun ClearDataScreenDarkPreview(
-    @PreviewParameter(ClearDataStateProvider::class) state: ClearDataUiModel,
-) {
-    YadloTheme(darkTheme = true) {
-        Box(modifier = Modifier.fillMaxSize().background(MaterialTheme.appColors.background)) {
-            ClearDataScreen(
-                state = state,
-                onBackClick = {},
-                onSavedClick = {},
-                onSavedConfirm = {},
-                onSavedDismiss = {},
-                onImagesClick = {},
-            )
-        }
+    YadloPreview {
+        ClearDataScreen(
+            state = state,
+            onBackClick = {},
+            onSavedClick = {},
+            onSavedConfirm = {},
+            onSavedDismiss = {},
+            onImagesClick = {},
+        )
     }
 }

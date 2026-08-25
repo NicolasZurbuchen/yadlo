@@ -1,7 +1,6 @@
 package io.nicolaszurbuchen.yadlo
 
 import com.lemonappdev.konsist.api.Konsist
-import com.lemonappdev.konsist.api.declaration.KoFileDeclaration
 import com.lemonappdev.konsist.api.ext.list.withNameEndingWith
 import com.lemonappdev.konsist.api.ext.list.withPackage
 import com.lemonappdev.konsist.api.verify.assertEmpty
@@ -36,18 +35,6 @@ class PreviewTest {
          */
         private const val PREVIEW_SUFFIX = "ScreenPreview"
 
-        /**
-         * **The narrowing, and it is temporary.** These rules were written against
-         * `HomeScreenPreview` and every other preview in the app predates them — twenty-one screens
-         * plus the two in the app shell still carry the two-functions-per-file shape.
-         *
-         * Holding the whole repo to them today would leave the Konsist suite red, which costs more
-         * than it buys: a permanently failing gate stops distinguishing new breakage from known
-         * backlog. So the rules are real and enforced where the shape exists, and the migration is
-         * tracked as issue #54. **Delete this filter and its call sites when #54 closes.**
-         */
-        private fun List<KoFileDeclaration>.migrated(): List<KoFileDeclaration> = filter { it.hasPackage("..feature.home..") }
-
         /** A screen's own subfolders. A file in one of these is not a screen. */
         private val SCREEN_SUBPACKAGES = listOf("component", "uimodel", "mapper")
     }
@@ -62,7 +49,6 @@ class PreviewTest {
             scope.files
                 .withPackage("..presentation.screen..")
                 .filter { file -> SCREEN_SUBPACKAGES.none { sub -> file.hasPackage("..$sub") } }
-                .migrated()
                 .groupBy { it.packagee?.name }
 
         screenPackages.forEach { (packageName, files) ->
@@ -80,7 +66,6 @@ class PreviewTest {
         // the provider it feeds.
         scope.files
             .withNameEndingWith(PREVIEW_SUFFIX)
-            .migrated()
             .assertTrue { file ->
                 val topLevel =
                     file.classes(includeNested = false) +
@@ -96,7 +81,6 @@ class PreviewTest {
     fun `Preview files must declare exactly one top-level function`() {
         scope.files
             .withNameEndingWith(PREVIEW_SUFFIX)
-            .migrated()
             .assertTrue { file -> file.functions(includeNested = false).size == 1 }
     }
 
@@ -106,7 +90,6 @@ class PreviewTest {
         // rather than as one of the states being previewed.
         scope.files
             .withNameEndingWith(PREVIEW_SUFFIX)
-            .migrated()
             .assertTrue { file -> file.properties(includeNested = false).isEmpty() }
     }
 
@@ -116,7 +99,6 @@ class PreviewTest {
         // API surface for no reason.
         scope.files
             .withNameEndingWith(PREVIEW_SUFFIX)
-            .migrated()
             .assertTrue { file ->
                 file.functions(includeNested = false).all { !it.hasPublicOrDefaultModifier }
             }
@@ -132,7 +114,6 @@ class PreviewTest {
         // than for its screen is one that gets copied into the next preview by accident.
         scope.files
             .withNameEndingWith(PREVIEW_SUFFIX)
-            .migrated()
             .assertTrue { file ->
                 val prefix = file.name.removeSuffix("Preview")
 
@@ -144,7 +125,6 @@ class PreviewTest {
     fun `a Preview provider must be private`() {
         scope.files
             .withNameEndingWith(PREVIEW_SUFFIX)
-            .migrated()
             .assertTrue { file ->
                 file.classes(includeNested = false).all { !it.hasPublicOrDefaultModifier }
             }
@@ -154,7 +134,6 @@ class PreviewTest {
     fun `a Preview provider must implement PreviewParameterProvider`() {
         scope.files
             .withNameEndingWith(PREVIEW_SUFFIX)
-            .migrated()
             .assertTrue { file ->
                 file.classes(includeNested = false).all { clazz ->
                     clazz.parents().any { it.name.substringBefore("<") == "PreviewParameterProvider" }
@@ -172,7 +151,6 @@ class PreviewTest {
         // twice so it can be seen on two grounds. PreviewThemes is that pair, declared once.
         scope.files
             .withNameEndingWith(PREVIEW_SUFFIX)
-            .migrated()
             .flatMap { it.functions(includeNested = false) }
             .filterNot { it.hasAnnotationWithName("PreviewThemes") }
             .assertEmpty()
@@ -187,7 +165,6 @@ class PreviewTest {
         // does not fill its background renders dark-theme text on a white sheet and looks fine.
         scope.files
             .withNameEndingWith(PREVIEW_SUFFIX)
-            .migrated()
             .assertTrue { file -> file.hasImport { it.name.endsWith(".YadloPreview") } }
     }
 

@@ -1,23 +1,17 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.volunteering
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
-import io.nicolaszurbuchen.yadlo.app.design.theme.YadloTheme
-import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
+import io.nicolaszurbuchen.yadlo.app.design.preview.YadloPreview
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.uimodel.PlusEmailUiModel
+import io.nicolaszurbuchen.yadlo.infra.preview.PreviewThemes
 
 /**
  * The skeleton and the campaign. The closed state is gone with `hasLoaded` — recruiting is treated
  * as always open for now, and DECISIONS.md § Open holds the question that leaves behind.
  */
-private class VolunteeringStateProvider : PreviewParameterProvider<VolunteeringUiModel> {
+private class VolunteeringScreenStateProvider : PreviewParameterProvider<VolunteeringUiModel> {
     override val values =
         sequenceOf(
             VolunteeringUiModel(
@@ -31,53 +25,39 @@ private class VolunteeringStateProvider : PreviewParameterProvider<VolunteeringU
             ),
             published(),
         )
+
+    private fun published() =
+        VolunteeringUiModel(
+            isLoading = false,
+            name = "Hot'Staff",
+            body =
+                "Les bénévoles s'engagent pour un minimum de 6 heures pendant l'événement, réparties en " +
+                    "plusieurs postes — par exemple 3 × 2 heures. Les journées de montage et de démontage " +
+                    "sont aussi les bienvenues.",
+            perks =
+                listOf(
+                    "Tote bag et t-shirt Hot Staff",
+                    "Boissons offertes au bar selon les heures effectuées",
+                    "Repas végane chaque jour",
+                ),
+            signupUrl = "https://ehro.app/o/yadlo/",
+            shareText = "Hot’Staff\nhttps://ehro.app/o/yadlo/",
+            email =
+                PlusEmailUiModel(
+                    id = "staff",
+                    label = "Staff",
+                    responsible = "Maeva C.",
+                    address = "staff@yadlo.ch",
+                ),
+        )
 }
 
-@Preview
+@PreviewThemes
 @Composable
 private fun VolunteeringScreenPreview(
-    @PreviewParameter(VolunteeringStateProvider::class) state: VolunteeringUiModel,
+    @PreviewParameter(VolunteeringScreenStateProvider::class) state: VolunteeringUiModel,
 ) {
-    YadloTheme {
-        Box(modifier = Modifier.fillMaxSize().background(MaterialTheme.appColors.background)) {
-            VolunteeringScreen(state = state, onBackClick = {}, onSignupClick = {}, onEmailClick = {}, onShareClick = {})
-        }
+    YadloPreview {
+        VolunteeringScreen(state = state, onBackClick = {}, onSignupClick = {}, onEmailClick = {}, onShareClick = {})
     }
 }
-
-@Preview
-@Composable
-private fun VolunteeringScreenDarkPreview(
-    @PreviewParameter(VolunteeringStateProvider::class) state: VolunteeringUiModel,
-) {
-    YadloTheme(darkTheme = true) {
-        Box(modifier = Modifier.fillMaxSize().background(MaterialTheme.appColors.background)) {
-            VolunteeringScreen(state = state, onBackClick = {}, onSignupClick = {}, onEmailClick = {}, onShareClick = {})
-        }
-    }
-}
-
-private fun published() =
-    VolunteeringUiModel(
-        isLoading = false,
-        name = "Hot'Staff",
-        body =
-            "Les bénévoles s'engagent pour un minimum de 6 heures pendant l'événement, réparties en " +
-                "plusieurs postes — par exemple 3 × 2 heures. Les journées de montage et de démontage " +
-                "sont aussi les bienvenues.",
-        perks =
-            listOf(
-                "Tote bag et t-shirt Hot Staff",
-                "Boissons offertes au bar selon les heures effectuées",
-                "Repas végane chaque jour",
-            ),
-        signupUrl = "https://ehro.app/o/yadlo/",
-        shareText = "Hot’Staff\nhttps://ehro.app/o/yadlo/",
-        email =
-            PlusEmailUiModel(
-                id = "staff",
-                label = "Staff",
-                responsible = "Maeva C.",
-                address = "staff@yadlo.ch",
-            ),
-    )
