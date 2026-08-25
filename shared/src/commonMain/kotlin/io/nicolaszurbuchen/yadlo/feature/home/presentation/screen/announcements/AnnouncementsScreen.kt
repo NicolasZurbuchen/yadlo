@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -17,6 +16,7 @@ import io.nicolaszurbuchen.yadlo.app.design.component.YadloTopAppBar
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.component.AnnouncementCard
+import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.announcements.component.AnnouncementsSkeleton
 import org.jetbrains.compose.resources.stringResource
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.announcements_empty
@@ -46,12 +46,8 @@ fun AnnouncementsScreen(
     ) { contentPadding ->
         when {
             state.isLoading -> {
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier.fillMaxSize().padding(contentPadding),
-                ) {
-                    CircularProgressIndicator()
-                }
+                // The feed's own silhouette rather than a spinner — see AnnouncementsSkeleton.
+                AnnouncementsSkeleton(modifier = Modifier.fillMaxSize().padding(contentPadding))
             }
 
             state.items.isEmpty() -> {

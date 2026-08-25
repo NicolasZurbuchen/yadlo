@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -19,6 +18,7 @@ import io.nicolaszurbuchen.yadlo.common.content.presentation.component.SocialLin
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.component.AnnouncementsBlock
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.component.CountdownBlock
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.component.FiguresBlock
+import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.component.HomeSkeleton
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.component.QuickAccessBlock
 import io.nicolaszurbuchen.yadlo.infra.ui.asString
 import org.jetbrains.compose.resources.stringResource
@@ -41,9 +41,8 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
 ) {
     if (state.isLoading) {
-        Box(contentAlignment = Alignment.Center, modifier = modifier.fillMaxSize()) {
-            CircularProgressIndicator()
-        }
+        // The stack's own silhouette rather than a spinner — see HomeSkeleton.
+        HomeSkeleton(modifier = modifier.fillMaxSize())
         return
     }
 

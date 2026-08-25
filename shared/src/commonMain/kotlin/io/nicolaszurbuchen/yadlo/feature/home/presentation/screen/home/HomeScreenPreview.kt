@@ -1,19 +1,14 @@
 package io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
-import io.nicolaszurbuchen.yadlo.app.design.theme.YadloTheme
-import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
+import io.nicolaszurbuchen.yadlo.app.design.preview.PreviewThemes
+import io.nicolaszurbuchen.yadlo.app.design.preview.YadloPreview
 import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloFigureUiModel
 import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SocialLinkUiModel
 import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.socialIconFor
+import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.uimodel.QuickAccessEntryUiModel
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.uimodel.AnnouncementUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import org.jetbrains.compose.resources.DrawableResource
@@ -59,7 +54,7 @@ import yadlo.shared.generated.resources.img_see_you_soon
  * The models are written out rather than mapped from a HomeState: a preview may not import the
  * domain layer, which is where HomeContent lives.
  */
-private class HomeStackProvider : PreviewParameterProvider<HomeUiModel> {
+private class HomeScreenStateProvider : PreviewParameterProvider<HomeUiModel> {
     override val values =
         sequenceOf(
             // Before the first bundle reaches the screen. Short-lived in practice, since the
@@ -234,6 +229,17 @@ private class HomeStackProvider : PreviewParameterProvider<HomeUiModel> {
 
     private fun endedTiles() = listOf(QuickAccessItemUiModel(QuickAccessEntryUiModel.NEWSLETTER, url = NEWSLETTER_URL))
 
+    private fun social() =
+        HomeBlockUiModel.Social(
+            items =
+                listOf(
+                    SocialLinkUiModel("instagram", UiText.Raw("Instagram"), socialIconFor("instagram"), "https://example.com/i"),
+                    SocialLinkUiModel("facebook", UiText.Raw("Facebook"), socialIconFor("facebook"), "https://example.com/f"),
+                    SocialLinkUiModel("youtube", UiText.Raw("YouTube"), socialIconFor("youtube"), "https://example.com/y"),
+                    SocialLinkUiModel("tiktok", UiText.Raw("TikTok"), socialIconFor("tiktok"), "https://example.com/t"),
+                ),
+        )
+
     private companion object {
         val LIVE_BEFORE_KICKER = Res.string.home_live_before_kicker
         val LIVE_BEFORE_TITLE = Res.string.home_live_before_title
@@ -247,66 +253,22 @@ private class HomeStackProvider : PreviewParameterProvider<HomeUiModel> {
 
         const val NEWSLETTER_URL = "https://example.com/newsletter"
     }
+}
 
-    private fun social() =
-        HomeBlockUiModel.Social(
-            items =
-                listOf(
-                    SocialLinkUiModel("instagram", UiText.Raw("Instagram"), socialIconFor("instagram"), "https://example.com/i"),
-                    SocialLinkUiModel("facebook", UiText.Raw("Facebook"), socialIconFor("facebook"), "https://example.com/f"),
-                    SocialLinkUiModel("youtube", UiText.Raw("YouTube"), socialIconFor("youtube"), "https://example.com/y"),
-                    SocialLinkUiModel("tiktok", UiText.Raw("TikTok"), socialIconFor("tiktok"), "https://example.com/t"),
-                ),
+@PreviewThemes
+@Composable
+private fun HomeScreenPreview(
+    @PreviewParameter(HomeScreenStateProvider::class) state: HomeUiModel,
+) {
+    YadloPreview {
+        HomeScreen(
+            state = state,
+            onSearchClick = {},
+            onHeroClick = {},
+            onAnnouncementClick = {},
+            onSeeAllAnnouncementsClick = {},
+            onSocialClick = {},
+            onQuickAccessClick = {},
         )
-}
-
-/**
- * The app paints the ground under this screen from the Scaffold, so a preview without it shows the
- * blocks floating on whatever the tooling happens to use — which is not what anyone will see.
- */
-@Composable
-private fun HomePreviewSurface(content: @Composable () -> Unit) {
-    Box(modifier = Modifier.fillMaxSize().background(MaterialTheme.appColors.background)) {
-        content()
-    }
-}
-
-@Preview
-@Composable
-private fun HomeScreenLightPreview(
-    @PreviewParameter(HomeStackProvider::class) state: HomeUiModel,
-) {
-    YadloTheme(darkTheme = false) {
-        HomePreviewSurface {
-            HomeScreen(
-                state = state,
-                onSearchClick = {},
-                onHeroClick = {},
-                onAnnouncementClick = {},
-                onSeeAllAnnouncementsClick = {},
-                onSocialClick = {},
-                onQuickAccessClick = {},
-            )
-        }
-    }
-}
-
-@Preview
-@Composable
-private fun HomeScreenDarkPreview(
-    @PreviewParameter(HomeStackProvider::class) state: HomeUiModel,
-) {
-    YadloTheme(darkTheme = true) {
-        HomePreviewSurface {
-            HomeScreen(
-                state = state,
-                onSearchClick = {},
-                onHeroClick = {},
-                onAnnouncementClick = {},
-                onSeeAllAnnouncementsClick = {},
-                onSocialClick = {},
-                onQuickAccessClick = {},
-            )
-        }
     }
 }
