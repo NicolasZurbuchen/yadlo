@@ -43,11 +43,6 @@ sealed interface HappeningMessage {
      */
     data class DetailUpdated(
         val detail: HappeningDetail?,
-        /**
-         * Travels with the detail because it is derived from it — dispatching them separately
-         * would leave a frame where one Happening is on screen under another one’s kind.
-         */
-        val kind: HappeningKindUiModel?,
     ) : HappeningMessage
 
     data class Ticked(
@@ -63,10 +58,5 @@ sealed interface HappeningMessage {
 data class HappeningState(
     val now: Instant,
     val detail: HappeningDetail? = null,
-    /**
-     * Which of the three this is, converted at the Store boundary so the UiMapper can read it
-     * without importing the domain. Only the share message needs it — see [HappeningKindUiModel].
-     */
-    val kind: HappeningKindUiModel? = null,
     val isLoaded: Boolean = false,
 )

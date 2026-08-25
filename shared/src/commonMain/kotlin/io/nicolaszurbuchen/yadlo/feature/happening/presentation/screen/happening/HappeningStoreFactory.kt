@@ -7,7 +7,6 @@ import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import io.nicolaszurbuchen.yadlo.common.plan.domain.model.SavedKind
 import io.nicolaszurbuchen.yadlo.common.plan.domain.usecase.ToggleSavedUseCase
-import io.nicolaszurbuchen.yadlo.feature.happening.domain.model.HappeningKind
 import io.nicolaszurbuchen.yadlo.feature.happening.domain.usecase.ObserveHappeningDetailUseCase
 import io.nicolaszurbuchen.yadlo.infra.time.AppClock
 import kotlinx.coroutines.delay
@@ -80,7 +79,7 @@ class HappeningStoreFactory(
         private fun observeDetail() {
             scope.launch {
                 observeHappeningDetail(happeningId).collect { detail ->
-                    dispatch(HappeningMessage.DetailUpdated(detail = detail, kind = detail?.kind?.toUiModel()))
+                    dispatch(HappeningMessage.DetailUpdated(detail = detail))
                 }
             }
         }
@@ -105,7 +104,7 @@ class HappeningStoreFactory(
         override fun HappeningState.reduce(msg: HappeningMessage): HappeningState =
             when (msg) {
                 is HappeningMessage.DetailUpdated -> {
-                    copy(detail = msg.detail, kind = msg.kind, isLoaded = true)
+                    copy(detail = msg.detail, isLoaded = true)
                 }
 
                 is HappeningMessage.Ticked -> {
@@ -118,10 +117,3 @@ class HappeningStoreFactory(
         val TICK_INTERVAL = 1.minutes
     }
 }
-
-private fun HappeningKind.toUiModel(): HappeningKindUiModel =
-    when (this) {
-        HappeningKind.ARTIST -> HappeningKindUiModel.ARTIST
-        HappeningKind.ACTIVITY -> HappeningKindUiModel.ACTIVITY
-        HappeningKind.STAND -> HappeningKindUiModel.STAND
-    }

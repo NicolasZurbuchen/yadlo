@@ -6,6 +6,7 @@ import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SocialLinkU
 import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.slotLiveStateAt
 import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.socialIconFor
 import io.nicolaszurbuchen.yadlo.common.time.FESTIVAL_TIME_ZONE
+import io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening.mapper.toUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import io.nicolaszurbuchen.yadlo.infra.ui.formatAsDayOfMonth
 import io.nicolaszurbuchen.yadlo.infra.ui.formatAsShortDate
@@ -261,14 +262,10 @@ fun HappeningState.toUiModel(): HappeningUiModel {
         // a message bubble, which is what sent them down the page.
         shareText =
             UiText.Resource(
-                when (kind) {
+                when (loaded.kind.toUiModel()) {
                     HappeningKindUiModel.ACTIVITY -> Res.string.share_happening_activity
-
                     HappeningKindUiModel.STAND -> Res.string.share_happening_stand
-
-                    // An Artist, and the fallback for a State that somehow has a detail without a
-                    // kind — a message is better than none, and a concert is what most of these are.
-                    HappeningKindUiModel.ARTIST, null -> Res.string.share_happening_artist
+                    HappeningKindUiModel.ARTIST -> Res.string.share_happening_artist
                 },
                 listOf(
                     listOf(

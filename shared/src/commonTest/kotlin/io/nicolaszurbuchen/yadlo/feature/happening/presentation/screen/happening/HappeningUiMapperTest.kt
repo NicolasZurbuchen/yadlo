@@ -458,16 +458,16 @@ class HappeningUiMapperTest {
 
     @Test
     fun toUiModel_shareOpening_namesTheKindBecauseThatIsTheOnePartThatIsCopy() {
-        assertEquals(Res.string.share_happening_artist, state(detail(), kind = HappeningKindUiModel.ARTIST).shareResource())
-        assertEquals(Res.string.share_happening_activity, state(detail(), kind = HappeningKindUiModel.ACTIVITY).shareResource())
-        assertEquals(Res.string.share_happening_stand, state(detail(), kind = HappeningKindUiModel.STAND).shareResource())
+        assertEquals(Res.string.share_happening_artist, state(detail(kind = HappeningKind.ARTIST)).shareResource())
+        assertEquals(Res.string.share_happening_activity, state(detail(kind = HappeningKind.ACTIVITY)).shareResource())
+        assertEquals(Res.string.share_happening_stand, state(detail(kind = HappeningKind.STAND)).shareResource())
     }
 
     @Test
     fun toUiModel_shareBodyForAStand_leansOnItsOfferingBecauseItHasNoDates() {
         // The case that sent this back for a second pass: a Stand has no Slots, so without the
         // offering the message was a name and an address and read as though something was missing.
-        val state = state(detail(tags = listOf("Cuisine végétale"), slots = emptyList()), kind = HappeningKindUiModel.STAND)
+        val state = state(detail(kind = HappeningKind.STAND, tags = listOf("Cuisine végétale"), slots = emptyList()))
 
         assertEquals("Dubside\nCuisine végétale\n\nYadlo 2026\nhttps://www.yadlo.ch/", state.shareBody())
     }
@@ -519,8 +519,7 @@ class HappeningUiMapperTest {
     private fun state(
         detail: HappeningDetail,
         now: Instant = NOW,
-        kind: HappeningKindUiModel = HappeningKindUiModel.ARTIST,
-    ) = HappeningState(now = now, detail = detail, kind = kind, isLoaded = true)
+    ) = HappeningState(now = now, detail = detail, isLoaded = true)
 
     private fun detail(
         kind: HappeningKind = HappeningKind.ARTIST,
