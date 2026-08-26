@@ -3,16 +3,28 @@ package io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.ContentStatus
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Happening
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.StandKind
+import io.nicolaszurbuchen.yadlo.common.content.domain.model.StandingLink
 import io.nicolaszurbuchen.yadlo.common.content.domain.repository.ContentRepository
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.model.PlusOverview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.map
 
-/** Cash refused is a fact worth writing on the row; the method's own id is how the content says it. */
+/**
+ * **These two stay raw, unlike the newsletter that used to sit beside them.** Both name one entry
+ * of a published list, and the difference is what happens to the rest of that list: nothing
+ * downstream wants a standing link the app cannot act on, so `StandingLink` resolves it at the
+ * edge and the string never travels. Every payment method and every address does travel — the
+ * Paiement screen draws all four, the Contact screen all nine — so the list has to cross the
+ * boundary whole and the match has to happen here, wherever the id is named.
+ *
+ * Typing them would move the string rather than remove it, which is the objection #61 raised
+ * against hoisting the newsletter to a shared constant.
+ *
+ * Cash refused is a fact worth writing on the row, and the method's own id is how the content says
+ * it.
+ */
 private const val CASH_METHOD_ID = "especes"
-
-private const val NEWSLETTER_LINK_ID = "newsletter"
 
 /**
  * The general address, deliberately, for *signaler une information*. The directory has nine and
@@ -61,7 +73,7 @@ class ObservePlusOverviewUseCase(
                     hasVolunteering = festival.involvement?.volunteering != null,
                     hasContact = festival.contact?.emails.orEmpty().isNotEmpty(),
                     socials = festival.social,
-                    newsletterUrl = festival.links.firstOrNull { it.id == NEWSLETTER_LINK_ID }?.url,
+                    newsletterUrl = festival.links[StandingLink.NEWSLETTER],
                     reportEmail =
                         festival.contact?.emails?.firstOrNull { it.id == GENERAL_EMAIL_ID }?.address,
                 )
