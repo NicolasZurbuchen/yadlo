@@ -45,8 +45,12 @@ data class Festival(
      * actually is.
      */
     val social: List<SocialLink>,
-    /** Standing calls to action — the newsletter, the donation page. */
-    val links: List<InfoLink> = emptyList(),
+    /**
+     * Standing calls to action — the newsletter, the donation page — keyed by the one they are
+     * rather than by the string the content writes. See [StandingLink] for why the resolution
+     * happens at the edge and what drops there.
+     */
+    val links: Map<StandingLink, String> = emptyMap(),
     val story: Story? = null,
     val faq: List<FaqEntry> = emptyList(),
     /** Flattened out of `responsable`, which wraps this list and holds nothing else. */

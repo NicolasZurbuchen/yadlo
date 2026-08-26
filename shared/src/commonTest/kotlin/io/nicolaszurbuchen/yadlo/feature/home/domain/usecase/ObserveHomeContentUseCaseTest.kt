@@ -18,6 +18,7 @@ import io.nicolaszurbuchen.yadlo.common.content.domain.model.Payment
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Provenance
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Slot
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.SocialLink
+import io.nicolaszurbuchen.yadlo.common.content.domain.model.StandingLink
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Story
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Transport
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.TransportMode
@@ -247,7 +248,7 @@ class ObserveHomeContentUseCaseTest {
             useCase().test {
                 val festival =
                     fullFestival().copy(
-                        links = listOf(InfoLink(id = "don", label = "Faire un don", sublabel = null, url = "https://example.ch/don")),
+                        links = mapOf(StandingLink.DONATION to "https://example.ch/don"),
                     )
 
                 repository.emitStatus(ContentStatus.Ready(bundle = bundle(festival = festival), updateRequired = false))
@@ -319,7 +320,7 @@ class ObserveHomeContentUseCaseTest {
     /** The same file with every section Accueil can promote filled in. */
     private fun fullFestival() =
         bareFestival().copy(
-            links = listOf(InfoLink(id = "newsletter", label = "Newsletter", sublabel = null, url = "https://example.ch/newsletter")),
+            links = mapOf(StandingLink.NEWSLETTER to "https://example.ch/newsletter"),
             story = Story(foundedYear = 2015, body = "Depuis 2015.", passage = null, provenance = Provenance.CONFIRMED),
             contact =
                 Contact(

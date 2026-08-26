@@ -4,6 +4,7 @@ import io.nicolaszurbuchen.yadlo.common.content.domain.model.ContentBundle
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.ContentStatus
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Happening
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Provenance
+import io.nicolaszurbuchen.yadlo.common.content.domain.model.StandingLink
 import io.nicolaszurbuchen.yadlo.common.content.domain.repository.ContentRepository
 import io.nicolaszurbuchen.yadlo.feature.home.domain.model.HomeContent
 import kotlinx.coroutines.flow.Flow
@@ -58,12 +59,6 @@ class ObserveHomeContentUseCase(
             hasVolunteering = festival.involvement?.volunteering != null,
             hasTransport = festival.transport?.modes.orEmpty().isNotEmpty(),
             hasPayment = festival.payment != null,
-            newsletterUrl = festival.links.firstOrNull { it.id == NEWSLETTER_LINK_ID }?.url,
+            newsletterUrl = festival.links[StandingLink.NEWSLETTER],
         )
 }
-
-/**
- * The standing call to action, keyed by its id in `festival.links` rather than by its position —
- * the list also carries the donation page, and the two are ordered by the content.
- */
-private const val NEWSLETTER_LINK_ID = "newsletter"

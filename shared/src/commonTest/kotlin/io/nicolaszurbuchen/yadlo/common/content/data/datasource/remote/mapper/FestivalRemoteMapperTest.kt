@@ -13,6 +13,7 @@ import io.nicolaszurbuchen.yadlo.common.content.data.datasource.remote.dto.Trans
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Festival
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Provenance
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.SocialLink
+import io.nicolaszurbuchen.yadlo.common.content.domain.model.StandingLink
 import io.nicolaszurbuchen.yadlo.common.error.AppException
 import kotlinx.serialization.json.Json
 import kotlin.test.Test
@@ -269,14 +270,40 @@ class FestivalRemoteMapperTest {
     }
 
     @Test
-    fun toDomain_links_carryTheStandingCallsToAction() {
+    fun toDomain_links_resolveToTheOnesTheAppCanActOn() {
         val dto =
             minimal().copy(
-                links = listOf(InfoLinkDto(id = "newsletter", label = "Newsletter", url = "https://example.ch/n")),
+                links =
+                    listOf(
+                        InfoLinkDto(id = "newsletter", label = "Newsletter", url = "https://example.ch/n"),
+                        InfoLinkDto(id = "don", label = "Faire un don", url = "https://example.ch/d"),
+                    ),
             )
 
-        assertEquals(listOf("newsletter"), dto.toDomain().links.map { it.id })
-        assertNull(dto.toDomain().links.single().sublabel)
+        assertEquals(
+            mapOf(
+                StandingLink.NEWSLETTER to "https://example.ch/n",
+                StandingLink.DONATION to "https://example.ch/d",
+            ),
+            dto.toDomain().links,
+        )
+    }
+
+    @Test
+    fun toDomain_links_dropAPublishedIdThisBuildHasNoNameFor() {
+        // The whole point of resolving at the edge: a standing link added to festival.json
+        // before the app has a case for it is left here rather than carried downstream as a
+        // string every reader would have to match by hand.
+        val dto =
+            minimal().copy(
+                links =
+                    listOf(
+                        InfoLinkDto(id = "billetterie", label = "Billetterie", url = "https://example.ch/b"),
+                        InfoLinkDto(id = "newsletter", label = "Newsletter", url = "https://example.ch/n"),
+                    ),
+            )
+
+        assertEquals(mapOf(StandingLink.NEWSLETTER to "https://example.ch/n"), dto.toDomain().links)
     }
 
     // endregion
@@ -372,7 +399,7 @@ class FestivalRemoteMapperTest {
         assertEquals("144", festival.assistance?.emergencyNumbers?.single()?.number)
         assertEquals("Hot'Staff", festival.involvement?.volunteering?.name)
         assertEquals("Devenir partenaire", festival.involvement?.partnership?.name)
-        assertEquals(listOf("Newsletter"), festival.links.map { it.label })
+        assertEquals("https://example.ch/n", festival.links[StandingLink.NEWSLETTER])
     }
 
     @Test

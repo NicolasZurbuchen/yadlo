@@ -19,6 +19,7 @@ import io.nicolaszurbuchen.yadlo.common.content.domain.model.InfoLink
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Involvement
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Payment
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.SocialLink
+import io.nicolaszurbuchen.yadlo.common.content.domain.model.StandingLink
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Story
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.Transport
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.TransportMode
@@ -39,7 +40,12 @@ fun FestivalDto.toDomain(): Festival =
         currentEditionId = currentEditionId,
         minSupportedAppVersion = minSupportedAppVersion,
         social = social.map { SocialLink(id = it.id, name = it.name, url = it.url) },
-        links = links.map { it.toDomain() },
+        // Resolved here and nowhere else, so no screen ever matches a published id by hand. One
+        // this build has no name for is left out rather than carried as a string nothing can read.
+        links =
+            links
+                .mapNotNull { link -> StandingLink.entries.firstOrNull { it.id == link.id }?.to(link.url) }
+                .toMap(),
         story = story?.toDomain(),
         faq = faq.map { it.toDomain() },
         // The wrapper is dropped here: `responsable` holds one list and nothing else, so a domain
