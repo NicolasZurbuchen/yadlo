@@ -103,7 +103,7 @@ private fun SearchResultRow(
                 .padding(horizontal = MaterialTheme.spacing.md, vertical = MaterialTheme.spacing.sm),
     ) {
         // One box either way, so the titles line up down the list whichever kind of row they are on.
-        Box(contentAlignment = Alignment.Center, modifier = Modifier.size(MaterialTheme.sizing.icon)) {
+        Box(contentAlignment = Alignment.Center, modifier = Modifier.size(MaterialTheme.sizing.iconMd)) {
             when (row) {
                 is SearchRowUiModel.Happening -> {
                     Box(
@@ -121,7 +121,7 @@ private fun SearchResultRow(
                         // Decorative: the title beside it names the screen the icon stands for.
                         contentDescription = null,
                         tint = MaterialTheme.appColors.textSecondary,
-                        modifier = Modifier.size(MaterialTheme.sizing.icon),
+                        modifier = Modifier.size(MaterialTheme.sizing.iconMd),
                     )
                 }
             }
@@ -159,7 +159,7 @@ private fun SearchResultRow(
             imageVector = YadloLinkMarkUiModel.DISCLOSURE.icon,
             contentDescription = YadloLinkMarkUiModel.DISCLOSURE.contentDescription?.let { stringResource(it) },
             tint = MaterialTheme.appColors.textTertiary,
-            modifier = Modifier.size(MaterialTheme.sizing.icon),
+            modifier = Modifier.size(MaterialTheme.sizing.iconMd),
         )
     }
 }

@@ -84,7 +84,7 @@ fun YadloLinkTile(
             imageVector = mark.icon,
             contentDescription = mark.contentDescription?.let { stringResource(it) },
             tint = MaterialTheme.appColors.textTertiary,
-            modifier = Modifier.size(MaterialTheme.sizing.icon),
+            modifier = Modifier.size(MaterialTheme.sizing.iconMd),
         )
     }
 }

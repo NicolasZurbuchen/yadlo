@@ -54,7 +54,7 @@ fun YadloDietaryTags(
                     // twice, which on a dish carrying four of them is eight words for four facts.
                     contentDescription = null,
                     tint = tag.mark.tint,
-                    modifier = Modifier.size(MaterialTheme.sizing.glyph),
+                    modifier = Modifier.size(MaterialTheme.sizing.iconSm),
                 )
 
                 Text(

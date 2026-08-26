@@ -57,7 +57,7 @@ fun YadloDietaryMarks(
     }
 }
 
-// A step larger than `sizing.glyph`, which is a glyph beside its own word. There is no word here to be
+// A step larger than `sizing.iconSm`, which is a glyph beside its own word. There is no word here to be
 // measured against, and at 14dp a lone leaf next to a 16sp dish name read as a speck rather than as
 // a mark.
 private val GLYPH_SIZE = 16.dp

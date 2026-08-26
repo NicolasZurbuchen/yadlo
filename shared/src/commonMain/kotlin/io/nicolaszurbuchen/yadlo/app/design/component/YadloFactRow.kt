@@ -50,7 +50,7 @@ fun YadloFactRow(
             // Nudged down onto the first line's optical centre. An icon top-aligned with a text run
             // sits visibly high, because the glyph fills its box where the letters do not fill
             // theirs — and this row is read as a sentence with a mark in front of it.
-            modifier = Modifier.padding(top = MARK_BASELINE_NUDGE).size(MaterialTheme.sizing.icon),
+            modifier = Modifier.padding(top = MARK_BASELINE_NUDGE).size(MaterialTheme.sizing.iconMd),
         )
 
         Text(

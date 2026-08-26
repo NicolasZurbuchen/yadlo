@@ -77,7 +77,7 @@ private fun PerkSkeleton(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier.fillMaxWidth(),
     ) {
-        Spacer(modifier = Modifier.size(MaterialTheme.sizing.icon).shimmerBlock())
+        Spacer(modifier = Modifier.size(MaterialTheme.sizing.iconMd).shimmerBlock())
 
         Spacer(modifier = Modifier.fillMaxWidth(widthFraction).height(LINE_HEIGHT).shimmerBlock())
     }

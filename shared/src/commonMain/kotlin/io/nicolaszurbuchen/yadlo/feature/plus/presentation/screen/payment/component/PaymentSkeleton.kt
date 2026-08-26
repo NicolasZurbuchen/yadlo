@@ -61,7 +61,7 @@ fun PaymentSkeleton(modifier: Modifier = Modifier) {
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.fillMaxWidth(),
                 ) {
-                    Spacer(modifier = Modifier.size(MaterialTheme.sizing.icon).shimmerBlock())
+                    Spacer(modifier = Modifier.size(MaterialTheme.sizing.iconMd).shimmerBlock())
 
                     Spacer(modifier = Modifier.fillMaxWidth(fraction).height(LINE_HEIGHT).shimmerBlock())
                 }

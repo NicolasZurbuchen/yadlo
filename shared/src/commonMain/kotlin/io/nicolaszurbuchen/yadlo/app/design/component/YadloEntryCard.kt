@@ -107,7 +107,7 @@ private fun YadloEntryRow(
             imageVector = entry.icon,
             contentDescription = null,
             tint = MaterialTheme.appColors.textSecondary,
-            modifier = Modifier.size(MaterialTheme.sizing.icon),
+            modifier = Modifier.size(MaterialTheme.sizing.iconMd),
         )
 
         Column(
@@ -133,7 +133,7 @@ private fun YadloEntryRow(
             imageVector = entry.mark.icon,
             contentDescription = entry.mark.contentDescription?.let { stringResource(it) },
             tint = MaterialTheme.appColors.textTertiary,
-            modifier = Modifier.size(MaterialTheme.sizing.icon),
+            modifier = Modifier.size(MaterialTheme.sizing.iconMd),
         )
     }
 }

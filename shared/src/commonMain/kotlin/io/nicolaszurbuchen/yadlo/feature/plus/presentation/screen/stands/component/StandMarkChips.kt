@@ -80,7 +80,7 @@ fun StandMarkChips(
                                 // reader announce every chip twice.
                                 contentDescription = null,
                                 tint = if (chip.isSelected) it.ink else it.tint,
-                                modifier = Modifier.size(MaterialTheme.sizing.glyph),
+                                modifier = Modifier.size(MaterialTheme.sizing.iconSm),
                             )
                         }
                     },

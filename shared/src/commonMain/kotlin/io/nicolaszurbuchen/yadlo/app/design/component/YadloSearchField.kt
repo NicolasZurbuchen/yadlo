@@ -91,7 +91,7 @@ fun YadloSearchField(
             // in the button mode the whole row is one target that a reader already hears named.
             contentDescription = null,
             tint = MaterialTheme.appColors.textTertiary,
-            modifier = Modifier.size(MaterialTheme.sizing.icon),
+            modifier = Modifier.size(MaterialTheme.sizing.iconMd),
         )
 
         if (onClick != null) {
@@ -130,7 +130,7 @@ fun YadloSearchField(
                     imageVector = Icons.Outlined.Close,
                     contentDescription = stringResource(Res.string.search_clear),
                     tint = MaterialTheme.appColors.textSecondary,
-                    modifier = Modifier.size(MaterialTheme.sizing.icon).clickable { onValueChange("") },
+                    modifier = Modifier.size(MaterialTheme.sizing.iconMd).clickable { onValueChange("") },
                 )
             }
         }

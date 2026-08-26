@@ -72,7 +72,7 @@ fun YadloTheme(
         content = {
             CompositionLocalProvider(
                 LocalSpacing provides Spacing(),
-                LocalSizing provides AppSizing(),
+                LocalSizing provides Sizing(),
                 LocalAppColors provides appColors,
                 LocalCategoryColors provides categoryColors,
             ) {

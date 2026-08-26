@@ -82,7 +82,7 @@ fun EmergencyNumberRow(
             imageVector = Icons.Outlined.Phone,
             contentDescription = stringResource(Res.string.assistance_call),
             tint = MaterialTheme.appColors.textTertiary,
-            modifier = Modifier.size(MaterialTheme.sizing.icon),
+            modifier = Modifier.size(MaterialTheme.sizing.iconMd),
         )
     }
 }
