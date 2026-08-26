@@ -1,7 +1,7 @@
 package io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening.mapper
 
 import io.nicolaszurbuchen.yadlo.feature.happening.domain.model.HappeningKind
-import io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening.HappeningKindUiModel
+import io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening.uimodel.HappeningKindUiModel
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
