@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import io.nicolaszurbuchen.yadlo.app.design.component.YadloSectionHeader
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.app.design.theme.categoryColors
+import io.nicolaszurbuchen.yadlo.app.design.theme.sizing
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloLinkMarkUiModel
 import io.nicolaszurbuchen.yadlo.feature.search.presentation.screen.search.SearchGroupUiModel
@@ -97,18 +98,18 @@ private fun SearchResultRow(
         modifier =
             modifier
                 .fillMaxWidth()
-                .heightIn(min = ROW_MIN_HEIGHT)
+                .heightIn(min = MaterialTheme.sizing.rowMinHeight)
                 .clickable { onClick() }
                 .padding(horizontal = MaterialTheme.spacing.md, vertical = MaterialTheme.spacing.sm),
     ) {
         // One box either way, so the titles line up down the list whichever kind of row they are on.
-        Box(contentAlignment = Alignment.Center, modifier = Modifier.size(MARK_SLOT_SIZE)) {
+        Box(contentAlignment = Alignment.Center, modifier = Modifier.size(MaterialTheme.sizing.icon)) {
             when (row) {
                 is SearchRowUiModel.Happening -> {
                     Box(
                         modifier =
                             Modifier
-                                .size(CATEGORY_MARK_SIZE)
+                                .size(MaterialTheme.sizing.categoryMark)
                                 .clip(MaterialTheme.shapes.extraSmall)
                                 .background(MaterialTheme.categoryColors.forId(row.categoryId).fill),
                     )
@@ -120,7 +121,7 @@ private fun SearchResultRow(
                         // Decorative: the title beside it names the screen the icon stands for.
                         contentDescription = null,
                         tint = MaterialTheme.appColors.textSecondary,
-                        modifier = Modifier.size(MARK_SLOT_SIZE),
+                        modifier = Modifier.size(MaterialTheme.sizing.icon),
                     )
                 }
             }
@@ -158,16 +159,7 @@ private fun SearchResultRow(
             imageVector = YadloLinkMarkUiModel.DISCLOSURE.icon,
             contentDescription = YadloLinkMarkUiModel.DISCLOSURE.contentDescription?.let { stringResource(it) },
             tint = MaterialTheme.appColors.textTertiary,
-            modifier = Modifier.size(MARK_SLOT_SIZE),
+            modifier = Modifier.size(MaterialTheme.sizing.icon),
         )
     }
 }
-
-/** The same 20 the Plus rows use, so a result and the row it opens are the same shape. */
-private val MARK_SLOT_SIZE = 20.dp
-
-/** The same square the Programme row and the Catalogue card mark their Category with. */
-private val CATEGORY_MARK_SIZE = 10.dp
-
-/** [io.nicolaszurbuchen.yadlo.app.design.component.YadloEntryCard]'s, for the same reason. */
-private val ROW_MIN_HEIGHT = 64.dp

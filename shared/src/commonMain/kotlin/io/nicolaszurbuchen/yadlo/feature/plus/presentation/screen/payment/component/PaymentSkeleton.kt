@@ -18,6 +18,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.app.design.theme.shimmerBlock
+import io.nicolaszurbuchen.yadlo.app.design.theme.sizing
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
 
 /**
@@ -60,7 +61,7 @@ fun PaymentSkeleton(modifier: Modifier = Modifier) {
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.fillMaxWidth(),
                 ) {
-                    Spacer(modifier = Modifier.size(MARK_SIZE).shimmerBlock())
+                    Spacer(modifier = Modifier.size(MaterialTheme.sizing.icon).shimmerBlock())
 
                     Spacer(modifier = Modifier.fillMaxWidth(fraction).height(LINE_HEIGHT).shimmerBlock())
                 }
@@ -92,6 +93,3 @@ private val HERO_HEADLINE_HEIGHT = 30.dp
 private val HEADER_WIDTH = 96.dp
 private val HEADER_HEIGHT = 12.dp
 private val LINE_HEIGHT = 16.dp
-
-// Matched to YadloFactRow.
-private val MARK_SIZE = 20.dp

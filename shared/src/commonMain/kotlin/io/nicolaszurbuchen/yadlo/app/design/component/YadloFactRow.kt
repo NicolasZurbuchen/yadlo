@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
+import io.nicolaszurbuchen.yadlo.app.design.theme.sizing
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloFactMarkUiModel
 import org.jetbrains.compose.resources.stringResource
@@ -49,7 +50,7 @@ fun YadloFactRow(
             // Nudged down onto the first line's optical centre. An icon top-aligned with a text run
             // sits visibly high, because the glyph fills its box where the letters do not fill
             // theirs — and this row is read as a sentence with a mark in front of it.
-            modifier = Modifier.padding(top = MARK_BASELINE_NUDGE).size(MARK_SIZE),
+            modifier = Modifier.padding(top = MARK_BASELINE_NUDGE).size(MaterialTheme.sizing.icon),
         )
 
         Text(
@@ -60,7 +61,4 @@ fun YadloFactRow(
     }
 }
 
-// Matched to the sentence's own line height rather than to Material's 24dp default: at 24 the mark
-// outweighs the fact it qualifies.
-private val MARK_SIZE = 20.dp
 private val MARK_BASELINE_NUDGE = 2.dp

@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.app.design.theme.categoryColors
+import io.nicolaszurbuchen.yadlo.app.design.theme.sizing
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme.CatalogueCardUiModel
 import org.jetbrains.compose.resources.painterResource
@@ -99,7 +100,7 @@ fun CatalogueCard(
                 Box(
                     modifier =
                         Modifier
-                            .size(CATEGORY_MARK_SIZE)
+                            .size(MaterialTheme.sizing.categoryMark)
                             .clip(MaterialTheme.shapes.extraSmall)
                             .background(category.fill),
                 )
@@ -177,9 +178,6 @@ private const val IMAGE_RATIO = 3f / 2f
  * them off the screen. The fiche carries the whole thing, one tap away.
  */
 private const val DESCRIPTION_MAX_LINES = 3
-
-/** The same square the Programme row marks its Category with, so the two views agree. */
-private val CATEGORY_MARK_SIZE = 10.dp
 
 /** Below the smallest spacing step, for the same reason as the live-state pill: a tag is not a button. */
 private val TAG_VERTICAL_PADDING = 4.dp

@@ -11,6 +11,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
+import io.nicolaszurbuchen.yadlo.app.design.theme.sizing
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotLiveStateUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
@@ -58,12 +59,10 @@ fun SlotStatePill(
             modifier
                 .clip(MaterialTheme.shapes.extraSmall)
                 .background(fill)
-                .border(BORDER_WIDTH, border, MaterialTheme.shapes.extraSmall)
+                .border(MaterialTheme.sizing.hairline, border, MaterialTheme.shapes.extraSmall)
                 .padding(horizontal = MaterialTheme.spacing.sm, vertical = PILL_VERTICAL_PADDING),
     )
 }
-
-private val BORDER_WIDTH = 1.dp
 
 /** Below the smallest spacing step: a pill that takes `sm` on both axes reads as a button. */
 private val PILL_VERTICAL_PADDING = 2.dp

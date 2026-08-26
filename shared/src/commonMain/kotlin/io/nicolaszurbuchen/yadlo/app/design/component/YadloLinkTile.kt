@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
+import io.nicolaszurbuchen.yadlo.app.design.theme.sizing
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloLinkMarkUiModel
 import org.jetbrains.compose.resources.stringResource
@@ -57,7 +58,7 @@ fun YadloLinkTile(
                 .clip(MaterialTheme.shapes.small)
                 .background(MaterialTheme.appColors.surface)
                 .clickable { onClick() }
-                .heightIn(min = TILE_MIN_HEIGHT)
+                .heightIn(min = MaterialTheme.sizing.rowMinHeight)
                 .padding(horizontal = MaterialTheme.spacing.md, vertical = MaterialTheme.spacing.md),
     ) {
         Column(
@@ -83,18 +84,7 @@ fun YadloLinkTile(
             imageVector = mark.icon,
             contentDescription = mark.contentDescription?.let { stringResource(it) },
             tint = MaterialTheme.appColors.textTertiary,
-            modifier = Modifier.size(MARK_SIZE),
+            modifier = Modifier.size(MaterialTheme.sizing.icon),
         )
     }
 }
-
-// The trailing mark reads as punctuation on the label, not as a second subject: sized to the
-// label's own line height rather than to Material's 24dp default, which would make it compete with
-// the leading icon on the rows that have one.
-private val MARK_SIZE = 20.dp
-
-// The same minimum a Plus row takes, and for the same reason: a tile with a sublabel and one
-// without should not be visibly different objects, and a column of them should not comb up and down
-// as the content publishes a second line here and not there. A minimum rather than a fixed height,
-// so the largest accessibility text sizes can still grow it.
-private val TILE_MIN_HEIGHT = 64.dp

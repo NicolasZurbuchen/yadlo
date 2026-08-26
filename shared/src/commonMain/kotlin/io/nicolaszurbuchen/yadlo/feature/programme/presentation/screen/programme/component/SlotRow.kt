@@ -24,6 +24,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.app.design.theme.categoryColors
+import io.nicolaszurbuchen.yadlo.app.design.theme.sizing
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.common.content.presentation.component.SlotStatePill
 import io.nicolaszurbuchen.yadlo.common.content.presentation.component.SlotTimeBar
@@ -116,7 +117,7 @@ fun SlotRow(
                 Box(
                     modifier =
                         Modifier
-                            .size(CATEGORY_MARK_SIZE)
+                            .size(MaterialTheme.sizing.categoryMark)
                             .clip(MaterialTheme.shapes.extraSmall)
                             .background(category.fill),
                 )
@@ -206,8 +207,6 @@ fun SlotRow(
  * either side wrap independently of it.
  */
 private const val TIME_SEPARATOR = "·"
-
-private val CATEGORY_MARK_SIZE = 10.dp
 
 /**
  * Between `sm` and `md`, which the scale skips. Eight was too tight for a row carrying a name, a

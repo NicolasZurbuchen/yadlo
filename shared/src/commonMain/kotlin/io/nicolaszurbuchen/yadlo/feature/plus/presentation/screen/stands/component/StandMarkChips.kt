@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.nicolaszurbuchen.yadlo.app.design.component.YadloFilterChip
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
+import io.nicolaszurbuchen.yadlo.app.design.theme.sizing
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloDietaryMarkUiModel
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands.StandChipUiModel
@@ -79,7 +80,7 @@ fun StandMarkChips(
                                 // reader announce every chip twice.
                                 contentDescription = null,
                                 tint = if (chip.isSelected) it.ink else it.tint,
-                                modifier = Modifier.size(GLYPH_SIZE),
+                                modifier = Modifier.size(MaterialTheme.sizing.glyph),
                             )
                         }
                     },
@@ -87,7 +88,3 @@ fun StandMarkChips(
         }
     }
 }
-
-// Matched to the chip label's own line height rather than Material's 18dp chip-icon default: the
-// glyph qualifies the word beside it and should not outweigh it.
-private val GLYPH_SIZE = 14.dp

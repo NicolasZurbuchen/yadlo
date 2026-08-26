@@ -28,6 +28,7 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
+import io.nicolaszurbuchen.yadlo.app.design.theme.sizing
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
 import org.jetbrains.compose.resources.stringResource
 import yadlo.shared.generated.resources.Res
@@ -90,7 +91,7 @@ fun YadloSearchField(
             // in the button mode the whole row is one target that a reader already hears named.
             contentDescription = null,
             tint = MaterialTheme.appColors.textTertiary,
-            modifier = Modifier.size(ICON_SIZE),
+            modifier = Modifier.size(MaterialTheme.sizing.icon),
         )
 
         if (onClick != null) {
@@ -129,7 +130,7 @@ fun YadloSearchField(
                     imageVector = Icons.Outlined.Close,
                     contentDescription = stringResource(Res.string.search_clear),
                     tint = MaterialTheme.appColors.textSecondary,
-                    modifier = Modifier.size(ICON_SIZE).clickable { onValueChange("") },
+                    modifier = Modifier.size(MaterialTheme.sizing.icon).clickable { onValueChange("") },
                 )
             }
         }
@@ -141,6 +142,3 @@ fun YadloSearchField(
  * what the field wants anyway to sit a line of `bodyLarge` in comfortably.
  */
 private val FIELD_HEIGHT = 48.dp
-
-/** Matched to the label's line height rather than Material's 24, the same call [YadloEntryCard] makes. */
-private val ICON_SIZE = 20.dp

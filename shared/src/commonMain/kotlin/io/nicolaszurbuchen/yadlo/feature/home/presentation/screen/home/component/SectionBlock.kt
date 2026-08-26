@@ -18,6 +18,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import io.nicolaszurbuchen.yadlo.app.design.component.YadloSectionHeader
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
+import io.nicolaszurbuchen.yadlo.app.design.theme.sizing
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import io.nicolaszurbuchen.yadlo.infra.ui.asString
@@ -55,7 +56,7 @@ fun SectionBlock(
             modifier
                 .fillMaxWidth()
                 .clip(MaterialTheme.shapes.medium)
-                .border(BORDER_WIDTH, MaterialTheme.appColors.borderSubtle, MaterialTheme.shapes.medium),
+                .border(MaterialTheme.sizing.hairline, MaterialTheme.appColors.borderSubtle, MaterialTheme.shapes.medium),
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -92,5 +93,3 @@ fun SectionBlock(
         }
     }
 }
-
-private val BORDER_WIDTH = 1.dp

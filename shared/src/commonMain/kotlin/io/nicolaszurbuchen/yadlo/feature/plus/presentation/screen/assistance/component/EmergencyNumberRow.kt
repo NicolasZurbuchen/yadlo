@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
+import io.nicolaszurbuchen.yadlo.app.design.theme.sizing
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.assistance.EmergencyNumberUiModel
 import org.jetbrains.compose.resources.stringResource
@@ -81,7 +82,7 @@ fun EmergencyNumberRow(
             imageVector = Icons.Outlined.Phone,
             contentDescription = stringResource(Res.string.assistance_call),
             tint = MaterialTheme.appColors.textTertiary,
-            modifier = Modifier.size(MARK_SIZE),
+            modifier = Modifier.size(MaterialTheme.sizing.icon),
         )
     }
 }
@@ -94,7 +95,3 @@ private val NUMBER_COLUMN = 46.dp
 // Same device Type.kt uses for the Programme's times, and for the same reason: without it the
 // numerals are proportional and the column they sit in is not a column.
 private const val TABULAR_FIGURES = "tnum"
-
-// The trailing mark a Plus link tile takes, so the two read as the same punctuation rather than as
-// two sizes of icon on one tab.
-private val MARK_SIZE = 20.dp

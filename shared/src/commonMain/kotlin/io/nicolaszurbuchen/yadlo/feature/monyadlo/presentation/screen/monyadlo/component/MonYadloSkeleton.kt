@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import io.nicolaszurbuchen.yadlo.app.design.theme.ShimmerPulse
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.app.design.theme.shimmerBlock
+import io.nicolaszurbuchen.yadlo.app.design.theme.sizing
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.app.navigation.LocalTabChromeInsets
 
@@ -104,7 +105,7 @@ private fun PlannedRowSilhouette(nameWidth: Float) {
             horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Spacer(modifier = Modifier.size(CATEGORY_MARK_SIZE).shimmerBlock())
+            Spacer(modifier = Modifier.size(MaterialTheme.sizing.categoryMark).shimmerBlock())
 
             Spacer(modifier = Modifier.fillMaxWidth(nameWidth).height(NAME_HEIGHT).shimmerBlock())
         }
@@ -117,9 +118,6 @@ private fun PlannedRowSilhouette(nameWidth: Float) {
 
 /** Three saved Slots on one day, which is about what an evening on the Plan looks like. */
 private val NAME_WIDTHS = listOf(0.62f, 0.44f, 0.71f)
-
-// PlannedSlotRow's own mark, so the row does not shift sideways when it lands.
-private val CATEGORY_MARK_SIZE = 10.dp
 
 private val SCALE_HEIGHT = 10.dp
 private val WISHLIST_TILE_HEIGHT = 72.dp

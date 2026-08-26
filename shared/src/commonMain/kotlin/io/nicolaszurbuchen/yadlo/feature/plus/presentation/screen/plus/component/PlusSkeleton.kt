@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import io.nicolaszurbuchen.yadlo.app.design.theme.ShimmerPulse
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.app.design.theme.shimmerBlock
+import io.nicolaszurbuchen.yadlo.app.design.theme.sizing
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
 
 /**
@@ -85,7 +86,7 @@ private fun SkeletonRow(modifier: Modifier = Modifier) {
         modifier =
             modifier
                 .fillMaxWidth()
-                .heightIn(min = ROW_MIN_HEIGHT)
+                .heightIn(min = MaterialTheme.sizing.rowMinHeight)
                 .padding(horizontal = MaterialTheme.spacing.md, vertical = MaterialTheme.spacing.sm),
     ) {
         Spacer(modifier = Modifier.size(LEADING_ICON_SIZE).shimmerBlock())
@@ -105,4 +106,3 @@ private val LABEL_HEIGHT = 16.dp
 
 // Matched to PlusRow, which is the whole point of drawing this instead of a spinner.
 private val LEADING_ICON_SIZE = 20.dp
-private val ROW_MIN_HEIGHT = 64.dp

@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
+import io.nicolaszurbuchen.yadlo.app.design.theme.sizing
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloEntryUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.asString
@@ -98,7 +99,7 @@ private fun YadloEntryRow(
         modifier =
             modifier
                 .fillMaxWidth()
-                .heightIn(min = ROW_MIN_HEIGHT)
+                .heightIn(min = MaterialTheme.sizing.rowMinHeight)
                 .clickable { onClick() }
                 .padding(horizontal = MaterialTheme.spacing.md, vertical = MaterialTheme.spacing.sm),
     ) {
@@ -106,7 +107,7 @@ private fun YadloEntryRow(
             imageVector = entry.icon,
             contentDescription = null,
             tint = MaterialTheme.appColors.textSecondary,
-            modifier = Modifier.size(ICON_SIZE),
+            modifier = Modifier.size(MaterialTheme.sizing.icon),
         )
 
         Column(
@@ -132,17 +133,7 @@ private fun YadloEntryRow(
             imageVector = entry.mark.icon,
             contentDescription = entry.mark.contentDescription?.let { stringResource(it) },
             tint = MaterialTheme.appColors.textTertiary,
-            modifier = Modifier.size(ICON_SIZE),
+            modifier = Modifier.size(MaterialTheme.sizing.icon),
         )
     }
 }
-
-// Matched to the label's line height rather than to Material's 24dp default: at 24 the icon
-// outweighs the word next to it, and these lists are read by their words.
-private val ICON_SIZE = 20.dp
-
-// The natural height of a row that has a subtitle, applied to every row so a card of sixteen does
-// not comb up and down as the content publishes one line here and two there. A minimum rather than
-// a fixed height: at the largest accessibility text sizes a two-line row has to be allowed to grow,
-// and clipping the subtitle to keep the rhythm would be the wrong trade.
-private val ROW_MIN_HEIGHT = 64.dp

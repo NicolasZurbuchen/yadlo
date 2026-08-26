@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import io.nicolaszurbuchen.yadlo.app.design.theme.ShimmerPulse
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.app.design.theme.shimmerBlock
+import io.nicolaszurbuchen.yadlo.app.design.theme.sizing
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.app.navigation.LocalTabChromeInsets
 
@@ -103,7 +104,7 @@ private fun SlotRowSilhouette(nameWidth: Float) {
             horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Spacer(modifier = Modifier.size(CATEGORY_MARK_SIZE).shimmerBlock())
+            Spacer(modifier = Modifier.size(MaterialTheme.sizing.categoryMark).shimmerBlock())
 
             Spacer(modifier = Modifier.fillMaxWidth(nameWidth).height(NAME_HEIGHT).shimmerBlock())
         }
@@ -125,7 +126,6 @@ private val NAME_WIDTHS = listOf(0.58f, 0.74f, 0.45f, 0.66f, 0.8f, 0.52f)
 
 // SlotRow's own padding and mark, so nothing shifts vertically when a row replaces its silhouette.
 private val ROW_VERTICAL_PADDING = 12.dp
-private val CATEGORY_MARK_SIZE = 10.dp
 
 private val CHIP_HEIGHT = 32.dp
 private val SCALE_HEIGHT = 10.dp

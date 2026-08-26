@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import io.nicolaszurbuchen.yadlo.app.design.theme.sizing
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloDietaryTagUiModel
 import org.jetbrains.compose.resources.stringResource
@@ -53,7 +54,7 @@ fun YadloDietaryTags(
                     // twice, which on a dish carrying four of them is eight words for four facts.
                     contentDescription = null,
                     tint = tag.mark.tint,
-                    modifier = Modifier.size(GLYPH_SIZE),
+                    modifier = Modifier.size(MaterialTheme.sizing.glyph),
                 )
 
                 Text(
@@ -65,7 +66,3 @@ fun YadloDietaryTags(
         }
     }
 }
-
-// Matched to the label's own line height rather than Material's 24dp default: the glyph qualifies
-// the word beside it and should not outweigh it.
-private val GLYPH_SIZE = 14.dp

@@ -35,6 +35,12 @@ Fields can be added, renamed, or dropped to match the project's real semantic ne
 
 One `FontFamily` val per distinct typeface the design uses. A `FontFamily` usually bundles several `Font(resource, weight)` entries, one per weight the typeface ships — see the commented example in the file. Every slot inside `Typography(...)` carries an inline comment naming its concrete UI purpose in *this* project ("large score display," not "big number"). When extending, find the closest existing slot by purpose before adding a new mapping.
 
-## Shapes / Spacing (`theme/Shapes.kt`, `theme/Spacing.kt`)
+## Shapes / Spacing / Sizing (`theme/Shapes.kt`, `theme/Spacing.kt`, `theme/AppSizing.kt`)
 
 A flat `data class` of named tokens with defaults, exposed via a `MaterialTheme` extension property. Token names and scale are a starting point — resize or rename to match the project's actual system.
+
+**Spacing and sizing are two scales, not one.** `Spacing` is a rhythm — the gaps *between* things. `AppSizing` is how big a thing is: an icon, a glyph, a hairline, the least tall a row gets. Folding sizes into the rhythm scale makes `spacing.sm` sometimes a gap and sometimes a glyph, and the next person picks whichever number looks right instead of the one that means the right thing.
+
+**A dimension earns a token by repetition, not by being a dimension.** Every token in `AppSizing` replaced a private constant written out in several files — and in most of them the comment above it was a pointer at another file (*the trailing mark a Plus link tile takes*, *the same square the Programme row marks its Category with*). A comment that has to name another file to explain a number is the number asking for a name.
+
+A value used once stays where it is used, with its argument. `YadloTopAppBar`’s 28dp mark spends four lines saying why it is *not* `sizing.icon`; promoting it would delete the reasoning and gain nothing. And a token whose KDoc does not say why the number is that number is the same failure one layer up.

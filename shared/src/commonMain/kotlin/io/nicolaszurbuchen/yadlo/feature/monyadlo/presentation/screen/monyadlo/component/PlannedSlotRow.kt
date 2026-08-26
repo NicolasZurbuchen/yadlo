@@ -22,6 +22,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.app.design.theme.categoryColors
+import io.nicolaszurbuchen.yadlo.app.design.theme.sizing
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.common.content.presentation.component.SlotStatePill
 import io.nicolaszurbuchen.yadlo.common.content.presentation.component.SlotTimeBar
@@ -83,7 +84,7 @@ fun PlannedSlotRow(
                 Box(
                     modifier =
                         Modifier
-                            .size(CATEGORY_MARK_SIZE)
+                            .size(MaterialTheme.sizing.categoryMark)
                             .clip(MaterialTheme.shapes.extraSmall)
                             .background(category.fill),
                 )
@@ -142,8 +143,6 @@ fun PlannedSlotRow(
         )
     }
 }
-
-private val CATEGORY_MARK_SIZE = 10.dp
 
 /**
  * The Programme's row padding, which this was eight against. Two rows of the same vocabulary should

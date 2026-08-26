@@ -19,6 +19,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.app.design.theme.shimmerBlock
+import io.nicolaszurbuchen.yadlo.app.design.theme.sizing
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
 
 /**
@@ -76,7 +77,7 @@ private fun PerkSkeleton(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier.fillMaxWidth(),
     ) {
-        Spacer(modifier = Modifier.size(MARK_SIZE).shimmerBlock())
+        Spacer(modifier = Modifier.size(MaterialTheme.sizing.icon).shimmerBlock())
 
         Spacer(modifier = Modifier.fillMaxWidth(widthFraction).height(LINE_HEIGHT).shimmerBlock())
     }
@@ -91,7 +92,7 @@ private fun TileSkeleton(modifier: Modifier = Modifier) {
                 .fillMaxWidth()
                 .clip(MaterialTheme.shapes.small)
                 .background(MaterialTheme.appColors.surface)
-                .heightIn(min = TILE_MIN_HEIGHT)
+                .heightIn(min = MaterialTheme.sizing.rowMinHeight)
                 .padding(MaterialTheme.spacing.md),
     ) {
         Spacer(modifier = Modifier.width(TILE_LABEL_WIDTH).height(LINE_HEIGHT).shimmerBlock())
@@ -109,7 +110,3 @@ private val HEADER_WIDTH = 112.dp
 private val HEADER_HEIGHT = 12.dp
 private val LINE_HEIGHT = 16.dp
 private val TILE_LABEL_WIDTH = 136.dp
-
-// Matched to YadloFactRow and YadloLinkTile.
-private val MARK_SIZE = 20.dp
-private val TILE_MIN_HEIGHT = 64.dp
