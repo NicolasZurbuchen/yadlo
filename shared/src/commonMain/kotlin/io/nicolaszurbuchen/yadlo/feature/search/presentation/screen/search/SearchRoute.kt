@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.nicolaszurbuchen.yadlo.feature.search.presentation.screen.search.mapper.toDomain
 import io.nicolaszurbuchen.yadlo.feature.search.presentation.screen.search.mapper.toUiModel
+import io.nicolaszurbuchen.yadlo.feature.search.presentation.screen.search.uimodel.SearchTopicUiModel
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable

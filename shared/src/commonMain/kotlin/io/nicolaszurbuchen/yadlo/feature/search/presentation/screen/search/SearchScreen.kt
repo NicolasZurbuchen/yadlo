@@ -18,6 +18,7 @@ import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.feature.search.presentation.screen.search.component.SearchResultGroup
 import io.nicolaszurbuchen.yadlo.feature.search.presentation.screen.search.component.SearchTopBar
+import io.nicolaszurbuchen.yadlo.feature.search.presentation.screen.search.uimodel.SearchTopicUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.asString
 
 /**

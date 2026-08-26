@@ -1,4 +1,4 @@
-package io.nicolaszurbuchen.yadlo.feature.search.presentation.screen.search
+package io.nicolaszurbuchen.yadlo.feature.search.presentation.screen.search.uimodel
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.HelpOutline
@@ -37,8 +37,11 @@ import yadlo.shared.generated.resources.plus_entry_volunteering
 
 /**
  * The presentation twin of the domain `SearchTopic`, for the same reason `PhaseUiModel` is one: the
- * matching is a domain decision and what a result is called is not, so the enum crosses at the Store
- * boundary and the UiMapper never imports the domain.
+ * matching is a domain decision and what a result is called is not.
+ *
+ * It is the only twin in the app that crosses in both directions, because a topic makes a round
+ * trip: the row is drawn from this, and a tap on it becomes an Intent naming the domain.
+ * `mapper/SearchTopicUiMapper.kt` holds both halves.
  *
  * **The titles are the Plus tab's own strings, deliberately reused.** A screen has one name, and a
  * search result that called *Accès & transports* something else would be a second name for the same

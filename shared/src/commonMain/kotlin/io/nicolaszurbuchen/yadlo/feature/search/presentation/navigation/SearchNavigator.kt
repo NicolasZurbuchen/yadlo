@@ -1,6 +1,6 @@
 package io.nicolaszurbuchen.yadlo.feature.search.presentation.navigation
 
-import io.nicolaszurbuchen.yadlo.feature.search.presentation.screen.search.SearchTopicUiModel
+import io.nicolaszurbuchen.yadlo.feature.search.presentation.screen.search.uimodel.SearchTopicUiModel
 
 /**
  * **A method per practical destination rather than a key**, exactly as `HomeNavigator` does for the

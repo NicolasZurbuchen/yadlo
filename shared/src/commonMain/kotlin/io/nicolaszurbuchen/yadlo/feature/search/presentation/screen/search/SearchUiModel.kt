@@ -1,5 +1,6 @@
 package io.nicolaszurbuchen.yadlo.feature.search.presentation.screen.search
 
+import io.nicolaszurbuchen.yadlo.feature.search.presentation.screen.search.uimodel.SearchTopicUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 
 /**
