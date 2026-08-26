@@ -9,7 +9,6 @@ import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.foundation.lazy.staggeredgrid.items
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -23,6 +22,7 @@ import io.nicolaszurbuchen.yadlo.app.design.component.YadloTopAppBar
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.common.content.presentation.component.StandCard
+import io.nicolaszurbuchen.yadlo.feature.monyadlo.presentation.screen.wishlist.component.WishlistSkeleton
 import io.nicolaszurbuchen.yadlo.infra.ui.asString
 import org.jetbrains.compose.resources.stringResource
 import yadlo.shared.generated.resources.Res
@@ -58,12 +58,7 @@ fun WishlistScreen(
     ) { contentPadding ->
         when {
             state.isLoading -> {
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier.fillMaxSize().padding(contentPadding),
-                ) {
-                    CircularProgressIndicator()
-                }
+                WishlistSkeleton(modifier = Modifier.padding(contentPadding))
             }
 
             state.emptyMessage != null -> {

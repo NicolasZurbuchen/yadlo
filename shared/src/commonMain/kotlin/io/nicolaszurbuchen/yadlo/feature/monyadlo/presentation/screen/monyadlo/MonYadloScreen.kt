@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -22,6 +21,7 @@ import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.app.navigation.LocalTabChromeInsets
 import io.nicolaszurbuchen.yadlo.common.content.presentation.component.SlotScaleRow
 import io.nicolaszurbuchen.yadlo.feature.monyadlo.presentation.screen.monyadlo.component.CHEVRON_SIZE
+import io.nicolaszurbuchen.yadlo.feature.monyadlo.presentation.screen.monyadlo.component.MonYadloSkeleton
 import io.nicolaszurbuchen.yadlo.feature.monyadlo.presentation.screen.monyadlo.component.PlannedDayBlock
 import io.nicolaszurbuchen.yadlo.feature.monyadlo.presentation.screen.monyadlo.component.RAIL_WIDTH
 import io.nicolaszurbuchen.yadlo.feature.monyadlo.presentation.screen.monyadlo.component.WishlistTile
@@ -54,9 +54,7 @@ fun MonYadloScreen(
     modifier: Modifier = Modifier,
 ) {
     if (state.isLoading) {
-        Box(contentAlignment = Alignment.Center, modifier = modifier.fillMaxSize()) {
-            CircularProgressIndicator()
-        }
+        MonYadloSkeleton(modifier = modifier)
         return
     }
 
