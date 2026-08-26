@@ -29,3 +29,32 @@ fun SearchTopic.toUiModel(): SearchTopicUiModel =
         SearchTopic.PRIVACY -> SearchTopicUiModel.PRIVACY
         SearchTopic.ABOUT -> SearchTopicUiModel.ABOUT
     }
+
+/**
+ * The way back, for the one value on this screen that makes a round trip.
+ *
+ * A practical row is drawn from a [SearchTopicUiModel] — it is what carries the title and the icon —
+ * and a tap hands that same value back. What the Store should hear is the topic, not the drawing of
+ * it, so the Route converts here rather than the Contract naming a twin it has no use for.
+ *
+ * The pairing is by name in both directions and `SearchTopicUiMapperTest` holds it to that, so
+ * neither enum can grow a constant the other does not have.
+ */
+fun SearchTopicUiModel.toDomain(): SearchTopic =
+    when (this) {
+        SearchTopicUiModel.STANDS_FOOD -> SearchTopic.STANDS_FOOD
+        SearchTopicUiModel.STANDS_MAKERS -> SearchTopic.STANDS_MAKERS
+        SearchTopicUiModel.PAYMENT -> SearchTopic.PAYMENT
+        SearchTopicUiModel.ACCESS -> SearchTopic.ACCESS
+        SearchTopicUiModel.HOURS -> SearchTopic.HOURS
+        SearchTopicUiModel.ASSISTANCE -> SearchTopic.ASSISTANCE
+        SearchTopicUiModel.FAQ -> SearchTopic.FAQ
+        SearchTopicUiModel.STORY -> SearchTopic.STORY
+        SearchTopicUiModel.RESPONSIBLE -> SearchTopic.RESPONSIBLE
+        SearchTopicUiModel.PARTNERS -> SearchTopic.PARTNERS
+        SearchTopicUiModel.VOLUNTEERING -> SearchTopic.VOLUNTEERING
+        SearchTopicUiModel.CONTACT -> SearchTopic.CONTACT
+        SearchTopicUiModel.NOTIFICATIONS -> SearchTopic.NOTIFICATIONS
+        SearchTopicUiModel.PRIVACY -> SearchTopic.PRIVACY
+        SearchTopicUiModel.ABOUT -> SearchTopic.ABOUT
+    }

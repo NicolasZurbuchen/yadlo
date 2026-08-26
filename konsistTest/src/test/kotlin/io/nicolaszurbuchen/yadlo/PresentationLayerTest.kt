@@ -43,9 +43,9 @@ class PresentationLayerTest {
          * gate stops distinguishing new breakage from known backlog.
          *
          * So each rule is real and enforced where the shape exists, and the rest is tracked:
-         * Contracts holding UiModels is #55, screens waiting behind a spinner is #56, StoreFactory
-         * mappers and misplaced UiModel twins are #57. **Delete this filter and its call sites as
-         * each closes.**
+         * screens waiting behind a spinner is #56, StoreFactory mappers and misplaced UiModel twins
+         * are #57. Contracts holding UiModels was #55 and is closed — that rule is off this filter.
+         * **Delete this filter and its call sites as each of the rest closes.**
          */
         private fun List<KoFileDeclaration>.migrated(): List<KoFileDeclaration> = filter { it.hasPackage("..feature.home..") }
 
@@ -296,13 +296,28 @@ class PresentationLayerTest {
             }
     }
 
+    /**
+     * **Both directions, because both are the same crossing.**
+     *
+     * It read `must return a UiModel` at first, which is the common direction and was the only one
+     * home needed. The other one exists: a tap hands back the UiModel it was drawn from, and the
+     * Intent it becomes should name the domain. Nothing else in `presentation/` may write that
+     * conversion — this package is the exemption — so forbidding it here forbade it everywhere, and
+     * the way out was to let the Contract name a UiModel instead. That is the wrong trade: it moves
+     * a rendering type into the Store to avoid a function in the one package built to hold it.
+     *
+     * A UiModel on either side is what makes it a mapper. A function with a UiModel on neither is a
+     * helper that happens to live here.
+     */
     @Test
-    fun `presentation mapper functions must return a UiModel`() {
-        // What makes it a presentation mapper rather than a helper that happens to live here.
+    fun `presentation mapper functions must have a UiModel on one side`() {
         scope.files
             .withPackage("..presentation.screen..mapper")
             .assertTrue { file ->
-                file.functions(includeNested = false).all { it.returnType?.name?.contains("UiModel") == true }
+                file.functions(includeNested = false).all { function ->
+                    function.returnType?.name?.contains("UiModel") == true ||
+                        function.receiverType?.name?.contains("UiModel") == true
+                }
             }
     }
 
@@ -769,7 +784,6 @@ class PresentationLayerTest {
         scope.files
             .withNameEndingWith("Contract")
             .withPackage("..presentation.screen..")
-            .migrated()
             .assertTrue { file ->
                 val declaredTypes =
                     file.classes(includeNested = true).flatMap { clazz ->

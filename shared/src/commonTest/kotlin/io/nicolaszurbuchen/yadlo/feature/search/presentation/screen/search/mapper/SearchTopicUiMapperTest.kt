@@ -24,4 +24,18 @@ class SearchTopicUiMapperTest {
         assertEquals(SearchTopicUiModel.entries.size, SearchTopic.entries.size)
         assertEquals(SearchTopicUiModel.entries.toSet(), SearchTopic.entries.map { it.toUiModel() }.toSet())
     }
+
+    @Test
+    fun toDomain_isTheExactInverse() {
+        // The round trip a tapped row makes: drawn from a twin, handed back, converted for the
+        // Store. A pair that disagreed in one direction would send the reader to another screen.
+        assertEquals(
+            SearchTopicUiModel.entries.toList(),
+            SearchTopicUiModel.entries.map { it.toDomain().toUiModel() },
+        )
+        assertEquals(
+            SearchTopic.entries.toList(),
+            SearchTopic.entries.map { it.toUiModel().toDomain() },
+        )
+    }
 }

@@ -6,6 +6,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import io.nicolaszurbuchen.yadlo.feature.search.presentation.screen.search.mapper.toDomain
+import io.nicolaszurbuchen.yadlo.feature.search.presentation.screen.search.mapper.toUiModel
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -24,7 +26,7 @@ fun SearchRoute(
         viewModel.labels.collect { label ->
             when (label) {
                 is SearchLabel.NavigateToHappening -> onNavigateToHappeningUpdated(label.happeningId)
-                is SearchLabel.NavigateToTopic -> onNavigateToTopicUpdated(label.topic)
+                is SearchLabel.NavigateToTopic -> onNavigateToTopicUpdated(label.topic.toUiModel())
             }
         }
     }
@@ -33,7 +35,7 @@ fun SearchRoute(
         state = state,
         onQueryChange = { query -> viewModel.onIntent(SearchIntent.QueryChanged(query)) },
         onHappeningClick = { happeningId -> viewModel.onIntent(SearchIntent.HappeningClicked(happeningId)) },
-        onTopicClick = { topic -> viewModel.onIntent(SearchIntent.TopicClicked(topic)) },
+        onTopicClick = { topic -> viewModel.onIntent(SearchIntent.TopicClicked(topic.toDomain())) },
         onBackClick = onNavigateBack,
         modifier = modifier,
     )

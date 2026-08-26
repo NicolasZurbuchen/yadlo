@@ -196,8 +196,8 @@ class SearchExecutorTest {
             testDispatcher.scheduler.runCurrent()
 
             store.labels.test {
-                store.accept(SearchIntent.TopicClicked(SearchTopicUiModel.PAYMENT))
-                assertEquals(SearchLabel.NavigateToTopic(SearchTopicUiModel.PAYMENT), awaitItem())
+                store.accept(SearchIntent.TopicClicked(SearchTopic.PAYMENT))
+                assertEquals(SearchLabel.NavigateToTopic(SearchTopic.PAYMENT), awaitItem())
             }
             store.dispose()
         }
