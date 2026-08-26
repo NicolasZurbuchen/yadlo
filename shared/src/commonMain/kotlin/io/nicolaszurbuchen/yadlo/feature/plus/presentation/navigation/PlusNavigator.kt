@@ -1,7 +1,5 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation
 
-import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands.StandsKindUiModel
-
 /**
  * Plus is the one tab that is mostly a table of contents, so it is also the one with a navigator
  * this wide. One method per entry rather than a single `navigateTo(entry)`: the feature would then
@@ -14,7 +12,14 @@ import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands.StandsK
  * not have.
  */
 interface PlusNavigator {
-    fun navigateToStands(kind: StandsKindUiModel)
+    /**
+     * Two methods for one screen, matching the two keys behind them: which half is being asked
+     * for is the whole difference, and a parameter here would be a value this interface then has
+     * to name a type for — the type that used to end up serialized into the back stack.
+     */
+    fun navigateToFoodStands()
+
+    fun navigateToMakerStands()
 
     fun navigateToPayment()
 

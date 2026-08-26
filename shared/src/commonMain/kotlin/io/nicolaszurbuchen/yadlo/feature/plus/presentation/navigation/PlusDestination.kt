@@ -1,7 +1,6 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation
 
 import androidx.navigation3.runtime.NavKey
-import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands.StandsKindUiModel
 import kotlinx.serialization.Serializable
 
 /**
@@ -19,14 +18,25 @@ sealed interface PlusDestination : NavKey
 internal data object PlusMainDestination : PlusDestination
 
 /**
- * *Nourriture & boissons* or *Créateurs*. One screen, two entries — the stands differ by what they
- * sell and by nothing else the screen does, so splitting them into two files would be splitting the
- * label rather than the behaviour.
+ * *Nourriture & boissons* and *Créateurs* — one screen, reached by two keys.
+ *
+ * **Still one screen.** The stands differ by what they sell and by nothing else the screen does,
+ * so there is one Route, one ViewModel and one Store behind both of these; which half to read is
+ * a construction parameter, handed over in the entry below. Splitting the *screen* would be
+ * splitting the label rather than the behaviour.
+ *
+ * **Two keys rather than one key with a value, because a NavKey is written down.** It was
+ * `StandsDestination(kind: StandsKindUiModel)`, and a `@Serializable` NavKey argument is the
+ * persisted format of the back stack: renaming that enum’s constants — an ordinary presentation
+ * refactor, with nothing to warn you — changes what a restore after process death decodes. Every
+ * other key in this file is a data object with nothing to break, and these two are now as well.
+ * The kind still exists, it simply stops being something the system writes to disk.
  */
 @Serializable
-internal data class StandsDestination(
-    val kind: StandsKindUiModel,
-) : PlusDestination
+internal data object StandsFoodDestination : PlusDestination
+
+@Serializable
+internal data object StandsMakersDestination : PlusDestination
 
 /** *Festival responsable* — the charters the association has signed. */
 @Serializable

@@ -1,5 +1,6 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation
 
+import androidx.compose.runtime.Composable
 import androidx.navigation3.runtime.EntryProviderScope
 import androidx.navigation3.runtime.NavKey
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.about.AboutRoute
@@ -37,8 +38,8 @@ class PlusNavKeyHandler(
             PlusRoute(
                 onNavigateToEntry = { entry ->
                     when (entry) {
-                        PlusEntryUiModel.STANDS_FOOD -> navigator.navigateToStands(StandsKindUiModel.FOOD)
-                        PlusEntryUiModel.STANDS_MAKERS -> navigator.navigateToStands(StandsKindUiModel.MAKERS)
+                        PlusEntryUiModel.STANDS_FOOD -> navigator.navigateToFoodStands()
+                        PlusEntryUiModel.STANDS_MAKERS -> navigator.navigateToMakerStands()
                         PlusEntryUiModel.PAYMENT -> navigator.navigateToPayment()
                         PlusEntryUiModel.ACCESS -> navigator.navigateToAccess()
                         PlusEntryUiModel.HOURS -> navigator.navigateToHours()
@@ -59,13 +60,12 @@ class PlusNavKeyHandler(
             )
         }
 
-        entry<StandsDestination> { destination ->
-            StandsRoute(
-                onNavigateBack = { navigator.navigateBack() },
-                onNavigateToHappening = { id -> navigator.navigateToHappening(id) },
-                viewModel = koinViewModel<StandsViewModel>(parameters = { parametersOf(destination.kind) }),
-            )
-        }
+        // The kind is handed to the Store here rather than carried by the key. It reaches the
+        // Store as the presentation mirror because navigation may not name a domain type, and
+        // the Store translates once at construction — but it goes no further than this call, so
+        // nothing writes it down.
+        entry<StandsFoodDestination> { StandsEntry(kind = StandsKindUiModel.FOOD, navigator = navigator) }
+        entry<StandsMakersDestination> { StandsEntry(kind = StandsKindUiModel.MAKERS, navigator = navigator) }
 
         entry<ResponsibleDestination> { ResponsibleRoute(onNavigateBack = { navigator.navigateBack() }) }
         entry<PaymentDestination> { PaymentRoute(onNavigateBack = { navigator.navigateBack() }) }
@@ -82,4 +82,22 @@ class PlusNavKeyHandler(
         entry<PrivacyDestination> { PrivacyRoute(onNavigateBack = { navigator.navigateBack() }) }
         entry<ClearDataDestination> { ClearDataRoute(onNavigateBack = { navigator.navigateBack() }) }
     }
+}
+
+/**
+ * The one screen both stands keys open, told which half it is.
+ *
+ * A function rather than the same four lines twice: the two entries differ by one argument, and a
+ * pair that has to be kept in step by hand is how one of them ends up wired to the wrong half.
+ */
+@Composable
+private fun StandsEntry(
+    kind: StandsKindUiModel,
+    navigator: PlusNavigator,
+) {
+    StandsRoute(
+        onNavigateBack = { navigator.navigateBack() },
+        onNavigateToHappening = { id -> navigator.navigateToHappening(id) },
+        viewModel = koinViewModel<StandsViewModel>(parameters = { parametersOf(kind) }),
+    )
 }

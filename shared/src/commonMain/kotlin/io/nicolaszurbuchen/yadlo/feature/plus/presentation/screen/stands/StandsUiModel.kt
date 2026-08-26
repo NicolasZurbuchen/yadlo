@@ -26,9 +26,14 @@ data class StandsUiModel(
  * Which half is being shown, carrying the one string the content cannot supply.
  *
  * A mirror of `StandKind` rather than the domain enum itself, and the mirror earns its keep: the
- * store translates once at construction, so neither the navigation package nor the UiMapper has to
- * name a domain type — and neither is allowed to. It is the last of these left, now that Festival
- * responsable stopped being one page of a parameterised gabarit and became a screen about one thing.
+ * navigation package may not name a domain type, so this is what the NavKeyHandler hands to Koin,
+ * and the Store translates once at construction. The State has held `StandKind` since then.
+ *
+ * **It goes no further than that hand-off, and that is deliberate.** It used to be an argument on
+ * `StandsDestination`, which made a presentation enum’s constant names the persisted format of the
+ * back stack — renaming one is an ordinary refactor and would have broken a restore after process
+ * death, with nothing to catch it. There are two keys now, both `data object`, and this reaches
+ * the Store in memory instead. Nothing writes it down.
  *
  * The titles are the app's words, not the content's. The Category is called *Restauration*; the
  * entry someone taps when they are hungry says *Nourriture & boissons*.

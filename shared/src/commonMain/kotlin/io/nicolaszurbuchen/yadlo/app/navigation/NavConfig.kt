@@ -20,7 +20,8 @@ import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.PaymentDes
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.PlusMainDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.PrivacyDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.ResponsibleDestination
-import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.StandsDestination
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.StandsFoodDestination
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.StandsMakersDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.StoryDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.VolunteeringDestination
 import io.nicolaszurbuchen.yadlo.feature.programme.presentation.navigation.ProgrammeDestination
@@ -49,7 +50,8 @@ val navConfig =
                     subclass(MonYadloMainDestination::class)
                     subclass(WishlistDestination::class)
                     subclass(PlusMainDestination::class)
-                    subclass(StandsDestination::class)
+                    subclass(StandsFoodDestination::class)
+                    subclass(StandsMakersDestination::class)
                     subclass(PaymentDestination::class)
                     subclass(AccessDestination::class)
                     subclass(HoursDestination::class)
