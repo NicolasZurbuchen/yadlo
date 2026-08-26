@@ -14,17 +14,21 @@ import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.PaymentDes
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.PlusNavigator
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.PrivacyDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.ResponsibleDestination
-import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.StandsDestination
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.StandsFoodDestination
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.StandsMakersDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.StoryDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.VolunteeringDestination
-import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands.StandsKindUiModel
 import io.nicolaszurbuchen.yadlo.infra.navigation.AppNavigator
 
 class PlusNavigatorImpl(
     private val appNavigator: AppNavigator,
 ) : PlusNavigator {
-    override fun navigateToStands(kind: StandsKindUiModel) {
-        appNavigator.navigateTo(StandsDestination(kind))
+    override fun navigateToFoodStands() {
+        appNavigator.navigateTo(StandsFoodDestination)
+    }
+
+    override fun navigateToMakerStands() {
+        appNavigator.navigateTo(StandsMakersDestination)
     }
 
     override fun navigateToPayment() {

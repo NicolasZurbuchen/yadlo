@@ -12,10 +12,10 @@ import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.PartnersDe
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.PaymentDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.PrivacyDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.ResponsibleDestination
-import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.StandsDestination
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.StandsFoodDestination
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.StandsMakersDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.StoryDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.VolunteeringDestination
-import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands.StandsKindUiModel
 import io.nicolaszurbuchen.yadlo.feature.search.presentation.navigation.SearchNavigator
 import io.nicolaszurbuchen.yadlo.feature.search.presentation.screen.search.uimodel.SearchTopicUiModel
 import io.nicolaszurbuchen.yadlo.infra.navigation.AppNavigator
@@ -40,8 +40,8 @@ class SearchNavigatorImpl(
         // rather than a result that does nothing when it is tapped.
         val destination =
             when (topic) {
-                SearchTopicUiModel.STANDS_FOOD -> StandsDestination(StandsKindUiModel.FOOD)
-                SearchTopicUiModel.STANDS_MAKERS -> StandsDestination(StandsKindUiModel.MAKERS)
+                SearchTopicUiModel.STANDS_FOOD -> StandsFoodDestination
+                SearchTopicUiModel.STANDS_MAKERS -> StandsMakersDestination
                 SearchTopicUiModel.PAYMENT -> PaymentDestination
                 SearchTopicUiModel.ACCESS -> AccessDestination
                 SearchTopicUiModel.HOURS -> HoursDestination

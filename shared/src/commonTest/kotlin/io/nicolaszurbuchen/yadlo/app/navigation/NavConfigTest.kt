@@ -13,10 +13,10 @@ import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.PartnersDe
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.PaymentDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.PrivacyDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.ResponsibleDestination
-import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.StandsDestination
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.StandsFoodDestination
+import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.StandsMakersDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.StoryDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.VolunteeringDestination
-import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands.StandsKindUiModel
 import kotlin.test.Test
 import kotlin.test.assertNotNull
 
@@ -57,10 +57,10 @@ class NavConfigTest {
         // groups them in one file, but polymorphic serialization is still told about each leaf, and
         // a leaf added without a line here fails silently until a low-memory kill.
         listOf(
-            // Both halves of the stands, because they are one key with a value: a restored stack
-            // has to come back on the half it was on.
-            StandsDestination(StandsKindUiModel.FOOD),
-            StandsDestination(StandsKindUiModel.MAKERS),
+            // Both halves of the stands, because they are two keys: a restored stack has to come
+            // back on the half it was on, and each half is registered separately.
+            StandsFoodDestination,
+            StandsMakersDestination,
             PaymentDestination,
             AccessDestination,
             HoursDestination,
