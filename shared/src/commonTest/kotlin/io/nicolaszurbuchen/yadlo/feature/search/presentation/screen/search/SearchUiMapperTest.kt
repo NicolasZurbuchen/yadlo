@@ -8,6 +8,7 @@ import io.nicolaszurbuchen.yadlo.feature.search.domain.model.SearchTopic
 import io.nicolaszurbuchen.yadlo.feature.search.domain.usecase.artist
 import io.nicolaszurbuchen.yadlo.feature.search.domain.usecase.question
 import io.nicolaszurbuchen.yadlo.feature.search.domain.usecase.stand
+import io.nicolaszurbuchen.yadlo.feature.search.presentation.screen.search.uimodel.SearchTopicUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.search_empty

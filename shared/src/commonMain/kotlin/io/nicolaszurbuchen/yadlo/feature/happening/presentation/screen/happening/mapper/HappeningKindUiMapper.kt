@@ -1,7 +1,7 @@
 package io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening.mapper
 
 import io.nicolaszurbuchen.yadlo.feature.happening.domain.model.HappeningKind
-import io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening.HappeningKindUiModel
+import io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening.uimodel.HappeningKindUiModel
 
 /**
  * The fiche's own converter, called from the UiMapper rather than from the Store.

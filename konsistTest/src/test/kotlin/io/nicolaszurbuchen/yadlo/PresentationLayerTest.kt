@@ -36,19 +36,6 @@ class PresentationLayerTest {
          */
         private fun List<KoFileDeclaration>.outsideAppShell(): List<KoFileDeclaration> = filterNot { it.hasPackage("..app..") }
 
-        /**
-         * **The narrowing, and it is temporary.** Four of the rules below were written from the
-         * home feature and every other feature predates them. Holding the whole repo to them today
-         * would leave the Konsist suite red, which costs more than it buys — a permanently failing
-         * gate stops distinguishing new breakage from known backlog.
-         *
-         * So each rule is real and enforced where the shape exists, and the rest is tracked:
-         * StoreFactory mappers and misplaced UiModel twins are #57. Contracts holding UiModels
-         * was #55 and screens waiting behind a spinner was #56; both are closed and off this filter.
-         * **Delete this filter and its call sites as each of the rest closes.**
-         */
-        private fun List<KoFileDeclaration>.migrated(): List<KoFileDeclaration> = filter { it.hasPackage("..feature.home..") }
-
         /** A screen's own subfolders. A file in one of these is not a screen file. */
         private val screenSubpackages = listOf("component", "uimodel", "mapper")
     }
@@ -194,7 +181,6 @@ class PresentationLayerTest {
             .withNameEndingWith("UiModel")
             .withPackage("..presentation.screen..")
             .filterNot { it.hasPackage("..uimodel") }
-            .migrated()
             .assertTrue { file ->
                 val screenName =
                     scope.files
@@ -244,7 +230,6 @@ class PresentationLayerTest {
         scope.files
             .withNameEndingWith("StoreFactory")
             .withPackage("..presentation.screen..")
-            .migrated()
             .assertTrue { file -> file.functions(includeNested = false).isEmpty() }
     }
 

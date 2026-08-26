@@ -7,6 +7,7 @@ import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.slotLiveSta
 import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.socialIconFor
 import io.nicolaszurbuchen.yadlo.common.time.FESTIVAL_TIME_ZONE
 import io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening.mapper.toUiModel
+import io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening.uimodel.HappeningKindUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import io.nicolaszurbuchen.yadlo.infra.ui.formatAsDayOfMonth
 import io.nicolaszurbuchen.yadlo.infra.ui.formatAsShortDate

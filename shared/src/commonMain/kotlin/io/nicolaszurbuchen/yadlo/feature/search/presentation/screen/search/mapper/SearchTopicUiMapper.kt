@@ -1,7 +1,7 @@
 package io.nicolaszurbuchen.yadlo.feature.search.presentation.screen.search.mapper
 
 import io.nicolaszurbuchen.yadlo.feature.search.domain.model.SearchTopic
-import io.nicolaszurbuchen.yadlo.feature.search.presentation.screen.search.SearchTopicUiModel
+import io.nicolaszurbuchen.yadlo.feature.search.presentation.screen.search.uimodel.SearchTopicUiModel
 
 /**
  * The matched topic, given the title and the icon the Plus tab already wears for it.
