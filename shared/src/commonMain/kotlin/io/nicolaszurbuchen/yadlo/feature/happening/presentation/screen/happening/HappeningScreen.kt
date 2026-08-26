@@ -15,7 +15,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Share
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -52,6 +51,7 @@ import io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening
 import io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening.component.HappeningMenuGroupBlock
 import io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening.component.HappeningPriceBlock
 import io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening.component.HappeningSection
+import io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening.component.HappeningSkeleton
 import io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening.component.HappeningSlotRow
 import io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening.component.HappeningTagRow
 import io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening.component.SavedHeart
@@ -216,12 +216,9 @@ fun HappeningScreen(
     ) { contentPadding ->
         when {
             state.isLoading -> {
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier.fillMaxSize().padding(contentPadding),
-                ) {
-                    CircularProgressIndicator()
-                }
+                // No contentPadding: the photograph runs under the transparent bar, exactly as the
+                // real header does, so the two do not start at different heights.
+                HappeningSkeleton()
             }
 
             state.isMissing -> {

@@ -43,8 +43,8 @@ class PresentationLayerTest {
          * gate stops distinguishing new breakage from known backlog.
          *
          * So each rule is real and enforced where the shape exists, and the rest is tracked:
-         * screens waiting behind a spinner is #56, StoreFactory mappers and misplaced UiModel twins
-         * are #57. Contracts holding UiModels was #55 and is closed — that rule is off this filter.
+         * StoreFactory mappers and misplaced UiModel twins are #57. Contracts holding UiModels
+         * was #55 and screens waiting behind a spinner was #56; both are closed and off this filter.
          * **Delete this filter and its call sites as each of the rest closes.**
          */
         private fun List<KoFileDeclaration>.migrated(): List<KoFileDeclaration> = filter { it.hasPackage("..feature.home..") }
@@ -810,7 +810,6 @@ class PresentationLayerTest {
         scope.files
             .withNameEndingWith("Screen")
             .withPackage("..presentation.screen..")
-            .migrated()
             .filter { file -> file.hasImport { it.name.endsWith(".CircularProgressIndicator") } }
             .assertEmpty()
     }
