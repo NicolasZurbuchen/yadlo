@@ -16,7 +16,6 @@ class SearchReducerTest {
         assertEquals("", state.query)
         assertNull(state.index)
         assertNull(state.results)
-        assertTrue(state.topics.isEmpty())
     }
 
     @Test
@@ -60,35 +59,23 @@ class SearchReducerTest {
     }
 
     @Test
-    fun reduce_resultsUpdated_holdsBothTheResultsAndTheirConvertedTopics() {
+    fun reduce_resultsUpdated_holdsThem() {
         val results = results(topics = listOf(SearchTopic.PAYMENT))
 
-        val state =
-            reduce(
-                SearchState(),
-                SearchMessage.ResultsUpdated(results = results, topics = listOf(SearchTopicUiModel.PAYMENT)),
-            )
+        val state = reduce(SearchState(), SearchMessage.ResultsUpdated(results))
 
         assertEquals(results, state.results)
-        assertEquals(listOf(SearchTopicUiModel.PAYMENT), state.topics)
     }
 
     @Test
     fun reduce_resultsUpdated_replacesTheLastOnesRatherThanAddingToThem() {
-        val previous =
-            SearchState(
-                results = results(topics = listOf(SearchTopic.PAYMENT)),
-                topics = listOf(SearchTopicUiModel.PAYMENT),
-            )
+        val previous = SearchState(results = results(topics = listOf(SearchTopic.PAYMENT)))
 
-        val state =
-            reduce(
-                previous,
-                SearchMessage.ResultsUpdated(results = results(), topics = emptyList()),
-            )
+        val state = reduce(previous, SearchMessage.ResultsUpdated(results()))
 
+        // isEmpty covers the topics too, which is the half this test used to check separately
+        // back when the State carried a converted copy of them beside the results.
         assertTrue(state.results?.isEmpty == true)
-        assertTrue(state.topics.isEmpty())
     }
 
     private fun reduce(

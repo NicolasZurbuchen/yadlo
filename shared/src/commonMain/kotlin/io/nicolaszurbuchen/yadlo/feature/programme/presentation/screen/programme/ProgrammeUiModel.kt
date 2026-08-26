@@ -36,37 +36,12 @@ data class ProgrammeUiModel(
 )
 
 /**
- * What the tab is pointing at — *Découvrir · Tous · Vendredi · Samedi · Dimanche*.
- *
- * **One selection, not a view and a day.** These began as two controls stacked on each other: a
- * segmented toggle over a row of day chips. Three rows of chrome plus an axis left four bands above
- * the first row of an already short list, and the split was never real — every chip in the row
- * answers the same question, *what am I looking at*, and it happens that three of the answers are
- * days. Modelling it as one exclusive selection is what let the two rows become one.
- *
- * [Catalogue] is the odd one only in that it has no time in it at all. Tapping a day from there is
- * how you leave it, which is a job the day chips can do precisely because they cannot filter a
- * Catalogue: they are not filtering it, they are the way out.
- */
-sealed interface ProgrammeScopeUiModel {
-    /** Every Happening the Edition offers, no hours, no day. */
-    data object Catalogue : ProgrammeScopeUiModel
-
-    /** The whole weekend in one scroll, each day under its own sticky header. */
-    data object AllDays : ProgrammeScopeUiModel
-
-    data class Day(
-        val id: String,
-    ) : ProgrammeScopeUiModel
-}
-
-/**
  * [label] is a [UiText] rather than a String because the row mixes two provenances: *Découvrir* and
  * *Tous* are the app's words and are translated with it, while a day's name comes out of the
  * content so that a day the association calls something else keeps its name.
  */
 data class ScopeChipUiModel(
-    val scope: ProgrammeScopeUiModel,
+    val id: String,
     val label: UiText,
     val isSelected: Boolean,
 )

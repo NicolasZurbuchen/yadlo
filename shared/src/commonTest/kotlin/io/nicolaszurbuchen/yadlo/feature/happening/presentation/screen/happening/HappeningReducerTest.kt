@@ -16,7 +16,7 @@ class HappeningReducerTest {
     fun detailUpdated_firstEmission_holdsTheFicheAndMarksTheScreenLoaded() {
         val state = HappeningState(now = NOW)
 
-        val result = with(reducer) { state.reduce(HappeningMessage.DetailUpdated(detail(), HappeningKindUiModel.ARTIST)) }
+        val result = with(reducer) { state.reduce(HappeningMessage.DetailUpdated(detail())) }
 
         assertEquals("DJ ALF", result.detail?.name)
         assertTrue(result.isLoaded)
@@ -27,7 +27,7 @@ class HappeningReducerTest {
         // "Not yet" and "no longer" are different screens, and only isLoaded separates them.
         val state = HappeningState(now = NOW)
 
-        val result = with(reducer) { state.reduce(HappeningMessage.DetailUpdated(null, null)) }
+        val result = with(reducer) { state.reduce(HappeningMessage.DetailUpdated(null)) }
 
         assertNull(result.detail)
         assertTrue(result.isLoaded)
@@ -43,7 +43,7 @@ class HappeningReducerTest {
         val state = HappeningState(now = NOW, detail = detail(), isLoaded = true)
 
         val result =
-            with(reducer) { state.reduce(HappeningMessage.DetailUpdated(detail(name = "DJ ALF (b2b)"), HappeningKindUiModel.ARTIST)) }
+            with(reducer) { state.reduce(HappeningMessage.DetailUpdated(detail(name = "DJ ALF (b2b)"))) }
 
         assertEquals("DJ ALF (b2b)", result.detail?.name)
         assertEquals(NOW, result.now)

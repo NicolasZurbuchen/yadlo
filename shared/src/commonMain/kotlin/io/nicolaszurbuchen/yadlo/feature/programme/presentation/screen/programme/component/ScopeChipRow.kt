@@ -11,7 +11,6 @@ import androidx.compose.ui.Modifier
 import io.nicolaszurbuchen.yadlo.app.design.component.YadloFilterChip
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
-import io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme.ProgrammeScopeUiModel
 import io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme.ScopeChipUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.asString
 
@@ -22,7 +21,7 @@ import io.nicolaszurbuchen.yadlo.infra.ui.asString
  * rows and an axis between the top of the screen and the first row of a list that is fifteen rows
  * long. Merging them costs nothing because the split was never real: every chip here answers *what
  * am I looking at*, and it happens that three of the answers are days. Making that one exclusive
- * selection in the state — [ProgrammeScopeUiModel] — is what let the two rows become one.
+ * selection in the state — `ProgrammeScopeState` — is what let the two rows become one.
  *
  * **Découvrir is first because it is the odd one**, and putting it at the head of the row is what
  * stops it reading as a fourth day. *Tous* follows it, then the days in order, so the row runs from
@@ -41,7 +40,7 @@ import io.nicolaszurbuchen.yadlo.infra.ui.asString
 @Composable
 fun ScopeChipRow(
     scopes: List<ScopeChipUiModel>,
-    onScopeClick: (ProgrammeScopeUiModel) -> Unit,
+    onScopeClick: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LazyRow(
@@ -51,11 +50,11 @@ fun ScopeChipRow(
         contentPadding = PaddingValues(horizontal = MaterialTheme.spacing.md),
         modifier = modifier.fillMaxWidth(),
     ) {
-        items(items = scopes, key = { it.scope.toString() }) { chip ->
+        items(items = scopes, key = { it.id }) { chip ->
             YadloFilterChip(
                 label = chip.label.asString(),
                 isSelected = chip.isSelected,
-                onClick = { onScopeClick(chip.scope) },
+                onClick = { onScopeClick(chip.id) },
                 container = MaterialTheme.appColors.primarySubtle,
                 outline = MaterialTheme.appColors.onPrimarySubtle,
             )

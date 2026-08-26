@@ -1,6 +1,7 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands
 
 import io.nicolaszurbuchen.yadlo.common.content.domain.model.DietaryCoverage
+import io.nicolaszurbuchen.yadlo.common.content.domain.model.StandKind
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.model.StandDirectory
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.model.StandListing
 import kotlin.test.Test
@@ -13,13 +14,13 @@ class StandsReducerTest {
 
     @Test
     fun directoryUpdated_beforeAnyEmission_thereIsNoDirectoryAndNoFilterButThereIsAKind() {
-        val state = StandsState(kind = StandsKindUiModel.MAKERS)
+        val state = StandsState(kind = StandKind.MAKERS)
 
         // Which half this is arrives with the destination, not with the content, so the title is
         // known before anything has been read.
         assertNull(state.directory)
         assertTrue(state.selectedMarks.isEmpty())
-        assertEquals(StandsKindUiModel.MAKERS, state.kind)
+        assertEquals(StandKind.MAKERS, state.kind)
     }
 
     @Test
@@ -62,11 +63,11 @@ class StandsReducerTest {
         // Widening back to everything because content moved would silently undo something the
         // reader did, on the screen where they are least likely to notice.
         assertEquals(setOf("vegan"), result.selectedMarks)
-        assertEquals(StandsKindUiModel.FOOD, result.kind)
+        assertEquals(StandKind.FOOD, result.kind)
     }
 
     private fun state(selectedMarks: Set<String> = emptySet()) =
-        StandsState(kind = StandsKindUiModel.FOOD, directory = directory(), selectedMarks = selectedMarks)
+        StandsState(kind = StandKind.FOOD, directory = directory(), selectedMarks = selectedMarks)
 
     private fun directory() =
         StandDirectory(

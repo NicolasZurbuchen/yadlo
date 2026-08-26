@@ -26,7 +26,7 @@ class StandsStoreFactory(
             StandsStore,
             Store<StandsIntent, StandsState, StandsLabel> by storeFactory.create(
                 name = "StandsStore",
-                initialState = StandsState(kind = kind),
+                initialState = StandsState(kind = kind.toStandKind()),
                 bootstrapper = BootstrapperImpl(),
                 executorFactory = { ExecutorImpl() },
                 reducer = ReducerImpl,
@@ -59,7 +59,7 @@ class StandsStoreFactory(
 
         private fun observeDirectory() {
             scope.launch {
-                observeStandDirectory(kind.toStandKind()).collect { directory ->
+                observeStandDirectory(state().kind).collect { directory ->
                     dispatch(StandsMessage.DirectoryUpdated(directory))
                 }
             }

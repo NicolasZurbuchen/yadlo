@@ -27,7 +27,7 @@ fun ProgrammeRoute(
 
     ProgrammeScreen(
         state = state,
-        onScopeClick = { scope -> viewModel.onIntent(ProgrammeIntent.ScopeSelected(scope)) },
+        onScopeClick = { scopeId -> viewModel.onIntent(ProgrammeIntent.ScopeSelected(scopeId)) },
         onCategoryClick = { categoryId -> viewModel.onIntent(ProgrammeIntent.CategoryToggled(categoryId)) },
         onAllCategoriesClick = { viewModel.onIntent(ProgrammeIntent.AllCategoriesSelected) },
         onSlotClick = { happeningId -> viewModel.onIntent(ProgrammeIntent.SlotClicked(happeningId)) },

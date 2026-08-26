@@ -2,6 +2,7 @@ package io.nicolaszurbuchen.yadlo.feature.search.presentation.screen.search
 
 import io.nicolaszurbuchen.yadlo.feature.search.domain.model.SearchIndex
 import io.nicolaszurbuchen.yadlo.feature.search.domain.model.SearchResults
+import io.nicolaszurbuchen.yadlo.feature.search.domain.model.SearchTopic
 
 sealed interface SearchIntent {
     data class QueryChanged(
@@ -16,8 +17,13 @@ sealed interface SearchIntent {
         val happeningId: String,
     ) : SearchIntent
 
+    /**
+     * The domain topic, not the twin the row was drawn from. A tap hands back what it was given
+     * and the Route converts it — see `mapper/SearchTopicUiMapper.kt`, which holds both directions
+     * of the one pairing.
+     */
     data class TopicClicked(
-        val topic: SearchTopicUiModel,
+        val topic: SearchTopic,
     ) : SearchIntent
 }
 
@@ -26,8 +32,9 @@ sealed interface SearchLabel {
         val happeningId: String,
     ) : SearchLabel
 
+    /** Converted back in the Route, because a NavKey and a Navigator may not name a domain type. */
     data class NavigateToTopic(
-        val topic: SearchTopicUiModel,
+        val topic: SearchTopic,
     ) : SearchLabel
 }
 
@@ -44,13 +51,8 @@ sealed interface SearchMessage {
         val query: String,
     ) : SearchMessage
 
-    /**
-     * [topics] travels beside [results] because it is the same list converted — see
-     * [SearchState.topics] for why the conversion happens at this boundary rather than in the mapper.
-     */
     data class ResultsUpdated(
         val results: SearchResults,
-        val topics: List<SearchTopicUiModel>,
     ) : SearchMessage
 }
 
@@ -64,13 +66,9 @@ sealed interface SearchMessage {
  *
  * [results] is null until the first bundle arrives, which is also the only state in which the screen
  * cannot answer at all.
- *
- * [topics] is `results.topics` converted at the Store boundary, so the UiMapper can read it without
- * importing the domain — the same arrangement `HappeningState.kind` uses beside its own detail.
  */
 data class SearchState(
     val query: String = "",
     val index: SearchIndex? = null,
     val results: SearchResults? = null,
-    val topics: List<SearchTopicUiModel> = emptyList(),
 )

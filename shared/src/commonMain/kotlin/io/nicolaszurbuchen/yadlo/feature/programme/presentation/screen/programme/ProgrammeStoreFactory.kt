@@ -52,7 +52,7 @@ class ProgrammeStoreFactory(
         override fun executeIntent(intent: ProgrammeIntent) {
             when (intent) {
                 is ProgrammeIntent.ScopeSelected -> {
-                    dispatch(ProgrammeMessage.ScopeSelected(intent.scope))
+                    dispatch(ProgrammeMessage.ScopeSelected(ProgrammeScopeState.forId(intent.scopeId)))
                 }
 
                 is ProgrammeIntent.CategoryToggled -> {
@@ -127,7 +127,7 @@ class ProgrammeStoreFactory(
          * Only the opening scope. [ProgrammeState.selectedScope] takes this once and never again, so
          * a Phase that turns over while the app is open moves nothing.
          */
-        private fun defaultScopeFor(content: ProgrammeContent): ProgrammeScopeUiModel {
+        private fun defaultScopeFor(content: ProgrammeContent): ProgrammeScopeState {
             val phase =
                 derivePhase(
                     days = content.days,
@@ -136,15 +136,15 @@ class ProgrammeStoreFactory(
 
             return when (phase) {
                 Phase.ANNOUNCED -> {
-                    ProgrammeScopeUiModel.Catalogue
+                    ProgrammeScopeState.Catalogue
                 }
 
                 Phase.LIVE -> {
-                    liveDayFor(content)?.let { ProgrammeScopeUiModel.Day(it) } ?: ProgrammeScopeUiModel.AllDays
+                    liveDayFor(content)?.let { ProgrammeScopeState.Day(it) } ?: ProgrammeScopeState.AllDays
                 }
 
                 else -> {
-                    ProgrammeScopeUiModel.AllDays
+                    ProgrammeScopeState.AllDays
                 }
             }
         }
@@ -178,7 +178,7 @@ class ProgrammeStoreFactory(
                         selectedScope =
                             selectedScope
                                 ?.takeIf { scope ->
-                                    scope !is ProgrammeScopeUiModel.Day ||
+                                    scope !is ProgrammeScopeState.Day ||
                                         msg.content.days.any { it.id == scope.id }
                                 }
                                 ?: msg.defaultScope,

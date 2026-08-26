@@ -47,7 +47,7 @@ import io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme
 @Composable
 fun ProgrammeScreen(
     state: ProgrammeUiModel,
-    onScopeClick: (ProgrammeScopeUiModel) -> Unit,
+    onScopeClick: (String) -> Unit,
     onCategoryClick: (String) -> Unit,
     onAllCategoriesClick: () -> Unit,
     onSlotClick: (String) -> Unit,

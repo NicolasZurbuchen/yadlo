@@ -6,7 +6,6 @@ import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import io.nicolaszurbuchen.yadlo.feature.search.domain.model.SearchIndex
-import io.nicolaszurbuchen.yadlo.feature.search.domain.model.SearchTopic
 import io.nicolaszurbuchen.yadlo.feature.search.domain.usecase.MatchSearchQueryUseCase
 import io.nicolaszurbuchen.yadlo.feature.search.domain.usecase.ObserveSearchIndexUseCase
 import kotlinx.coroutines.launch
@@ -81,12 +80,7 @@ class SearchStoreFactory(
             val index = state().index ?: return
             val results = matchSearchQuery(index = index, query = state().query)
 
-            dispatch(
-                SearchMessage.ResultsUpdated(
-                    results = results,
-                    topics = results.topics.map { it.toUiModel() },
-                ),
-            )
+            dispatch(SearchMessage.ResultsUpdated(results))
         }
     }
 
@@ -103,27 +97,8 @@ class SearchStoreFactory(
                 }
 
                 is SearchMessage.ResultsUpdated -> {
-                    copy(results = msg.results, topics = msg.topics)
+                    copy(results = msg.results)
                 }
             }
     }
 }
-
-private fun SearchTopic.toUiModel(): SearchTopicUiModel =
-    when (this) {
-        SearchTopic.STANDS_FOOD -> SearchTopicUiModel.STANDS_FOOD
-        SearchTopic.STANDS_MAKERS -> SearchTopicUiModel.STANDS_MAKERS
-        SearchTopic.PAYMENT -> SearchTopicUiModel.PAYMENT
-        SearchTopic.ACCESS -> SearchTopicUiModel.ACCESS
-        SearchTopic.HOURS -> SearchTopicUiModel.HOURS
-        SearchTopic.ASSISTANCE -> SearchTopicUiModel.ASSISTANCE
-        SearchTopic.FAQ -> SearchTopicUiModel.FAQ
-        SearchTopic.STORY -> SearchTopicUiModel.STORY
-        SearchTopic.RESPONSIBLE -> SearchTopicUiModel.RESPONSIBLE
-        SearchTopic.PARTNERS -> SearchTopicUiModel.PARTNERS
-        SearchTopic.VOLUNTEERING -> SearchTopicUiModel.VOLUNTEERING
-        SearchTopic.CONTACT -> SearchTopicUiModel.CONTACT
-        SearchTopic.NOTIFICATIONS -> SearchTopicUiModel.NOTIFICATIONS
-        SearchTopic.PRIVACY -> SearchTopicUiModel.PRIVACY
-        SearchTopic.ABOUT -> SearchTopicUiModel.ABOUT
-    }

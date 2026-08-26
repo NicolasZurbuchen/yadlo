@@ -87,6 +87,19 @@ into the State; the screen's `*UiMapper` converts at the top of its single funct
 the Contract may not name a UiModel — a `PhaseUiModel` on a Message drags the presentation type
 backwards through the Executor and the Reducer.
 
+**`mapper/` holds both directions of a pairing.** The common one converts a domain type on the way
+out. The other one exists wherever a tap hands back the UiModel it was drawn from and the Intent it
+becomes should name the domain — `SearchTopicUiModel.toDomain()` is the case. Nothing else inside
+`presentation/` may write that conversion, so forbidding it here forbade it everywhere and the way
+out was to let the Contract name a UiModel instead. A UiModel on either side is what makes a
+function a mapper.
+
+**A Contract may declare a fifth kind, and it is suffixed `State`.** The four MVI interfaces, the
+State, and the types the State is made of. `ProgrammeScopeState` is the case: a scope selection is
+not domain — no use case takes one — and it is not a UiModel, because nothing renders it. It is the
+Store's own vocabulary, which is what a Contract is. The suffix is the law: everything a Contract
+declares beyond the four interfaces is `State`.
+
 ### Previews
 
 Every screen package has a `*ScreenPreview.kt`, and it has a shape rather than a habit — enforced

@@ -88,7 +88,7 @@ class ProgrammeExecutorTest {
 
             // APPROACHING is the only time anyone realistically builds a Plan, and nobody builds one
             // a day at a time — DECISIONS.md § APPROACHING exists for one reason.
-            assertEquals(ProgrammeScopeUiModel.AllDays, store.state.selectedScope)
+            assertEquals(ProgrammeScopeState.AllDays, store.state.selectedScope)
         }
 
     @Test
@@ -99,7 +99,7 @@ class ProgrammeExecutorTest {
 
             // The FestivalDay window is the hours the site is open, and Friday's runs to 02:00.
             // Opening on Saturday would hide the set playing thirty metres away.
-            assertEquals(ProgrammeScopeUiModel.Day("2026:fri"), store.state.selectedScope)
+            assertEquals(ProgrammeScopeState.Day("2026:fri"), store.state.selectedScope)
         }
 
     @Test
@@ -110,7 +110,7 @@ class ProgrammeExecutorTest {
 
             // 04:00: Friday closed at 02:00 and Saturday opens at 12:00, so no day is current at
             // all. LIVE spans the gap, and the useful answer in it is the day about to start.
-            assertEquals(ProgrammeScopeUiModel.Day("2026:sat"), store.state.selectedScope)
+            assertEquals(ProgrammeScopeState.Day("2026:sat"), store.state.selectedScope)
         }
 
     @Test
@@ -121,7 +121,7 @@ class ProgrammeExecutorTest {
 
             // ENDED is read the way OFF_SEASON is — from a sofa, across all three days, remembering
             // rather than deciding.
-            assertEquals(ProgrammeScopeUiModel.AllDays, store.state.selectedScope)
+            assertEquals(ProgrammeScopeState.AllDays, store.state.selectedScope)
         }
 
     @Test
@@ -145,7 +145,7 @@ class ProgrammeExecutorTest {
 
             // ANNOUNCED. Nobody has read the bill yet, so the useful screen is the one that says
             // what there is rather than the one that says when it is.
-            assertEquals(ProgrammeScopeUiModel.Catalogue, store.state.selectedScope)
+            assertEquals(ProgrammeScopeState.Catalogue, store.state.selectedScope)
         }
 
     @Test
@@ -155,7 +155,7 @@ class ProgrammeExecutorTest {
             testDispatcher.scheduler.runCurrent()
 
             // "What is on now" is the only question on site, and it is about one day.
-            assertEquals(ProgrammeScopeUiModel.Day("2026:sat"), store.state.selectedScope)
+            assertEquals(ProgrammeScopeState.Day("2026:sat"), store.state.selectedScope)
         }
 
     @Test
@@ -163,7 +163,7 @@ class ProgrammeExecutorTest {
         programmeTest(startingAt = A_MONTH_BEFORE) { store, repository, clock ->
             repository.emitStatus(ready())
             testDispatcher.scheduler.runCurrent()
-            assertEquals(ProgrammeScopeUiModel.Catalogue, store.state.selectedScope)
+            assertEquals(ProgrammeScopeState.Catalogue, store.state.selectedScope)
 
             // Midnight on J-7, with a content refresh landing on the other side of it. A start
             // scope, not a redirect — the distinction TabNavigator.selectStart exists for.
@@ -171,7 +171,7 @@ class ProgrammeExecutorTest {
             repository.emitStatus(ready())
             testDispatcher.scheduler.runCurrent()
 
-            assertEquals(ProgrammeScopeUiModel.Catalogue, store.state.selectedScope)
+            assertEquals(ProgrammeScopeState.Catalogue, store.state.selectedScope)
         }
 
     @Test
@@ -180,13 +180,13 @@ class ProgrammeExecutorTest {
             repository.emitStatus(ready())
             testDispatcher.scheduler.runCurrent()
 
-            store.accept(ProgrammeIntent.ScopeSelected(ProgrammeScopeUiModel.Catalogue))
+            store.accept(ProgrammeIntent.ScopeSelected(ProgrammeScopeState.Catalogue.id))
 
-            assertEquals(ProgrammeScopeUiModel.Catalogue, store.state.selectedScope)
+            assertEquals(ProgrammeScopeState.Catalogue, store.state.selectedScope)
 
-            store.accept(ProgrammeIntent.ScopeSelected(ProgrammeScopeUiModel.AllDays))
+            store.accept(ProgrammeIntent.ScopeSelected(ProgrammeScopeState.AllDays.id))
 
-            assertEquals(ProgrammeScopeUiModel.AllDays, store.state.selectedScope)
+            assertEquals(ProgrammeScopeState.AllDays, store.state.selectedScope)
         }
 
     @Test
@@ -278,11 +278,11 @@ class ProgrammeExecutorTest {
         programmeTest(startingAt = A_MONTH_BEFORE) { store, repository, _ ->
             repository.emitStatus(ready())
             testDispatcher.scheduler.runCurrent()
-            assertEquals(ProgrammeScopeUiModel.Catalogue, store.state.selectedScope)
+            assertEquals(ProgrammeScopeState.Catalogue, store.state.selectedScope)
 
-            store.accept(ProgrammeIntent.ScopeSelected(ProgrammeScopeUiModel.Day("2026:sun")))
+            store.accept(ProgrammeIntent.ScopeSelected("2026:sun"))
 
-            assertEquals(ProgrammeScopeUiModel.Day("2026:sun"), store.state.selectedScope)
+            assertEquals(ProgrammeScopeState.Day("2026:sun"), store.state.selectedScope)
         }
 
     // endregion

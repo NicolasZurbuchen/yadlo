@@ -73,12 +73,12 @@ class ProgrammeUiMapperTest {
         // read as a fourth one.
         assertEquals(
             listOf(
-                ProgrammeScopeUiModel.Catalogue,
-                ProgrammeScopeUiModel.AllDays,
-                ProgrammeScopeUiModel.Day("2026:fri"),
-                ProgrammeScopeUiModel.Day("2026:sat"),
+                ProgrammeScopeState.Catalogue.id,
+                ProgrammeScopeState.AllDays.id,
+                "2026:fri",
+                "2026:sat",
             ),
-            model.scopes.map { it.scope },
+            model.scopes.map { it.id },
         )
     }
 
@@ -87,8 +87,8 @@ class ProgrammeUiMapperTest {
         val model = state(selectedDayId = "2026:sat").toUiModel()
 
         assertEquals(
-            listOf(ProgrammeScopeUiModel.Day("2026:sat")),
-            model.scopes.filter { it.isSelected }.map { it.scope },
+            listOf("2026:sat"),
+            model.scopes.filter { it.isSelected }.map { it.id },
         )
     }
 
@@ -429,7 +429,7 @@ class ProgrammeUiMapperTest {
 
     @Test
     fun toUiModel_catalogue_hasNoAxisBecauseNothingOnItHasAnHour() {
-        val model = state(selectedScope = ProgrammeScopeUiModel.Catalogue).toUiModel()
+        val model = state(selectedScope = ProgrammeScopeState.Catalogue).toUiModel()
 
         assertNull(model.scale)
         assertTrue(model.rows.isEmpty())
@@ -438,17 +438,17 @@ class ProgrammeUiMapperTest {
 
     @Test
     fun toUiModel_catalogue_keepsTheDayChipsBecauseTheyAreTheWayOutOfIt() {
-        val model = state(selectedScope = ProgrammeScopeUiModel.Catalogue).toUiModel()
+        val model = state(selectedScope = ProgrammeScopeState.Catalogue).toUiModel()
 
         // They are not filtering the Catalogue — nothing on it has a day. Tapping Samedi here means
         // show me the Saturday, and a Saturday is a timetable.
         assertEquals(
-            listOf(ProgrammeScopeUiModel.Day("2026:fri"), ProgrammeScopeUiModel.Day("2026:sat")),
-            model.scopes.map { it.scope }.filterIsInstance<ProgrammeScopeUiModel.Day>(),
+            listOf("2026:fri", "2026:sat"),
+            model.scopes.map { it.id }.filter { it !in FIXED_SCOPE_IDS },
         )
         assertEquals(
-            listOf(ProgrammeScopeUiModel.Catalogue),
-            model.scopes.filter { it.isSelected }.map { it.scope },
+            listOf(ProgrammeScopeState.Catalogue.id),
+            model.scopes.filter { it.isSelected }.map { it.id },
         )
     }
 
@@ -456,7 +456,7 @@ class ProgrammeUiMapperTest {
     fun toUiModel_catalogueView_keepsTheCategoryChipsBecauseTheyFilterBothViews() {
         val model =
             state(
-                selectedScope = ProgrammeScopeUiModel.Catalogue,
+                selectedScope = ProgrammeScopeState.Catalogue,
                 selectedCategoryIds = setOf("eau"),
             ).toUiModel()
 
@@ -467,7 +467,7 @@ class ProgrammeUiMapperTest {
     @Test
     fun toUiModel_catalogueViewWithNoCategoryChosen_showsEverything() {
         // Empty is *Tout* here too, and it is the state the view opens in.
-        val model = state(selectedScope = ProgrammeScopeUiModel.Catalogue).toUiModel()
+        val model = state(selectedScope = ProgrammeScopeState.Catalogue).toUiModel()
 
         assertEquals(2, model.catalogue.size)
         assertNull(model.emptyMessage)
@@ -477,7 +477,7 @@ class ProgrammeUiMapperTest {
     fun toUiModel_catalogueFilterMatchesNothing_saysSoRatherThanShowingAnEmptyGrid() {
         val model =
             state(
-                selectedScope = ProgrammeScopeUiModel.Catalogue,
+                selectedScope = ProgrammeScopeState.Catalogue,
                 selectedCategoryIds = setOf("silent"),
             ).toUiModel()
 
@@ -488,7 +488,7 @@ class ProgrammeUiMapperTest {
 
     @Test
     fun toUiModel_catalogueCard_carriesThePictureAndTheGenresARowHasNoRoomFor() {
-        val card = state(selectedScope = ProgrammeScopeUiModel.Catalogue).toUiModel().catalogue.first()
+        val card = state(selectedScope = ProgrammeScopeState.Catalogue).toUiModel().catalogue.first()
 
         assertEquals("AMC", card.name)
         assertEquals("Musique", card.categoryName)
@@ -508,7 +508,7 @@ class ProgrammeUiMapperTest {
 
     @Test
     fun toUiModel_allDays_sectionsTheListByDayInOrder() {
-        val model = state(selectedScope = ProgrammeScopeUiModel.AllDays).toUiModel()
+        val model = state(selectedScope = ProgrammeScopeState.AllDays).toUiModel()
 
         assertEquals(listOf("2026:fri", "2026:sat"), model.sections.map { it.id })
         assertEquals(listOf("amc"), model.sections.first().rows.map { it.happeningId })
@@ -520,7 +520,7 @@ class ProgrammeUiMapperTest {
 
     @Test
     fun toUiModel_allDays_givesEachDayItsOwnHeaderAndItsOwnAxis() {
-        val model = state(selectedScope = ProgrammeScopeUiModel.AllDays).toUiModel()
+        val model = state(selectedScope = ProgrammeScopeState.AllDays).toUiModel()
 
         // Friday opens at 16:00 and Saturday at 12:00, which is exactly why one reading in the
         // chrome could not have been right about both.
@@ -533,12 +533,12 @@ class ProgrammeUiMapperTest {
     fun toUiModel_allDays_writesNoScaleInTheChrome() {
         // It travels with the headers instead. A single reading over three days would be wrong
         // about two of them, which is worse than no reading at all.
-        assertNull(state(selectedScope = ProgrammeScopeUiModel.AllDays).toUiModel().scale)
+        assertNull(state(selectedScope = ProgrammeScopeState.AllDays).toUiModel().scale)
     }
 
     @Test
     fun toUiModel_allDays_measuresEachRowAgainstItsOwnDay() {
-        val allDays = state(selectedScope = ProgrammeScopeUiModel.AllDays).toUiModel()
+        val allDays = state(selectedScope = ProgrammeScopeState.AllDays).toUiModel()
         val saturdayAlone = state(selectedDayId = "2026:sat").toUiModel()
 
         // A bar means the same thing whichever scope drew it: where this Slot sits on its own day.
@@ -553,7 +553,7 @@ class ProgrammeUiMapperTest {
         // Friday is AMC alone, so filtering to the water activities empties it. A header with
         // nothing under it reads as a screen that failed rather than as a quiet Friday.
         val model =
-            state(selectedScope = ProgrammeScopeUiModel.AllDays, selectedCategoryIds = setOf("eau")).toUiModel()
+            state(selectedScope = ProgrammeScopeState.AllDays, selectedCategoryIds = setOf("eau")).toUiModel()
 
         assertEquals(listOf("2026:sat"), model.sections.map { it.id })
     }
@@ -570,7 +570,7 @@ class ProgrammeUiMapperTest {
     fun toUiModel_rowIdsCarryTheirDay_soTwoCopiesOfOneHappeningCanShareAScreen() {
         // Under *Tous* the same activity's Friday and Saturday rows are both on screen, and a key
         // that repeated would make the list reuse one row's state for the other.
-        val model = state(selectedScope = ProgrammeScopeUiModel.AllDays).toUiModel()
+        val model = state(selectedScope = ProgrammeScopeState.AllDays).toUiModel()
 
         assertEquals(model.rows.size, model.rows.map { it.id }.toSet().size)
     }
@@ -595,13 +595,13 @@ class ProgrammeUiMapperTest {
     private fun state(
         now: Instant = QUARTER_TO_FOUR,
         content: ProgrammeContent = content(),
-        selectedScope: ProgrammeScopeUiModel? = null,
+        selectedScope: ProgrammeScopeState? = null,
         selectedDayId: String? = null,
         selectedCategoryIds: Set<String> = emptySet(),
     ) = ProgrammeState(
         now = now,
         content = content,
-        selectedScope = selectedScope ?: selectedDayId?.let { ProgrammeScopeUiModel.Day(it) },
+        selectedScope = selectedScope ?: selectedDayId?.let { ProgrammeScopeState.Day(it) },
         selectedCategoryIds = selectedCategoryIds,
     )
 
@@ -825,5 +825,8 @@ class ProgrammeUiMapperTest {
 
         /** Roughly a pixel of a 360dp bar. Tighter than that is asserting the arithmetic twice. */
         const val ONE_PIXEL_ON_A_PHONE = 0.003f
+
+        /** The two the app names itself. Every other chip in the row is keyed by a day's own id. */
+        val FIXED_SCOPE_IDS = setOf(ProgrammeScopeState.Catalogue.id, ProgrammeScopeState.AllDays.id)
     }
 }

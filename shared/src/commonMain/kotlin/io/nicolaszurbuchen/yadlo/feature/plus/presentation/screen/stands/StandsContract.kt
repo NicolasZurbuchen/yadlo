@@ -1,5 +1,6 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands
 
+import io.nicolaszurbuchen.yadlo.common.content.domain.model.StandKind
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.model.StandDirectory
 
 sealed interface StandsIntent {
@@ -44,10 +45,13 @@ sealed interface StandsMessage {
  * survived into the next launch would silently hide two thirds of the list.
  *
  * [kind] is which half of the stands this is, and it arrives with the destination rather than the
- * content — so the bar reads correctly while the list is still loading.
+ * content — so the bar reads correctly while the list is still loading. It arrives from the back
+ * stack as the presentation mirror, because a NavKey may not name a domain type, and the Store
+ * converts it once at construction so that everything downstream reads the kind the content is
+ * keyed by.
  */
 data class StandsState(
-    val kind: StandsKindUiModel,
+    val kind: StandKind,
     val directory: StandDirectory? = null,
     val selectedMarks: Set<String> = emptySet(),
 )

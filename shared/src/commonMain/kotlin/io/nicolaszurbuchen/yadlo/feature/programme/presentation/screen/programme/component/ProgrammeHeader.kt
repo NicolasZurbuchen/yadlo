@@ -14,7 +14,6 @@ import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.common.content.presentation.component.SlotScaleRow
 import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotScaleUiModel
 import io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme.CategoryChipUiModel
-import io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme.ProgrammeScopeUiModel
 import io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme.ScopeChipUiModel
 
 /**
@@ -55,7 +54,7 @@ fun ProgrammeHeader(
     scopes: List<ScopeChipUiModel>,
     categories: List<CategoryChipUiModel>,
     scale: SlotScaleUiModel?,
-    onScopeClick: (ProgrammeScopeUiModel) -> Unit,
+    onScopeClick: (String) -> Unit,
     onCategoryClick: (String) -> Unit,
     onAllCategoriesClick: () -> Unit,
     modifier: Modifier = Modifier,

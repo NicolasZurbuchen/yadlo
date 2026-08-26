@@ -69,31 +69,31 @@ fun ProgrammeState.toUiModel(): ProgrammeUiModel {
 
     // Null only in the frame between the store being built and the first bundle landing, which the
     // loading branch above has already returned for.
-    val scope = selectedScope ?: ProgrammeScopeUiModel.AllDays
+    val scope = selectedScope ?: ProgrammeScopeState.AllDays
 
     val scopes =
         listOf(
             ScopeChipUiModel(
-                scope = ProgrammeScopeUiModel.Catalogue,
+                id = ProgrammeScopeState.Catalogue.id,
                 label = UiText.Resource(Res.string.programme_scope_catalogue),
-                isSelected = scope is ProgrammeScopeUiModel.Catalogue,
+                isSelected = scope is ProgrammeScopeState.Catalogue,
             ),
             ScopeChipUiModel(
-                scope = ProgrammeScopeUiModel.AllDays,
+                id = ProgrammeScopeState.AllDays.id,
                 label = UiText.Resource(Res.string.programme_scope_all),
-                isSelected = scope is ProgrammeScopeUiModel.AllDays,
+                isSelected = scope is ProgrammeScopeState.AllDays,
             ),
         ) +
             loaded.days.map { day ->
                 ScopeChipUiModel(
-                    scope = ProgrammeScopeUiModel.Day(day.id),
+                    id = day.id,
                     // Out of the content, so a day the association calls something else keeps
                     // its name and nothing here has to translate a weekday — shortened to fit five
                     // chips on one row. Ven, Sam, Dim, which is how a French weekday is abbreviated
                     // anyway; the full name survives everywhere it has room, including Mon Yadlo's
                     // rail, where *le samedi* is what people think in.
                     label = UiText.Raw(day.name.take(DAY_ABBREVIATION_LENGTH)),
-                    isSelected = scope is ProgrammeScopeUiModel.Day && scope.id == day.id,
+                    isSelected = scope is ProgrammeScopeState.Day && scope.id == day.id,
                 )
             }
 
@@ -102,7 +102,7 @@ fun ProgrammeState.toUiModel(): ProgrammeUiModel {
             CategoryChipUiModel(id = it.id, name = it.name, isSelected = it.id in selectedCategoryIds)
         }
 
-    if (scope is ProgrammeScopeUiModel.Catalogue) {
+    if (scope is ProgrammeScopeState.Catalogue) {
         val entries =
             loaded.catalogue
                 // The same reading of an empty selection as the timetable below: *Tout*, not a
@@ -134,7 +134,7 @@ fun ProgrammeState.toUiModel(): ProgrammeUiModel {
 
     val daysInScope =
         when (scope) {
-            is ProgrammeScopeUiModel.Day -> loaded.days.filter { it.id == scope.id }
+            is ProgrammeScopeState.Day -> loaded.days.filter { it.id == scope.id }
             else -> loaded.days
         }
 
