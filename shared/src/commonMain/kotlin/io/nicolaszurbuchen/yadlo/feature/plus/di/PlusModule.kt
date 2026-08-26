@@ -70,31 +70,42 @@ val plusModule =
         factoryOf(::ClearImageCacheUseCase)
 
         factoryOf(::PlusStoreFactory)
-        factoryOf(::PaymentStoreFactory)
-        factoryOf(::AccessStoreFactory)
-        factoryOf(::HoursStoreFactory)
-        factoryOf(::AssistanceStoreFactory)
-        factoryOf(::FaqStoreFactory)
-        factoryOf(::StoryStoreFactory)
-        factoryOf(::PartnersStoreFactory)
-        factoryOf(::ContactStoreFactory)
-        factoryOf(::VolunteeringStoreFactory)
-        factoryOf(::ResponsibleStoreFactory)
-        factoryOf(::NotificationsStoreFactory)
-        factoryOf(::ClearDataStoreFactory)
-
         viewModelOf(::PlusViewModel)
+
+        factoryOf(::PaymentStoreFactory)
         viewModelOf(::PaymentViewModel)
+
+        factoryOf(::AccessStoreFactory)
         viewModelOf(::AccessViewModel)
+
+        factoryOf(::HoursStoreFactory)
         viewModelOf(::HoursViewModel)
+
+        factoryOf(::AssistanceStoreFactory)
         viewModelOf(::AssistanceViewModel)
+
+        factoryOf(::FaqStoreFactory)
         viewModelOf(::FaqViewModel)
+
+        factoryOf(::StoryStoreFactory)
         viewModelOf(::StoryViewModel)
+
+        factoryOf(::PartnersStoreFactory)
         viewModelOf(::PartnersViewModel)
+
+        factoryOf(::ContactStoreFactory)
         viewModelOf(::ContactViewModel)
+
+        factoryOf(::VolunteeringStoreFactory)
         viewModelOf(::VolunteeringViewModel)
+
+        factoryOf(::ResponsibleStoreFactory)
         viewModelOf(::ResponsibleViewModel)
+
+        factoryOf(::NotificationsStoreFactory)
         viewModelOf(::NotificationsViewModel)
+
+        factoryOf(::ClearDataStoreFactory)
         viewModelOf(::ClearDataViewModel)
 
         // Parameterised rather than declared with viewModelOf: which half of the stands is being

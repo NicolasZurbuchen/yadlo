@@ -146,6 +146,14 @@ Each `StoreFactory` sits directly above the `ViewModel` that wraps it, under the
 to — see `HomeModule.kt`. Grouping by type instead (`factoryOf` for everything, then `viewModelOf`
 for everything) means adding a screen edits two places and reading one scans two lists.
 
+The use cases stay in their own block at the top, because they are the feature's domain layer
+rather than any one screen’s — `PlusModule` has sixteen and several are read by more than one
+screen. Everything below that block is one screen per pair, in the order the tab presents them.
+
+A screen whose ViewModel takes a construction parameter — `StandsViewModel` and
+`HappeningViewModel` both do, because a NavKey argument is not a dependency — is a single
+`viewModel { }` block with the factory built inside it, so it is already one screen in one place.
+
 Not enforceable by Konsist: it is the order of DSL calls inside a lambda, which the API does not
 expose. Convention only.
 

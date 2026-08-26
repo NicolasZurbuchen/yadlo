@@ -16,8 +16,8 @@ val monYadloModule =
         factoryOf(::ObserveWishlistUseCase)
 
         factoryOf(::MonYadloStoreFactory)
-        factoryOf(::WishlistStoreFactory)
-
         viewModelOf(::MonYadloViewModel)
+
+        factoryOf(::WishlistStoreFactory)
         viewModelOf(::WishlistViewModel)
     }
