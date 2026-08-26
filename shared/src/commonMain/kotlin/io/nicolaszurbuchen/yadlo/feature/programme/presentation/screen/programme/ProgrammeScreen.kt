@@ -11,7 +11,6 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -24,6 +23,7 @@ import io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme
 import io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme.component.DaySectionHeader
 import io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme.component.ProgrammeEmptyMessage
 import io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme.component.ProgrammeHeader
+import io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme.component.ProgrammeSkeleton
 import io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme.component.SlotRow
 
 /**
@@ -54,9 +54,7 @@ fun ProgrammeScreen(
     modifier: Modifier = Modifier,
 ) {
     if (state.isLoading) {
-        Box(contentAlignment = Alignment.Center, modifier = modifier.fillMaxSize()) {
-            CircularProgressIndicator()
-        }
+        ProgrammeSkeleton(modifier = modifier)
         return
     }
 
