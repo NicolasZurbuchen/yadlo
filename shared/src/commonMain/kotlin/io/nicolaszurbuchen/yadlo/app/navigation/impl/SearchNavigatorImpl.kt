@@ -17,7 +17,7 @@ import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.StoryDesti
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.navigation.VolunteeringDestination
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands.StandsKindUiModel
 import io.nicolaszurbuchen.yadlo.feature.search.presentation.navigation.SearchNavigator
-import io.nicolaszurbuchen.yadlo.feature.search.presentation.screen.search.SearchTopicUiModel
+import io.nicolaszurbuchen.yadlo.feature.search.presentation.screen.search.uimodel.SearchTopicUiModel
 import io.nicolaszurbuchen.yadlo.infra.navigation.AppNavigator
 
 /**
