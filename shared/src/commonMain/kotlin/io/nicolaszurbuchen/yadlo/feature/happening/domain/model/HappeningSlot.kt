@@ -5,7 +5,7 @@ import kotlin.time.Instant
 /**
  * One of a Happening's Slots, narrowed to what a fiche's date row shows.
  *
- * The full [io.nicolaszurbuchen.yadlo.common.content.domain.model.Slot] carries its Happening back,
+ * The full [io.nicolaszurbuchen.yadlo.core.content.domain.model.Slot] carries its Happening back,
  * which on this screen is the Happening the whole page is about — every row would hold another copy
  * of the artist whose fiche it is.
  *

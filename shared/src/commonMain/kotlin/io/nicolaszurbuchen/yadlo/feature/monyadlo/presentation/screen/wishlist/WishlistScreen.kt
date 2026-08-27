@@ -21,7 +21,7 @@ import io.nicolaszurbuchen.yadlo.app.design.component.YadloSectionHeader
 import io.nicolaszurbuchen.yadlo.app.design.component.YadloTopAppBar
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
-import io.nicolaszurbuchen.yadlo.common.content.presentation.component.StandCard
+import io.nicolaszurbuchen.yadlo.core.content.presentation.component.StandCard
 import io.nicolaszurbuchen.yadlo.feature.monyadlo.presentation.screen.wishlist.component.WishlistSkeleton
 import io.nicolaszurbuchen.yadlo.infra.ui.asString
 import org.jetbrains.compose.resources.stringResource

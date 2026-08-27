@@ -9,11 +9,13 @@ Walk this in order for any new file:
 1. Does it know about **more than one** feature? → `app/`
 2. Does it know about **exactly one** feature? → `feature/<name>/`
 3. Does it know about **zero** features, and is it pure technical plumbing with no domain vocabulary? → `infra/`
-4. Does it know about **zero** features, but represents domain vocabulary shared across features? → `common/`
+4. Does it know about **zero** features, and does it model the subject matter — the festival, the visitor's plan, their reminders? → `core/`
 
-Don't place something in `common/` speculatively because it *might* be reused later. A single-feature project has almost nothing there — wait until a second feature actually needs the same domain concept before promoting it out of the first one.
+**`core/` is named for what a file *is*, not for how many callers it has.** The old name was `common/`, and the criterion that came with it — *several features need it* — is a fact about the rest of the codebase rather than about the file, so it could become true without the file changing and gave no grounds to refuse anything. `core/` admits what models the subject, which is answerable by reading the file alone. See issue #74.
 
-## Shape of `app/`, `common/`, and `infra/`
+The second-caller rule still holds, but it is about **timing, not destination**: a model used by one feature is already `core/` material, and waiting for its second caller only avoids paying for indirection on a guess. When it moves, it moves here — that is not the part that was ever in question.
+
+## Shape of `app/`, `core/`, and `infra/`
 
 ```
 app/
@@ -28,8 +30,12 @@ app/
     ├── NavConfig.kt
     └── NavigationModule.kt
 
-common/
-└── error/                       # AppError / AppException, single throw-catch mechanism — a single-feature project has little else here; it only grows when a second feature needs to share the same domain concept as the first
+core/                            # each child is a slice with the same layer shape as a feature, minus a screen
+├── content/                     # the published festival data — data · domain · presentation · di
+├── plan/                        # what the visitor saved — data · domain · di
+├── reminder/                    # the reminder switch and what it schedules — data · domain · di
+├── error/                       # AppError / AppException, single throw-catch mechanism
+└── time/                        # FESTIVAL_TIME_ZONE and the Edition window
 
 infra/
 ├── database/                    # SQLDelight driver setup (expect/actual)
@@ -195,7 +201,7 @@ there fixes the next one too.
 ## Error handling
 
 - `AppError` (a single sealed interface) plus `AppException` is the only throw/catch mechanism in the app — no ad-hoc exception types.
-- Display resolution happens once, at a shared `AppError -> AppErrorUiModel` mapping (`common/error/AppErrorUiMapper.kt`), using `UiText` (`infra/ui/UiText.kt`) for anything that needs runtime data rather than only a static resource.
+- Display resolution happens once, at a shared `AppError -> AppErrorUiModel` mapping (`core/error/AppErrorUiMapper.kt`), using `UiText` (`infra/ui/UiText.kt`) for anything that needs runtime data rather than only a static resource.
 - Every user-facing string is a Compose Multiplatform resource (`shared/src/commonMain/composeResources/values/strings.xml`) — never a hardcoded literal in a Composable. Naming: `feature_screen_role`, or `common_role` for a cross-feature string. Add an `element` segment only when `role` alone would be ambiguous within that screen. Group entries by feature/concern with a blank line between groups, not alphabetically.
 
 ## Testing

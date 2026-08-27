@@ -5,8 +5,8 @@ import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
-import io.nicolaszurbuchen.yadlo.common.reminder.domain.usecase.ObserveRemindersEnabledUseCase
-import io.nicolaszurbuchen.yadlo.common.reminder.domain.usecase.SetRemindersEnabledUseCase
+import io.nicolaszurbuchen.yadlo.core.reminder.domain.usecase.ObserveRemindersEnabledUseCase
+import io.nicolaszurbuchen.yadlo.core.reminder.domain.usecase.SetRemindersEnabledUseCase
 import io.nicolaszurbuchen.yadlo.infra.notification.NotificationPermissionStatus
 import kotlinx.coroutines.launch
 

@@ -5,7 +5,7 @@ import io.nicolaszurbuchen.yadlo.infra.image.ImageCache
 /**
  * The picture cache as a number that can be set and emptied.
  *
- * [clear] really empties, the way [io.nicolaszurbuchen.yadlo.common.plan.domain.fake.FakePlanRepository]
+ * [clear] really empties, the way [io.nicolaszurbuchen.yadlo.core.plan.domain.fake.FakePlanRepository]
  * really toggles: the screen reads the size back after clearing it, and a fake that recorded the
  * call and left the number where it was would let that read go untested.
  *

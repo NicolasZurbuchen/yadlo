@@ -1,9 +1,9 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.cleardata
 
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
-import io.nicolaszurbuchen.yadlo.common.plan.domain.fake.FakePlanRepository
-import io.nicolaszurbuchen.yadlo.common.plan.domain.model.SavedItem
-import io.nicolaszurbuchen.yadlo.common.plan.domain.model.SavedKind
+import io.nicolaszurbuchen.yadlo.core.plan.domain.fake.FakePlanRepository
+import io.nicolaszurbuchen.yadlo.core.plan.domain.model.SavedItem
+import io.nicolaszurbuchen.yadlo.core.plan.domain.model.SavedKind
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.fake.FakeImageCache
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.model.SavedCount
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase.ClearImageCacheUseCase

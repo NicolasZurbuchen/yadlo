@@ -1,8 +1,8 @@
 package io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme
 
-import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotLiveStateUiModel
-import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotScaleUiModel
-import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotSegmentUiModel
+import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.SlotLiveStateUiModel
+import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.SlotScaleUiModel
+import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.SlotSegmentUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 
 /**

@@ -3,7 +3,7 @@ package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.partners
 import app.cash.turbine.test
 import com.arkivanov.mvikotlin.extensions.coroutines.labels
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
-import io.nicolaszurbuchen.yadlo.common.content.domain.fake.FakeContentRepository
+import io.nicolaszurbuchen.yadlo.core.content.domain.fake.FakeContentRepository
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase.ObservePartnerTiersUseCase
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase.ready
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase.tier

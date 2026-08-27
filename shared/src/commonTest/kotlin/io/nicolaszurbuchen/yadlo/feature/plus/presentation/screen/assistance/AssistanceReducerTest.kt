@@ -1,6 +1,6 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.assistance
 
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.Assistance
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.Assistance
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.model.AssistanceGuide
 import kotlin.test.Test
 import kotlin.test.assertEquals

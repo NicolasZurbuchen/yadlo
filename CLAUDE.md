@@ -60,7 +60,7 @@ content grounds rather than technical ones until the association is on board. St
 end-of-slot warning, was dropped rather than deferred; the reasoning is in DECISIONS.md.
 
 *Plus › Notifications* is built: one switch, stored in its own SQLDelight table under
-`common/reminder/`. It is **not** a generic settings store — a second preference is when that shape
+`core/reminder/`. It is **not** a generic settings store — a second preference is when that shape
 is earned. *Effacer mes données* is built too, and it stores nothing: `PlanRepository.clear()` is the
 delete, `infra/image/ImageCache` is the port over Coil's disk cache, and the screen counts what is
 there. Only the Plan half asks first — see DECISIONS.md § *Effacer mes données* for why the pictures
@@ -95,7 +95,7 @@ to get wrong once.
   repeated because it's the single most load-bearing judgment call here): does this file know
   about a specific feature? **Multiple** features → `app/`. Exactly **one** → `feature/<name>/`.
   **Zero**, and pure technical plumbing → `infra/`. **Zero**, but shared domain vocabulary →
-  `common/`. Don't pre-emptively put something in `common/` because it *might* be shared later.
+  `core/`. Don't pre-emptively put something in `core/` because it *might* be shared later.
 
 ### Yadlo-specific rules that override nothing but are easy to violate
 

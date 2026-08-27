@@ -1,9 +1,9 @@
 package io.nicolaszurbuchen.yadlo.feature.monyadlo.presentation.screen.monyadlo
 
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.Money
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.Price
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.Provenance
-import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotLiveStateUiModel
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.Money
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.Price
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.Provenance
+import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.SlotLiveStateUiModel
 import io.nicolaszurbuchen.yadlo.feature.monyadlo.domain.model.MonYadloContent
 import io.nicolaszurbuchen.yadlo.feature.monyadlo.domain.model.PlannedDay
 import io.nicolaszurbuchen.yadlo.feature.monyadlo.domain.model.PlannedSlot

@@ -1,7 +1,7 @@
 package io.nicolaszurbuchen.yadlo.feature.search.domain.model
 
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.FaqEntry
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.Happening
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.FaqEntry
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.Happening
 
 /**
  * Everything one query can reach, in the shape it is searched in.

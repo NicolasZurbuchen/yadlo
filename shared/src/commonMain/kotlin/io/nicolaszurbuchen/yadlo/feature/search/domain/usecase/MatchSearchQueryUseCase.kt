@@ -1,6 +1,6 @@
 package io.nicolaszurbuchen.yadlo.feature.search.domain.usecase
 
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.Happening
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.Happening
 import io.nicolaszurbuchen.yadlo.feature.search.domain.model.SearchHit
 import io.nicolaszurbuchen.yadlo.feature.search.domain.model.SearchIndex
 import io.nicolaszurbuchen.yadlo.feature.search.domain.model.SearchResults

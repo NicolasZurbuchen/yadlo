@@ -11,8 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
-import io.nicolaszurbuchen.yadlo.common.content.presentation.component.SlotScaleRow
-import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotScaleUiModel
+import io.nicolaszurbuchen.yadlo.core.content.presentation.component.SlotScaleRow
+import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.SlotScaleUiModel
 import io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme.CategoryChipUiModel
 import io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme.ScopeChipUiModel
 

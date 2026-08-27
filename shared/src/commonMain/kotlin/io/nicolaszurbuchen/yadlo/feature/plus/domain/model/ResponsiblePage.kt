@@ -1,6 +1,6 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.domain.model
 
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.InfoLink
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.InfoLink
 
 /**
  * The shared shape behind the Plus entries that are a title, some prose, and somewhere to go.

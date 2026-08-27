@@ -1,9 +1,9 @@
 package io.nicolaszurbuchen.yadlo.feature.home.domain.model
 
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.Announcement
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.FestivalDay
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.Figure
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.SocialLink
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.Announcement
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.FestivalDay
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.Figure
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.SocialLink
 
 /**
  * The ContentBundle narrowed to what Accueil reads, and nothing more — the bundle itself never

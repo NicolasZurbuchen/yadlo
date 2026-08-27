@@ -1,6 +1,6 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase
 
-import io.nicolaszurbuchen.yadlo.common.plan.domain.repository.PlanRepository
+import io.nicolaszurbuchen.yadlo.core.plan.domain.repository.PlanRepository
 
 /**
  * Forgets the Plan and the Wishlist together — the destructive half of *Effacer mes données*.

@@ -1,11 +1,11 @@
 package io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme
 
-import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotLiveStateUiModel
-import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotScaleUiModel
-import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotSegmentUiModel
-import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.loudestState
-import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.slotLiveStateAt
-import io.nicolaszurbuchen.yadlo.common.time.FESTIVAL_TIME_ZONE
+import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.SlotLiveStateUiModel
+import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.SlotScaleUiModel
+import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.SlotSegmentUiModel
+import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.loudestState
+import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.slotLiveStateAt
+import io.nicolaszurbuchen.yadlo.core.time.FESTIVAL_TIME_ZONE
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import io.nicolaszurbuchen.yadlo.infra.ui.formatAsTimeOfDay
 import io.nicolaszurbuchen.yadlo.infra.ui.formatMoney

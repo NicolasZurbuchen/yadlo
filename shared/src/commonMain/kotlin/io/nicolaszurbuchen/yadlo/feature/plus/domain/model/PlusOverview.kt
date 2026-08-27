@@ -1,6 +1,6 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.domain.model
 
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.SocialLink
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.SocialLink
 
 /**
  * What the published content can currently answer, and the little of it the root list writes on a

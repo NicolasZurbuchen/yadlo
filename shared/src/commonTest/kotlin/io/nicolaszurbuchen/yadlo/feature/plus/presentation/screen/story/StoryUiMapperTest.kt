@@ -1,7 +1,7 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.story
 
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.Figure
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.Provenance
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.Figure
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.Provenance
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.model.StoryPage
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import yadlo.shared.generated.resources.Res

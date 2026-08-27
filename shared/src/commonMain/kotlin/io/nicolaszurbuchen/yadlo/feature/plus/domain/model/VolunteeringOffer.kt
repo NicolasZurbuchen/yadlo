@@ -1,6 +1,6 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.domain.model
 
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.Contact
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.Contact
 
 /**
  * *Hot'Staff* — what the association asks of a volunteer and what it offers in return, on a screen

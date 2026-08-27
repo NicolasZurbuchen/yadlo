@@ -19,9 +19,9 @@ import io.nicolaszurbuchen.yadlo.app.debug.TimeTravelPanel
 import io.nicolaszurbuchen.yadlo.app.design.theme.YadloTheme
 import io.nicolaszurbuchen.yadlo.app.navigation.MainScaffold
 import io.nicolaszurbuchen.yadlo.app.splash.SplashScreen
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.ContentStatus
-import io.nicolaszurbuchen.yadlo.common.content.domain.repository.ContentRepository
-import io.nicolaszurbuchen.yadlo.common.error.toUiModel
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.ContentStatus
+import io.nicolaszurbuchen.yadlo.core.content.domain.repository.ContentRepository
+import io.nicolaszurbuchen.yadlo.core.error.toUiModel
 import io.nicolaszurbuchen.yadlo.infra.image.createImageLoader
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject

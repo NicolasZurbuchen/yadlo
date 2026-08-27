@@ -3,9 +3,9 @@ package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.notifications
 import app.cash.turbine.test
 import com.arkivanov.mvikotlin.extensions.coroutines.labels
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
-import io.nicolaszurbuchen.yadlo.common.reminder.domain.fake.FakeReminderSettingsRepository
-import io.nicolaszurbuchen.yadlo.common.reminder.domain.usecase.ObserveRemindersEnabledUseCase
-import io.nicolaszurbuchen.yadlo.common.reminder.domain.usecase.SetRemindersEnabledUseCase
+import io.nicolaszurbuchen.yadlo.core.reminder.domain.fake.FakeReminderSettingsRepository
+import io.nicolaszurbuchen.yadlo.core.reminder.domain.usecase.ObserveRemindersEnabledUseCase
+import io.nicolaszurbuchen.yadlo.core.reminder.domain.usecase.SetRemindersEnabledUseCase
 import io.nicolaszurbuchen.yadlo.infra.notification.NotificationPermissionStatus
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

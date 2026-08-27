@@ -1,6 +1,6 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.domain.model
 
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.DietaryCoverage
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.DietaryCoverage
 
 /**
  * One Stand on *Nourriture & boissons* — the browse half of the pair whose recall half is the

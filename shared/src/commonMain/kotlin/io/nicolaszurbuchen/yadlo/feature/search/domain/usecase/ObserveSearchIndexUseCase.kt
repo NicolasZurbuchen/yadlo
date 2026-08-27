@@ -1,10 +1,10 @@
 package io.nicolaszurbuchen.yadlo.feature.search.domain.usecase
 
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.ContentStatus
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.Festival
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.Happening
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.StandKind
-import io.nicolaszurbuchen.yadlo.common.content.domain.repository.ContentRepository
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.ContentStatus
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.Festival
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.Happening
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.StandKind
+import io.nicolaszurbuchen.yadlo.core.content.domain.repository.ContentRepository
 import io.nicolaszurbuchen.yadlo.feature.search.domain.model.SearchIndex
 import io.nicolaszurbuchen.yadlo.feature.search.domain.model.SearchTopic
 import kotlinx.coroutines.flow.Flow

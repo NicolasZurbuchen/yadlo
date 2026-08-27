@@ -1,13 +1,13 @@
 package io.nicolaszurbuchen.yadlo.feature.happening.domain.usecase
 
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.ContentBundle
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.ContentStatus
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.Happening
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.dietaryCoverage
-import io.nicolaszurbuchen.yadlo.common.content.domain.repository.ContentRepository
-import io.nicolaszurbuchen.yadlo.common.plan.domain.model.SavedItem
-import io.nicolaszurbuchen.yadlo.common.plan.domain.model.SavedKind
-import io.nicolaszurbuchen.yadlo.common.plan.domain.repository.PlanRepository
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.ContentBundle
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.ContentStatus
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.Happening
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.dietaryCoverage
+import io.nicolaszurbuchen.yadlo.core.content.domain.repository.ContentRepository
+import io.nicolaszurbuchen.yadlo.core.plan.domain.model.SavedItem
+import io.nicolaszurbuchen.yadlo.core.plan.domain.model.SavedKind
+import io.nicolaszurbuchen.yadlo.core.plan.domain.repository.PlanRepository
 import io.nicolaszurbuchen.yadlo.feature.happening.domain.model.HappeningDetail
 import io.nicolaszurbuchen.yadlo.feature.happening.domain.model.HappeningKind
 import io.nicolaszurbuchen.yadlo.feature.happening.domain.model.HappeningSlot

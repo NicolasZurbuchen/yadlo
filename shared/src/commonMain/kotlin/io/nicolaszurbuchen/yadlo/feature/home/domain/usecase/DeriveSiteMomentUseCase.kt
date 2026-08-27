@@ -1,6 +1,6 @@
 package io.nicolaszurbuchen.yadlo.feature.home.domain.usecase
 
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.FestivalDay
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.FestivalDay
 import io.nicolaszurbuchen.yadlo.feature.home.domain.model.SiteMoment
 import kotlin.time.Clock
 

@@ -1,6 +1,6 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.faq
 
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.FaqEntry
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.FaqEntry
 
 /** Empty: the answers are on the page, not behind a disclosure. */
 sealed interface FaqIntent

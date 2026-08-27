@@ -1,6 +1,6 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands.mapper
 
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.StandKind
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.StandKind
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands.StandsKindUiModel
 
 /**

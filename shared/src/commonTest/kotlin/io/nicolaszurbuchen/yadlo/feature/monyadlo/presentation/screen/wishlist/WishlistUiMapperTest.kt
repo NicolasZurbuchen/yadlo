@@ -1,6 +1,6 @@
 package io.nicolaszurbuchen.yadlo.feature.monyadlo.presentation.screen.wishlist
 
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.DietaryCoverage
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.DietaryCoverage
 import io.nicolaszurbuchen.yadlo.feature.monyadlo.domain.model.WishlistGroup
 import io.nicolaszurbuchen.yadlo.feature.monyadlo.domain.model.WishlistStand
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText

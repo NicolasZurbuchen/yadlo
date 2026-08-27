@@ -1,7 +1,7 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.hours
 
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
-import io.nicolaszurbuchen.yadlo.common.content.domain.fake.FakeContentRepository
+import io.nicolaszurbuchen.yadlo.core.content.domain.fake.FakeContentRepository
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase.ObserveOpeningDaysUseCase
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase.day
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase.ready

@@ -1,7 +1,7 @@
 package io.nicolaszurbuchen.yadlo.feature.search.presentation.screen.search
 
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.FaqEntry
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.Happening
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.FaqEntry
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.Happening
 import io.nicolaszurbuchen.yadlo.feature.search.domain.model.SearchHit
 import io.nicolaszurbuchen.yadlo.feature.search.domain.model.SearchResults
 import io.nicolaszurbuchen.yadlo.feature.search.domain.model.SearchTopic

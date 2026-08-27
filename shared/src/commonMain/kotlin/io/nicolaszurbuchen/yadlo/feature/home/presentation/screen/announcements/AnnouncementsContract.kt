@@ -1,6 +1,6 @@
 package io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.announcements
 
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.Announcement
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.Announcement
 
 sealed interface AnnouncementsIntent {
     data class AnnouncementClicked(

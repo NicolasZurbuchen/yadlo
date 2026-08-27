@@ -1,7 +1,7 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.faq
 
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.FaqEntry
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.Provenance
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.FaqEntry
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.Provenance
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull

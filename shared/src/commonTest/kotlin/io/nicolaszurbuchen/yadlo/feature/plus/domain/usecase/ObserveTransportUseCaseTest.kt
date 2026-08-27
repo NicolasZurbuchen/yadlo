@@ -1,10 +1,10 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase
 
-import io.nicolaszurbuchen.yadlo.common.content.domain.fake.FakeContentRepository
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.InfoLink
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.Provenance
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.Transport
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.TransportMode
+import io.nicolaszurbuchen.yadlo.core.content.domain.fake.FakeContentRepository
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.InfoLink
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.Provenance
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.Transport
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.TransportMode
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test

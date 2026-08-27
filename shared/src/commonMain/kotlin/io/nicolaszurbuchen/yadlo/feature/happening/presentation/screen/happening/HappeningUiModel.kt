@@ -1,8 +1,8 @@
 package io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening
 
 import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloDietaryTagUiModel
-import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotLiveStateUiModel
-import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SocialLinkUiModel
+import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.SlotLiveStateUiModel
+import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.SocialLinkUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 
 /**

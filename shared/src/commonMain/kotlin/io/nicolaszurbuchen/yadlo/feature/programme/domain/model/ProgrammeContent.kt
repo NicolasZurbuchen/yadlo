@@ -1,7 +1,7 @@
 package io.nicolaszurbuchen.yadlo.feature.programme.domain.model
 
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.Category
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.FestivalDay
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.Category
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.FestivalDay
 
 /**
  * The Programme tab's slice of the content bundle, for both of the views it can show: the days you

@@ -1,6 +1,6 @@
 package io.nicolaszurbuchen.yadlo.app.design.uimodel
 
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.DietaryCoverage
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.DietaryCoverage
 import org.jetbrains.compose.resources.StringResource
 
 /**

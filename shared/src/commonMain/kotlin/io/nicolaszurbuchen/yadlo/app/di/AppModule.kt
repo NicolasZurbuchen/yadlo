@@ -2,9 +2,9 @@ package io.nicolaszurbuchen.yadlo.app.di
 
 import io.nicolaszurbuchen.yadlo.app.navigation.appNavigationModule
 import io.nicolaszurbuchen.yadlo.app.notification.reminderSchedulerModule
-import io.nicolaszurbuchen.yadlo.common.content.di.contentModule
-import io.nicolaszurbuchen.yadlo.common.plan.di.planModule
-import io.nicolaszurbuchen.yadlo.common.reminder.di.reminderModule
+import io.nicolaszurbuchen.yadlo.core.content.di.contentModule
+import io.nicolaszurbuchen.yadlo.core.plan.di.planModule
+import io.nicolaszurbuchen.yadlo.core.reminder.di.reminderModule
 import io.nicolaszurbuchen.yadlo.feature.happening.di.happeningModule
 import io.nicolaszurbuchen.yadlo.feature.home.di.homeModule
 import io.nicolaszurbuchen.yadlo.feature.monyadlo.di.monYadloModule

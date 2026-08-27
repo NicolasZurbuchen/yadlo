@@ -1,6 +1,6 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.contact
 
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.Contact
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.Contact
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.model.ContactRouter
 import kotlin.test.Test
 import kotlin.test.assertEquals

@@ -1,7 +1,7 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase
 
-import io.nicolaszurbuchen.yadlo.common.plan.domain.model.SavedKind
-import io.nicolaszurbuchen.yadlo.common.plan.domain.repository.PlanRepository
+import io.nicolaszurbuchen.yadlo.core.plan.domain.model.SavedKind
+import io.nicolaszurbuchen.yadlo.core.plan.domain.repository.PlanRepository
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.model.SavedCount
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

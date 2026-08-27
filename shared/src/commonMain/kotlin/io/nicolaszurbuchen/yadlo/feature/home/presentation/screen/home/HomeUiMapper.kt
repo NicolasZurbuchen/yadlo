@@ -1,9 +1,9 @@
 package io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home
 
 import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloFigureUiModel
-import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SocialLinkUiModel
-import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.socialIconFor
-import io.nicolaszurbuchen.yadlo.common.time.FESTIVAL_TIME_ZONE
+import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.SocialLinkUiModel
+import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.socialIconFor
+import io.nicolaszurbuchen.yadlo.core.time.FESTIVAL_TIME_ZONE
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.mapper.toUiModel
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.uimodel.PhaseUiModel
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.uimodel.QuickAccessEntryUiModel
