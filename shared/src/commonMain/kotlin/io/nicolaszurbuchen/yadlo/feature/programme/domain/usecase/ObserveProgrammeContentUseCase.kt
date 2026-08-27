@@ -1,10 +1,10 @@
 package io.nicolaszurbuchen.yadlo.feature.programme.domain.usecase
 
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.ContentBundle
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.ContentStatus
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.Happening
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.Slot
-import io.nicolaszurbuchen.yadlo.common.content.domain.repository.ContentRepository
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.ContentBundle
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.ContentStatus
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.Happening
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.Slot
+import io.nicolaszurbuchen.yadlo.core.content.domain.repository.ContentRepository
 import io.nicolaszurbuchen.yadlo.feature.programme.domain.model.CatalogueEntry
 import io.nicolaszurbuchen.yadlo.feature.programme.domain.model.ProgrammeContent
 import io.nicolaszurbuchen.yadlo.feature.programme.domain.model.ProgrammeSlot

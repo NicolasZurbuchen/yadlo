@@ -3,7 +3,7 @@ package io.nicolaszurbuchen.yadlo.feature.search.presentation.screen.search
 import app.cash.turbine.test
 import com.arkivanov.mvikotlin.extensions.coroutines.labels
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
-import io.nicolaszurbuchen.yadlo.common.content.domain.fake.FakeContentRepository
+import io.nicolaszurbuchen.yadlo.core.content.domain.fake.FakeContentRepository
 import io.nicolaszurbuchen.yadlo.feature.search.domain.model.SearchTopic
 import io.nicolaszurbuchen.yadlo.feature.search.domain.usecase.MatchSearchQueryUseCase
 import io.nicolaszurbuchen.yadlo.feature.search.domain.usecase.ObserveSearchIndexUseCase

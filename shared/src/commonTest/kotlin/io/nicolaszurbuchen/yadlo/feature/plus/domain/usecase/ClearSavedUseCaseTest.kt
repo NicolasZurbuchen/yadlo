@@ -1,8 +1,8 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase
 
-import io.nicolaszurbuchen.yadlo.common.plan.domain.fake.FakePlanRepository
-import io.nicolaszurbuchen.yadlo.common.plan.domain.model.SavedItem
-import io.nicolaszurbuchen.yadlo.common.plan.domain.model.SavedKind
+import io.nicolaszurbuchen.yadlo.core.plan.domain.fake.FakePlanRepository
+import io.nicolaszurbuchen.yadlo.core.plan.domain.model.SavedItem
+import io.nicolaszurbuchen.yadlo.core.plan.domain.model.SavedKind
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test

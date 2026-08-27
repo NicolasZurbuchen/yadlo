@@ -1,10 +1,10 @@
 package io.nicolaszurbuchen.yadlo.feature.search.domain.usecase
 
-import io.nicolaszurbuchen.yadlo.common.content.domain.fake.FakeContentRepository
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.ContentStatus
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.Payment
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.Provenance
-import io.nicolaszurbuchen.yadlo.common.error.AppError
+import io.nicolaszurbuchen.yadlo.core.content.domain.fake.FakeContentRepository
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.ContentStatus
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.Payment
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.Provenance
+import io.nicolaszurbuchen.yadlo.core.error.AppError
 import io.nicolaszurbuchen.yadlo.feature.search.domain.model.SearchTopic
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest

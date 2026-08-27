@@ -5,8 +5,8 @@ import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
-import io.nicolaszurbuchen.yadlo.common.plan.domain.model.SavedKind
-import io.nicolaszurbuchen.yadlo.common.plan.domain.usecase.ToggleSavedUseCase
+import io.nicolaszurbuchen.yadlo.core.plan.domain.model.SavedKind
+import io.nicolaszurbuchen.yadlo.core.plan.domain.usecase.ToggleSavedUseCase
 import io.nicolaszurbuchen.yadlo.feature.happening.domain.usecase.ObserveHappeningDetailUseCase
 import io.nicolaszurbuchen.yadlo.infra.time.AppClock
 import kotlinx.coroutines.delay

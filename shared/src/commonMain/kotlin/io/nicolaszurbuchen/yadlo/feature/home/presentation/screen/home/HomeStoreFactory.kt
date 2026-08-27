@@ -5,8 +5,8 @@ import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.Phase
-import io.nicolaszurbuchen.yadlo.common.content.domain.usecase.DerivePhaseUseCase
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.Phase
+import io.nicolaszurbuchen.yadlo.core.content.domain.usecase.DerivePhaseUseCase
 import io.nicolaszurbuchen.yadlo.feature.home.domain.model.HomeContent
 import io.nicolaszurbuchen.yadlo.feature.home.domain.usecase.DeriveSiteMomentUseCase
 import io.nicolaszurbuchen.yadlo.feature.home.domain.usecase.ObserveHomeContentUseCase

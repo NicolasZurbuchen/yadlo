@@ -1,6 +1,6 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.domain.model
 
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.Assistance
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.Assistance
 
 /**
  * *En cas de besoin* — one screen for the situation rather than three entries for three subjects.

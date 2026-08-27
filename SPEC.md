@@ -339,10 +339,11 @@ Terms are defined in CONTEXT.md and must be used in code.
 - **`Attendance` was removed from the model.** Every Slot behaves identically. Its last job
   was clash detection, and clash warnings were dropped.
 - **Five activity kinds**, not six: `musique`, `eau`, `terre`, `enfants`, `silent`.
-- **The content model lives in `common/content/`, not in a feature.** It knows about zero features
-  and is domain vocabulary all five share. Konsist had already settled this: `PackageHierarchyTest`
-  treats `common` and `feature` identically, allowing `data`/`domain`/`presentation`/`di` under a
-  named slice, and `DiLayerTest` expects `common/**/di`.
+- **The content model lives in `core/content/`, not in a feature.** It knows about zero features and
+  it models the subject matter. Konsist had already settled this: `PackageHierarchyTest` treats
+  `core` and `feature` identically, allowing `data`/`domain`/`presentation`/`di` under a named
+  slice, and `DiLayerTest` expects `core/**/di`. (The package was called `common/` until the
+  rename — see issue #74.)
 - **The bundle is atomic; the domain model is not JSON-shaped.** One file, one ETag and one fetch is
   a *content* decision and it stands. But the mapper's job is to turn that into something usable,
   not to restate it: **references are resolved as they cross the boundary.** A `Slot` carries its

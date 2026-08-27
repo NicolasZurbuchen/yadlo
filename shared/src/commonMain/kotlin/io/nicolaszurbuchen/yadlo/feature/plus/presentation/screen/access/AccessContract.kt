@@ -1,6 +1,6 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.access
 
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.Transport
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.Transport
 
 sealed interface AccessIntent {
     data class LinkClicked(

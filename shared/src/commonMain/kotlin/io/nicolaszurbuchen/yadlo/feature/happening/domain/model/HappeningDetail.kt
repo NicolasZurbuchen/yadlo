@@ -1,9 +1,9 @@
 package io.nicolaszurbuchen.yadlo.feature.happening.domain.model
 
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.DietaryCoverage
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.Link
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.MenuGroup
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.Price
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.DietaryCoverage
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.Link
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.MenuGroup
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.Price
 
 /**
  * A Happening and its Slots — the aggregate SPEC.md § Domain model promises the fiche, because

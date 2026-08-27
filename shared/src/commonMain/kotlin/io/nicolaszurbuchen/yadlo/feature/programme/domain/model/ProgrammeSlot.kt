@@ -1,6 +1,6 @@
 package io.nicolaszurbuchen.yadlo.feature.programme.domain.model
 
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.Price
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.Price
 import kotlin.time.Instant
 
 /**
@@ -8,7 +8,7 @@ import kotlin.time.Instant
  *
  * A row needs a name, a Category, a time and a price, and nothing else — not the biography, not the
  * genres, not the images, not the booking URL. Narrowing here rather than handing the presentation
- * layer a whole [io.nicolaszurbuchen.yadlo.common.content.domain.model.Slot] is what keeps the
+ * layer a whole [io.nicolaszurbuchen.yadlo.core.content.domain.model.Slot] is what keeps the
  * variant test — an Activity has a price, an Artist does not — in the layer allowed to ask it.
  *
  * [happeningId] rather than the Happening, because the only thing the row does with it is open the

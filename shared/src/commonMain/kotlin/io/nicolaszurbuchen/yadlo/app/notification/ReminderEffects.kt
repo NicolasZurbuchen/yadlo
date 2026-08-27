@@ -9,10 +9,10 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import io.nicolaszurbuchen.yadlo.common.content.domain.repository.ContentRepository
-import io.nicolaszurbuchen.yadlo.common.plan.domain.model.SavedKind
-import io.nicolaszurbuchen.yadlo.common.plan.domain.repository.PlanRepository
-import io.nicolaszurbuchen.yadlo.common.reminder.domain.repository.ReminderSettingsRepository
+import io.nicolaszurbuchen.yadlo.core.content.domain.repository.ContentRepository
+import io.nicolaszurbuchen.yadlo.core.plan.domain.model.SavedKind
+import io.nicolaszurbuchen.yadlo.core.plan.domain.repository.PlanRepository
+import io.nicolaszurbuchen.yadlo.core.reminder.domain.repository.ReminderSettingsRepository
 import io.nicolaszurbuchen.yadlo.infra.notification.NotificationPermissionSignal
 import io.nicolaszurbuchen.yadlo.infra.notification.rememberNotificationPermissionRequester
 import kotlinx.coroutines.launch

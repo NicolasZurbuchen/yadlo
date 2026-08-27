@@ -1,11 +1,11 @@
 package io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme
 
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.Category
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.FestivalDay
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.Money
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.Price
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.Provenance
-import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotLiveStateUiModel
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.Category
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.FestivalDay
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.Money
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.Price
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.Provenance
+import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.SlotLiveStateUiModel
 import io.nicolaszurbuchen.yadlo.feature.programme.domain.model.CatalogueEntry
 import io.nicolaszurbuchen.yadlo.feature.programme.domain.model.ProgrammeContent
 import io.nicolaszurbuchen.yadlo.feature.programme.domain.model.ProgrammeSlot

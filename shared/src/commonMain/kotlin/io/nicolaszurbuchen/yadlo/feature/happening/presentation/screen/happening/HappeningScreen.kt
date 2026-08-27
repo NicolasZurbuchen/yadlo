@@ -46,7 +46,7 @@ import io.nicolaszurbuchen.yadlo.app.design.theme.categoryColors
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloFactMarkUiModel
 import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloLinkMarkUiModel
-import io.nicolaszurbuchen.yadlo.common.content.presentation.component.SocialLinksRow
+import io.nicolaszurbuchen.yadlo.core.content.presentation.component.SocialLinksRow
 import io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening.component.HappeningHeader
 import io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening.component.HappeningMenuGroupBlock
 import io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening.component.HappeningPriceBlock

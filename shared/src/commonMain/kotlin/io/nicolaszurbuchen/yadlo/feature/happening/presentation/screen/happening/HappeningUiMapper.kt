@@ -1,11 +1,11 @@
 package io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening
 
 import io.nicolaszurbuchen.yadlo.app.design.uimodel.toDietaryTags
-import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotLiveStateUiModel
-import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SocialLinkUiModel
-import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.slotLiveStateAt
-import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.socialIconFor
-import io.nicolaszurbuchen.yadlo.common.time.FESTIVAL_TIME_ZONE
+import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.SlotLiveStateUiModel
+import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.SocialLinkUiModel
+import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.slotLiveStateAt
+import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.socialIconFor
+import io.nicolaszurbuchen.yadlo.core.time.FESTIVAL_TIME_ZONE
 import io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening.mapper.toUiModel
 import io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening.uimodel.HappeningKindUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText

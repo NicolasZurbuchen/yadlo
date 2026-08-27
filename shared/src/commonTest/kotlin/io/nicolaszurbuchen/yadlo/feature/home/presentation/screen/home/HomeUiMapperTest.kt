@@ -1,12 +1,12 @@
 package io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home
 
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.Announcement
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.FestivalDay
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.Figure
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.Phase
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.Provenance
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.SocialLink
-import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.socialIconFor
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.Announcement
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.FestivalDay
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.Figure
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.Phase
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.Provenance
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.SocialLink
+import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.socialIconFor
 import io.nicolaszurbuchen.yadlo.feature.home.domain.model.HomeContent
 import io.nicolaszurbuchen.yadlo.feature.home.domain.model.SiteMoment
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.uimodel.QuickAccessEntryUiModel

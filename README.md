@@ -65,8 +65,8 @@ shared/
 │   ├── design/{component,theme}/
 │   ├── di/{KoinInitializer,AppModule}.kt
 │   └── navigation/
-├── common/                           # Domain concepts genuinely shared across features
-│   └── error/                        # AppError / AppException
+├── core/                             # The subject matter: the festival, the plan, the reminders
+│   └── {content,plan,reminder,error,time}/
 ├── feature/                          # Vertical slices: data + domain + presentation each
 │   └── {home,programme,monyadlo,plus,happening,search}/
 └── infra/                            # Reusable plumbing, zero feature knowledge
@@ -86,8 +86,9 @@ Yadlo feature slices: `home` (Accueil), `programme`, `monyadlo` (Plan + Wishlist
 
 Four top-level packages, each with a distinct responsibility: `app/` composes the whole
 application and is the only place allowed to know about more than one feature at once; `infra/`
-is reusable technical plumbing with zero domain or feature knowledge; `common/` holds domain
-concepts genuinely shared across features; `feature/` holds vertical feature slices, each owning
+is reusable technical plumbing with zero domain or feature knowledge; `core/` models the subject
+matter — the festival, the visitor's plan, their reminders — and is named for what a file is
+rather than for how many callers it has; `feature/` holds vertical feature slices, each owning
 its full data/domain/presentation stack and never reaching into another feature's internals.
 
 Each feature follows Clean Architecture layering with an MVI presentation layer (MVIKotlin's

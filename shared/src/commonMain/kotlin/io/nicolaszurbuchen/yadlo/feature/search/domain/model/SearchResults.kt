@@ -1,6 +1,6 @@
 package io.nicolaszurbuchen.yadlo.feature.search.domain.model
 
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.FaqEntry
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.FaqEntry
 
 /**
  * What one query found, already split into the groups the screen draws.

@@ -17,7 +17,7 @@ import androidx.compose.runtime.Composable
  * present the sheet on. Passing either through Koin would mean holding a reference to a screen in a
  * singleton, which is how an Activity leaks.
  *
- * @see io.nicolaszurbuchen.yadlo.common.share.ShareText for what the app actually puts in it.
+ * @see io.nicolaszurbuchen.yadlo.core.share.ShareText for what the app actually puts in it.
  */
 fun interface ShareLauncher {
     fun share(text: String)

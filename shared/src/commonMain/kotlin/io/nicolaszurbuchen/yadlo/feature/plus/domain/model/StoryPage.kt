@@ -1,6 +1,6 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.domain.model
 
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.Figure
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.Figure
 
 /**
  * *L'histoire de Yadlo* — where it came from, what a day there is like, and what the last edition

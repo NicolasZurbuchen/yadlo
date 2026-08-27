@@ -11,7 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
-import io.nicolaszurbuchen.yadlo.common.content.presentation.component.SlotScaleRow
+import io.nicolaszurbuchen.yadlo.core.content.presentation.component.SlotScaleRow
 import io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme.DaySectionHeaderUiModel
 
 /**

@@ -23,9 +23,9 @@ import androidx.compose.ui.unit.dp
 import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.app.design.theme.categoryColors
 import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
-import io.nicolaszurbuchen.yadlo.common.content.presentation.component.SlotStatePill
-import io.nicolaszurbuchen.yadlo.common.content.presentation.component.SlotTimeBar
-import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotLiveStateUiModel
+import io.nicolaszurbuchen.yadlo.core.content.presentation.component.SlotStatePill
+import io.nicolaszurbuchen.yadlo.core.content.presentation.component.SlotTimeBar
+import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.SlotLiveStateUiModel
 import io.nicolaszurbuchen.yadlo.feature.monyadlo.presentation.screen.monyadlo.MonYadloRowUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.asString
 

@@ -1,6 +1,6 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.partners
 
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.PartnerTier
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.PartnerTier
 
 sealed interface PartnersIntent {
     /**

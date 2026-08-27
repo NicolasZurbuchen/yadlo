@@ -1,6 +1,6 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.payment
 
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.Payment
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.Payment
 
 sealed interface PaymentIntent {
     data class LinkClicked(

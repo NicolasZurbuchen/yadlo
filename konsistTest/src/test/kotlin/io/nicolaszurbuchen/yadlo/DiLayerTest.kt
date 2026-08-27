@@ -24,7 +24,7 @@ class DiLayerTest {
     fun `files in di package must be suffixed with Module`() {
         scope.files
             .withPackage("..di..")
-            .filter { it.hasPackage("..feature..di..") || it.hasPackage("..common..di..") }
+            .filter { it.hasPackage("..feature..di..") || it.hasPackage("..core..di..") }
             .assertTrue { it.name.endsWith("Module") }
     }
 
@@ -32,7 +32,7 @@ class DiLayerTest {
     fun `files suffixed with Module must reside in di package`() {
         scope.files
             .withNameEndingWith("Module")
-            .filter { it.hasPackage("..feature..di..") || it.hasPackage("..common..di..") }
+            .filter { it.hasPackage("..feature..di..") || it.hasPackage("..core..di..") }
             .assertTrue { it.hasPackage("..di..") }
     }
 
@@ -44,7 +44,7 @@ class DiLayerTest {
     fun `di modules must only import from their own subtree`() {
         scope.files
             .withPackage("..di..")
-            .filter { it.hasPackage("..feature..di..") || it.hasPackage("..common..di..") }
+            .filter { it.hasPackage("..feature..di..") || it.hasPackage("..core..di..") }
             .assertTrue { file ->
                 if (file.hasPackage("..infra.di.app..")) return@assertTrue true
 
@@ -63,8 +63,8 @@ class DiLayerTest {
 
     /**
      * The owning subtree of a project package:
-     *   <prefix>.feature.vault.di -> "feature.vault"
-     *   <prefix>.common.crypto.di -> "common.crypto"
+     *   <prefix>.feature.programme.di -> "feature.programme"
+     *   <prefix>.core.content.di    -> "core.content"
      *   <prefix>.infra.ui         -> "infra"
      * Returns null for external (non-project) packages.
      */
@@ -76,7 +76,7 @@ class DiLayerTest {
                 .trimStart('.')
                 .split('.')
         return when (segments.firstOrNull()) {
-            "feature", "common" -> segments.take(2).joinToString(".")
+            "feature", "core" -> segments.take(2).joinToString(".")
             "infra" -> "infra"
             else -> null
         }

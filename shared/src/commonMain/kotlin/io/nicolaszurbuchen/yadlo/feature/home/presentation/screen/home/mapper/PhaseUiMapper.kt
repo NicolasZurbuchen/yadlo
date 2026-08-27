@@ -1,6 +1,6 @@
 package io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.mapper
 
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.Phase
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.Phase
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.uimodel.PhaseUiModel
 
 /**

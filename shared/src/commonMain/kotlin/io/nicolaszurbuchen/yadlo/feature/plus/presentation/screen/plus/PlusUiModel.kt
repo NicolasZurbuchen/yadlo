@@ -21,7 +21,7 @@ import androidx.compose.material.icons.outlined.Storefront
 import androidx.compose.material.icons.outlined.VolunteerActivism
 import androidx.compose.ui.graphics.vector.ImageVector
 import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloLinkMarkUiModel
-import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SocialLinkUiModel
+import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.SocialLinkUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import org.jetbrains.compose.resources.StringResource
 import yadlo.shared.generated.resources.Res

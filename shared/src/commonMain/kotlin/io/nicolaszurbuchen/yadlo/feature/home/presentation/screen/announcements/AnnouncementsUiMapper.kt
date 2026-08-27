@@ -1,6 +1,6 @@
 package io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.announcements
 
-import io.nicolaszurbuchen.yadlo.common.time.FESTIVAL_TIME_ZONE
+import io.nicolaszurbuchen.yadlo.core.time.FESTIVAL_TIME_ZONE
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.uimodel.AnnouncementUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.formatAsShortDate
 

@@ -1,6 +1,6 @@
 package io.nicolaszurbuchen.yadlo.feature.search.domain.model
 
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.Happening
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.Happening
 
 /**
  * A Happening the query reached, and the text that reached it.

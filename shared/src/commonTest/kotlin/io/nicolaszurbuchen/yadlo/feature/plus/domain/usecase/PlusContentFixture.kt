@@ -1,20 +1,20 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase
 
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.Category
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.ContentBundle
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.ContentStatus
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.Edition
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.Festival
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.FestivalDay
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.Figure
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.Happening
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.Image
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.MenuGroup
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.Partner
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.PartnerTier
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.Provenance
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.Slot
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.Venue
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.Category
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.ContentBundle
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.ContentStatus
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.Edition
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.Festival
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.FestivalDay
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.Figure
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.Happening
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.Image
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.MenuGroup
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.Partner
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.PartnerTier
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.Provenance
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.Slot
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.Venue
 import kotlin.time.Instant
 
 /**

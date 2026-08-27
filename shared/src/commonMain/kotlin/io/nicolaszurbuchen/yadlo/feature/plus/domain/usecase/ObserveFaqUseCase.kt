@@ -1,8 +1,8 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase
 
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.ContentStatus
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.FaqEntry
-import io.nicolaszurbuchen.yadlo.common.content.domain.repository.ContentRepository
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.ContentStatus
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.FaqEntry
+import io.nicolaszurbuchen.yadlo.core.content.domain.repository.ContentRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.map

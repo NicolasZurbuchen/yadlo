@@ -4,8 +4,8 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import io.nicolaszurbuchen.yadlo.app.notification.ReminderScheduler
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.ContentStatus
-import io.nicolaszurbuchen.yadlo.common.content.domain.repository.ContentRepository
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.ContentStatus
+import io.nicolaszurbuchen.yadlo.core.content.domain.repository.ContentRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob

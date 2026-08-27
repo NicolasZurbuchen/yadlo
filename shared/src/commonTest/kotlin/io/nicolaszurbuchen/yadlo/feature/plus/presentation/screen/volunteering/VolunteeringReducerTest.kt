@@ -1,6 +1,6 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.volunteering
 
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.Contact
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.Contact
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.model.VolunteeringOffer
 import kotlin.test.Test
 import kotlin.test.assertEquals

@@ -1,12 +1,12 @@
 package io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening
 
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.Link
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.MenuGroup
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.Money
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.Price
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.Provenance
-import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.SlotLiveStateUiModel
-import io.nicolaszurbuchen.yadlo.common.content.presentation.uimodel.socialIconFor
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.Link
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.MenuGroup
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.Money
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.Price
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.Provenance
+import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.SlotLiveStateUiModel
+import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.socialIconFor
 import io.nicolaszurbuchen.yadlo.feature.happening.domain.model.HappeningDetail
 import io.nicolaszurbuchen.yadlo.feature.happening.domain.model.HappeningKind
 import io.nicolaszurbuchen.yadlo.feature.happening.domain.model.HappeningSlot

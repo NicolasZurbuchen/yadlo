@@ -1,6 +1,6 @@
 package io.nicolaszurbuchen.yadlo.feature.monyadlo.domain.model
 
-import io.nicolaszurbuchen.yadlo.common.content.domain.model.Price
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.Price
 import kotlin.time.Instant
 
 /**
