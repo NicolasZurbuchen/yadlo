@@ -2,7 +2,7 @@ package io.nicolaszurbuchen.yadlo.feature.monyadlo.presentation.screen.monyadlo.
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import io.nicolaszurbuchen.yadlo.app.design.component.YadloHero
+import io.nicolaszurbuchen.yadlo.design.component.YadloHero
 import org.jetbrains.compose.resources.stringResource
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.mon_yadlo_wishlist_empty

@@ -8,7 +8,7 @@ import androidx.compose.material.icons.outlined.MailOutline
 import androidx.compose.material.icons.outlined.Sailing
 import androidx.compose.material.icons.outlined.VolunteerActivism
 import androidx.compose.ui.graphics.vector.ImageVector
-import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloLinkMarkUiModel
+import io.nicolaszurbuchen.yadlo.design.uimodel.YadloLinkMarkUiModel
 import org.jetbrains.compose.resources.StringResource
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.plus_entry_access

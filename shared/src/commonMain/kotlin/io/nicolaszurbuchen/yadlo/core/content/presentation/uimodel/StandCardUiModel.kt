@@ -1,6 +1,6 @@
 package io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel
 
-import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloDietaryTagUiModel
+import io.nicolaszurbuchen.yadlo.design.uimodel.YadloDietaryTagUiModel
 
 /**
  * One Stand as it is drawn wherever a Stand is listed — *Nourriture & boissons*, *Créateurs*, and

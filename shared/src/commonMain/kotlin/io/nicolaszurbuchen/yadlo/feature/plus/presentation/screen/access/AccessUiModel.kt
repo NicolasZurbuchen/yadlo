@@ -1,6 +1,6 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.access
 
-import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloFactMarkUiModel
+import io.nicolaszurbuchen.yadlo.design.uimodel.YadloFactMarkUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 
 /**

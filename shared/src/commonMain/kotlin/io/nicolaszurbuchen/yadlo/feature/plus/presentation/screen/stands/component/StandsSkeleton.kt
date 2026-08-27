@@ -11,8 +11,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import io.nicolaszurbuchen.yadlo.app.design.theme.shimmerBlock
-import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
+import io.nicolaszurbuchen.yadlo.design.theme.shimmerBlock
+import io.nicolaszurbuchen.yadlo.design.theme.spacing
 
 /**
  * What *Nourriture & boissons* looks like before the bundle lands: a two-column grid of cards.

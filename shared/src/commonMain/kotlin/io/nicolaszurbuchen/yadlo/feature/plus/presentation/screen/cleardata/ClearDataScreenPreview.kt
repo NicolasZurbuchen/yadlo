@@ -3,7 +3,7 @@ package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.cleardata
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
-import io.nicolaszurbuchen.yadlo.app.design.preview.YadloPreview
+import io.nicolaszurbuchen.yadlo.design.preview.YadloPreview
 import io.nicolaszurbuchen.yadlo.infra.preview.PreviewThemes
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import yadlo.shared.generated.resources.Res

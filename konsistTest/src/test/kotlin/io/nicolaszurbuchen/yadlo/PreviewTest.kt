@@ -184,7 +184,7 @@ class PreviewTest {
      * `YadloPreview` is the opposite: it imports `YadloTheme` and `appColors`, so it *is* the design
      * system and could not live in `infra/` without inverting the layering.
      *
-     * It is deliberately **not** in `app/design/component/`. Two reasons, and the first is
+     * It is deliberately **not** in `design/component/`. Two reasons, and the first is
      * mechanical: `PresentationLayerTest` forbids a screen file suffix in a component package, and
      * `YadloPreview.kt` ends in one. The second is why that rule is right here — a component is
      * something a screen draws, and this is never drawn in a shipped screen. Filing it beside
@@ -198,7 +198,7 @@ class PreviewTest {
 
         scope.files
             .filter { it.name == "YadloPreview" }
-            .assertTrue { it.hasPackage("..app.design.preview") }
+            .assertTrue { it.hasPackage("..design.preview") }
     }
     // endregion
 }

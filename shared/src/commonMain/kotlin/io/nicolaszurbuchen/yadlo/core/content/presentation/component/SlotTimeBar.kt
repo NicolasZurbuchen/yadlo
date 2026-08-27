@@ -17,9 +17,9 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.SlotLiveStateUiModel
 import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.SlotSegmentUiModel
+import io.nicolaszurbuchen.yadlo.design.theme.appColors
 
 /**
  * Where the row's Slots sit on the day, drawn on every row — before, during and after.

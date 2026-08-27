@@ -95,7 +95,7 @@ class PackageHierarchyTest {
 
     @Test
     fun `Top level packages must be in allowed list`() {
-        val allowed = listOf("app", "core", "feature", "infra")
+        val allowed = listOf("app", "core", "design", "feature", "infra")
 
         val allPackages = Konsist.scopeFromDirectory("shared/src/commonMain/kotlin").packages
         val allPackageNames = allPackages.map { it.name }

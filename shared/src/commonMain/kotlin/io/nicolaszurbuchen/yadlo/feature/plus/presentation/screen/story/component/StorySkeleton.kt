@@ -12,8 +12,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import io.nicolaszurbuchen.yadlo.app.design.theme.shimmerBlock
-import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
+import io.nicolaszurbuchen.yadlo.design.theme.shimmerBlock
+import io.nicolaszurbuchen.yadlo.design.theme.spacing
 
 /**
  * *L'histoire* while it is still arriving: two paragraphs, a titled passage, and the figure grid.

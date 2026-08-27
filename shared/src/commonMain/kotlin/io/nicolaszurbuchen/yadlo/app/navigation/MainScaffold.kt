@@ -33,8 +33,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.rememberNavBackStack
-import io.nicolaszurbuchen.yadlo.app.design.component.YadloTopAppBar
-import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.app.notification.ReminderEffects
 import io.nicolaszurbuchen.yadlo.core.content.domain.model.ContentStatus
 import io.nicolaszurbuchen.yadlo.core.content.domain.model.FestivalDay
@@ -42,6 +40,8 @@ import io.nicolaszurbuchen.yadlo.core.content.domain.model.Phase
 import io.nicolaszurbuchen.yadlo.core.content.domain.repository.ContentRepository
 import io.nicolaszurbuchen.yadlo.core.content.domain.usecase.DerivePhaseUseCase
 import io.nicolaszurbuchen.yadlo.core.time.FESTIVAL_TIME_ZONE
+import io.nicolaszurbuchen.yadlo.design.component.YadloTopAppBar
+import io.nicolaszurbuchen.yadlo.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.feature.happening.presentation.navigation.HappeningDestination
 import io.nicolaszurbuchen.yadlo.feature.search.presentation.navigation.SearchDestination
 import io.nicolaszurbuchen.yadlo.infra.navigation.AppNavigator
@@ -363,7 +363,7 @@ internal fun formatEditionDates(days: List<FestivalDay>): String? {
  * **The accent stays, and it had to change step to survive the move.** The selected tab keeps its
  * rose pill; what it cannot keep is `accentSubtle`, which is chosen against a page ground and
  * measures 1.34:1 on the dark bandeau blue — an indicator that is simply not there. See
- * [io.nicolaszurbuchen.yadlo.app.design.theme.AppColors.accentChrome], which is the same accent at
+ * [io.nicolaszurbuchen.yadlo.design.theme.AppColors.accentChrome], which is the same accent at
  * the step each theme's bar can actually carry.
  *
  * Everything not in the pill takes the bar's own ink, selected and unselected alike, exactly as the

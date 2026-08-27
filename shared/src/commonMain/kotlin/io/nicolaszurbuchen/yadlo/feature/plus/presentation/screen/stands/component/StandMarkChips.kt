@@ -12,10 +12,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import io.nicolaszurbuchen.yadlo.app.design.component.YadloFilterChip
-import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
-import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
-import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloDietaryMarkUiModel
+import io.nicolaszurbuchen.yadlo.design.component.YadloFilterChip
+import io.nicolaszurbuchen.yadlo.design.theme.appColors
+import io.nicolaszurbuchen.yadlo.design.theme.spacing
+import io.nicolaszurbuchen.yadlo.design.uimodel.YadloDietaryMarkUiModel
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands.StandChipUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.asString
 

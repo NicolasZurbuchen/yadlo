@@ -7,8 +7,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.SlotScaleUiModel
+import io.nicolaszurbuchen.yadlo.design.theme.appColors
 
 /**
  * The span, written once above a list of bars — the axis every segment under it is drawn against.

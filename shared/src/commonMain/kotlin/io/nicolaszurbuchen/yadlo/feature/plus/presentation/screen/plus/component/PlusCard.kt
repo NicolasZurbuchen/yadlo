@@ -2,8 +2,8 @@ package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.plus.componen
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import io.nicolaszurbuchen.yadlo.app.design.component.YadloEntryCard
-import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloEntryUiModel
+import io.nicolaszurbuchen.yadlo.design.component.YadloEntryCard
+import io.nicolaszurbuchen.yadlo.design.uimodel.YadloEntryUiModel
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.plus.PlusEntryUiModel
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.plus.PlusGroupUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText

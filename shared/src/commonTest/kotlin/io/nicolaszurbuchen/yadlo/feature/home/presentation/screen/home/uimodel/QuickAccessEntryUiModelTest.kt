@@ -1,6 +1,6 @@
 package io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.uimodel
 
-import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloLinkMarkUiModel
+import io.nicolaszurbuchen.yadlo.design.uimodel.YadloLinkMarkUiModel
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue

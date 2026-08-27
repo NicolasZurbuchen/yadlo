@@ -2,7 +2,7 @@ package io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.componen
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import io.nicolaszurbuchen.yadlo.app.design.component.YadloFigureGrid
+import io.nicolaszurbuchen.yadlo.design.component.YadloFigureGrid
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.HomeBlockUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.asString
 

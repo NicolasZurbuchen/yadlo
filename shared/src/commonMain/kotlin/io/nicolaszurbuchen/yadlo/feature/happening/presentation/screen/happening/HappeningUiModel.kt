@@ -1,8 +1,8 @@
 package io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening
 
-import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloDietaryTagUiModel
 import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.SlotLiveStateUiModel
 import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.SocialLinkUiModel
+import io.nicolaszurbuchen.yadlo.design.uimodel.YadloDietaryTagUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 
 /**
@@ -136,7 +136,7 @@ data class HappeningMenuGroupUiModel(
  *
  * [dietary] is drawn as glyphs alone here. The words are written once at the top of the fiche, over
  * the whole stand, which is what makes the glyph on a dish readable rather than a symbol to guess
- * at — see [io.nicolaszurbuchen.yadlo.app.design.component.YadloDietaryMarks].
+ * at — see [io.nicolaszurbuchen.yadlo.design.component.YadloDietaryMarks].
  */
 data class HappeningMenuItemUiModel(
     val name: String,
