@@ -9,7 +9,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import io.nicolaszurbuchen.yadlo.app.navigation.tabContentPadding
-import io.nicolaszurbuchen.yadlo.core.content.presentation.component.SocialLinksRow
+import io.nicolaszurbuchen.yadlo.design.component.SocialLinksRow
 import io.nicolaszurbuchen.yadlo.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.plus.component.PlusCard
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.plus.component.PlusSkeleton
