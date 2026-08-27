@@ -54,7 +54,7 @@ core/                            # each child is a slice with the same layer sha
 ├── plan/                        # what the visitor saved — data · domain · di
 ├── reminder/                    # the reminder switch and what it schedules — data · domain · di
 ├── error/                       # AppError / AppException, single throw-catch mechanism
-└── time/                        # FESTIVAL_TIME_ZONE and the Edition window
+└── time/                        # FESTIVAL_TIME_ZONE — the one fact every layer reads
 
 infra/
 ├── database/                    # SQLDelight driver setup (expect/actual)

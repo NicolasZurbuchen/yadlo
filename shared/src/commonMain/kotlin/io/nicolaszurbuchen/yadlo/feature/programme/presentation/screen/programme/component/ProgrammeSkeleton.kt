@@ -18,7 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import io.nicolaszurbuchen.yadlo.app.navigation.LocalTabChromeInsets
+import io.nicolaszurbuchen.yadlo.design.theme.LocalTabChromeInsets
 import io.nicolaszurbuchen.yadlo.design.theme.ShimmerPulse
 import io.nicolaszurbuchen.yadlo.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.design.theme.shimmerBlock
