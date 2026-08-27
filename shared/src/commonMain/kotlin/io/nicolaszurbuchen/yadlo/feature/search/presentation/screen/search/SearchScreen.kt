@@ -19,7 +19,7 @@ import io.nicolaszurbuchen.yadlo.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.feature.search.presentation.screen.search.component.SearchResultGroup
 import io.nicolaszurbuchen.yadlo.feature.search.presentation.screen.search.component.SearchTopBar
 import io.nicolaszurbuchen.yadlo.feature.search.presentation.screen.search.uimodel.SearchTopicUiModel
-import io.nicolaszurbuchen.yadlo.infra.ui.asString
+import io.nicolaszurbuchen.yadlo.infra.text.asString
 
 /**
  * The field, and whatever it found.

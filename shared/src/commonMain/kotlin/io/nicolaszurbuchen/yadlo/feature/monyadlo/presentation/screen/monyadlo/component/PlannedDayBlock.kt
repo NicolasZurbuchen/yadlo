@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import io.nicolaszurbuchen.yadlo.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.feature.monyadlo.presentation.screen.monyadlo.MonYadloDayUiModel
-import io.nicolaszurbuchen.yadlo.infra.ui.asString
+import io.nicolaszurbuchen.yadlo.infra.text.asString
 
 /**
  * One day of the Plan: the date on a rail down the left, its Slots scrolling past to the right.

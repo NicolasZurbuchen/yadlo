@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import io.nicolaszurbuchen.yadlo.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening.HappeningPriceUiModel
-import io.nicolaszurbuchen.yadlo.infra.ui.asString
+import io.nicolaszurbuchen.yadlo.infra.text.asString
 
 /**
  * What it costs. The amount first, whatever it applies to underneath it.

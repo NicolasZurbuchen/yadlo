@@ -12,7 +12,7 @@ import io.nicolaszurbuchen.yadlo.design.component.YadloFilterChip
 import io.nicolaszurbuchen.yadlo.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme.ScopeChipUiModel
-import io.nicolaszurbuchen.yadlo.infra.ui.asString
+import io.nicolaszurbuchen.yadlo.infra.text.asString
 
 /**
  * *Découvrir · Tous · Vendredi · Samedi · Dimanche* — the one row that says what the tab is showing.

@@ -178,7 +178,7 @@ class PreviewTest {
      * `PreviewThemes` and `PreviewUiMode` know nothing about Yadlo. The annotation sets a system
      * ui-mode flag and the object names two Android constants commonMain cannot import; both would
      * work unchanged in any Compose app, which is the definition of plumbing in CLAUDE.md. They sit
-     * beside `infra/ui/UiText` and `infra/platform/BackHandler`, which are Compose code in `infra/`
+     * beside `infra/text/UiText` and `infra/platform/BackHandler`, which are Compose code in `infra/`
      * for exactly the same reason.
      *
      * `YadloPreview` is the opposite: it imports `YadloTheme` and `appColors`, so it *is* the design

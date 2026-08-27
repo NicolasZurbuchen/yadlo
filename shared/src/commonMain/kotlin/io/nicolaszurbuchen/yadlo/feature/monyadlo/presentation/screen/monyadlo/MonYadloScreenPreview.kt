@@ -8,7 +8,7 @@ import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.SlotScaleUiMo
 import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.SlotSegmentUiModel
 import io.nicolaszurbuchen.yadlo.design.preview.YadloPreview
 import io.nicolaszurbuchen.yadlo.infra.preview.PreviewThemes
-import io.nicolaszurbuchen.yadlo.infra.ui.UiText
+import io.nicolaszurbuchen.yadlo.infra.text.UiText
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.mon_yadlo_empty
 import yadlo.shared.generated.resources.month_july

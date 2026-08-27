@@ -1,7 +1,7 @@
 package io.nicolaszurbuchen.yadlo.design.uimodel
 
 import androidx.compose.ui.graphics.vector.ImageVector
-import io.nicolaszurbuchen.yadlo.infra.ui.UiText
+import io.nicolaszurbuchen.yadlo.infra.text.UiText
 
 /**
  * One row of a grouped list — an icon, a name, sometimes a line of what is behind it, and the mark

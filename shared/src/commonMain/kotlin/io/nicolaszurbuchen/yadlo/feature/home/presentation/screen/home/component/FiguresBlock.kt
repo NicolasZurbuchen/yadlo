@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import io.nicolaszurbuchen.yadlo.design.component.YadloFigureGrid
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.HomeBlockUiModel
-import io.nicolaszurbuchen.yadlo.infra.ui.asString
+import io.nicolaszurbuchen.yadlo.infra.text.asString
 
 /**
  * The closing figures of the edition just finished, the ENDED half of story 62.

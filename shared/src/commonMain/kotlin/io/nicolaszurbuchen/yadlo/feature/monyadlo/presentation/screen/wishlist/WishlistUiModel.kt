@@ -1,7 +1,7 @@
 package io.nicolaszurbuchen.yadlo.feature.monyadlo.presentation.screen.wishlist
 
 import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.StandCardUiModel
-import io.nicolaszurbuchen.yadlo.infra.ui.UiText
+import io.nicolaszurbuchen.yadlo.infra.text.UiText
 
 /**
  * *À essayer* — the saved Stands, grouped by Category.

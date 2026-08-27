@@ -10,7 +10,7 @@ import io.nicolaszurbuchen.yadlo.design.uimodel.socialIconFor
 import io.nicolaszurbuchen.yadlo.feature.happening.domain.model.HappeningDetail
 import io.nicolaszurbuchen.yadlo.feature.happening.domain.model.HappeningKind
 import io.nicolaszurbuchen.yadlo.feature.happening.domain.model.HappeningSlot
-import io.nicolaszurbuchen.yadlo.infra.ui.UiText
+import io.nicolaszurbuchen.yadlo.infra.text.UiText
 import org.jetbrains.compose.resources.StringResource
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.dietary_mark_gluten_free

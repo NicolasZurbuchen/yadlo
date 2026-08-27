@@ -20,7 +20,7 @@ import io.nicolaszurbuchen.yadlo.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusBodyText
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusDetailScaffold
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.partners.component.PartnerTierBlock
-import io.nicolaszurbuchen.yadlo.infra.ui.asString
+import io.nicolaszurbuchen.yadlo.infra.text.asString
 import org.jetbrains.compose.resources.stringResource
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.partners_intro

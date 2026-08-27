@@ -13,7 +13,7 @@ import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusBodyTex
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusDetailScaffold
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusSection
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.access.component.NightDeparturesBlock
-import io.nicolaszurbuchen.yadlo.infra.ui.asString
+import io.nicolaszurbuchen.yadlo.infra.text.asString
 import org.jetbrains.compose.resources.stringResource
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.access_title

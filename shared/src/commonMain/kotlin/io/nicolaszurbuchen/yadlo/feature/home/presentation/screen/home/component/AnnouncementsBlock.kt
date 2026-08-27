@@ -11,7 +11,7 @@ import io.nicolaszurbuchen.yadlo.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.component.AnnouncementCard
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.HomeBlockUiModel
-import io.nicolaszurbuchen.yadlo.infra.ui.UiText
+import io.nicolaszurbuchen.yadlo.infra.text.UiText
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.home_announcements_all
 

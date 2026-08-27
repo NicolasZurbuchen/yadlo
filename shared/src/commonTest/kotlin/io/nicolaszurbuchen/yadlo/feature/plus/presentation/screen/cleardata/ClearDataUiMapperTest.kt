@@ -1,7 +1,7 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.cleardata
 
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.model.SavedCount
-import io.nicolaszurbuchen.yadlo.infra.ui.UiText
+import io.nicolaszurbuchen.yadlo.infra.text.UiText
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.clear_data_images_empty
 import yadlo.shared.generated.resources.clear_data_images_kilobytes

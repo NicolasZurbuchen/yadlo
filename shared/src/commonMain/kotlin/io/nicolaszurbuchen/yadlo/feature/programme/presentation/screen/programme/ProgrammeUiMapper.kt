@@ -6,9 +6,9 @@ import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.SlotSegmentUi
 import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.loudestState
 import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.slotLiveStateAt
 import io.nicolaszurbuchen.yadlo.core.time.FESTIVAL_TIME_ZONE
-import io.nicolaszurbuchen.yadlo.infra.ui.UiText
-import io.nicolaszurbuchen.yadlo.infra.ui.formatAsTimeOfDay
-import io.nicolaszurbuchen.yadlo.infra.ui.formatMoney
+import io.nicolaszurbuchen.yadlo.infra.format.formatAsTimeOfDay
+import io.nicolaszurbuchen.yadlo.infra.format.formatMoney
+import io.nicolaszurbuchen.yadlo.infra.text.UiText
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.price_free
 import yadlo.shared.generated.resources.price_from

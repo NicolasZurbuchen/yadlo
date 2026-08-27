@@ -9,9 +9,9 @@ import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.uimodel.P
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.uimodel.QuickAccessEntryUiModel
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.uimodel.SiteMomentUiModel
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.uimodel.AnnouncementUiModel
-import io.nicolaszurbuchen.yadlo.infra.ui.UiText
-import io.nicolaszurbuchen.yadlo.infra.ui.formatAsShortDate
-import io.nicolaszurbuchen.yadlo.infra.ui.formatAsTimeOfDay
+import io.nicolaszurbuchen.yadlo.infra.format.formatAsShortDate
+import io.nicolaszurbuchen.yadlo.infra.format.formatAsTimeOfDay
+import io.nicolaszurbuchen.yadlo.infra.text.UiText
 import kotlinx.datetime.daysUntil
 import kotlinx.datetime.toLocalDateTime
 import yadlo.shared.generated.resources.Res

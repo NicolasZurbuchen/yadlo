@@ -28,7 +28,7 @@ import io.nicolaszurbuchen.yadlo.design.uimodel.YadloLinkMarkUiModel
 import io.nicolaszurbuchen.yadlo.feature.search.presentation.screen.search.SearchGroupUiModel
 import io.nicolaszurbuchen.yadlo.feature.search.presentation.screen.search.SearchRowUiModel
 import io.nicolaszurbuchen.yadlo.feature.search.presentation.screen.search.uimodel.SearchTopicUiModel
-import io.nicolaszurbuchen.yadlo.infra.ui.asString
+import io.nicolaszurbuchen.yadlo.infra.text.asString
 import org.jetbrains.compose.resources.stringResource
 
 /**

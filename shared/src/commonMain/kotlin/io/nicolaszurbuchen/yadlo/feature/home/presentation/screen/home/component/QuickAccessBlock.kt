@@ -7,8 +7,8 @@ import io.nicolaszurbuchen.yadlo.design.uimodel.YadloEntryUiModel
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.HomeBlockUiModel
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.QuickAccessItemUiModel
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.uimodel.QuickAccessEntryUiModel
-import io.nicolaszurbuchen.yadlo.infra.ui.UiText
-import io.nicolaszurbuchen.yadlo.infra.ui.asString
+import io.nicolaszurbuchen.yadlo.infra.text.UiText
+import io.nicolaszurbuchen.yadlo.infra.text.asString
 
 /**
  * The Phase's shortlist, drawn as a titled card of full-width rows.

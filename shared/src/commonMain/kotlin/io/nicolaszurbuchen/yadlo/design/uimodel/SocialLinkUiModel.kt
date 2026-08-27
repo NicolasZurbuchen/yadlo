@@ -1,6 +1,6 @@
 package io.nicolaszurbuchen.yadlo.design.uimodel
 
-import io.nicolaszurbuchen.yadlo.infra.ui.UiText
+import io.nicolaszurbuchen.yadlo.infra.text.UiText
 import org.jetbrains.compose.resources.DrawableResource
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.ic_apple_music

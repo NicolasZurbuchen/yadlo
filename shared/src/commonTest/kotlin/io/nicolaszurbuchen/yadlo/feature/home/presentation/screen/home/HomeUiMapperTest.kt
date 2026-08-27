@@ -10,7 +10,7 @@ import io.nicolaszurbuchen.yadlo.design.uimodel.socialIconFor
 import io.nicolaszurbuchen.yadlo.feature.home.domain.model.HomeContent
 import io.nicolaszurbuchen.yadlo.feature.home.domain.model.SiteMoment
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.uimodel.QuickAccessEntryUiModel
-import io.nicolaszurbuchen.yadlo.infra.ui.UiText
+import io.nicolaszurbuchen.yadlo.infra.text.UiText
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.home_countdown_days_remaining
 import yadlo.shared.generated.resources.home_hero_announced_kicker

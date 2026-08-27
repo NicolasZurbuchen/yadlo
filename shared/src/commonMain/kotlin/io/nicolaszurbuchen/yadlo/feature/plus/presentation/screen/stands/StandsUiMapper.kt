@@ -4,7 +4,7 @@ import io.nicolaszurbuchen.yadlo.core.content.presentation.mapper.toDietaryTags
 import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.StandCardUiModel
 import io.nicolaszurbuchen.yadlo.design.uimodel.YadloDietaryMarkUiModel
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands.mapper.toUiModel
-import io.nicolaszurbuchen.yadlo.infra.ui.UiText
+import io.nicolaszurbuchen.yadlo.infra.text.UiText
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.stands_empty
 import yadlo.shared.generated.resources.stands_filter_all

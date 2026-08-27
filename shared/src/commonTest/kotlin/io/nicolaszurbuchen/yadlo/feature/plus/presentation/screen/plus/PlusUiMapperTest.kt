@@ -4,7 +4,7 @@ import io.nicolaszurbuchen.yadlo.core.content.domain.model.SocialLink
 import io.nicolaszurbuchen.yadlo.design.uimodel.YadloLinkMarkUiModel
 import io.nicolaszurbuchen.yadlo.design.uimodel.socialIconFor
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.model.PlusOverview
-import io.nicolaszurbuchen.yadlo.infra.ui.UiText
+import io.nicolaszurbuchen.yadlo.infra.text.UiText
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.plus_assistance_subtitle
 import yadlo.shared.generated.resources.plus_payment_no_cash

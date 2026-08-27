@@ -1,7 +1,7 @@
 package io.nicolaszurbuchen.yadlo.feature.search.presentation.screen.search
 
 import io.nicolaszurbuchen.yadlo.feature.search.presentation.screen.search.uimodel.SearchTopicUiModel
-import io.nicolaszurbuchen.yadlo.infra.ui.UiText
+import io.nicolaszurbuchen.yadlo.infra.text.UiText
 
 /**
  * One query and what it found, already grouped.

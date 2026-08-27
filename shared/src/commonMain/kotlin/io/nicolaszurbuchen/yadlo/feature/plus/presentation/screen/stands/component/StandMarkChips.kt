@@ -17,7 +17,7 @@ import io.nicolaszurbuchen.yadlo.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.design.uimodel.YadloDietaryMarkUiModel
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands.StandChipUiModel
-import io.nicolaszurbuchen.yadlo.infra.ui.asString
+import io.nicolaszurbuchen.yadlo.infra.text.asString
 
 /**
  * The dietary filter — *Tout*, then every mark that any dish on any stand actually carries.

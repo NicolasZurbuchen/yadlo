@@ -9,7 +9,7 @@ import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.SlotLiveState
 import io.nicolaszurbuchen.yadlo.feature.programme.domain.model.CatalogueEntry
 import io.nicolaszurbuchen.yadlo.feature.programme.domain.model.ProgrammeContent
 import io.nicolaszurbuchen.yadlo.feature.programme.domain.model.ProgrammeSlot
-import io.nicolaszurbuchen.yadlo.infra.ui.UiText
+import io.nicolaszurbuchen.yadlo.infra.text.UiText
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.price_free
 import yadlo.shared.generated.resources.price_from

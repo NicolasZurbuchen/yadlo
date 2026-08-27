@@ -2,7 +2,7 @@ package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.responsible
 
 import io.nicolaszurbuchen.yadlo.core.content.domain.model.InfoLink
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.model.ResponsiblePage
-import io.nicolaszurbuchen.yadlo.infra.ui.UiText
+import io.nicolaszurbuchen.yadlo.infra.text.UiText
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.responsible_empty
 import kotlin.test.Test

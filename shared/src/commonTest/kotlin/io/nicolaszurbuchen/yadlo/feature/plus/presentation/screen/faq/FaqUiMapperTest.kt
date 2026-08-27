@@ -2,7 +2,7 @@ package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.faq
 
 import io.nicolaszurbuchen.yadlo.core.content.domain.model.FaqEntry
 import io.nicolaszurbuchen.yadlo.core.content.domain.model.Provenance
-import io.nicolaszurbuchen.yadlo.infra.ui.UiText
+import io.nicolaszurbuchen.yadlo.infra.text.UiText
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.faq_empty
 import kotlin.test.Test

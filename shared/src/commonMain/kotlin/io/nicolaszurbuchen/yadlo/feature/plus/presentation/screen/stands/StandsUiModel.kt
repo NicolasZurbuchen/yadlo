@@ -1,7 +1,7 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands
 
 import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.StandCardUiModel
-import io.nicolaszurbuchen.yadlo.infra.ui.UiText
+import io.nicolaszurbuchen.yadlo.infra.text.UiText
 import org.jetbrains.compose.resources.StringResource
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.plus_entry_stands_food
