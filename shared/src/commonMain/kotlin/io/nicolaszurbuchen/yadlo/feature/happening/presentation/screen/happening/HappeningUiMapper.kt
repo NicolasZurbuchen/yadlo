@@ -1,5 +1,6 @@
 package io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening
 
+import io.nicolaszurbuchen.yadlo.core.content.presentation.mapper.toDietaryTags
 import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.SlotLiveStateUiModel
 import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.slotLiveStateAt
 import io.nicolaszurbuchen.yadlo.core.time.FESTIVAL_TIME_ZONE

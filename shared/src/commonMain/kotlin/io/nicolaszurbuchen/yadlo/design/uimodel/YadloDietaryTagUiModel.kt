@@ -1,6 +1,5 @@
 package io.nicolaszurbuchen.yadlo.design.uimodel
 
-import io.nicolaszurbuchen.yadlo.core.content.domain.model.DietaryCoverage
 import org.jetbrains.compose.resources.StringResource
 
 /**
@@ -32,31 +31,15 @@ fun List<String>.toDietaryTags(): List<YadloDietaryTagUiModel> {
 }
 
 /**
- * What a whole Stand can feed you, and how much of it.
- *
- * *Végétarien* is dropped the same way, but only when *Végan* covers exactly as much of the menu.
- * A truck with one vegan dish and an otherwise meat-free carte is *options véganes* **and**
- * *100 % végétarien*, and those are two different answers to two different people.
- */
-fun Map<String, DietaryCoverage>.toDietaryTags(): List<YadloDietaryTagUiModel> =
-    keys
-        .toList()
-        .marksInOrder()
-        .filterNot { mark ->
-            mark == YadloDietaryMarkUiModel.VEGETARIAN && this[YadloDietaryMarkUiModel.VEGAN.id] == this[mark.id]
-        }.map { mark ->
-            YadloDietaryTagUiModel(
-                mark = mark,
-                label = if (getValue(mark.id) == DietaryCoverage.ALL) mark.allLabel else mark.someLabel,
-            )
-        }
-
-/**
  * Resolved and ordered by the enum rather than by the content, so the same two marks are never in
  * one order on a stand row and the other order on the dish it opens. An id this build has no answer
  * for simply drops — see [YadloDietaryMarkUiModel.forId].
+ *
+ * `internal` rather than private because the Stand-level twin of [toDietaryTags] orders its marks
+ * the same way and lives in `core/content/presentation/mapper/`, where it can name the coverage
+ * type this file must not.
  */
-private fun List<String>.marksInOrder(): List<YadloDietaryMarkUiModel> {
+internal fun List<String>.marksInOrder(): List<YadloDietaryMarkUiModel> {
     val marks = mapNotNull(YadloDietaryMarkUiModel::forId).toSet()
 
     return YadloDietaryMarkUiModel.entries.filter { it in marks }

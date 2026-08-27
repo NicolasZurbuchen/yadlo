@@ -1,8 +1,8 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands
 
+import io.nicolaszurbuchen.yadlo.core.content.presentation.mapper.toDietaryTags
 import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.StandCardUiModel
 import io.nicolaszurbuchen.yadlo.design.uimodel.YadloDietaryMarkUiModel
-import io.nicolaszurbuchen.yadlo.design.uimodel.toDietaryTags
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands.mapper.toUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import yadlo.shared.generated.resources.Res
