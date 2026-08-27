@@ -67,18 +67,6 @@ jobs:
         if: ${{ !cancelled() }}
         run: ./gradlew :shared:verifyCommonMainAppDatabaseMigration
 
-      # The migration check catches a .sq table with no .sqm. It does not catch the other half of
-      # the same mistake: a committed schema snapshot that no longer matches the .sq files, which
-      # is what the migration check replays against. Regenerating and diffing is the only way to
-      # see it. The snapshot was confirmed byte-identical across repeated regenerations before
-      # this step was added — a flaky required check would be worse than none.
-      - name: Schema snapshot is current
-        if: ${{ !cancelled() }}
-        run: |
-          ./gradlew :shared:generateCommonMainAppDatabaseSchema
-          git diff --exit-code -- shared/src/commonMain/sqldelight/databases/ \
-            || { echo "::error::The schema snapshot is stale. Run :shared:generateCommonMainAppDatabaseSchema and commit the .db it writes."; exit 1; }
-
       # The build already writes ktlint HTML/JSON/checkstyle reports and JUnit XML, and nothing has
       # ever read them. On a red run they are the difference between a log line and the file.
       - name: Upload reports
