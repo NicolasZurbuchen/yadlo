@@ -11,7 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import io.nicolaszurbuchen.yadlo.app.navigation.tabContentPadding
-import io.nicolaszurbuchen.yadlo.core.content.presentation.component.SocialLinksRow
+import io.nicolaszurbuchen.yadlo.design.component.SocialLinksRow
 import io.nicolaszurbuchen.yadlo.design.component.YadloHero
 import io.nicolaszurbuchen.yadlo.design.component.YadloSearchField
 import io.nicolaszurbuchen.yadlo.design.theme.spacing

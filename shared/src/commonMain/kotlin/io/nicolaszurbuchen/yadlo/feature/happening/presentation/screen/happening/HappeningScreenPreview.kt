@@ -4,11 +4,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.SlotLiveStateUiModel
-import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.SocialLinkUiModel
-import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.socialIconFor
 import io.nicolaszurbuchen.yadlo.design.preview.YadloPreview
+import io.nicolaszurbuchen.yadlo.design.uimodel.SocialLinkUiModel
 import io.nicolaszurbuchen.yadlo.design.uimodel.YadloDietaryMarkUiModel
 import io.nicolaszurbuchen.yadlo.design.uimodel.YadloDietaryTagUiModel
+import io.nicolaszurbuchen.yadlo.design.uimodel.socialIconFor
 import io.nicolaszurbuchen.yadlo.infra.preview.PreviewThemes
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import yadlo.shared.generated.resources.Res

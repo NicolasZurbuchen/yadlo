@@ -1,4 +1,4 @@
-package io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel
+package io.nicolaszurbuchen.yadlo.design.uimodel
 
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import org.jetbrains.compose.resources.DrawableResource

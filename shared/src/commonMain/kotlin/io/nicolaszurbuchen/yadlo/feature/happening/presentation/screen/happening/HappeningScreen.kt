@@ -38,7 +38,7 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import io.nicolaszurbuchen.yadlo.core.content.presentation.component.SocialLinksRow
+import io.nicolaszurbuchen.yadlo.design.component.SocialLinksRow
 import io.nicolaszurbuchen.yadlo.design.component.YadloDietaryTags
 import io.nicolaszurbuchen.yadlo.design.component.YadloFactRow
 import io.nicolaszurbuchen.yadlo.design.component.YadloLinkTile
