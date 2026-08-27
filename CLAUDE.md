@@ -133,6 +133,12 @@ to get wrong once.
 Run all four, not just the one you think is relevant — `ktlintCheck` in particular has a
 history of catching violations across files a narrower, filtered test run never touches.
 
+`:konsistTest:test` no longer needs `--rerun-tasks`. It used to: Konsist builds its scopes from
+strings at runtime, so Gradle could not see that `:shared`'s sources are this task's real inputs and
+marked it UP-TO-DATE, replaying the last result. A violation added to `:shared` left the command
+green. The task is now pinned to always run — see the comment in `konsistTest/build.gradle.kts`. If
+you find `--rerun-tasks` in an old note or habit, it is stale rather than wrong.
+
 The migration check is the odd one out and the reason it is on this list: **a table added to a `.sq`
 file without a matching `.sqm` compiles, runs, and passes every other command here.** It only breaks
 on a device that already had the database, because SQLDelight takes the schema version from the
