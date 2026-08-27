@@ -48,14 +48,47 @@ class LayerBoundariesTest {
             }
     }
 
+    /**
+     * `infra/` is plumbing: it knows no feature, and it knows no domain either.
+     *
+     * This carried two exclusions, `AppModule` and `NavGraph`, and both were dead. `AppModule` has
+     * lived in `app/di/` for as long as the rule has existed, so it was never in scope; `NavGraph`
+     * is in `infra/navigation/` and has zero feature imports. An exclusion that matches nothing
+     * reads as a known exception and is really an invitation — see #73.
+     */
     @Test
-    fun `infra should not depend on features except for root di and navigation`() {
+    fun `infra should not depend on features`() {
         Konsist.scopeFromProject()
             .files
             .filter { it.hasPackage("..infra..") }
-            .filterNot { it.name.contains("AppModule") || it.name.contains("NavGraph") }
             .assertFalse {
-                it.imports.any { import -> import.name.contains(".feature.") }
+                it.imports.any { import -> isProjectImportFrom(import.name, "feature") }
+            }
+    }
+
+    /**
+     * **Nothing inside `shared` may import `app/`.** That is what makes it the composition root
+     * rather than a package that happens to hold `App.kt`: it imports everything, and an importer
+     * would close a cycle with whatever it imports.
+     *
+     * Unstateable until now. `app/design/` was the most depended-on package in the codebase (#76),
+     * and `app/navigation/TabChrome` was read by seven feature files until it moved to
+     * `design/theme/` (#79), which is where layout tokens belong anyway.
+     *
+     * The platform binaries are the deliberate exception and are outside this scope: `MainActivity`,
+     * `YadloApplication` and `BootReceiver` in `androidApp/` reach for `App`, `initKoin` and
+     * `ReminderScheduler`, which is a binary consuming its own root rather than a layer violation.
+     */
+    @Test
+    fun `nothing in shared outside the app shell may import it`() {
+        val belowTheRoot = listOf("core", "design", "feature", "infra")
+
+        Konsist
+            .scopeFromProduction(moduleName = "shared")
+            .files
+            .filter { file -> belowTheRoot.any { file.hasPackage("..$it..") } }
+            .assertFalse {
+                it.imports.any { import -> isProjectImportFrom(import.name, "app") }
             }
     }
 
