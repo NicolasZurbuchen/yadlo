@@ -26,9 +26,34 @@ class PackageHierarchyTest {
         val allowed = listOf("screen", "component", "navigation", "uimodel", "flow")
 
         scope.packages
-            .filter { it.name.matches(Regex(".*\\.(feature|core)\\.[^.]+\\.presentation\\.[^.]+$")) }
+            .filter { it.name.matches(Regex(".*\\.feature\\.[^.]+\\.presentation\\.[^.]+$")) }
             .assertTrue { pkg ->
-                val segments = pkg.name.split(Regex("\\.(feature|core)\\.")).last().split(".")
+                val segments = pkg.name.split(".feature.").last().split(".")
+                allowed.contains(segments.last())
+            }
+    }
+
+    /**
+     * **A `core/` slice is not a feature, so its `presentation/` is not shaped like one.**
+     *
+     * It has no `screen/`, because it has no screen, and no `navigation/`, because it owns no
+     * destination. What it has is rendering vocabulary several features draw — and a `mapper/`,
+     * because the domain crossing has to happen somewhere and a slice with no screens has no
+     * `screen/<name>/mapper/` to put it in. See #74.
+     *
+     * Splitting this from the feature rule rather than widening it is the point: most of what
+     * `konsistTest/` asserts about `presentation/` describes a screen, and a package that has none
+     * should be held to what it actually is instead of to the feature shape with holes punched in
+     * it.
+     */
+    @Test
+    fun `Direct children of a core slice's presentation must be in allowed list`() {
+        val allowed = listOf("component", "uimodel", "mapper")
+
+        scope.packages
+            .filter { it.name.matches(Regex(".*\\.core\\.[^.]+\\.presentation\\.[^.]+$")) }
+            .assertTrue { pkg ->
+                val segments = pkg.name.split(".core.").last().split(".")
                 allowed.contains(segments.last())
             }
     }

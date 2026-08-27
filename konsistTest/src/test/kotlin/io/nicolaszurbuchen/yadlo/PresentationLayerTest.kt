@@ -832,6 +832,7 @@ class PresentationLayerTest {
     fun `presentation files must not import from domain except StoreFactory, ViewModel, Contract, and mappers`() {
         scope.files
             .withPackage("..presentation..")
+            .filterNot { it.hasPackage("..core..") }
             .filter { file ->
                 !file.name.endsWith("StoreFactory") &&
                     !file.name.endsWith("ViewModel") &&

@@ -50,6 +50,7 @@ design/                          # how Yadlo looks. imports infra/ and nothing e
 
 core/                            # each child is a slice with the same layer shape as a feature, minus a screen
 ├── content/                     # the published festival data — data · domain · presentation · di
+│   └── presentation/            # component/ · uimodel/ · mapper/ — no screen/, no navigation/
 ├── plan/                        # what the visitor saved — data · domain · di
 ├── reminder/                    # the reminder switch and what it schedules — data · domain · di
 ├── error/                       # AppError / AppException, single throw-catch mechanism
@@ -64,6 +65,20 @@ infra/
 ├── text/                        # String utilities with no domain vocabulary (diacritic folding for search)
 └── ui/                          # UiText — resource/raw/composite text abstraction
 ```
+
+### A `core/` slice is not a feature, and has its own rules
+
+`data/`, `domain/` and `di/` are identical to a feature's and are held to the same rules. Its
+`presentation/` is not: there is no `screen/`, because there is no screen, and no `navigation/`,
+because it owns no destination. What it has is `component/`, `uimodel/`, and a `mapper/` — the one
+package inside a `core/` presentation allowed to name a domain type, exactly as
+`screen/<name>/mapper/` is in a feature.
+
+Those rules live in `konsistTest/CorePresentationTest.kt` rather than being bolted onto
+`PresentationLayerTest`, which is written for screens. Nearly every rule in that file describes a
+Contract, a Store, a Route or a `State -> UiModel` conversion, and none of those exist here.
+Holding a screenless slice to the feature shape is what left the dietary mapper with no legal home
+in the first place — see #74.
 
 ## Layer shape inside a feature
 
