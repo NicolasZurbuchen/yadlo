@@ -16,8 +16,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
-import io.nicolaszurbuchen.yadlo.app.navigation.LocalTabChromeInsets
 import io.nicolaszurbuchen.yadlo.core.content.presentation.component.SlotScaleRow
+import io.nicolaszurbuchen.yadlo.design.theme.LocalTabChromeInsets
 import io.nicolaszurbuchen.yadlo.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.feature.monyadlo.presentation.screen.monyadlo.component.CHEVRON_SIZE

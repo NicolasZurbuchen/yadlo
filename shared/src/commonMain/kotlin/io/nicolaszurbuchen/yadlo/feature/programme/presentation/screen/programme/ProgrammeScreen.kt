@@ -16,7 +16,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import io.nicolaszurbuchen.yadlo.app.navigation.LocalTabChromeInsets
+import io.nicolaszurbuchen.yadlo.design.theme.LocalTabChromeInsets
 import io.nicolaszurbuchen.yadlo.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme.component.CatalogueCard

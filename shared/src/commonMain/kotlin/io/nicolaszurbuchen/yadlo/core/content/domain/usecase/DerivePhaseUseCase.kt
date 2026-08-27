@@ -1,10 +1,10 @@
 package io.nicolaszurbuchen.yadlo.core.content.domain.usecase
 
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.APPROACHING_LEAD
 import io.nicolaszurbuchen.yadlo.core.content.domain.model.FestivalDay
 import io.nicolaszurbuchen.yadlo.core.content.domain.model.Phase
-import io.nicolaszurbuchen.yadlo.core.time.APPROACHING_LEAD
-import io.nicolaszurbuchen.yadlo.core.time.liveEnd
-import io.nicolaszurbuchen.yadlo.core.time.liveStart
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.liveEnd
+import io.nicolaszurbuchen.yadlo.core.content.domain.model.liveStart
 import kotlin.time.Clock
 import kotlin.time.Duration.Companion.days
 

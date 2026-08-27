@@ -1,5 +1,7 @@
 package io.nicolaszurbuchen.yadlo.core.content.domain.model
 
+import kotlin.time.Duration.Companion.days
+
 /**
  * Where the year is, from the app's point of view. Derived from the clock and the published
  * content, never authored, and deliberately wider than the FestivalDays it surrounds: a
@@ -20,3 +22,12 @@ enum class Phase {
     /** The six weeks after, for a thank-you and the closing figures. */
     ENDED,
 }
+
+/**
+ * How long before [FestivalDay.liveStart] the app starts treating the festival as imminent — the
+ * boundary between [Phase.ANNOUNCED] and [Phase.APPROACHING].
+ *
+ * It sits beside the enum whose boundary it defines rather than in a package of loose time
+ * constants, so the week and the phase it opens are read together.
+ */
+val APPROACHING_LEAD = 7.days

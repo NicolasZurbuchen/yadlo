@@ -41,6 +41,8 @@ import io.nicolaszurbuchen.yadlo.core.content.domain.repository.ContentRepositor
 import io.nicolaszurbuchen.yadlo.core.content.domain.usecase.DerivePhaseUseCase
 import io.nicolaszurbuchen.yadlo.core.time.FESTIVAL_TIME_ZONE
 import io.nicolaszurbuchen.yadlo.design.component.YadloTopAppBar
+import io.nicolaszurbuchen.yadlo.design.theme.LocalTabChromeInsets
+import io.nicolaszurbuchen.yadlo.design.theme.TabChromeInsets
 import io.nicolaszurbuchen.yadlo.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.feature.happening.presentation.navigation.HappeningDestination
 import io.nicolaszurbuchen.yadlo.feature.search.presentation.navigation.SearchDestination
