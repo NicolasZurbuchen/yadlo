@@ -16,9 +16,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import io.nicolaszurbuchen.yadlo.app.design.component.YadloSectionHeader
-import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
-import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
+import io.nicolaszurbuchen.yadlo.design.component.YadloSectionHeader
+import io.nicolaszurbuchen.yadlo.design.theme.appColors
+import io.nicolaszurbuchen.yadlo.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import io.nicolaszurbuchen.yadlo.infra.ui.asString
 

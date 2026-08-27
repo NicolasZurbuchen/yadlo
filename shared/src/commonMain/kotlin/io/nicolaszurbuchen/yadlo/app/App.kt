@@ -16,12 +16,12 @@ import coil3.SingletonImageLoader
 import io.ktor.client.HttpClient
 import io.nicolaszurbuchen.yadlo.app.content.ContentUnavailableScreen
 import io.nicolaszurbuchen.yadlo.app.debug.TimeTravelPanel
-import io.nicolaszurbuchen.yadlo.app.design.theme.YadloTheme
 import io.nicolaszurbuchen.yadlo.app.navigation.MainScaffold
 import io.nicolaszurbuchen.yadlo.app.splash.SplashScreen
 import io.nicolaszurbuchen.yadlo.core.content.domain.model.ContentStatus
 import io.nicolaszurbuchen.yadlo.core.content.domain.repository.ContentRepository
 import io.nicolaszurbuchen.yadlo.core.error.toUiModel
+import io.nicolaszurbuchen.yadlo.design.theme.YadloTheme
 import io.nicolaszurbuchen.yadlo.infra.image.createImageLoader
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject

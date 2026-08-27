@@ -11,8 +11,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import io.nicolaszurbuchen.yadlo.app.design.theme.ShimmerPulse
-import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
+import io.nicolaszurbuchen.yadlo.design.theme.ShimmerPulse
+import io.nicolaszurbuchen.yadlo.design.theme.spacing
 
 /**
  * [PlusScreenScaffold] plus the one scrolling column most of these screens are.

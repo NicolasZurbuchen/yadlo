@@ -2,7 +2,7 @@ package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.story
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import io.nicolaszurbuchen.yadlo.app.design.component.YadloFigureGrid
+import io.nicolaszurbuchen.yadlo.design.component.YadloFigureGrid
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusBodyText
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusDetailScaffold
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusSection

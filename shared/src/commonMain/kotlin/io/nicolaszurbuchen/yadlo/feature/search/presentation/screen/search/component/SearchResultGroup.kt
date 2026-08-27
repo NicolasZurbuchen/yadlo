@@ -20,11 +20,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import io.nicolaszurbuchen.yadlo.app.design.component.YadloSectionHeader
-import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
-import io.nicolaszurbuchen.yadlo.app.design.theme.categoryColors
-import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
-import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloLinkMarkUiModel
+import io.nicolaszurbuchen.yadlo.design.component.YadloSectionHeader
+import io.nicolaszurbuchen.yadlo.design.theme.appColors
+import io.nicolaszurbuchen.yadlo.design.theme.categoryColors
+import io.nicolaszurbuchen.yadlo.design.theme.spacing
+import io.nicolaszurbuchen.yadlo.design.uimodel.YadloLinkMarkUiModel
 import io.nicolaszurbuchen.yadlo.feature.search.presentation.screen.search.SearchGroupUiModel
 import io.nicolaszurbuchen.yadlo.feature.search.presentation.screen.search.SearchRowUiModel
 import io.nicolaszurbuchen.yadlo.feature.search.presentation.screen.search.uimodel.SearchTopicUiModel
@@ -169,5 +169,5 @@ private val MARK_SLOT_SIZE = 20.dp
 /** The same square the Programme row and the Catalogue card mark their Category with. */
 private val CATEGORY_MARK_SIZE = 10.dp
 
-/** [io.nicolaszurbuchen.yadlo.app.design.component.YadloEntryCard]'s, for the same reason. */
+/** [io.nicolaszurbuchen.yadlo.design.component.YadloEntryCard]'s, for the same reason. */
 private val ROW_MIN_HEIGHT = 64.dp

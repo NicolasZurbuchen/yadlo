@@ -9,26 +9,44 @@ Walk this in order for any new file:
 1. Does it know about **more than one** feature? → `app/`
 2. Does it know about **exactly one** feature? → `feature/<name>/`
 3. Does it know about **zero** features, and is it pure technical plumbing with no domain vocabulary? → `infra/`
-4. Does it know about **zero** features, and does it model the subject matter — the festival, the visitor's plan, their reminders? → `core/`
+4. Does it know about **zero** features, and is it the visual language — a token, or a component whose contract is **purely presentational**? → `design/`
+5. Does it know about **zero** features, and does it model the subject matter — the festival, the visitor's plan, their reminders? → `core/`
+
+**Step 4 is about what the component decides, not about how many callers it has.**
+`YadloFilterChip(label, selected, onClick)` decides nothing about meaning; it styles a chip.
+`SlotTimeBar` decides that time lays out proportionally across a festival day, that past segments
+dim, that a running one fills from the downbeat — rules about Slots, so it lives beside Slots in
+`core/content/presentation/`, and it would still live there if six features drew it.
+
+The `Yadlo` prefix is the same test in linguistic form: it parses as *our version of a generic
+thing*. `YadloFilterChip` reads fine; `YadloSlotTimeBar` reads as nonsense. When the prefix stops
+making sense, the file is not a design system component.
 
 **`core/` is named for what a file *is*, not for how many callers it has.** The old name was `common/`, and the criterion that came with it — *several features need it* — is a fact about the rest of the codebase rather than about the file, so it could become true without the file changing and gave no grounds to refuse anything. `core/` admits what models the subject, which is answerable by reading the file alone. See issue #74.
 
 The second-caller rule still holds, but it is about **timing, not destination**: a model used by one feature is already `core/` material, and waiting for its second caller only avoids paying for indirection on a guess. When it moves, it moves here — that is not the part that was ever in question.
 
-## Shape of `app/`, `core/`, and `infra/`
+## Shape of `app/`, `design/`, `core/`, and `infra/`
+
+`app/` is **terminal**: it imports everything and nothing imports it. That is what it means to be
+the composition root, and it is why the design system is not in here — a package that 254 call
+sites depend on is the base of the graph, not its apex.
 
 ```
 app/
 ├── App.kt                       # Root Composable: theme + image loader + NavGraph
-├── design/
-│   ├── component/               # App-wide reusable composables (e.g. AppErrorBanner) — cross-feature; a component shared only within one feature belongs in feature/<name>/presentation/component/ instead, and one used by only a single screen belongs in feature/<name>/presentation/screen/<screen>/component/
-│   └── theme/                   # Design tokens, color palette, spacing, typography — see agent-design-system-convention.md
 ├── di/
 │   └── AppModule.kt             # Aggregates every feature/infra Koin module into one list — the only DI file allowed to know about more than one feature
 └── navigation/
     ├── impl/                    # Concrete *NavigatorImpl classes — the only place allowed to know about more than one feature's destinations at once
     ├── NavConfig.kt
     └── NavigationModule.kt
+
+design/                          # how Yadlo looks. imports infra/ and nothing else above it
+├── component/                   # composables whose contract is purely presentational — a component that owns a rule about the subject (a Slot, a Stand) belongs beside that subject in core/, however many features call it
+├── preview/                     # YadloPreview — the preview harness, never drawn in a shipped screen
+├── theme/                       # Design tokens, color palette, spacing, typography — see agent-design-system-convention.md
+└── uimodel/                     # the input types those components take
 
 core/                            # each child is a slice with the same layer shape as a feature, minus a screen
 ├── content/                     # the published festival data — data · domain · presentation · di
@@ -63,7 +81,7 @@ feature/<name>/
 │   └── usecase/                      # reserved for logic that touches a port (repository, clock) or coordinates more than one step; a UseCase never injects another UseCase
 └── presentation/
     ├── navigation/                   # *Destination, *Navigator (interface), *NavKeyHandler — a feature only ever knows its own destinations
-    ├── component/                    # composables reused across screens *within this feature only*; take a UiModel, never raw primitives. Cross-feature reuse goes in app/design/component/ instead
+    ├── component/                    # composables reused across screens *within this feature only*; take a UiModel, never raw primitives. Cross-feature reuse goes in design/component/ instead
     └── screen/<screen>/
         ├── *Contract.kt              # exactly Intent/Label/Action/Message (sealed interfaces) + State (data class) — nothing else lives here. Written in **domain** types: a UiModel here is a rendering decision taken before anything is rendered
         ├── *StoreFactory.kt          # Bootstrapper + Executor + a nested `internal object ReducerImpl` — never a standalone *Reducer.kt file, never `private` (internal is what makes it directly unit-testable from commonTest). The Store interface and the factory, and nothing else: no top-level functions
@@ -129,9 +147,9 @@ The vocabulary lives once, and in two places, because the placement rule splits 
 `PreviewThemes` and `PreviewUiMode` know nothing about this app — an annotation setting a system
 ui-mode flag, and two Android constants commonMain cannot import — so they are `infra/preview/`,
 beside `infra/ui/UiText` and `infra/platform/BackHandler`. `YadloPreview` imports the theme and the
-palette, so it *is* the design system and gets `app/design/preview/`.
+palette, so it *is* the design system and gets `design/preview/`.
 
-Not `app/design/component/`: a component is something a screen draws, and this is never drawn in a
+Not `design/component/`: a component is something a screen draws, and this is never drawn in a
 shipped screen. The Konsist rule forbidding a screen suffix in a component package says the same
 thing mechanically.
 

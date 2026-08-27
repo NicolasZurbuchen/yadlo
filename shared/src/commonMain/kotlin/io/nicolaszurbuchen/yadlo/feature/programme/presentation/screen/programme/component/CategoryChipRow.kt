@@ -13,10 +13,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import io.nicolaszurbuchen.yadlo.app.design.component.YadloFilterChip
-import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
-import io.nicolaszurbuchen.yadlo.app.design.theme.categoryColors
-import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
+import io.nicolaszurbuchen.yadlo.design.component.YadloFilterChip
+import io.nicolaszurbuchen.yadlo.design.theme.appColors
+import io.nicolaszurbuchen.yadlo.design.theme.categoryColors
+import io.nicolaszurbuchen.yadlo.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme.CategoryChipUiModel
 import org.jetbrains.compose.resources.stringResource
 import yadlo.shared.generated.resources.Res

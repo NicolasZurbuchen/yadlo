@@ -3,10 +3,10 @@ package io.nicolaszurbuchen.yadlo.app.content
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
-import io.nicolaszurbuchen.yadlo.app.design.preview.YadloPreview
 import io.nicolaszurbuchen.yadlo.core.error.AppError
 import io.nicolaszurbuchen.yadlo.core.error.AppErrorUiModel
 import io.nicolaszurbuchen.yadlo.core.error.toUiModel
+import io.nicolaszurbuchen.yadlo.design.preview.YadloPreview
 import io.nicolaszurbuchen.yadlo.infra.preview.PreviewThemes
 
 /**

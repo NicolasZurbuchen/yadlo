@@ -3,8 +3,8 @@ package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.access
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
-import io.nicolaszurbuchen.yadlo.app.design.preview.YadloPreview
-import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloFactMarkUiModel
+import io.nicolaszurbuchen.yadlo.design.preview.YadloPreview
+import io.nicolaszurbuchen.yadlo.design.uimodel.YadloFactMarkUiModel
 import io.nicolaszurbuchen.yadlo.infra.preview.PreviewThemes
 
 /**

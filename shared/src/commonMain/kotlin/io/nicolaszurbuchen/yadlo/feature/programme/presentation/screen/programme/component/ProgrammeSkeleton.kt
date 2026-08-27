@@ -18,11 +18,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import io.nicolaszurbuchen.yadlo.app.design.theme.ShimmerPulse
-import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
-import io.nicolaszurbuchen.yadlo.app.design.theme.shimmerBlock
-import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.app.navigation.LocalTabChromeInsets
+import io.nicolaszurbuchen.yadlo.design.theme.ShimmerPulse
+import io.nicolaszurbuchen.yadlo.design.theme.appColors
+import io.nicolaszurbuchen.yadlo.design.theme.shimmerBlock
+import io.nicolaszurbuchen.yadlo.design.theme.spacing
 
 /**
  * The timetable while the first bundle is landing.

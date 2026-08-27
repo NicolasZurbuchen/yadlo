@@ -3,10 +3,10 @@ package io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
-import io.nicolaszurbuchen.yadlo.app.design.preview.YadloPreview
-import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloFigureUiModel
 import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.SocialLinkUiModel
 import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.socialIconFor
+import io.nicolaszurbuchen.yadlo.design.preview.YadloPreview
+import io.nicolaszurbuchen.yadlo.design.uimodel.YadloFigureUiModel
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.uimodel.QuickAccessEntryUiModel
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.uimodel.AnnouncementUiModel
 import io.nicolaszurbuchen.yadlo.infra.preview.PreviewThemes

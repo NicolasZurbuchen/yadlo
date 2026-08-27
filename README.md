@@ -60,11 +60,12 @@ ended).
 
 ```
 shared/
-├── app/                              # Composes the whole application; the only place
-│   ├── App.kt                        #   allowed to know about more than one feature
-│   ├── design/{component,theme}/
+├── app/                              # Composes the whole application; imports everything,
+│   ├── App.kt                        #   and nothing imports it
 │   ├── di/{KoinInitializer,AppModule}.kt
 │   └── navigation/
+├── design/                           # How Yadlo looks: tokens, and components whose
+│   └── {component,preview,theme,uimodel}/   #   contract is purely presentational
 ├── core/                             # The subject matter: the festival, the plan, the reminders
 │   └── {content,plan,reminder,error,time}/
 ├── feature/                          # Vertical slices: data + domain + presentation each
@@ -84,12 +85,14 @@ Yadlo feature slices: `home` (Accueil), `programme`, `monyadlo` (Plan + Wishlist
 
 ## 🏛 Architecture Decisions
 
-Four top-level packages, each with a distinct responsibility: `app/` composes the whole
-application and is the only place allowed to know about more than one feature at once; `infra/`
-is reusable technical plumbing with zero domain or feature knowledge; `core/` models the subject
-matter — the festival, the visitor's plan, their reminders — and is named for what a file is
-rather than for how many callers it has; `feature/` holds vertical feature slices, each owning
-its full data/domain/presentation stack and never reaching into another feature's internals.
+Five top-level packages, each with a distinct responsibility: `app/` composes the whole
+application and is the only place allowed to know about more than one feature at once — it
+imports everything and nothing imports it; `infra/` is reusable technical plumbing with zero
+domain or feature knowledge; `design/` is the visual language, tokens and components whose
+contract is purely presentational; `core/` models the subject matter — the festival, the
+visitor's plan, their reminders — and is named for what a file is rather than for how many
+callers it has; `feature/` holds vertical feature slices, each owning its full
+data/domain/presentation stack and never reaching into another feature's internals.
 
 Each feature follows Clean Architecture layering with an MVI presentation layer (MVIKotlin's
 Store/Executor/Reducer), a strict `State` (internal) vs. `UiModel` (what the Composable actually

@@ -10,11 +10,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import io.nicolaszurbuchen.yadlo.app.design.component.YadloHero
-import io.nicolaszurbuchen.yadlo.app.design.component.YadloSearchField
-import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.app.navigation.tabContentPadding
 import io.nicolaszurbuchen.yadlo.core.content.presentation.component.SocialLinksRow
+import io.nicolaszurbuchen.yadlo.design.component.YadloHero
+import io.nicolaszurbuchen.yadlo.design.component.YadloSearchField
+import io.nicolaszurbuchen.yadlo.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.component.AnnouncementsBlock
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.component.CountdownBlock
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.component.FiguresBlock

@@ -16,8 +16,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
-import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
+import io.nicolaszurbuchen.yadlo.design.theme.appColors
+import io.nicolaszurbuchen.yadlo.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.assistance.EmergencyNumberUiModel
 import org.jetbrains.compose.resources.stringResource
 import yadlo.shared.generated.resources.Res
@@ -34,7 +34,7 @@ import yadlo.shared.generated.resources.assistance_call
  * screen, so the one thing worth finding in a hurry looked like a heading. `accent` itself is a
  * fill role and measures 2.3:1 as text on the page ground, so this uses the ink step of the same
  * rose ramp — see
- * [io.nicolaszurbuchen.yadlo.app.design.theme.AppColors.accentInk].
+ * [io.nicolaszurbuchen.yadlo.design.theme.AppColors.accentInk].
  *
  * **Tabular figures in a column of their own**, which is what makes every label start at the same
  * x. Barlow's proportional numerals give 112 and 144 different widths, so four labels set beside
@@ -43,7 +43,7 @@ import yadlo.shared.generated.resources.assistance_call
  * The whole row is the target, not the number alone: it is read under stress, sometimes one-handed.
  *
  * **A handset at the end says the row dials.** The same trailing-mark grammar
- * [io.nicolaszurbuchen.yadlo.app.design.component.YadloLinkTile] uses everywhere else in Plus, and
+ * [io.nicolaszurbuchen.yadlo.design.component.YadloLinkTile] uses everywhere else in Plus, and
  * these rows were the one tappable list in the app without it — three lines of text that happened
  * to place a call, with nothing on them saying so until one was tapped. It carries the label a
  * screen reader needs, because unlike a link tile there is no other word here naming the action.

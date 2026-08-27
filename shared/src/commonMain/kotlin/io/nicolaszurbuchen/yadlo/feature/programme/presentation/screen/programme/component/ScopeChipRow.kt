@@ -8,9 +8,9 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import io.nicolaszurbuchen.yadlo.app.design.component.YadloFilterChip
-import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
-import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
+import io.nicolaszurbuchen.yadlo.design.component.YadloFilterChip
+import io.nicolaszurbuchen.yadlo.design.theme.appColors
+import io.nicolaszurbuchen.yadlo.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme.ScopeChipUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.asString
 

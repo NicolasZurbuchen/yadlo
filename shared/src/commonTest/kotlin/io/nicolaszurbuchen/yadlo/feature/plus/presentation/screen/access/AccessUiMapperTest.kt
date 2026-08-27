@@ -1,10 +1,10 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.access
 
-import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloFactMarkUiModel
 import io.nicolaszurbuchen.yadlo.core.content.domain.model.InfoLink
 import io.nicolaszurbuchen.yadlo.core.content.domain.model.Provenance
 import io.nicolaszurbuchen.yadlo.core.content.domain.model.Transport
 import io.nicolaszurbuchen.yadlo.core.content.domain.model.TransportMode
+import io.nicolaszurbuchen.yadlo.design.uimodel.YadloFactMarkUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.access_empty

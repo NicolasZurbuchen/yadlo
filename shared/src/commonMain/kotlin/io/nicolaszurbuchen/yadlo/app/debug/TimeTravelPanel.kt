@@ -28,11 +28,11 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
-import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.core.content.domain.model.ContentStatus
 import io.nicolaszurbuchen.yadlo.core.content.domain.repository.ContentRepository
 import io.nicolaszurbuchen.yadlo.core.time.FESTIVAL_TIME_ZONE
+import io.nicolaszurbuchen.yadlo.design.theme.appColors
+import io.nicolaszurbuchen.yadlo.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.infra.notification.NotificationTarget
 import io.nicolaszurbuchen.yadlo.infra.notification.Notifier
 import io.nicolaszurbuchen.yadlo.infra.notification.ScheduledNotification

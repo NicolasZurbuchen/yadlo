@@ -5,10 +5,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import io.nicolaszurbuchen.yadlo.app.design.component.YadloFactRow
-import io.nicolaszurbuchen.yadlo.app.design.component.YadloLinkTile
-import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
-import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloLinkMarkUiModel
+import io.nicolaszurbuchen.yadlo.design.component.YadloFactRow
+import io.nicolaszurbuchen.yadlo.design.component.YadloLinkTile
+import io.nicolaszurbuchen.yadlo.design.theme.appColors
+import io.nicolaszurbuchen.yadlo.design.uimodel.YadloLinkMarkUiModel
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusBodyText
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusDetailScaffold
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusSection

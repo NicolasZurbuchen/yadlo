@@ -30,7 +30,7 @@ Read these before doing any non-trivial work. They do not overlap.
 | [`DECISIONS.md`](DECISIONS.md) | **Why it is being built that way.** The long-form record, including the alternatives that were rejected and the reasoning that killed them. Consult before reopening a settled question. |
 | [`agents/agent-architecture-convention.md`](agents/agent-architecture-convention.md) | Package placement decision procedure, layer shape, MVI vocabulary, DI, error handling, testing conventions. |
 | [`agents/agent-commit-convention.md`](agents/agent-commit-convention.md) | Deterministic `type`/`scope` selection for commit messages. |
-| [`agents/agent-design-system-convention.md`](agents/agent-design-system-convention.md) | The colour/typography/spacing layer model under `app/design/theme/`. |
+| [`agents/agent-design-system-convention.md`](agents/agent-design-system-convention.md) | The colour/typography/spacing layer model under `design/theme/`. |
 | [`README.md`](README.md) | Explains the project to a *human*. Not the technical source of truth for an agent. |
 
 The UI prototypes linked from SPEC.md are **normative for layout and interaction**, not

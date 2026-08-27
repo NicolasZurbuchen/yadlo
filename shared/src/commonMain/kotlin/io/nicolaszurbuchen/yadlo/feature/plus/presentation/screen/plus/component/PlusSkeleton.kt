@@ -18,16 +18,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import io.nicolaszurbuchen.yadlo.app.design.theme.ShimmerPulse
-import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
-import io.nicolaszurbuchen.yadlo.app.design.theme.shimmerBlock
-import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
+import io.nicolaszurbuchen.yadlo.design.theme.ShimmerPulse
+import io.nicolaszurbuchen.yadlo.design.theme.appColors
+import io.nicolaszurbuchen.yadlo.design.theme.shimmerBlock
+import io.nicolaszurbuchen.yadlo.design.theme.spacing
 
 /**
  * What the tab looks like while the bundle is still landing.
  *
  * **The shape of the answer, not a spinner in the middle of it** — the argument is made once, on
- * [io.nicolaszurbuchen.yadlo.app.design.theme.ShimmerPulse], and this is the screen it was made for.
+ * [io.nicolaszurbuchen.yadlo.design.theme.ShimmerPulse], and this is the screen it was made for.
  * What is local to here is the geometry: cards of rows, the first one long, a header above each.
  *
  * The counts are deliberately the published shape of the tab rather than a round number, so the

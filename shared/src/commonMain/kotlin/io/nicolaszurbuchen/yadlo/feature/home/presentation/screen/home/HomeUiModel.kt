@@ -1,7 +1,7 @@
 package io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home
 
-import io.nicolaszurbuchen.yadlo.app.design.uimodel.YadloFigureUiModel
 import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.SocialLinkUiModel
+import io.nicolaszurbuchen.yadlo.design.uimodel.YadloFigureUiModel
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.uimodel.QuickAccessEntryUiModel
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.uimodel.AnnouncementUiModel
 import io.nicolaszurbuchen.yadlo.infra.ui.UiText
@@ -20,7 +20,7 @@ data class HomeUiModel(
 sealed interface HomeBlockUiModel {
     /**
      * The field you cannot type into — see
-     * [io.nicolaszurbuchen.yadlo.app.design.component.YadloSearchField], which draws this and the
+     * [io.nicolaszurbuchen.yadlo.design.component.YadloSearchField], which draws this and the
      * real one so a reader meets the second already knowing what it is.
      *
      * **It carries nothing, which is why it is an object.** The placeholder is the app’s own

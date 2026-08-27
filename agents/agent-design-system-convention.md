@@ -1,6 +1,6 @@
 # Agent Design System Conventions
 
-This file teaches syntax and wiring, not correct quantities — how many palettes, accents, font families, or domain layers a project has is decided by the real design you hand the agent, not by anything fixed here. The concrete pattern for each piece lives in the actual file under `app/design/theme/`; this doc explains why it's shaped that way.
+This file teaches syntax and wiring, not correct quantities — how many palettes, accents, font families, or domain layers a project has is decided by the real design you hand the agent, not by anything fixed here. The concrete pattern for each piece lives in the actual file under `design/theme/`; this doc explains why it's shaped that way.
 
 ## Layer model
 

@@ -9,8 +9,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import io.nicolaszurbuchen.yadlo.app.design.component.YadloTopAppBar
-import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
+import io.nicolaszurbuchen.yadlo.design.component.YadloTopAppBar
+import io.nicolaszurbuchen.yadlo.design.theme.appColors
 
 /**
  * The chrome every screen behind a Plus row wears: a title and a way back. Nothing about the body.
@@ -28,7 +28,7 @@ import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
  *
  * It sits on the bar's own blue, continuing it, the same way the Programme's filter block does, and
  * each chip draws its edge in the ink that blue carries — see
- * [io.nicolaszurbuchen.yadlo.app.design.component.YadloFilterChip] for what that leaves the glyphs
+ * [io.nicolaszurbuchen.yadlo.design.component.YadloFilterChip] for what that leaves the glyphs
  * inside them measuring.
  */
 @Composable

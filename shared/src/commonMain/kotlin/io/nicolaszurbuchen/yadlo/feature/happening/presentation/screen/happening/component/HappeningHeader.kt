@@ -18,9 +18,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
-import io.nicolaszurbuchen.yadlo.app.design.theme.appColors
-import io.nicolaszurbuchen.yadlo.app.design.theme.categoryColors
-import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
+import io.nicolaszurbuchen.yadlo.design.theme.appColors
+import io.nicolaszurbuchen.yadlo.design.theme.categoryColors
+import io.nicolaszurbuchen.yadlo.design.theme.spacing
 import org.jetbrains.compose.resources.painterResource
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.img_placeholder
@@ -67,7 +67,7 @@ import yadlo.shared.generated.resources.img_placeholder
  * moment the toolbar was fading in a second copy of the same word, so the fiche showed its title
  * twice in two sizes. What closes over a photograph has to close over what is written on it.
  *
- * **Both lines are [io.nicolaszurbuchen.yadlo.app.design.theme.AppColors.onScrim], including the
+ * **Both lines are [io.nicolaszurbuchen.yadlo.design.theme.AppColors.onScrim], including the
  * Category label.** The scrim's alpha was derived as the lowest at which white clears 4.5:1 over a
  * *white* photograph, which is the worst case an image can present; a Category fill has no such
  * guarantee, because the fills were measured against the app's own grounds and never against a

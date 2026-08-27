@@ -25,16 +25,23 @@ class PresentationLayerTest {
             )
 
         /**
-         * `app/` is the shell, not a feature: it owns the theme, the navigation host and the
-         * screens that sit outside the four tab stacks. A splash gate is a composable and its
-         * preview — there is no Contract, Store or UiModel to layer, and no domain or data
-         * sibling to justify a `presentation/screen/` package around it.
+         * Neither `app/` nor `design/` is a feature, and neither builds screens the way one does.
+         *
+         * `app/` is the shell: it owns the navigation host and the screens that sit outside the
+         * four tab stacks. A splash gate is a composable and its preview — there is no Contract,
+         * Store or UiModel to layer, and no domain or data sibling to justify a
+         * `presentation/screen/` package around it.
+         *
+         * `design/` is the design system, and the one file it has that trips these rules is
+         * `YadloPreview` — the preview *harness*, never drawn in a shipped screen. Where it must
+         * live is asserted positively by `PreviewTest`, so excusing it here loses nothing.
          *
          * Only `Screen` and `Preview` are excused. The four MVI files are not, because each one
          * implies the whole apparatus: a shell screen that grows a Store needs the screen package
          * the same way a feature does.
          */
-        private fun List<KoFileDeclaration>.outsideAppShell(): List<KoFileDeclaration> = filterNot { it.hasPackage("..app..") }
+        private fun List<KoFileDeclaration>.outsideFeatureScreens(): List<KoFileDeclaration> =
+            filterNot { it.hasPackage("..app..") || it.hasPackage("..design..") }
 
         /** A screen's own subfolders. A file in one of these is not a screen file. */
         private val screenSubpackages = listOf("component", "uimodel", "mapper")
@@ -59,7 +66,7 @@ class PresentationLayerTest {
     @Test
     fun `files suffixed with Screen must reside in screen package`() {
         scope.files
-            .outsideAppShell()
+            .outsideFeatureScreens()
             .withNameEndingWith("Screen")
             .assertTrue { it.hasPackage("..presentation.screen..") }
     }
@@ -67,7 +74,7 @@ class PresentationLayerTest {
     @Test
     fun `files suffixed with Preview must reside in screen package`() {
         scope.files
-            .outsideAppShell()
+            .outsideFeatureScreens()
             .withNameEndingWith("Preview")
             .assertTrue { it.hasPackage("..presentation.screen..") }
     }

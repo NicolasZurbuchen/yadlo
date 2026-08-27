@@ -8,8 +8,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import io.nicolaszurbuchen.yadlo.app.design.component.YadloSectionHeader
-import io.nicolaszurbuchen.yadlo.app.design.theme.spacing
+import io.nicolaszurbuchen.yadlo.design.component.YadloSectionHeader
+import io.nicolaszurbuchen.yadlo.design.theme.spacing
 
 /**
  * A titled block on a Plus detail page — *Accepté partout*, *Rentrer de nuit*, *Urgence vitale*.
