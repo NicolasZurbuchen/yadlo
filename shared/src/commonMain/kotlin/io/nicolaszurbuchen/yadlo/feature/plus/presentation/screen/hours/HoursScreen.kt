@@ -13,7 +13,7 @@ import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusBodyTex
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.component.PlusDetailScaffold
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.hours.component.HoursSkeleton
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.hours.component.OpeningDayCard
-import io.nicolaszurbuchen.yadlo.infra.ui.asString
+import io.nicolaszurbuchen.yadlo.infra.text.asString
 import org.jetbrains.compose.resources.stringResource
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.hours_intro

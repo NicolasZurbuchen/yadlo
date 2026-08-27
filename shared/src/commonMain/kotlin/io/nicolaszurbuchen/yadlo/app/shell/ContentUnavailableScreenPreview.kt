@@ -1,4 +1,4 @@
-package io.nicolaszurbuchen.yadlo.app.content
+package io.nicolaszurbuchen.yadlo.app.shell
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.PreviewParameter

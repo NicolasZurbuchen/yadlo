@@ -55,7 +55,7 @@ import io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening
 import io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening.component.HappeningSlotRow
 import io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening.component.HappeningTagRow
 import io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening.component.SavedHeart
-import io.nicolaszurbuchen.yadlo.infra.ui.asString
+import io.nicolaszurbuchen.yadlo.infra.text.asString
 import org.jetbrains.compose.resources.stringResource
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.back

@@ -19,8 +19,8 @@ import androidx.compose.ui.unit.dp
 import io.nicolaszurbuchen.yadlo.design.component.YadloSectionHeader
 import io.nicolaszurbuchen.yadlo.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.design.theme.spacing
-import io.nicolaszurbuchen.yadlo.infra.ui.UiText
-import io.nicolaszurbuchen.yadlo.infra.ui.asString
+import io.nicolaszurbuchen.yadlo.infra.text.UiText
+import io.nicolaszurbuchen.yadlo.infra.text.asString
 
 /**
  * One bordered block: a header rule with the section label, an optional action on the right, and

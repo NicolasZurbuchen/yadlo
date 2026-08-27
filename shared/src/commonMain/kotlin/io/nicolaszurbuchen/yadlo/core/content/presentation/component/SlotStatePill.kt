@@ -13,8 +13,8 @@ import androidx.compose.ui.unit.dp
 import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.SlotLiveStateUiModel
 import io.nicolaszurbuchen.yadlo.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.design.theme.spacing
-import io.nicolaszurbuchen.yadlo.infra.ui.UiText
-import io.nicolaszurbuchen.yadlo.infra.ui.asString
+import io.nicolaszurbuchen.yadlo.infra.text.UiText
+import io.nicolaszurbuchen.yadlo.infra.text.asString
 
 /**
  * `dans 15 min` · `en cours` · `se termine · 12 min` · `terminé`.

@@ -1,4 +1,4 @@
-package io.nicolaszurbuchen.yadlo.app.splash
+package io.nicolaszurbuchen.yadlo.app.shell
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

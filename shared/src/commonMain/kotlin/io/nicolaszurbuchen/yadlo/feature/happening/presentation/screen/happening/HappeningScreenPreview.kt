@@ -10,7 +10,7 @@ import io.nicolaszurbuchen.yadlo.design.uimodel.YadloDietaryMarkUiModel
 import io.nicolaszurbuchen.yadlo.design.uimodel.YadloDietaryTagUiModel
 import io.nicolaszurbuchen.yadlo.design.uimodel.socialIconFor
 import io.nicolaszurbuchen.yadlo.infra.preview.PreviewThemes
-import io.nicolaszurbuchen.yadlo.infra.ui.UiText
+import io.nicolaszurbuchen.yadlo.infra.text.UiText
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.dietary_all_dairy_free
 import yadlo.shared.generated.resources.dietary_all_vegan

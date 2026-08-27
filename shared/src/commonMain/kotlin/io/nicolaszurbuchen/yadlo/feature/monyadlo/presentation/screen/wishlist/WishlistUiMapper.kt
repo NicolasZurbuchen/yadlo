@@ -2,7 +2,7 @@ package io.nicolaszurbuchen.yadlo.feature.monyadlo.presentation.screen.wishlist
 
 import io.nicolaszurbuchen.yadlo.core.content.presentation.mapper.toDietaryTags
 import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.StandCardUiModel
-import io.nicolaszurbuchen.yadlo.infra.ui.UiText
+import io.nicolaszurbuchen.yadlo.infra.text.UiText
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.wishlist_empty
 

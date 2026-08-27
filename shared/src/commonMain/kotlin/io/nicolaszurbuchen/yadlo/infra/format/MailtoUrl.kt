@@ -1,4 +1,4 @@
-package io.nicolaszurbuchen.yadlo.infra.ui
+package io.nicolaszurbuchen.yadlo.infra.format
 
 /**
  * An address, as the URI a platform's mail app answers to.

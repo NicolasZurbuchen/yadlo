@@ -2,7 +2,7 @@ package io.nicolaszurbuchen.yadlo.feature.monyadlo.presentation.screen.monyadlo
 
 import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.SlotScaleUiModel
 import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.SlotSegmentUiModel
-import io.nicolaszurbuchen.yadlo.infra.ui.UiText
+import io.nicolaszurbuchen.yadlo.infra.text.UiText
 
 /**
  * The rail variant — DECISIONS.md § Mon Yadlo layout: a date pinned to the left while its items

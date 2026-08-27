@@ -6,7 +6,7 @@ import io.nicolaszurbuchen.yadlo.design.component.YadloEntryCard
 import io.nicolaszurbuchen.yadlo.design.uimodel.YadloEntryUiModel
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.plus.PlusEntryUiModel
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.plus.PlusGroupUiModel
-import io.nicolaszurbuchen.yadlo.infra.ui.UiText
+import io.nicolaszurbuchen.yadlo.infra.text.UiText
 import org.jetbrains.compose.resources.stringResource
 
 /**

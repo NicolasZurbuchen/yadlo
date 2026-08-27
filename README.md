@@ -63,7 +63,8 @@ shared/
 ├── app/                              # Composes the whole application; imports everything,
 │   ├── App.kt                        #   and nothing imports it
 │   ├── di/{KoinInitializer,AppModule}.kt
-│   └── navigation/
+│   ├── navigation/  notification/  debug/
+│   └── shell/                        # the screens outside the four tab stacks
 ├── design/                           # How Yadlo looks: tokens, and components whose
 │   └── {component,preview,theme,uimodel}/   #   contract is purely presentational
 ├── core/                             # The subject matter: the festival, the plan, the reminders
@@ -71,7 +72,7 @@ shared/
 ├── feature/                          # Vertical slices: data + domain + presentation each
 │   └── {home,programme,monyadlo,plus,happening,search}/
 └── infra/                            # Reusable plumbing, zero feature knowledge
-    ├── database/  image/  mvi/  navigation/  network/  notification/  platform/  text/  time/  ui/
+    ├── database/  format/  image/  mvi/  navigation/  network/  notification/  platform/  text/  time/
 androidApp/                           # Android application module
 iosApp/                               # iOS application module
 konsistTest/                          # Architecture + coverage enforcement tests

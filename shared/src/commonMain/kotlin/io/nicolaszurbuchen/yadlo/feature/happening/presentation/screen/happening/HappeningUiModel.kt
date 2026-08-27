@@ -3,7 +3,7 @@ package io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happenin
 import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.SlotLiveStateUiModel
 import io.nicolaszurbuchen.yadlo.design.uimodel.SocialLinkUiModel
 import io.nicolaszurbuchen.yadlo.design.uimodel.YadloDietaryTagUiModel
-import io.nicolaszurbuchen.yadlo.infra.ui.UiText
+import io.nicolaszurbuchen.yadlo.infra.text.UiText
 
 /**
  * One fiche, whichever of the three kinds of Happening it is.

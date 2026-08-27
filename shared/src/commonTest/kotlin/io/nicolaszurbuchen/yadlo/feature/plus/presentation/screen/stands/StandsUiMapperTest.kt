@@ -4,7 +4,7 @@ import io.nicolaszurbuchen.yadlo.core.content.domain.model.DietaryCoverage
 import io.nicolaszurbuchen.yadlo.core.content.domain.model.StandKind
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.model.StandDirectory
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.model.StandListing
-import io.nicolaszurbuchen.yadlo.infra.ui.UiText
+import io.nicolaszurbuchen.yadlo.infra.text.UiText
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.dietary_all_dairy_free
 import yadlo.shared.generated.resources.dietary_all_vegan

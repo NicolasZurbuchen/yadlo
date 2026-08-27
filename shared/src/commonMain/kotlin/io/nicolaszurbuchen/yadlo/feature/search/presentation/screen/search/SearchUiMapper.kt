@@ -2,7 +2,7 @@ package io.nicolaszurbuchen.yadlo.feature.search.presentation.screen.search
 
 import io.nicolaszurbuchen.yadlo.feature.search.presentation.screen.search.mapper.toUiModel
 import io.nicolaszurbuchen.yadlo.feature.search.presentation.screen.search.uimodel.SearchTopicUiModel
-import io.nicolaszurbuchen.yadlo.infra.ui.UiText
+import io.nicolaszurbuchen.yadlo.infra.text.UiText
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.search_empty
 import yadlo.shared.generated.resources.search_group_on_site

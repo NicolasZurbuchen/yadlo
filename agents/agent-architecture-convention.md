@@ -37,10 +37,13 @@ app/
 ├── App.kt                       # Root Composable: theme + image loader + NavGraph
 ├── di/
 │   └── AppModule.kt             # Aggregates every feature/infra Koin module into one list — the only DI file allowed to know about more than one feature
-└── navigation/
-    ├── impl/                    # Concrete *NavigatorImpl classes — the only place allowed to know about more than one feature's destinations at once
-    ├── NavConfig.kt
-    └── NavigationModule.kt
+├── navigation/
+│   ├── impl/                    # Concrete *NavigatorImpl classes — the only place allowed to know about more than one feature's destinations at once
+│   ├── NavConfig.kt
+│   └── NavigationModule.kt
+├── notification/                # ReminderScheduler — orchestrates plan + reminder + the Notifier port
+├── debug/                       # TimeTravelPanel, behind BuildFlags.isDebug
+└── shell/                       # the screens outside the four tab stacks: SplashScreen, ContentUnavailableScreen
 
 design/                          # how Yadlo looks. imports infra/ and nothing else above it
 ├── component/                   # composables whose contract is purely presentational — a component that owns a rule about the subject (a Slot, a Stand) belongs beside that subject in core/, however many features call it
@@ -62,8 +65,8 @@ infra/
 ├── navigation/                  # AppNavigator, NavKeyHandler, NavGraph — feature-agnostic, zero feature imports
 ├── network/                     # Ktor client configuration (expect/actual engine)
 ├── platform/                    # expect/actual platform utilities (BackHandler, Platform)
-├── text/                        # String utilities with no domain vocabulary (diacritic folding for search)
-└── ui/                          # UiText — resource/raw/composite text abstraction
+├── text/                        # UiText, and string utilities with no domain vocabulary (diacritic folding)
+└── format/                      # date, money and mailto formatting — primitives in, strings out
 ```
 
 ### A `core/` slice is not a feature, and has its own rules
@@ -161,7 +164,7 @@ by `konsistTest/PreviewTest.kt`.
 The vocabulary lives once, and in two places, because the placement rule splits it.
 `PreviewThemes` and `PreviewUiMode` know nothing about this app — an annotation setting a system
 ui-mode flag, and two Android constants commonMain cannot import — so they are `infra/preview/`,
-beside `infra/ui/UiText` and `infra/platform/BackHandler`. `YadloPreview` imports the theme and the
+beside `infra/text/UiText` and `infra/platform/BackHandler`. `YadloPreview` imports the theme and the
 palette, so it *is* the design system and gets `design/preview/`.
 
 Not `design/component/`: a component is something a screen draws, and this is never drawn in a
@@ -234,7 +237,7 @@ there fixes the next one too.
 ## Error handling
 
 - `AppError` (a single sealed interface) plus `AppException` is the only throw/catch mechanism in the app — no ad-hoc exception types.
-- Display resolution happens once, at a shared `AppError -> AppErrorUiModel` mapping (`core/error/AppErrorUiMapper.kt`), using `UiText` (`infra/ui/UiText.kt`) for anything that needs runtime data rather than only a static resource.
+- Display resolution happens once, at a shared `AppError -> AppErrorUiModel` mapping (`core/error/AppErrorUiMapper.kt`), using `UiText` (`infra/text/UiText.kt`) for anything that needs runtime data rather than only a static resource.
 - Every user-facing string is a Compose Multiplatform resource (`shared/src/commonMain/composeResources/values/strings.xml`) — never a hardcoded literal in a Composable. Naming: `feature_screen_role`, or `common_role` for a cross-feature string. Add an `element` segment only when `role` alone would be ambiguous within that screen. Group entries by feature/concern with a blank line between groups, not alphabetically.
 
 ## Testing

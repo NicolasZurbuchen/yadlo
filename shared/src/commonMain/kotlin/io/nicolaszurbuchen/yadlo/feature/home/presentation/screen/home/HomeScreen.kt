@@ -20,7 +20,7 @@ import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.component
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.component.FiguresBlock
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.component.HomeSkeleton
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.component.QuickAccessBlock
-import io.nicolaszurbuchen.yadlo.infra.ui.asString
+import io.nicolaszurbuchen.yadlo.infra.text.asString
 import org.jetbrains.compose.resources.stringResource
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.search_placeholder

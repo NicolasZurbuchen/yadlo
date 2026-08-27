@@ -33,6 +33,8 @@ import io.nicolaszurbuchen.yadlo.core.content.domain.repository.ContentRepositor
 import io.nicolaszurbuchen.yadlo.core.time.FESTIVAL_TIME_ZONE
 import io.nicolaszurbuchen.yadlo.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.design.theme.spacing
+import io.nicolaszurbuchen.yadlo.infra.format.formatAsShortDate
+import io.nicolaszurbuchen.yadlo.infra.format.formatAsTimeOfDay
 import io.nicolaszurbuchen.yadlo.infra.notification.NotificationTarget
 import io.nicolaszurbuchen.yadlo.infra.notification.Notifier
 import io.nicolaszurbuchen.yadlo.infra.notification.ScheduledNotification
@@ -40,8 +42,6 @@ import io.nicolaszurbuchen.yadlo.infra.notification.rememberNotificationPermissi
 import io.nicolaszurbuchen.yadlo.infra.platform.BuildFlags
 import io.nicolaszurbuchen.yadlo.infra.time.TimeTravelClock
 import io.nicolaszurbuchen.yadlo.infra.time.WallClock
-import io.nicolaszurbuchen.yadlo.infra.ui.formatAsShortDate
-import io.nicolaszurbuchen.yadlo.infra.ui.formatAsTimeOfDay
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalTime

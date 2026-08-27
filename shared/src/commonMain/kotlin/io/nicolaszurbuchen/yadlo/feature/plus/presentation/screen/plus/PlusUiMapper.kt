@@ -2,7 +2,7 @@ package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.plus
 
 import io.nicolaszurbuchen.yadlo.design.uimodel.SocialLinkUiModel
 import io.nicolaszurbuchen.yadlo.design.uimodel.socialIconFor
-import io.nicolaszurbuchen.yadlo.infra.ui.UiText
+import io.nicolaszurbuchen.yadlo.infra.text.UiText
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.plus_about_unofficial
 import yadlo.shared.generated.resources.plus_assistance_subtitle

@@ -6,7 +6,7 @@ import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import io.nicolaszurbuchen.yadlo.feature.plus.domain.usecase.ObservePlusOverviewUseCase
-import io.nicolaszurbuchen.yadlo.infra.ui.mailtoUrl
+import io.nicolaszurbuchen.yadlo.infra.format.mailtoUrl
 import kotlinx.coroutines.launch
 
 interface PlusStore : Store<PlusIntent, PlusState, PlusLabel>

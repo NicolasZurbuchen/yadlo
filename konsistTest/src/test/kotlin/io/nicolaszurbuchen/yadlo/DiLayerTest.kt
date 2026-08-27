@@ -65,7 +65,7 @@ class DiLayerTest {
      * The owning subtree of a project package:
      *   <prefix>.feature.programme.di -> "feature.programme"
      *   <prefix>.core.content.di    -> "core.content"
-     *   <prefix>.infra.ui         -> "infra"
+     *   <prefix>.infra.text       -> "infra"
      * Returns null for external (non-project) packages.
      */
     private fun projectSubtree(qualifiedName: String?): String? {

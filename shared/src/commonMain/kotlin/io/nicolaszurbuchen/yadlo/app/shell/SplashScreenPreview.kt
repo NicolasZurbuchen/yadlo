@@ -1,4 +1,4 @@
-package io.nicolaszurbuchen.yadlo.app.splash
+package io.nicolaszurbuchen.yadlo.app.shell
 
 import androidx.compose.runtime.Composable
 import io.nicolaszurbuchen.yadlo.design.preview.YadloPreview

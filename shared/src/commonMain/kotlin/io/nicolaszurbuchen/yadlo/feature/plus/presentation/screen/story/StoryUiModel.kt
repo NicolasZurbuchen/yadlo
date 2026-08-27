@@ -1,7 +1,7 @@
 package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.story
 
 import io.nicolaszurbuchen.yadlo.design.uimodel.YadloFigureUiModel
-import io.nicolaszurbuchen.yadlo.infra.ui.UiText
+import io.nicolaszurbuchen.yadlo.infra.text.UiText
 
 /**
  * *L'histoire de Yadlo* — the origin, a day there, and the last edition in three numbers.

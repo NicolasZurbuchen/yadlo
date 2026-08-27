@@ -25,7 +25,7 @@ import io.nicolaszurbuchen.yadlo.feature.monyadlo.presentation.screen.monyadlo.c
 import io.nicolaszurbuchen.yadlo.feature.monyadlo.presentation.screen.monyadlo.component.PlannedDayBlock
 import io.nicolaszurbuchen.yadlo.feature.monyadlo.presentation.screen.monyadlo.component.RAIL_WIDTH
 import io.nicolaszurbuchen.yadlo.feature.monyadlo.presentation.screen.monyadlo.component.WishlistTile
-import io.nicolaszurbuchen.yadlo.infra.ui.asString
+import io.nicolaszurbuchen.yadlo.infra.text.asString
 
 /**
  * The tab: one hero for *à essayer*, then the Plan as a rail of days, under the span they are all

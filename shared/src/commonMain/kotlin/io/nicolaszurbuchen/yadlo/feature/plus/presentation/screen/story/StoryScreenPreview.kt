@@ -6,7 +6,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import io.nicolaszurbuchen.yadlo.design.preview.YadloPreview
 import io.nicolaszurbuchen.yadlo.design.uimodel.YadloFigureUiModel
 import io.nicolaszurbuchen.yadlo.infra.preview.PreviewThemes
-import io.nicolaszurbuchen.yadlo.infra.ui.UiText
+import io.nicolaszurbuchen.yadlo.infra.text.UiText
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.home_figures_caveat
 

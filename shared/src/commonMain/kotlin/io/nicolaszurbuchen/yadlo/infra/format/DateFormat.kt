@@ -1,5 +1,6 @@
-package io.nicolaszurbuchen.yadlo.infra.ui
+package io.nicolaszurbuchen.yadlo.infra.format
 
+import io.nicolaszurbuchen.yadlo.infra.text.UiText
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atStartOfDayIn
 import kotlinx.datetime.number

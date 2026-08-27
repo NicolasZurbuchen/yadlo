@@ -9,11 +9,11 @@ import io.nicolaszurbuchen.yadlo.core.reminder.domain.model.ReminderSubject
 import io.nicolaszurbuchen.yadlo.core.reminder.domain.repository.ReminderSettingsRepository
 import io.nicolaszurbuchen.yadlo.core.reminder.domain.usecase.PlanRemindersUseCase
 import io.nicolaszurbuchen.yadlo.core.time.FESTIVAL_TIME_ZONE
+import io.nicolaszurbuchen.yadlo.infra.format.formatAsTimeOfDay
 import io.nicolaszurbuchen.yadlo.infra.notification.NotificationTarget
 import io.nicolaszurbuchen.yadlo.infra.notification.Notifier
 import io.nicolaszurbuchen.yadlo.infra.notification.ScheduledNotification
 import io.nicolaszurbuchen.yadlo.infra.time.WallClock
-import io.nicolaszurbuchen.yadlo.infra.ui.formatAsTimeOfDay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock

@@ -3,7 +3,7 @@ package io.nicolaszurbuchen.yadlo.feature.monyadlo.presentation.screen.wishlist
 import io.nicolaszurbuchen.yadlo.core.content.domain.model.DietaryCoverage
 import io.nicolaszurbuchen.yadlo.feature.monyadlo.domain.model.WishlistGroup
 import io.nicolaszurbuchen.yadlo.feature.monyadlo.domain.model.WishlistStand
-import io.nicolaszurbuchen.yadlo.infra.ui.UiText
+import io.nicolaszurbuchen.yadlo.infra.text.UiText
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.dietary_all_vegan
 import yadlo.shared.generated.resources.dietary_some_spicy

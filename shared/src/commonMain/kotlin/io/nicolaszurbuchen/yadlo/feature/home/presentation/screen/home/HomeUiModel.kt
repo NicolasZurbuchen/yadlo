@@ -4,7 +4,7 @@ import io.nicolaszurbuchen.yadlo.design.uimodel.SocialLinkUiModel
 import io.nicolaszurbuchen.yadlo.design.uimodel.YadloFigureUiModel
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.screen.home.uimodel.QuickAccessEntryUiModel
 import io.nicolaszurbuchen.yadlo.feature.home.presentation.uimodel.AnnouncementUiModel
-import io.nicolaszurbuchen.yadlo.infra.ui.UiText
+import io.nicolaszurbuchen.yadlo.infra.text.UiText
 import org.jetbrains.compose.resources.DrawableResource
 
 /**

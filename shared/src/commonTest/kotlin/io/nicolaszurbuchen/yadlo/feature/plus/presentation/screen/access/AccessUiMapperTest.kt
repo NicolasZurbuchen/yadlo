@@ -5,7 +5,7 @@ import io.nicolaszurbuchen.yadlo.core.content.domain.model.Provenance
 import io.nicolaszurbuchen.yadlo.core.content.domain.model.Transport
 import io.nicolaszurbuchen.yadlo.core.content.domain.model.TransportMode
 import io.nicolaszurbuchen.yadlo.design.uimodel.YadloFactMarkUiModel
-import io.nicolaszurbuchen.yadlo.infra.ui.UiText
+import io.nicolaszurbuchen.yadlo.infra.text.UiText
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.access_empty
 import kotlin.test.Test

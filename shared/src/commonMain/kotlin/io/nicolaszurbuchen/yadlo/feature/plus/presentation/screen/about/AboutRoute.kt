@@ -3,8 +3,8 @@ package io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.about
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
+import io.nicolaszurbuchen.yadlo.infra.format.mailtoUrl
 import io.nicolaszurbuchen.yadlo.infra.platform.BuildFlags
-import io.nicolaszurbuchen.yadlo.infra.ui.mailtoUrl
 import org.koin.compose.koinInject
 
 /**

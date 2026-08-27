@@ -1,4 +1,4 @@
-package io.nicolaszurbuchen.yadlo.infra.ui
+package io.nicolaszurbuchen.yadlo.infra.format
 
 import kotlin.test.Test
 import kotlin.test.assertEquals

@@ -1,4 +1,4 @@
-package io.nicolaszurbuchen.yadlo.infra.ui
+package io.nicolaszurbuchen.yadlo.infra.text
 
 import androidx.compose.runtime.Composable
 import org.jetbrains.compose.resources.StringResource
