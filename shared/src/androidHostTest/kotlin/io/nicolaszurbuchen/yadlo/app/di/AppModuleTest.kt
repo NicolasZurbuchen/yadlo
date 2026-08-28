@@ -71,13 +71,21 @@ class AppModuleTest {
                     // rather than a binding, so `HttpClient`'s constructor asks for something the
                     // graph deliberately does not hold.
                     HttpClientEngine::class,
-                    // The one entry here broader than I would like, and worth knowing about: it is
-                    // needed by `TimeTravelClock(source, enabled)` and `WallClock(source)`, both
-                    // built in lambdas in `timeModule` with `enabled` computed from BuildFlags. A
-                    // primitive in this list excuses *any* constructor taking a Boolean, so a future
-                    // `singleOf(::Foo)` whose Foo takes one would pass unchecked. No such definition
-                    // exists today; if one appears, the honest fix is to bind the flag rather than
-                    // widen this further.
+                    // The broadest entry here, and it cannot be narrowed. `BuildFlags(isDebug:
+                    // Boolean, version: String)` is a bound type, so `verify()` reflects on its
+                    // constructor and asks for a Boolean the graph will never hold.
+                    //
+                    // Two ways out were tried and neither works. Moving `TimeTravelClock`'s
+                    // `enabled: Boolean` to a `BuildFlags` parameter removes one demand and leaves
+                    // BuildFlags' own underneath. Listing `BuildFlags` here instead does nothing:
+                    // `extraTypes` excuses a *dependency* on a type, not reflection on the
+                    // constructor of a type that is bound.
+                    //
+                    // The only real fix is for `isDebug` to stop being a primitive — a two-value
+                    // enum through both entry points, to satisfy a checker. Not worth it. What it
+                    // costs to leave: a future `singleOf(::Foo)` whose Foo takes a Boolean would
+                    // pass unchecked, and binding a raw Boolean is rare enough that this is the
+                    // cheaper side of the trade.
                     Boolean::class,
                 ),
         )
