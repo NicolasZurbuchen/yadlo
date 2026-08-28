@@ -242,8 +242,7 @@ class HappeningExecutorTest {
                 observeHappeningDetail = ObserveHappeningDetailUseCase(repository, planRepository),
                 toggleSaved = ToggleSavedUseCase(planRepository, repository),
                 clock = clock,
-                happeningId = happeningId,
-            ).create()
+            ).create(happeningId)
 
         try {
             block(store, repository, clock, planRepository)

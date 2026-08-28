@@ -3,9 +3,7 @@ package io.nicolaszurbuchen.yadlo.app.di
 import android.content.Context
 import app.cash.sqldelight.db.SqlDriver
 import io.ktor.client.engine.HttpClientEngine
-import io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening.HappeningStoreFactory
 import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands.StandsKindUiModel
-import io.nicolaszurbuchen.yadlo.feature.plus.presentation.screen.stands.StandsStoreFactory
 import io.nicolaszurbuchen.yadlo.infra.di.platformModule
 import io.nicolaszurbuchen.yadlo.infra.platform.BuildFlags
 import org.koin.core.annotation.KoinExperimentalAPI
@@ -59,14 +57,6 @@ class AppModuleTest {
                     // right not to provide. Listing it here is not excusing a gap; it is telling
                     // the checker which constructors are never called.
                     SqlDriver::class,
-                    // The same blind spot, on the two parameterised ViewModels. Each builds its
-                    // StoreFactory inside the lambda so the NavKey argument can be threaded through
-                    // — `HappeningViewModel(HappeningStoreFactory(get(), …, happeningId))` — so the
-                    // factory is never resolved from the graph and correctly has no binding. What
-                    // the factories themselves need *is* checked: `get()` still resolves against
-                    // this graph at runtime, and every one of those dependencies is bound normally.
-                    HappeningStoreFactory::class,
-                    StandsStoreFactory::class,
                     // `single { createHttpClient(get()) }` — the engine is an expect/actual factory
                     // rather than a binding, so `HttpClient`'s constructor asks for something the
                     // graph deliberately does not hold.

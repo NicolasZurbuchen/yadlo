@@ -192,9 +192,17 @@ The use cases stay in their own block at the top, because they are the feature's
 rather than any one screen’s — `PlusModule` has sixteen and several are read by more than one
 screen. Everything below that block is one screen per pair, in the order the tab presents them.
 
-A screen whose ViewModel takes a construction parameter — `StandsViewModel` and
-`HappeningViewModel` both do, because a NavKey argument is not a dependency — is a single
-`viewModel { }` block with the factory built inside it, so it is already one screen in one place.
+**A NavKey argument reaches the Store through `create()`, not through a constructor.**
+`HappeningStoreFactory.create(happeningId)` and `StandsStoreFactory.create(kind)` take theirs that
+way, so both factories are ordinary `factoryOf(::…)` bindings and each screen is still the same
+`factoryOf` + `viewModel` pair as every other one.
+
+They used to hold the id on the constructor, which forced the factory to be built by hand inside
+the `viewModel { }` block. That read as one screen in one place and cost more than it looked:
+anything constructed inside a lambda is invisible to `AppModuleTest`, so those two factories' whole
+dependency lists went unverified. Removing `factoryOf(::ObserveHappeningDetailUseCase)` used to pass.
+Which argument the Store is for is a property of the Store being made rather than of the thing
+making it, so `create()` is also where it belongs.
 
 Not enforceable by Konsist: it is the order of DSL calls inside a lambda, which the API does not
 expose. Convention only.
