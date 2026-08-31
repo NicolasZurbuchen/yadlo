@@ -30,7 +30,7 @@ module.exports = {
         'di',
         'navigation',
         'theme',
-        'common',
+        'core',
         'gradle',
         'deps',
         // Yadlo feature slices
