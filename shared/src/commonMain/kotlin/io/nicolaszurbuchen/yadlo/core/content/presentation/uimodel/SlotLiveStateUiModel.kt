@@ -1,5 +1,11 @@
 package io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel
 
+import io.nicolaszurbuchen.yadlo.infra.text.UiText
+import yadlo.shared.generated.resources.Res
+import yadlo.shared.generated.resources.slot_state_ending
+import yadlo.shared.generated.resources.slot_state_over
+import yadlo.shared.generated.resources.slot_state_running
+import yadlo.shared.generated.resources.slot_state_starts_in_minutes
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Instant
@@ -16,7 +22,7 @@ import kotlin.time.Instant
  * State. A UseCase here would buy a domain type the presentation layer is not allowed to import,
  * and therefore a conversion whose only job is to undo itself.
  *
- * It sits in `common/content` because the Programme's rows and a fiche's date rows ask the same
+ * It sits in `core/content` because the Programme's rows and a fiche's date rows ask the same
  * question of the same Slot, and a visitor who taps `en cours` on the list must not land on a screen
  * that has gone quiet about it. It moved up here when the fiche arrived — the second caller, not the
  * anticipated one. Mon Yadlo will be the third.
@@ -68,6 +74,52 @@ fun slotLiveStateAt(
         else -> SlotLiveStateUiModel.Running(progress)
     }
 }
+
+/**
+ * The state in words, or nothing at all.
+ *
+ * [SlotLiveStateUiModel.Upcoming] is deliberately silent: the start time is written on the row
+ * already, and a pill repeating *à venir* would be the loudest thing there saying the least.
+ *
+ * It sits beside the type rather than in a UiMapper because three of them need it — the Programme's
+ * rows, a fiche's date rows and Mon Yadlo's timeline — and a `*UiMapper` may hold nothing but its
+ * own State-to-UiModel function. The same argument put [loudestState] beside
+ * [SlotSegmentUiModel]. Written out three times before this, and the wording had already drifted:
+ * only one copy carried the reasoning below.
+ */
+fun SlotLiveStateUiModel.stateLabel(): UiText? =
+    when (this) {
+        SlotLiveStateUiModel.Upcoming -> {
+            null
+        }
+
+        is SlotLiveStateUiModel.StartingSoon -> {
+            // Always minutes, because the window is an hour: an hours branch could only ever fire on
+            // the single instant the window opens. Never "dans 0 min" either — under a minute out it
+            // still has not started, and one is the smallest true thing to say.
+            UiText.Resource(
+                Res.string.slot_state_starts_in_minutes,
+                listOf(startsIn.inWholeMinutes.coerceAtLeast(1).toString()),
+            )
+        }
+
+        is SlotLiveStateUiModel.Running -> {
+            UiText.Resource(Res.string.slot_state_running)
+        }
+
+        // Rounded up the same way and for the same reason: a set with forty seconds left is ending
+        // in a minute, not in none.
+        is SlotLiveStateUiModel.Ending -> {
+            UiText.Resource(
+                Res.string.slot_state_ending,
+                listOf(endsIn.inWholeMinutes.coerceAtLeast(1).toString()),
+            )
+        }
+
+        SlotLiveStateUiModel.Over -> {
+            UiText.Resource(Res.string.slot_state_over)
+        }
+    }
 
 /**
  * One hour — DECISIONS.md § Countdowns only inside a one-hour window.

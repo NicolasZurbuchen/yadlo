@@ -1,10 +1,10 @@
 package io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme
 
-import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.SlotLiveStateUiModel
 import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.SlotScaleUiModel
 import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.SlotSegmentUiModel
 import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.loudestState
 import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.slotLiveStateAt
+import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.stateLabel
 import io.nicolaszurbuchen.yadlo.core.time.FESTIVAL_TIME_ZONE
 import io.nicolaszurbuchen.yadlo.infra.format.formatAsTimeOfDay
 import io.nicolaszurbuchen.yadlo.infra.format.formatMoney
@@ -16,10 +16,6 @@ import yadlo.shared.generated.resources.programme_empty_filter
 import yadlo.shared.generated.resources.programme_empty_unpublished
 import yadlo.shared.generated.resources.programme_scope_all
 import yadlo.shared.generated.resources.programme_scope_catalogue
-import yadlo.shared.generated.resources.slot_state_ending
-import yadlo.shared.generated.resources.slot_state_over
-import yadlo.shared.generated.resources.slot_state_running
-import yadlo.shared.generated.resources.slot_state_starts_in_minutes
 
 /**
  * Whatever the selector row is pointing at.
@@ -233,39 +229,7 @@ fun ProgrammeState.toUiModel(): ProgrammeUiModel {
                                         }
                                     }
                                 },
-                            stateLabel =
-                                when (state) {
-                                    SlotLiveStateUiModel.Upcoming -> {
-                                        null
-                                    }
-
-                                    is SlotLiveStateUiModel.StartingSoon -> {
-                                        // Always minutes, because the window is an hour: an hours
-                                        // branch could only ever fire on the single instant the
-                                        // window opens. Never "dans 0 min" either — under a minute
-                                        // out it still has not started, and one is the smallest true
-                                        // thing to say.
-                                        UiText.Resource(
-                                            Res.string.slot_state_starts_in_minutes,
-                                            listOf(state.startsIn.inWholeMinutes.coerceAtLeast(1).toString()),
-                                        )
-                                    }
-
-                                    is SlotLiveStateUiModel.Running -> {
-                                        UiText.Resource(Res.string.slot_state_running)
-                                    }
-
-                                    is SlotLiveStateUiModel.Ending -> {
-                                        UiText.Resource(
-                                            Res.string.slot_state_ending,
-                                            listOf(state.endsIn.inWholeMinutes.coerceAtLeast(1).toString()),
-                                        )
-                                    }
-
-                                    SlotLiveStateUiModel.Over -> {
-                                        UiText.Resource(Res.string.slot_state_over)
-                                    }
-                                },
+                            stateLabel = state.stateLabel(),
                             state = state,
                             slots = segments,
                         )

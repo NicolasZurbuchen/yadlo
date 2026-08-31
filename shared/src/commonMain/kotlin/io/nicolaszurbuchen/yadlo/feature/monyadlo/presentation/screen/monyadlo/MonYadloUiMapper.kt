@@ -1,9 +1,9 @@
 package io.nicolaszurbuchen.yadlo.feature.monyadlo.presentation.screen.monyadlo
 
-import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.SlotLiveStateUiModel
 import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.SlotScaleUiModel
 import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.SlotSegmentUiModel
 import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.slotLiveStateAt
+import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.stateLabel
 import io.nicolaszurbuchen.yadlo.core.time.FESTIVAL_TIME_ZONE
 import io.nicolaszurbuchen.yadlo.infra.format.formatAsDayOfMonth
 import io.nicolaszurbuchen.yadlo.infra.format.formatAsTimeOfDay
@@ -15,10 +15,6 @@ import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.mon_yadlo_empty
 import yadlo.shared.generated.resources.price_free
 import yadlo.shared.generated.resources.price_from
-import yadlo.shared.generated.resources.slot_state_ending
-import yadlo.shared.generated.resources.slot_state_over
-import yadlo.shared.generated.resources.slot_state_running
-import yadlo.shared.generated.resources.slot_state_starts_in_minutes
 import kotlin.time.Duration
 
 /**
@@ -128,34 +124,7 @@ fun MonYadloState.toUiModel(): MonYadloUiModel {
                                             }
                                         }
                                     },
-                                stateLabel =
-                                    when (state) {
-                                        SlotLiveStateUiModel.Upcoming -> {
-                                            null
-                                        }
-
-                                        is SlotLiveStateUiModel.StartingSoon -> {
-                                            UiText.Resource(
-                                                Res.string.slot_state_starts_in_minutes,
-                                                listOf(state.startsIn.inWholeMinutes.coerceAtLeast(1).toString()),
-                                            )
-                                        }
-
-                                        is SlotLiveStateUiModel.Running -> {
-                                            UiText.Resource(Res.string.slot_state_running)
-                                        }
-
-                                        is SlotLiveStateUiModel.Ending -> {
-                                            UiText.Resource(
-                                                Res.string.slot_state_ending,
-                                                listOf(state.endsIn.inWholeMinutes.coerceAtLeast(1).toString()),
-                                            )
-                                        }
-
-                                        SlotLiveStateUiModel.Over -> {
-                                            UiText.Resource(Res.string.slot_state_over)
-                                        }
-                                    },
+                                stateLabel = state.stateLabel(),
                                 slot =
                                     SlotSegmentUiModel(
                                         id = slot.id,
