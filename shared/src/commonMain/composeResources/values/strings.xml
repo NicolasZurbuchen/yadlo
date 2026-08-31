@@ -210,12 +210,10 @@
     <string name="payment_section_accepted">Accepté partout</string>
 
     <string name="access_title">Accès</string>
-    <string name="access_departures">Départs</string>
     <string name="access_empty">Rien n'est encore publié sur l'accès au site.</string>
 
     <string name="hours_title">Horaires</string>
     <string name="hours_intro">À quelle heure le site ouvre, et jusqu'à quand on peut manger, boire et se mouiller.</string>
-    <string name="hours_site_open">Site ouvert</string>
     <string name="hours_estimated">Horaires déduits, à confirmer par l'organisation.</string>
     <string name="hours_empty">Les horaires ne sont pas encore publiés.</string>
 

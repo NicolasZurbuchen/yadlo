@@ -23,7 +23,7 @@ class PackageHierarchyTest {
 
     @Test
     fun `Direct children of presentation must be in allowed list`() {
-        val allowed = listOf("screen", "component", "navigation", "uimodel", "flow")
+        val allowed = listOf("screen", "component", "navigation", "uimodel")
 
         scope.packages
             .filter { it.name.matches(Regex(".*\\.feature\\.[^.]+\\.presentation\\.[^.]+$")) }
@@ -60,7 +60,7 @@ class PackageHierarchyTest {
 
     @Test
     fun `Direct children of domain must be in allowed list`() {
-        val allowed = listOf("model", "repository", "usecase", "validation")
+        val allowed = listOf("model", "repository", "usecase")
 
         scope.packages
             .filter { it.name.matches(Regex(".*\\.(feature|core)\\.[^.]+\\.domain\\.[^.]+$")) }
@@ -108,7 +108,7 @@ class PackageHierarchyTest {
 
     @Test
     fun `Direct children of data datasource local must be in allowed list`() {
-        val allowed = listOf("entity", "mapper")
+        val allowed = listOf("mapper")
 
         scope.packages
             .filter { it.name.matches(Regex(".*\\.(feature|core)\\.[^.]+\\.data\\.datasource\\.local\\.[^.]+$")) }
@@ -145,7 +145,7 @@ class PackageHierarchyTest {
     @Test
     fun `Leaf packages must not have child packages`() {
         val leafPackageNames =
-            setOf("api", "cache", "component", "di", "dto", "flow", "mapper", "model", "navigation", "repository", "usecase", "uimodel")
+            setOf("api", "component", "di", "dto", "mapper", "model", "navigation", "repository", "usecase", "uimodel")
 
         val allPackages = Konsist.scopeFromProject().packages
         val allPackageNames = allPackages.map { it.name }.toSet()
@@ -158,6 +158,30 @@ class PackageHierarchyTest {
             .assertTrue { pkg ->
                 allPackageNames.none { it.startsWith("${pkg.name}.") }
             }
+    }
+
+    /**
+     * **A file in a platform source set says so in its name.** `Notifier.kt`, `Notifier.android.kt`
+     * and `Notifier.ios.kt` are three files a search returns together, and only the suffix tells
+     * you which one you are reading before you open it.
+     *
+     * It was already the convention for sixteen of twenty-four files and had quietly drifted on the
+     * other eight — including both halves of `DatabaseDriverFactory` and `HttpClientEngine`, where
+     * the plain name is at its most confusing. Nothing enforced it, so #73 found it by eye.
+     *
+     * It applies to every file in the source set, not only to `actual` declarations. `PlatformModule`
+     * has a twin in each platform without being an expect/actual pair at all, and it is the same
+     * problem for a reader.
+     */
+    @Test
+    fun `platform source set files must name their platform`() {
+        scope.files
+            .filter { it.resideInSourceSet("androidMain") }
+            .assertTrue { it.name.endsWith(".android") }
+
+        scope.files
+            .filter { it.resideInSourceSet("iosMain") }
+            .assertTrue { it.name.endsWith(".ios") }
     }
 
     /**
