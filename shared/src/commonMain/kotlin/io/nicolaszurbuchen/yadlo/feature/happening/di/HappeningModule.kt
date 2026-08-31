@@ -11,9 +11,13 @@ val happeningModule =
     module {
         factoryOf(::ObserveHappeningDetailUseCase)
 
+        factoryOf(::HappeningStoreFactory)
+
         // Parameterised rather than declared with viewModelOf: which Happening the fiche is about
-        // arrives from the NavKey, so the id is a construction parameter rather than a dependency.
+        // arrives from the NavKey, so the id is passed at resolution rather than resolved. The
+        // factory above is an ordinary binding, because the id reaches it through `create()` — it
+        // used to be built by hand here, which put its dependencies beyond `AppModuleTest`.
         viewModel { (happeningId: String) ->
-            HappeningViewModel(HappeningStoreFactory(get(), get(), get(), get(), happeningId))
+            HappeningViewModel(get(), happeningId)
         }
     }

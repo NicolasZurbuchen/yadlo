@@ -147,8 +147,7 @@ class StandsExecutorTest {
         StandsStoreFactory(
             storeFactory = DefaultStoreFactory(),
             observeStandDirectory = ObserveStandDirectoryUseCase(repository),
-            kind = kind,
-        ).create()
+        ).create(kind)
 
     private fun mixed() =
         ready(

@@ -108,10 +108,12 @@ val plusModule =
         factoryOf(::ClearDataStoreFactory)
         viewModelOf(::ClearDataViewModel)
 
+        factoryOf(::StandsStoreFactory)
+
         // Parameterised rather than declared with viewModelOf: which half of the stands is being
-        // read arrives from the NavKey, so the kind is a construction parameter rather than a
-        // dependency. The same shape the fiche uses for its Happening id.
+        // read arrives from the NavKey, so the kind is passed at resolution rather than resolved.
+        // The same shape the fiche uses for its Happening id, factory binding included.
         viewModel { (kind: StandsKindUiModel) ->
-            StandsViewModel(StandsStoreFactory(get(), get(), kind))
+            StandsViewModel(get(), kind)
         }
     }

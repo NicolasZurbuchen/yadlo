@@ -19,9 +19,8 @@ interface StandsStore : Store<StandsIntent, StandsState, StandsLabel>
 class StandsStoreFactory(
     private val storeFactory: StoreFactory,
     private val observeStandDirectory: ObserveStandDirectoryUseCase,
-    private val kind: StandsKindUiModel,
 ) {
-    fun create(): StandsStore =
+    fun create(kind: StandsKindUiModel): StandsStore =
         object :
             StandsStore,
             Store<StandsIntent, StandsState, StandsLabel> by storeFactory.create(

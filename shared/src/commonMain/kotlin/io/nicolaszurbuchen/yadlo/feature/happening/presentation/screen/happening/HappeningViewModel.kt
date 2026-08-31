@@ -13,8 +13,9 @@ import kotlinx.coroutines.flow.stateIn
 
 class HappeningViewModel(
     factory: HappeningStoreFactory,
+    happeningId: String,
 ) : ViewModel() {
-    private val store = factory.create()
+    private val store = factory.create(happeningId)
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val state: StateFlow<HappeningUiModel> =

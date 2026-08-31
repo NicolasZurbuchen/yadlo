@@ -20,16 +20,22 @@ class HappeningStoreFactory(
     private val observeHappeningDetail: ObserveHappeningDetailUseCase,
     private val toggleSaved: ToggleSavedUseCase,
     private val clock: AppClock,
-    private val happeningId: String,
 ) {
-    fun create(): HappeningStore =
+    /**
+     * Which Happening the fiche is about is a property of the Store being made, not of the thing
+     * making it — so it arrives here rather than on the constructor. That is what lets the factory
+     * be an ordinary `factoryOf(::HappeningStoreFactory)` binding: with the id on the constructor
+     * it had to be built by hand inside the `viewModel { }` block, which put it beyond the reach of
+     * the graph verification in `AppModuleTest`.
+     */
+    fun create(happeningId: String): HappeningStore =
         object :
             HappeningStore,
             Store<HappeningIntent, HappeningState, HappeningLabel> by storeFactory.create(
                 name = "HappeningStore",
                 initialState = HappeningState(now = clock.now()),
                 bootstrapper = BootstrapperImpl(),
-                executorFactory = { ExecutorImpl() },
+                executorFactory = { ExecutorImpl(happeningId) },
                 reducer = ReducerImpl,
             ) {}
 
@@ -40,8 +46,9 @@ class HappeningStoreFactory(
         }
     }
 
-    private inner class ExecutorImpl :
-        CoroutineExecutor<HappeningIntent, HappeningAction, HappeningState, HappeningMessage, HappeningLabel>() {
+    private inner class ExecutorImpl(
+        private val happeningId: String,
+    ) : CoroutineExecutor<HappeningIntent, HappeningAction, HappeningState, HappeningMessage, HappeningLabel>() {
         override fun executeAction(action: HappeningAction) {
             when (action) {
                 HappeningAction.ObserveDetail -> observeDetail()

@@ -13,8 +13,9 @@ import kotlinx.coroutines.flow.stateIn
 
 class StandsViewModel(
     factory: StandsStoreFactory,
+    kind: StandsKindUiModel,
 ) : ViewModel() {
-    private val store = factory.create()
+    private val store = factory.create(kind)
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val state: StateFlow<StandsUiModel> =
