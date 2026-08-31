@@ -213,3 +213,17 @@ For the full deterministic `type`/`scope` decision procedure, see
 **Nicolas Zurbuchen**  
 Android Software Engineer based in Tokyo, Japan  
 Contact: [nicolas.zurbuchen@outlook.com](mailto:nicolas.zurbuchen@outlook.com)
+
+---
+
+## 📄 License
+
+The source code is © Nicolas Zurbuchen, all rights reserved. It is published here to be read rather
+than reused: no licence is granted to use, modify or redistribute it. If you would like to, please
+[write to me](mailto:nicolas.zurbuchen@outlook.com).
+
+Yadlo's name, its logo and the festival photography belong to the association. They are included
+only so that the app can run, they are not mine to license, and nothing above applies to them.
+
+The bundled Barlow fonts are under the SIL Open Font License, whose text ships with them in
+[`licenses/Barlow-OFL.txt`](licenses/Barlow-OFL.txt).
