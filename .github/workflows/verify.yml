@@ -80,3 +80,83 @@ jobs:
             **/build/test-results/**/*.xml
           retention-days: 14
           if-no-files-found: ignore
+
+  # The four commands never compile for Kotlin/Native and never run a test on it, so half of a
+  # Multiplatform app was verified by compiling on the other half. Not academic for this code:
+  # `formatMoney` rounds a Double via roundToLong and `slotLiveStateAt` divides two Durations and
+  # calls .toFloat() — both are where JVM and Native are allowed to disagree.
+  #
+  # macOS is required to build an iOS target at all, and is free here because the repo is public.
+  ios:
+    name: ios — compile · commonTest on native
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Compile the iOS framework
+        run: ./gradlew :shared:compileKotlinIosSimulatorArm64
+
+      # The same commonTest sources the JVM already runs, on Native this time. The runner is
+      # arm64, which is what iosSimulatorArm64 wants.
+      - name: Run commonTest on iOS
+        if: ${{ !cancelled() }}
+        run: ./gradlew :shared:iosSimulatorArm64Test
+
+      - name: Upload reports
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-reports
+          path: |
+            **/build/reports/tests/**
+            **/build/test-results/**/*.xml
+          retention-days: 14
+          if-no-files-found: ignore
+
+  # Nothing in the four commands builds the app. A broken manifest, a missing resource or an R8
+  # problem lives entirely in `:androidApp`, which the shared tests never touch.
+  android:
+    name: android — assemble · lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Assemble the debug app
+        run: ./gradlew :androidApp:assembleDebug
+
+      # Android Lint sees things ktlint and Konsist cannot: manifest problems, deprecated platform
+      # APIs, and accessibility. The last one matters here — the app argues about
+      # contentDescription in several places and nothing has ever checked the claim.
+      - name: Android Lint
+        if: ${{ !cancelled() }}
+        run: ./gradlew :androidApp:lintDebug
+
+      - name: Upload reports
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-reports
+          path: |
+            androidApp/build/reports/**
+          retention-days: 14
+          if-no-files-found: ignore
