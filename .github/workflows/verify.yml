@@ -1,0 +1,82 @@
+name: verify
+
+# The four commands CLAUDE.md asks for before calling anything done, run by a machine instead of
+# by memory. Until this existed, ~170 Konsist rules, 130-odd test files and the migration check
+# all depended on a human typing four things in the right order — and the Konsist one silently
+# reported a stale pass until #82.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# A superseded run on the same branch is only ever noise, so cancel it. This is the opposite of
+# the content workflow, which must never cancel: a half-published edition is worse than a late
+# one, while a half-finished check is worth nothing either way.
+concurrency:
+  group: verify-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    name: konsist · tests · ktlint · migration
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # A tampered wrapper jar executes arbitrary code in every build that runs it, and this repo
+      # is public. One step, checked against the published Gradle checksums.
+      - name: Validate the Gradle wrapper
+        uses: gradle/actions/wrapper-validation@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      # Each command is its own step, and every one runs even after an earlier failure. Chaining
+      # them would report only the first, which is exactly the loop CLAUDE.md warns about: you fix
+      # ktlint, push, wait, and only then discover Konsist. They catch different things — ktlint
+      # has a history of finding violations across files a narrower run never touches.
+      #
+      # `!cancelled()` rather than `always()`: a cancelled run should stop, not grind through four
+      # more Gradle invocations.
+      - name: Konsist — architecture rules
+        run: ./gradlew :konsistTest:test
+
+      - name: Unit tests
+        if: ${{ !cancelled() }}
+        run: ./gradlew :shared:testAndroidHostTest
+
+      - name: ktlint
+        if: ${{ !cancelled() }}
+        run: ./gradlew ktlintCheck
+
+      # The odd one out, and the reason it is on the list: a table added to a .sq file without a
+      # matching .sqm compiles, runs and passes every other command here. It only breaks on a
+      # device that already had the database, and it has shipped that way once.
+      - name: Database migration
+        if: ${{ !cancelled() }}
+        run: ./gradlew :shared:verifyCommonMainAppDatabaseMigration
+
+      # The build already writes ktlint HTML/JSON/checkstyle reports and JUnit XML, and nothing has
+      # ever read them. On a red run they are the difference between a log line and the file.
+      - name: Upload reports
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: verify-reports
+          path: |
+            **/build/reports/ktlint/**
+            **/build/reports/tests/**
+            **/build/test-results/**/*.xml
+          retention-days: 14
+          if-no-files-found: ignore
