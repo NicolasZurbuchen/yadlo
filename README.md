@@ -58,6 +58,15 @@ ended).
 
 ---
 
+## 🖼️ Showcase
+
+<img src="assets/yadlo-accueil.jpg" width="150">  <img src="assets/yadlo-programme.jpg" width="150">  <img src="assets/yadlo-mon-yadlo.jpg" width="150">  <img src="assets/yadlo-fiche.jpg" width="150">  <img src="assets/yadlo-stands.jpg" width="150">  <img src="assets/yadlo-menu.jpg" width="150">
+
+*Accueil during LIVE · the Programme opened on the day you are standing in · a saved plan on the rail ·
+an artist fiche · the stands grid with its dietary filters · a menu with prices and per-dish marks.*
+
+---
+
 ## 📚 Project documents
 
 | Document | What it holds |
