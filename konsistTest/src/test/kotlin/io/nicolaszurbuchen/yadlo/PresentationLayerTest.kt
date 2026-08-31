@@ -109,9 +109,18 @@ class PresentationLayerTest {
 
     // region Component package rules
 
+    /**
+     * A local list rather than [screenFileSuffixes] on purpose: `StoreFactory`, `UiMapper` and
+     * `UiModel` are legal in a screen package *and* harmless in a component one, so only the
+     * suffixes that would make a component look like a screen are forbidden here.
+     *
+     * It also used to carry `Flow`, from a `presentation/flow/` package the template had and this
+     * app never did — removed alongside the allow-list entry for that package, so the two lists in
+     * this file finally name the same vocabulary.
+     */
     @Test
     fun `files in component packages must not use a screen file suffix`() {
-        val screenSuffixes = listOf("Contract", "Preview", "Route", "Screen", "ViewModel", "Flow")
+        val screenSuffixes = listOf("Contract", "Preview", "Route", "Screen", "ViewModel")
 
         scope.files
             .withPackage("..component..")

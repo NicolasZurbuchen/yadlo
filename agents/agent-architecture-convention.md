@@ -83,6 +83,15 @@ Contract, a Store, a Route or a `State -> UiModel` conversion, and none of those
 Holding a screenless slice to the feature shape is what left the dietary mapper with no legal home
 in the first place — see #74.
 
+### Platform files name their platform
+
+Every file in `androidMain/` or `iosMain/` ends `.android.kt` or `.ios.kt` — enforced by
+`PackageHierarchyTest`. `Notifier.kt`, `Notifier.android.kt` and `Notifier.ios.kt` come back from a
+search together, and the suffix is the only thing that says which one you are about to open.
+
+It applies to every file in the source set, not only to `actual` declarations: `PlatformModule` has
+a twin on each side without being an expect/actual pair at all, and it reads the same way.
+
 ## Layer shape inside a feature
 
 ```

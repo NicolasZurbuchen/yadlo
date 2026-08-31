@@ -15,9 +15,6 @@ compose_allowed_composition_locals = LocalAppColors,LocalCategoryColors,LocalSpa
 # Compose — enforce M3 only
 compose_disallow_material2 = true
 
-# Compose — past-tense completion callbacks (explicitly allowlisted)
-compose_allowed_lambda_parameter_names = onAuthenticated
-
 # Compose — Koin ViewModel factory
 compose_view_model_factories = koinViewModel
 

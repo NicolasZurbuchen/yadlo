@@ -54,7 +54,8 @@ Cross-cutting technical scopes take priority over feature scopes. Check in this 
    - `search` is the global search — its index, its screen, and the doors into it, wherever those doors live. A magnifier added to the shell toolbar is `search`, not `navigation`.
 2. **Is the change confined to a single feature module, and not primarily about one of the concerns above?** Use that feature's scope — `home`, `programme`, `mon-yadlo`, `happening`, `plus`, `search`. A change is feature-owned when the feature is where the change lives *and* the feature is the reason the change exists.
    - `happening` is the shared fiche (detail) template for Artist, Activity and Stand, which both `programme` and `mon-yadlo` navigate into.
-3. **Does the change span two or more features with no single owner, and isn't one of the fixed technical scopes?** Use `common`.
+3. **Does the change span two or more features with no single owner, and isn't one of the fixed technical scopes?** Use `core`.
+   - **`core` is a concern, not the `core/` package.** It says *this belongs to no one feature*, which is why a change touching four screens' Composables takes it while a change entirely inside `core/content/data/` takes `content`. The scope was called `common` until the package of that name became `core/`; renaming it kept the pair aligned, and the collision it trades into is worth naming so nobody reads the scope as a folder.
 4. **CI-only or doc-only changes** — scope is optional; omit it unless a specific scope adds clarity (e.g. `ci(gradle): cache konsist test results`).
 
 ### Tie-breaker

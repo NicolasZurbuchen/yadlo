@@ -25,25 +25,29 @@ class LayerBoundariesTest {
         ): Boolean = importName.startsWith("$projectPrefix.$topLevel.")
     }
 
+    /**
+     * **A feature may not reach into another feature at all**, not merely into its internals.
+     *
+     * This used to exempt `domain`, flagging only imports containing `.presentation` or `.data`, so
+     * `feature.search` could have taken a model straight off `feature.programme`. Nothing ever did
+     * — which is what made tightening it free, and is the only moment worth doing it in. A domain
+     * type two features share is `core/` material by the placement rule, and borrowing one across
+     * the boundary is how a slice quietly stops being one.
+     *
+     * The substring test also used bare `"feature."`, which any library package could satisfy; it
+     * is anchored to the project prefix now, like the rest of this file.
+     */
     @Test
-    fun `feature layers should not depend on other features internal implementation`() {
+    fun `feature layers should not depend on other features`() {
         Konsist.scopeFromProject()
             .files
             .filter { it.hasPackage("..feature..") }
             .assertFalse { file ->
-                val packageName = file.packagee?.name ?: ""
-                val currentFeature = packageName.substringAfter("feature.").substringBefore(".")
+                val currentFeature = (file.packagee?.name ?: "").substringAfter("feature.").substringBefore(".")
 
                 file.imports.any { import ->
-                    val importName = import.name
-                    if (importName.contains("feature.")) {
-                        val importedFeature = importName.substringAfter("feature.").substringBefore(".")
-                        val isInternal = importName.contains(".presentation") || importName.contains(".data")
-
-                        importedFeature != currentFeature && isInternal
-                    } else {
-                        false
-                    }
+                    isProjectImportFrom(import.name, "feature") &&
+                        import.name.substringAfter("feature.").substringBefore(".") != currentFeature
                 }
             }
     }
