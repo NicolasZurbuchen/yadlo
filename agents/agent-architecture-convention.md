@@ -258,6 +258,7 @@ here, and it is right about where the *fix* belongs — it just never protected 
 - `runTest` wraps every suspend-based test, unconditionally, even ones with no real async work.
 - Turbine is for `Label` flows only (one-shot events). `StateFlow` state is read synchronously after `testDispatcher.scheduler.runCurrent()` / `advanceTimeBy(...)`.
 - Every `Mapper`, `RepositoryImpl`, `DataSourceImpl`, `UseCase`, `UiMapper`, and `StoreFactory` (as a matching `ReducerTest` + `ExecutorTest` pair) needs a corresponding test file — enforced by `konsistTest/TestingTest.kt`, not just this document. Add to that file's coverage list when a new category of production file gets established.
+- **A `uimodel/` file that declares a top-level function needs one too.** A type-only file does not: requiring a test for `PhaseUiModel` is asking someone to assert that an enum has its own entries. But a function in a `uimodel` package is a rule about the subject that has found a quiet home, and it is the rules that are worth pinning. This category was missing from the list above, and #73 found four functions living in it untested — one of them `slotLiveStateAt`, which decides every live pill in the app off the injected clock and had no assertion anywhere on two of its five states.
 
 ## Konsist rules — do not modify without asking
 

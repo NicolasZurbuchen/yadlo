@@ -25,6 +25,29 @@ class TestingTest {
             .assertTrue { it.hasCorrespondingTestFile() }
     }
 
+    /**
+     * **A UiModel file that only declares its type needs no test; one that declares a function
+     * does.** This is the category the coverage list was missing, and #73 found four functions
+     * living in it untested — including `slotLiveStateAt`, which decides every live pill in the app
+     * off the injected clock and had no assertion anywhere on two of its five states.
+     *
+     * They fell through because none of them is a Mapper, a UseCase, a UiMapper or a StoreFactory.
+     * A `uimodel` package is meant to hold the pieces of a screen's vocabulary — types — so a
+     * top-level function in one is a rule about the subject that has found a quiet home, and the
+     * rules are the part worth pinning.
+     *
+     * The type-only files stay exempt on purpose. Requiring a test for `PhaseUiModel` would be
+     * asking someone to assert that an enum has its own entries.
+     */
+    @Test
+    fun `every uimodel file that declares a function has a corresponding test file`() {
+        scope.files
+            .withPackage("..uimodel")
+            .withSourceSet("commonMain")
+            .filter { it.functions(includeNested = false).isNotEmpty() }
+            .assertTrue { it.hasCorrespondingTestFile() }
+    }
+
     @Test
     fun `every RepositoryImpl file has a corresponding test file`() {
         scope.files
