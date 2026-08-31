@@ -15,7 +15,56 @@ whole app reshaping itself around where the year is (off season, announced, appr
 ended).
 
 > **Status:** unofficial project, aiming to become the official app for the 2027 edition.
-> Currently in initial setup — see [SPEC.md](SPEC.md) for the full plan.
+> All four tabs are built. See [SPEC.md](SPEC.md) for the full plan and what is deliberately out of scope.
+
+---
+
+## ✨ Features
+
+- 🏠 **Accueil**
+    - A block stack that reshapes itself with the Phase: countdown out of season, announcements as
+      they land, a live companion during the weekend, a thank-you on the Monday
+    - The Phase is derived from the clock, never flipped by hand
+    - Global search from the toolbar
+- 🗓️ **Programme**
+    - One chronological list per day, behind a *Découvrir · Tous · Vendredi · Samedi · Dimanche*
+      selector
+    - Live state written on every slot: starting soon, running with progress, ending, over
+    - Filter by kind: music, water, land, children, Silent Party
+    - During the festival it opens on the day you are standing in, scrolled to now
+- ❤️ **Mon Yadlo**
+    - One tap on the row you are already reading saves that specific date, with no dialog asking
+      which one you meant
+    - Saved slots on a rail grouped by day, the date pinned left and the time written once
+    - A local reminder before each saved slot
+    - Food stands saved separately and grouped by what they sell, so they never clutter the timetable
+- 🔍 **Recherche**
+    - One screen over one corpus: the programme and the practical information together
+    - A result is a thing rather than an occurrence, so an activity running all three days appears
+      once and lists its dates
+- 📄 **Fiches**
+    - One template for Artist, Activity and Stand: a collapsing toolbar over a photo
+    - Menus with prices, dietary marks on individual dishes, and last year's prices marked
+      unconfirmed rather than quietly shown as fact
+    - Share as plain text that still works for a recipient without the app
+- ➕ **Plus**
+    - An iOS-style grouped list: *Sur place · Le festival · S'impliquer · Réglages*
+    - The cashless notice, bus lines and night departures, parking, the site map
+    - A notification switch, and a screen that clears the saved plan and the image cache
+- 📴 **Offline**
+    - The whole programme and every practical fact answerable with no signal, because the site runs
+      on one saturated cell tower
+    - Previously viewed images kept in a disk cache
+
+---
+
+## 🖼️ Showcase
+
+<img src="assets/yadlo-accueil.jpg" width="150">  <img src="assets/yadlo-programme.jpg" width="150">  <img src="assets/yadlo-mon-yadlo.jpg" width="150">  <img src="assets/yadlo-fiche.jpg" width="150">  <img src="assets/yadlo-stands.jpg" width="150">  <img src="assets/yadlo-menu.jpg" width="150">
+
+*Accueil during LIVE · the Programme opened on the day you are standing in, with every live state
+written out · a saved plan on the rail · an activity fiche and its three dates, one of them saved ·
+the stands grid with its dietary filters · a menu with prices and per-dish marks.*
 
 ---
 
@@ -161,6 +210,6 @@ For the full deterministic `type`/`scope` decision procedure, see
 
 ## 🧑‍💻 Author
 
-**Nicolas Zurbuchen**
-Android Software Engineer based in Tokyo, Japan
+**Nicolas Zurbuchen**  
+Android Software Engineer based in Tokyo, Japan  
 Contact: [nicolas.zurbuchen@outlook.com](mailto:nicolas.zurbuchen@outlook.com)
