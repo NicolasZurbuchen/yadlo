@@ -1,8 +1,8 @@
 package io.nicolaszurbuchen.yadlo.feature.happening.presentation.screen.happening
 
 import io.nicolaszurbuchen.yadlo.core.content.presentation.mapper.toDietaryTags
-import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.SlotLiveStateUiModel
 import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.slotLiveStateAt
+import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.stateLabel
 import io.nicolaszurbuchen.yadlo.core.time.FESTIVAL_TIME_ZONE
 import io.nicolaszurbuchen.yadlo.design.uimodel.SocialLinkUiModel
 import io.nicolaszurbuchen.yadlo.design.uimodel.socialIconFor
@@ -27,10 +27,6 @@ import yadlo.shared.generated.resources.price_free
 import yadlo.shared.generated.resources.share_happening_activity
 import yadlo.shared.generated.resources.share_happening_artist
 import yadlo.shared.generated.resources.share_happening_stand
-import yadlo.shared.generated.resources.slot_state_ending
-import yadlo.shared.generated.resources.slot_state_over
-import yadlo.shared.generated.resources.slot_state_running
-import yadlo.shared.generated.resources.slot_state_starts_in_minutes
 
 /**
  * One Happening, flattened into the fiche template.
@@ -89,39 +85,7 @@ fun HappeningState.toUiModel(): HappeningUiModel {
                     timeText =
                         "${slot.start.formatAsTimeOfDay(FESTIVAL_TIME_ZONE)} – " +
                             slot.end.formatAsTimeOfDay(FESTIVAL_TIME_ZONE),
-                    // The same words as the Programme row this fiche was opened from, built the
-                    // same way. Both mappers write them out because a UiMapper may hold nothing
-                    // but its own State-to-UiModel function, so there is nowhere shared to put it
-                    // that is not a UiText-returning helper in `infra/ui` — which would be a
-                    // formatting concern pretending to be a copy decision.
-                    stateLabel =
-                        when (state) {
-                            SlotLiveStateUiModel.Upcoming -> {
-                                null
-                            }
-
-                            is SlotLiveStateUiModel.StartingSoon -> {
-                                UiText.Resource(
-                                    Res.string.slot_state_starts_in_minutes,
-                                    listOf(state.startsIn.inWholeMinutes.coerceAtLeast(1).toString()),
-                                )
-                            }
-
-                            is SlotLiveStateUiModel.Running -> {
-                                UiText.Resource(Res.string.slot_state_running)
-                            }
-
-                            is SlotLiveStateUiModel.Ending -> {
-                                UiText.Resource(
-                                    Res.string.slot_state_ending,
-                                    listOf(state.endsIn.inWholeMinutes.coerceAtLeast(1).toString()),
-                                )
-                            }
-
-                            SlotLiveStateUiModel.Over -> {
-                                UiText.Resource(Res.string.slot_state_over)
-                            }
-                        },
+                    stateLabel = state.stateLabel(),
                     state = state,
                     planned = slot.planned,
                 )
