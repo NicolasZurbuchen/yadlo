@@ -72,6 +72,8 @@ kotlin {
             implementation(libs.ktor.client.okhttp)
         }
         getByName("androidHostTest").dependencies {
+            implementation(libs.kotlin.test)
+            implementation(libs.koin.test)
             implementation(libs.sqldelight.driver.jdbc.sqlite)
         }
         commonMain.dependencies {
