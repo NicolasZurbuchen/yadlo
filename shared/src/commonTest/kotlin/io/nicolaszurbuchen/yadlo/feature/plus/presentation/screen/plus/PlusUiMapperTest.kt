@@ -144,7 +144,6 @@ class PlusUiMapperTest {
     @Test
     fun toUiModel_theExternalRows_wearAMarkThatSaysWhereTheyGo() {
         // One leaves for the browser and one opens mail, against the chevron everything else wears.
-        // On one bar of signal that is what tells someone whether tapping costs a page load.
         assertEquals(YadloLinkMarkUiModel.EXTERNAL, PlusEntryUiModel.NEWSLETTER.mark)
         assertEquals(YadloLinkMarkUiModel.MAIL, PlusEntryUiModel.REPORT.mark)
         assertEquals(YadloLinkMarkUiModel.DISCLOSURE, PlusEntryUiModel.STANDS_FOOD.mark)

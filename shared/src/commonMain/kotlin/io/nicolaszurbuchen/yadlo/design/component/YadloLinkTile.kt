@@ -30,8 +30,7 @@ import org.jetbrains.compose.resources.stringResource
  * draw belongs in `app/` by the rule in CLAUDE.md.
  *
  * **The trailing mark says where the tap goes**, which is the whole reason facts and links look
- * different. On a beach with one bar of signal that difference is what tells someone whether tapping
- * is about to cost them a page load — see [YadloLinkMarkUiModel].
+ * different — [YadloLinkMarkUiModel] holds which marks exist and why the column earns its keep.
  *
  * [sublabel] is where the label alone would be a guess — *PDF · MBC* under a line number, the
  * address under *Écrivez-nous*.
