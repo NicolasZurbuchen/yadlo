@@ -15,15 +15,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
-import coil3.compose.AsyncImage
+import io.nicolaszurbuchen.yadlo.core.content.presentation.component.ContentImage
 import io.nicolaszurbuchen.yadlo.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.design.theme.categoryColors
 import io.nicolaszurbuchen.yadlo.design.theme.spacing
-import org.jetbrains.compose.resources.painterResource
-import yadlo.shared.generated.resources.Res
-import yadlo.shared.generated.resources.img_placeholder
 
 /**
  * The head of the fiche: the Category written out, then the name, over the photograph.
@@ -36,15 +32,9 @@ import yadlo.shared.generated.resources.img_placeholder
  * photo has not arrived yet, which is exactly the moment the app should look finished rather than
  * apologetic.
  *
- * **What fills the gap is a photograph of the site, not a grey rectangle.** [Res.drawable.img_placeholder]
- * is bundled, so it is there on the first launch with no signal, and it is a picture of the festival
- * — which is a true thing to say about any Happening at it. It is the same 280dp, under the same
- * scrim, under the same veil, so nothing about the screen changes but which photograph is behind
- * the words.
- *
- * It is used for a null url and for a failed load alike. Those are the same fact to a reader
- * standing on a beach with one bar of signal, and telling them apart on screen would mean drawing a
- * broken-image mark on a fiche that is otherwise complete.
+ * **What fills the gap is a photograph of the site, not a grey rectangle** — [ContentImage] owns
+ * that, here and on every card. It is the same 280dp, under the same scrim, under the same veil, so
+ * nothing about the screen changes but which photograph is behind the words.
  *
  * **A rule in the Category's colour closes the hero.** Sitting still at the top of a fiche, a
  * photograph says nothing about which Category it belongs to: the toolbar is transparent, the label
@@ -88,22 +78,13 @@ fun HappeningHeader(
 ) {
     val category = MaterialTheme.categoryColors.forId(categoryId)
     val scrim = MaterialTheme.appColors.scrim
-    val placeholder = painterResource(Res.drawable.img_placeholder)
 
     Box(
         contentAlignment = Alignment.BottomStart,
         modifier = modifier.fillMaxWidth().height(HERO_HEIGHT).background(category.fill),
     ) {
-        AsyncImage(
-            model = imageUrl,
-            // The photograph carries no information the words below it do not, and announcing
-            // "photo de DJ ALF" on a screen whose title is DJ ALF says it twice.
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            // `fallback` is the null url and `error` is the load that failed. Same picture for
-            // both: on a beach with one bar of signal they are the same fact.
-            fallback = placeholder,
-            error = placeholder,
+        ContentImage(
+            imageUrl = imageUrl,
             modifier = Modifier.fillMaxSize(),
         )
 

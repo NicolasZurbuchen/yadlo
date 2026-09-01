@@ -11,6 +11,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import io.nicolaszurbuchen.yadlo.core.content.presentation.component.CONTENT_IMAGE_RATIO
 import io.nicolaszurbuchen.yadlo.design.theme.shimmerBlock
 import io.nicolaszurbuchen.yadlo.design.theme.spacing
 
@@ -39,7 +40,7 @@ fun StandsSkeleton(modifier: Modifier = Modifier) {
                     // and sizing it in two parts is what keeps the picture's proportion honest at
                     // any screen width.
                     Column(modifier = Modifier.weight(1f).shimmerBlock(MaterialTheme.shapes.small)) {
-                        Spacer(modifier = Modifier.fillMaxWidth().aspectRatio(IMAGE_RATIO))
+                        Spacer(modifier = Modifier.fillMaxWidth().aspectRatio(CONTENT_IMAGE_RATIO))
 
                         Spacer(modifier = Modifier.height(TEXT_BAND_HEIGHT))
                     }
@@ -49,10 +50,7 @@ fun StandsSkeleton(modifier: Modifier = Modifier) {
     }
 }
 
-/** The card's own frame — see StandCard, where the choice of three by two is argued. */
-private const val IMAGE_RATIO = 3f / 2f
-
-/** And the card's own grid — see StandsScreen. */
+/** The card's own grid — see StandsScreen. */
 private const val COLUMNS = 2
 
 // A name and an offering line at half a phone's width, which is two lines each more often than one,

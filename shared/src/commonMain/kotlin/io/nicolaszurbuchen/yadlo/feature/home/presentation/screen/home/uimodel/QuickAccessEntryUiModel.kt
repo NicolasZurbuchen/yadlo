@@ -32,11 +32,10 @@ import yadlo.shared.generated.resources.plus_entry_volunteering
  * out that they match. The `plus_` prefix records where the words were written first, not who is
  * allowed to read them. The rows themselves are the Plus tab's too — see `QuickAccessBlock`.
  *
- * [mark] is where the tap goes, drawn in the row's trailing column exactly as the Plus tab draws it.
- * Everything here stays in the app but the newsletter, and that one row is why the column earns its
- * keep: on a beach with one bar of signal, whether a tap is about to cost a page load is worth a
- * glyph. `QuickAccessEntryUiModelTest` is what keeps a second leaving entry from being added
- * without `HomeRoute` learning to send it out.
+ * [mark] is where the tap goes, drawn in the row's trailing column exactly as the Plus tab draws it
+ * — see [YadloLinkMarkUiModel]. Everything here stays in the app but the newsletter, and
+ * `QuickAccessEntryUiModelTest` is what keeps a second leaving entry from being added without
+ * `HomeRoute` learning to send it out.
  */
 enum class QuickAccessEntryUiModel(
     val title: StringResource,

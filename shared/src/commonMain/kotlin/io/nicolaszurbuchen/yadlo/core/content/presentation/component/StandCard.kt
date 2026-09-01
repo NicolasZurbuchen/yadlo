@@ -15,16 +15,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
-import coil3.compose.AsyncImage
 import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.StandCardUiModel
 import io.nicolaszurbuchen.yadlo.design.component.YadloDietaryMarks
 import io.nicolaszurbuchen.yadlo.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.design.theme.spacing
-import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import yadlo.shared.generated.resources.Res
-import yadlo.shared.generated.resources.img_placeholder
 import yadlo.shared.generated.resources.stands_card_options
 
 /**
@@ -82,10 +78,6 @@ fun StandCard(
     onClick: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    // The same bundled photograph of the site the fiche falls back to, for a null url and a failed
-    // load alike: on a beach with one bar of signal they are the same fact.
-    val placeholder = painterResource(Res.drawable.img_placeholder)
-
     Column(
         modifier =
             modifier
@@ -94,18 +86,12 @@ fun StandCard(
                 .background(MaterialTheme.appColors.surface)
                 .clickable { onClick(stand.id) },
     ) {
-        AsyncImage(
-            model = stand.imageUrl,
-            // The name is written directly under it. "Photo de Guliko" over a card titled Guliko
-            // says it twice.
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            fallback = placeholder,
-            error = placeholder,
+        ContentImage(
+            imageUrl = stand.imageUrl,
             modifier =
                 Modifier
                     .fillMaxWidth()
-                    .aspectRatio(IMAGE_RATIO)
+                    .aspectRatio(CONTENT_IMAGE_RATIO)
                     .background(MaterialTheme.appColors.surfaceRaised),
         )
 
@@ -153,13 +139,3 @@ fun StandCard(
         }
     }
 }
-
-/**
- * Three by two rather than the sixteen by nine a card like this usually gets.
- *
- * Every photograph in the bank is four by three, so any wider frame is a centre crop that throws
- * away the top and bottom of the picture — at 16:9 that is a quarter of the height, which on the
- * one portrait among the eight takes the top of the subject's head off. 3:2 keeps all but a tenth
- * and still reads as a banner rather than as a photograph shown whole.
- */
-private const val IMAGE_RATIO = 3f / 2f
