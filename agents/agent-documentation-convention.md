@@ -80,17 +80,32 @@ Does not — the surprise is in the design, and the design has a file:
 The magic-number rule in `CLAUDE.md` is the one case that survives all of this: a bound still gets
 its "why" at the constant, because a name alone only moves the question.
 
-## Repeated prose means a missing abstraction
+## Repeated prose is a detector, not a diagnosis
 
-**If the same explanation is true in two places, the code is duplicated, not the documentation.**
+**The same explanation in two files always means something is wrong. It does not always mean the
+same thing is wrong**, and the two cases are indistinguishable from a grep — they were found by the
+same search, on the same day, and needed opposite fixes.
 
-`IMAGE_RATIO = 3f / 2f` was declared in three files, under three copies of the same sentence about
-one bar of signal on a beach. The comment is *why nobody noticed*: it made copy-paste read as
-considered. Extract the thing; the explanation goes with it, once, and the call sites say nothing
-because nothing surprising is left at them.
+**Before deciding, read the code under the sentence.** That is the whole test: is the code duplicated
+too, or only the prose?
 
-When extraction genuinely is not possible — different layers, a platform split — there are three ways
-to point, and all three keep the prose in one place:
+**The abstraction is missing — extract it.** `IMAGE_RATIO = 3f / 2f` was declared in three files,
+under three copies of one sentence about a beach with one bar of signal. The constant, the
+placeholder and the same five arguments to `AsyncImage` were all copied along with the prose, and
+the comment is *why nobody noticed*: it made copy-paste read as considered. `ContentImage` is where
+all of it lives now, and the call sites say nothing because nothing surprising is left at them.
+
+**The abstraction is already there — point at it.** The sentence about whether a tap costs a page
+load appeared in four files too. But `YadloLinkMarkUiModel` already existed, `YadloLinkTile` already
+took a `mark`, and both entry enums already carried a `mark` field. There was nothing to extract:
+the code was right, and the prose had simply been written past it. The reasoning stays once at the
+enum that defines the concept, and the three use sites reference it.
+
+Getting this backwards is expensive in both directions — extracting what is already extracted
+invents a wrapper nobody needed, and pointing at an abstraction that does not exist leaves the
+duplication in place with a citation on top of it.
+
+Three ways to point, and all three keep the prose in one place:
 
 1. **A KDoc `[Reference]`.** It resolves in the IDE and renders as a link in Dokka, so it is
    checkable in a way prose is not.

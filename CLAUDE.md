@@ -91,8 +91,10 @@ to get wrong once.
   moves the "why this bound?" question one file over instead of answering it.
 - **Prose is routed, not sprinkled**: a KDoc says what a caller needs to call it correctly, a `//`
   says why the *code* is surprising, and why the *app* is like this goes in `DECISIONS.md` — even
-  when the code it justifies is right there. The same explanation appearing twice means the code is
-  duplicated, not the documentation. See `agents/agent-documentation-convention.md`.
+  when the code it justifies is right there. The same explanation appearing twice always means
+  something is wrong, but read the code under it before deciding what: either the abstraction is
+  missing and wants extracting, or it already exists and the prose was written past it. See
+  `agents/agent-documentation-convention.md`.
 - **Gradle version catalog bundles**: if three or more libraries are always added together (see
   `ktor-common`, `compose-common`, `mvikotlin-common` in `[bundles]`), define a bundle and
   consume it via `libs.bundles.x` instead of listing each one at every call site.
