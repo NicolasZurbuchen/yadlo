@@ -31,6 +31,7 @@ Read these before doing any non-trivial work. They do not overlap.
 | [`agents/agent-architecture-convention.md`](agents/agent-architecture-convention.md) | Package placement decision procedure, layer shape, MVI vocabulary, DI, error handling, testing conventions. |
 | [`agents/agent-commit-convention.md`](agents/agent-commit-convention.md) | Deterministic `type`/`scope` selection for commit messages. |
 | [`agents/agent-design-system-convention.md`](agents/agent-design-system-convention.md) | The colour/typography/spacing layer model under `design/theme/`. |
+| [`agents/agent-documentation-convention.md`](agents/agent-documentation-convention.md) | **Where prose goes.** Which declarations get KDoc, when a `//` comment earns its place, and what belongs in `DECISIONS.md` instead of in a file. |
 | [`README.md`](README.md) | Explains the project to a *human*. Not the technical source of truth for an agent. |
 
 The UI prototypes linked from SPEC.md are **normative for layout and interaction**, not
@@ -88,6 +89,10 @@ to get wrong once.
   codebase already prevents.
 - **Magic numbers get a comment, not just a name**: a named constant with no explanation just
   moves the "why this bound?" question one file over instead of answering it.
+- **Prose is routed, not sprinkled**: a KDoc says what a caller needs to call it correctly, a `//`
+  says why the *code* is surprising, and why the *app* is like this goes in `DECISIONS.md` — even
+  when the code it justifies is right there. The same explanation appearing twice means the code is
+  duplicated, not the documentation. See `agents/agent-documentation-convention.md`.
 - **Gradle version catalog bundles**: if three or more libraries are always added together (see
   `ktor-common`, `compose-common`, `mvikotlin-common` in `[bundles]`), define a bundle and
   consume it via `libs.bundles.x` instead of listing each one at every call site.
