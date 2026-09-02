@@ -4,17 +4,26 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.selection.selectableGroup
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.NavigationBarItemDefaults
+import androidx.compose.material3.ShortNavigationBarItem
+import androidx.compose.material3.ShortNavigationBarItemDefaults
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -29,6 +38,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
@@ -44,6 +54,7 @@ import io.nicolaszurbuchen.yadlo.design.component.YadloTopAppBar
 import io.nicolaszurbuchen.yadlo.design.theme.LocalTabChromeInsets
 import io.nicolaszurbuchen.yadlo.design.theme.TabChromeInsets
 import io.nicolaszurbuchen.yadlo.design.theme.appColors
+import io.nicolaszurbuchen.yadlo.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.feature.happening.presentation.navigation.HappeningDestination
 import io.nicolaszurbuchen.yadlo.feature.search.presentation.navigation.SearchDestination
 import io.nicolaszurbuchen.yadlo.infra.navigation.AppNavigator
@@ -357,10 +368,16 @@ internal fun formatEditionDates(days: List<FestivalDay>): String? {
 }
 
 /**
+ * **A pill that floats over the content rather than a band that ends it.** The bar used to sit on
+ * the bottom edge and own a strip of the window; it now wraps its four tabs, centres, and lifts off
+ * all three edges, with the list running underneath it. What the tab bar costs the page is a
+ * shadow instead of a band.
+ *
  * **The same blue as the bar at the top, which is what makes the two read as one frame.** It was
  * Material's own `surfaceContainer` — a near-white in light and a near-black in dark — so the app
  * had a coloured band above the page and a neutral one below it, and the ground the tabs are drawn
- * on ran out at a different place from the chrome that holds them.
+ * on ran out at a different place from the chrome that holds them. Floating makes that ground a
+ * shape rather than an edge, which is the one thing it had to keep.
  *
  * **The accent stays, and it had to change step to survive the move.** The selected tab keeps its
  * rose pill; what it cannot keep is `accentSubtle`, which is chosen against a page ground and
@@ -368,9 +385,10 @@ internal fun formatEditionDates(days: List<FestivalDay>): String? {
  * [io.nicolaszurbuchen.yadlo.design.theme.AppColors.accentChrome], which is the same accent at
  * the step each theme's bar can actually carry.
  *
- * Everything not in the pill takes the bar's own ink, selected and unselected alike, exactly as the
- * top bar does with its title and its actions. The pill is the selection cue; a second one in the
- * label would only be legible to someone comparing two labels, which is not how a tab bar is read.
+ * **No labels, so the icon carries the name.** A pill that wraps its content cannot hold four
+ * French labels — *Mon Yadlo* and *Programme* alone are most of a phone — and a bar that stretches
+ * to fit them is the band again under another name. The label becomes the icon’s
+ * `contentDescription`, which is where a screen reader was reading it from anyway.
  */
 @Composable
 private fun MainNavigationBar(
@@ -378,32 +396,71 @@ private fun MainNavigationBar(
     onTabClick: (Tab) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    NavigationBar(
-        containerColor = MaterialTheme.appColors.primarySubtle,
-        contentColor = MaterialTheme.appColors.onPrimarySubtle,
-        modifier = modifier,
+    Box(
+        contentAlignment = Alignment.Center,
+        // The pill clears the gesture bar itself, because it no longer sits on the window edge: a
+        // NavigationBar consumed that inset as part of being the bottom of the screen, and this is
+        // not the bottom of anything. Measured with the inset and the margin included, so the lists
+        // underneath still pad by exactly what the bar covers.
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .windowInsetsPadding(WindowInsets.navigationBars)
+                .padding(BAR_MARGIN),
     ) {
-        Tab.entries.forEach { tab ->
-            val isSelected = tab == selectedTab
-            NavigationBarItem(
-                selected = isSelected,
-                onClick = { onTabClick(tab) },
-                icon = {
-                    Icon(
-                        imageVector = if (isSelected) tab.selectedIcon else tab.unselectedIcon,
-                        contentDescription = null,
+        Surface(
+            color = MaterialTheme.appColors.primarySubtle,
+            contentColor = MaterialTheme.appColors.onPrimarySubtle,
+            shape = CircleShape,
+            // The one shadow in the app. Nothing else here is raised, so this is what says the bar
+            // is over the page rather than part of it — and on the dark theme, where the pill and
+            // the page are close in value, it is most of what says it at all.
+            shadowElevation = BAR_ELEVATION,
+        ) {
+            // A Row rather than ShortNavigationBar, and the reason is in that component: both its
+            // measure policies open with `val width = constraints.maxWidth`, so the bar is always
+            // as wide as it is offered and Centered only centres the items inside it. The pill has
+            // to wrap. The items are the expressive ones either way — they are what carry the look,
+            // and they take no scope from the bar.
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xs),
+                verticalAlignment = Alignment.CenterVertically,
+                modifier =
+                    Modifier
+                        .selectableGroup()
+                        .padding(horizontal = MaterialTheme.spacing.sm, vertical = MaterialTheme.spacing.xs),
+            ) {
+                Tab.entries.forEach { tab ->
+                    val isSelected = tab == selectedTab
+
+                    ShortNavigationBarItem(
+                        selected = isSelected,
+                        onClick = { onTabClick(tab) },
+                        icon = {
+                            Icon(
+                                imageVector = if (isSelected) tab.selectedIcon else tab.unselectedIcon,
+                                contentDescription = stringResource(tab.label),
+                            )
+                        },
+                        // Null rather than a hidden label: the pill wraps its content, so a label
+                        // that is present but not drawn would still be reserving width for four
+                        // French words. The name is on the icon instead.
+                        label = null,
+                        colors =
+                            ShortNavigationBarItemDefaults.colors(
+                                selectedIconColor = MaterialTheme.appColors.onAccentChrome,
+                                selectedIndicatorColor = MaterialTheme.appColors.accentChrome,
+                                unselectedIconColor = MaterialTheme.appColors.onPrimarySubtle,
+                            ),
                     )
-                },
-                label = { Text(text = stringResource(tab.label)) },
-                colors =
-                    NavigationBarItemDefaults.colors(
-                        selectedIconColor = MaterialTheme.appColors.onAccentChrome,
-                        selectedTextColor = MaterialTheme.appColors.onPrimarySubtle,
-                        indicatorColor = MaterialTheme.appColors.accentChrome,
-                        unselectedIconColor = MaterialTheme.appColors.onPrimarySubtle,
-                        unselectedTextColor = MaterialTheme.appColors.onPrimarySubtle,
-                    ),
-            )
+                }
+            }
         }
     }
 }
+
+// How far the pill lifts off the three edges it no longer touches. The window insets are handled
+// by the scaffold above, so this is clearance from the gesture bar rather than to it.
+private val BAR_MARGIN = 12.dp
+
+private val BAR_ELEVATION = 6.dp
