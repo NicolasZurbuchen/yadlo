@@ -1720,6 +1720,25 @@ with white ink in light (3.45:1 on the bar) and rose400 with near-black in dark 
 ends with the theme like every other pair in the file, and asserted in `AppColorTest` rather than
 left as prose.
 
+**The bar floats, and the labels went with the band.** It sat on the bottom edge and owned a strip
+of the window; it now wraps its four tabs, centres, and lifts twelve points off all three edges,
+with the list running underneath. The blue is the one thing that had to survive the move — it is
+what makes the two bars one frame — so the ground became a shape rather than an edge.
+
+The labels could not. A pill that wraps its content cannot hold four French words: *Programme* and
+*Mon Yadlo* alone are most of a phone, and a bar that stretches to fit them is the band again under
+another name. So the icon carries the name, as its `contentDescription`, which is where a screen
+reader was reading it from anyway. What is lost is the sighted reader who does not recognise an
+icon — mitigated by there being four of them, in a fixed order, on a tab bar they see every launch.
+
+**It clears the gesture bar itself.** A `NavigationBar` consumes that inset as part of being the
+bottom of the screen, and this is not the bottom of anything. The inset and the margin are measured
+together with the pill, so the lists underneath still pad by exactly what the bar covers.
+
+**The one shadow in the app.** Nothing else here is raised. On the dark theme, where the pill and
+the page sit close in value, it is most of what says the bar is over the page rather than part of
+it.
+
 Everything not inside the pill takes the bar's own ink, selected and unselected alike, exactly as
 the top bar does with its title and its actions. The pill is the selection cue; a second one in the
 label would only be legible to somebody comparing two labels, which is not how a tab bar is read.
