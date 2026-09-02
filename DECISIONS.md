@@ -1748,6 +1748,21 @@ now dims with its time, at the same value, and only while the row itself is not 
 row whose every hour is past dims as a whole, and dimming again inside it would take the bar to 20%
 and out of the day it exists to describe.
 
+### The networks close every phase
+
+APPROACHING used to be the one phase without the social row. The argument was that it is the only
+moment Accueil has an errand — the payment rule and *comment venir*, three days out — and that a
+screen with something to do should not end by offering a way off the app.
+
+Reversed. The row is last on the stack in every phase it appears in, which is not where anyone
+holding an errand is looking; what the omission actually produced was a stack that ends differently
+on one screen out of five, and a difference that small reads as something missing rather than as
+restraint. The networks are also the one block that is *more* useful in the days before the gates
+open, because that is when the association is posting.
+
+The ordering that carries this phase is untouched and is the real difference between it and the two
+long ones: quick access over the annonces, because at J-3 the errand is the news.
+
 ## Open
 
 **The accent colour.** `#14618F` is the primary, not an accent — the terminology in earlier

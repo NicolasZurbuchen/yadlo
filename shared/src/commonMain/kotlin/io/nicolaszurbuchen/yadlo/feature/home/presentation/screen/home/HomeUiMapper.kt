@@ -372,11 +372,9 @@ fun HomeState.toUiModel(): HomeUiModel {
                 listOfNotNull(HomeBlockUiModel.Search, countdown, hero, announcements, quickAccess, social)
             }
 
-            // No networks in this one phase, and that is the prototype's call rather than an
-            // omission: it is the only phase with something to do, and it ends on the annonces
-            // instead of offering a way off the app three days before the gates open.
+            // DECISIONS.md § The networks close every phase
             PhaseUiModel.APPROACHING -> {
-                listOfNotNull(HomeBlockUiModel.Search, countdown, hero, quickAccess, announcements)
+                listOfNotNull(HomeBlockUiModel.Search, countdown, hero, quickAccess, announcements, social)
             }
 
             // The hero leads, because during the festival the first question is whether the site
