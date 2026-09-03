@@ -67,15 +67,28 @@ class HomeUiMapperTest {
     }
 
     @Test
-    fun toUiModel_approaching_endsOnTheAnnoncesRatherThanOfferingAWayOffTheApp() {
-        // The one phase without the networks, and the prototype's call rather than an omission:
-        // three days out is the only moment the screen has something for the reader to do.
+    fun toUiModel_approaching_putsTheErrandOverTheAnnoncesAndStillEndsOnTheNetworks() {
+        // The ordering is what this phase is about: at J-3 the quick access is the errand and
+        // the annonces are the news about it, which is the reverse of the two long phases.
         val state = state(phase = Phase.APPROACHING, now = THREE_DAYS_BEFORE)
 
         assertEquals(
-            listOf("Search", "Countdown", "Hero", "QuickAccess", "Announcements"),
+            listOf("Search", "Countdown", "Hero", "QuickAccess", "Announcements", "Social"),
             state.toUiModel().blockNames(),
         )
+    }
+
+    @Test
+    fun toUiModel_theNetworksCloseEveryPhaseThatHasThem() {
+        // Reversed: APPROACHING used to be the one phase without them. A row present on four
+        // screens out of five reads as missing on the fifth rather than as restraint.
+        val phases = listOf(Phase.OFF_SEASON, Phase.ANNOUNCED, Phase.APPROACHING, Phase.LIVE, Phase.ENDED)
+
+        phases.forEach { phase ->
+            val names = state(phase = phase, now = THREE_DAYS_BEFORE).toUiModel().blockNames()
+
+            assertEquals("Social", names.last(), "$phase should end on the networks")
+        }
     }
 
     @Test
