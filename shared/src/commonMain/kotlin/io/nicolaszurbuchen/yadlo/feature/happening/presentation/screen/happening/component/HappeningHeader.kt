@@ -17,9 +17,11 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import io.nicolaszurbuchen.yadlo.core.content.presentation.component.ContentImage
+import io.nicolaszurbuchen.yadlo.design.theme.WAVE_DEPTH
 import io.nicolaszurbuchen.yadlo.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.design.theme.categoryColors
 import io.nicolaszurbuchen.yadlo.design.theme.spacing
+import io.nicolaszurbuchen.yadlo.design.theme.waveEdgeBackground
 
 /**
  * The head of the fiche: the Category written out, then the name, over the photograph.
@@ -144,8 +146,10 @@ fun HappeningHeader(
                 Modifier
                     .align(Alignment.BottomCenter)
                     .fillMaxWidth()
-                    .height(CATEGORY_RULE_HEIGHT)
-                    .background(category.fill),
+                    // Its flat part is the three points it always was; the wave hangs into the
+                    // page under it, the same way every bar in the app now ends.
+                    .height(CATEGORY_RULE_HEIGHT + WAVE_DEPTH)
+                    .waveEdgeBackground(category.fill),
         )
     }
 }

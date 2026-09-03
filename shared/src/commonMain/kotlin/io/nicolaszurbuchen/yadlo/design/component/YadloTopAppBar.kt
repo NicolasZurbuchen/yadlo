@@ -1,9 +1,13 @@
 package io.nicolaszurbuchen.yadlo.design.component
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
@@ -17,12 +21,15 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import io.nicolaszurbuchen.yadlo.design.theme.WAVE_DEPTH
 import io.nicolaszurbuchen.yadlo.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.design.theme.spacing
+import io.nicolaszurbuchen.yadlo.design.theme.waveEdgeBackground
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import yadlo.shared.generated.resources.Res
@@ -73,6 +80,12 @@ fun YadloTopAppBar(
     subtitle: String? = null,
     onBackClick: (() -> Unit)? = null,
     actions: @Composable RowScope.() -> Unit = {},
+    /**
+     * False on the two tab roots whose own chrome carries the wave instead — see
+     * [io.nicolaszurbuchen.yadlo.app.navigation.Tab.continuesChrome]. The chrome can only end
+     * once, and this bar is not where it ends on those two.
+     */
+    wavyEdge: Boolean = true,
 ) {
     // The same condition the mark is drawn off, read once: a bar with no way back is a tab root,
     // where the title is the festival's own name and belongs in the lockup beside the mark. On a
@@ -80,65 +93,86 @@ fun YadloTopAppBar(
     // heading it has always been.
     val isTabRoot = onBackClick == null
 
-    TopAppBar(
-        title = {
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm),
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                Text(
-                    text = title,
-                    // Set explicitly: TopAppBar defaults its title to titleLarge, which in this
-                    // project is the button-label role rather than a heading.
-                    style = if (isTabRoot) wordmarkStyle() else MaterialTheme.typography.headlineSmall,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.alignByBaseline(),
-                )
+    // The wave is added under the bar rather than cut out of it, so the flat part is exactly
+    // what it always was and only the page below starts lower. See [WaveEdge].
+    val waveDepth = if (wavyEdge) WAVE_DEPTH else 0.dp
 
-                subtitle?.let {
+    Column(
+        modifier =
+            modifier.then(
+                if (wavyEdge) {
+                    Modifier.waveEdgeBackground(MaterialTheme.appColors.primarySubtle)
+                } else {
+                    Modifier.background(MaterialTheme.appColors.primarySubtle)
+                },
+            ),
+    ) {
+        TopAppBar(
+            title = {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm),
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
                     Text(
-                        text = it,
-                        style = MaterialTheme.typography.labelLarge,
+                        text = title,
+                        // Set explicitly: TopAppBar defaults its title to titleLarge, which in this
+                        // project is the button-label role rather than a heading.
+                        style = if (isTabRoot) wordmarkStyle() else MaterialTheme.typography.headlineSmall,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                         modifier = Modifier.alignByBaseline(),
                     )
+
+                    subtitle?.let {
+                        Text(
+                            text = it,
+                            style = MaterialTheme.typography.labelLarge,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            modifier = Modifier.alignByBaseline(),
+                        )
+                    }
                 }
-            }
-        },
-        navigationIcon = {
-            if (isTabRoot) {
-                Icon(
-                    painter = painterResource(Res.drawable.ic_yadlo),
-                    // Decorative: the title beside it is the word this mark stands for, so a
-                    // description here would have a screen reader say "Yadlo" twice before the
-                    // dates. The same call YadloDietaryTags makes, for the same reason.
-                    contentDescription = null,
-                    tint = MaterialTheme.appColors.onPrimarySubtle,
-                    modifier = Modifier.padding(horizontal = MARK_GUTTER).size(MARK_SIZE),
-                )
-            } else {
-                // Smart-cast through isTabRoot, which is the same null check by another name.
-                IconButton(onClick = onBackClick) {
+            },
+            navigationIcon = {
+                if (isTabRoot) {
                     Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = stringResource(Res.string.back),
+                        painter = painterResource(Res.drawable.ic_yadlo),
+                        // Decorative: the title beside it is the word this mark stands for, so a
+                        // description here would have a screen reader say "Yadlo" twice before the
+                        // dates. The same call YadloDietaryTags makes, for the same reason.
+                        contentDescription = null,
+                        tint = MaterialTheme.appColors.onPrimarySubtle,
+                        modifier = Modifier.padding(horizontal = MARK_GUTTER).size(MARK_SIZE),
                     )
+                } else {
+                    // Smart-cast through isTabRoot, which is the same null check by another name.
+                    IconButton(onClick = onBackClick) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = stringResource(Res.string.back),
+                        )
+                    }
                 }
-            }
-        },
-        actions = actions,
-        colors =
-            TopAppBarDefaults.topAppBarColors(
-                containerColor = MaterialTheme.appColors.primarySubtle,
-                scrolledContainerColor = MaterialTheme.appColors.primarySubtle,
-                navigationIconContentColor = MaterialTheme.appColors.onPrimarySubtle,
-                actionIconContentColor = MaterialTheme.appColors.onPrimarySubtle,
-                titleContentColor = MaterialTheme.appColors.onPrimarySubtle,
-            ),
-        modifier = modifier,
-    )
+            },
+            actions = actions,
+            colors =
+                TopAppBarDefaults.topAppBarColors(
+                    // Transparent both ways: the Column behind it owns the ground now, because
+                    // a TopAppBar paints a rectangle and the shape has to be on the thing that
+                    // also holds the wave.
+                    containerColor = Color.Transparent,
+                    scrolledContainerColor = Color.Transparent,
+                    navigationIconContentColor = MaterialTheme.appColors.onPrimarySubtle,
+                    actionIconContentColor = MaterialTheme.appColors.onPrimarySubtle,
+                    titleContentColor = MaterialTheme.appColors.onPrimarySubtle,
+                ),
+        )
+
+        // The wave itself. A Spacer rather than padding on the bar, so the bar keeps the height
+        // Material gave it and the decoration is visibly a thing added under it.
+        Spacer(modifier = Modifier.fillMaxWidth().height(waveDepth))
+    }
 }
 
 /**

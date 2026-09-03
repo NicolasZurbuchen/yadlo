@@ -1748,6 +1748,30 @@ now dims with its time, at the same value, and only while the row itself is not 
 row whose every hour is past dims as a whole, and dimming again inside it would take the bar to 20%
 and out of the day it exists to describe.
 
+### The chrome ends in a wave
+
+The lake is the whole festival — three days on a beach, under a mark that is a horizon over water
+— and the edge where the blue met the page was a straight line doing no work. It is a wave now,
+everywhere the blue stops: under a top bar, under the Programme’s chip block, under a sticky day
+header, and under the rule that separates a fiche’s photograph from its text.
+
+**It hangs below the bar rather than being cut out of it.** A trough carved upward would eat into
+whatever the bar is holding at that x — a title’s descenders, the last chip in a row — and by a
+different amount along its length. Added underneath, the flat part of every bar is exactly what it
+always was and the only thing that changes is where the page begins: twelve points lower.
+
+**It can only end once, which is the whole of the complexity.** Two blue blocks meeting with a wave
+between them puts a band of page colour in the middle of the chrome, and the app stacks blue on
+blue in three places. So the bar asks whether the tab draws more of it — `Tab.continuesChrome`,
+true for Programme and Mon Yadlo — and the Programme’s chip block asks the same question of the day
+header, which under *Tous* sticks directly beneath it. Each screen has exactly one wave, at the
+bottom of whichever blue is last.
+
+**Twelve points, and a whole number of periods.** Six read as a printing fault at arm’s length in
+sunlight, which is the only place this has to work. The wavelength is a target rather than a
+measurement: the shape divides the width by it and stretches the crests to fit, because a wave cut
+off mid-period leaves one edge on a crest and the other in a trough.
+
 ## Open
 
 **The accent colour.** `#14618F` is the primary, not an accent — the terminology in earlier

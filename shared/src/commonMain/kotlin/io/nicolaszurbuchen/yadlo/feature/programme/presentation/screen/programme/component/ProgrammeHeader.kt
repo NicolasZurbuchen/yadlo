@@ -11,8 +11,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.nicolaszurbuchen.yadlo.core.content.presentation.component.SlotScaleRow
 import io.nicolaszurbuchen.yadlo.core.content.presentation.uimodel.SlotScaleUiModel
+import io.nicolaszurbuchen.yadlo.design.theme.WAVE_DEPTH
 import io.nicolaszurbuchen.yadlo.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.design.theme.spacing
+import io.nicolaszurbuchen.yadlo.design.theme.waveEdgeBackground
 import io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme.CategoryChipUiModel
 import io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme.ScopeChipUiModel
 
@@ -58,8 +60,29 @@ fun ProgrammeHeader(
     onCategoryClick: (String) -> Unit,
     onAllCategoriesClick: () -> Unit,
     modifier: Modifier = Modifier,
+    /**
+     * False under *Tous*, where a sticky [DaySectionHeader] sits directly under this block and is
+     * blue too. The chrome ends in a wave and can only end once: waving here as well would put a
+     * band of page colour between two blues.
+     */
+    wavyEdge: Boolean = true,
 ) {
-    Column(modifier = modifier.fillMaxWidth().background(MaterialTheme.appColors.primarySubtle)) {
+    // The bottom of the chrome on this tab is here rather than on the bar above it — see
+    // Tab.continuesChrome — except under *Tous*, where the day header below takes it instead.
+    Column(
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .then(
+                    if (wavyEdge) {
+                        Modifier
+                            .waveEdgeBackground(MaterialTheme.appColors.primarySubtle)
+                            .padding(bottom = WAVE_DEPTH)
+                    } else {
+                        Modifier.background(MaterialTheme.appColors.primarySubtle)
+                    },
+                ),
+    ) {
         if (scopes.isNotEmpty()) {
             ScopeChipRow(
                 scopes = scopes,
