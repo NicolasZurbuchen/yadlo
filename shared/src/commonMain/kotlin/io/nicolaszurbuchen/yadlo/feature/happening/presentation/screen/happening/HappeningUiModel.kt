@@ -20,6 +20,12 @@ import io.nicolaszurbuchen.yadlo.infra.text.UiText
  * arriving as the only question the screen actually has about it.
  */
 data class HappeningUiModel(
+    /**
+     * Empty until the detail lands, like [title] beside it — this is the fiche naming the
+     * Happening it is about, and before that there is no answer rather than a wrong one. It is
+     * what joins the photograph here to the one on the card that opened it.
+     */
+    val id: String,
     val isLoading: Boolean,
     val isMissing: Boolean,
     val title: String,

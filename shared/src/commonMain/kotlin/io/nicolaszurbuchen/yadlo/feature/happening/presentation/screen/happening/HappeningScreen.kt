@@ -246,6 +246,7 @@ fun HappeningScreen(
                 ) {
                     item(key = "header") {
                         HappeningHeader(
+                            happeningId = state.id,
                             imageUrl = state.imageUrl,
                             categoryId = state.categoryId,
                             categoryLabel = state.categoryLabel,

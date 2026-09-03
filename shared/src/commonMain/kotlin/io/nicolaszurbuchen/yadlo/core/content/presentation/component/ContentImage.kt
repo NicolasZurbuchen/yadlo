@@ -3,7 +3,9 @@ package io.nicolaszurbuchen.yadlo.core.content.presentation.component
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.navigation3.ui.LocalNavAnimatedContentScope
 import coil3.compose.AsyncImage
+import io.nicolaszurbuchen.yadlo.infra.navigation.LocalSharedTransitionScope
 import org.jetbrains.compose.resources.painterResource
 import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.img_placeholder
@@ -23,6 +25,7 @@ import yadlo.shared.generated.resources.img_placeholder
 fun ContentImage(
     imageUrl: String?,
     modifier: Modifier = Modifier,
+    sharedKey: String? = null,
 ) {
     val placeholder = painterResource(Res.drawable.img_placeholder)
 
@@ -32,8 +35,30 @@ fun ContentImage(
         contentScale = ContentScale.Crop,
         fallback = placeholder,
         error = placeholder,
-        modifier = modifier,
+        modifier = modifier.sharedPicture(sharedKey),
     )
+}
+
+/**
+ * Joins this picture to the one carrying the same [key] on the screen being opened or left.
+ *
+ * **Both scopes or neither.** The navigation scope throws rather than returning null when it is
+ * read outside a `NavDisplay`, and every preview in the app draws these cards outside one — so
+ * the transition scope, which *is* nullable, is what the branch is taken on. They are provided
+ * together and only together, one wrapping the other in `NavGraph`.
+ */
+@Composable
+private fun Modifier.sharedPicture(key: String?): Modifier {
+    val transition = LocalSharedTransitionScope.current
+
+    if (key == null || transition == null) return this
+
+    return with(transition) {
+        sharedElement(
+            sharedContentState = rememberSharedContentState(key = key),
+            animatedVisibilityScope = LocalNavAnimatedContentScope.current,
+        )
+    }
 }
 
 /**

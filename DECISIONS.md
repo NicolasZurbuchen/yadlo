@@ -1748,6 +1748,29 @@ now dims with its time, at the same value, and only while the row itself is not 
 row whose every hour is past dims as a whole, and dimming again inside it would take the bar to 20%
 and out of the day it exists to describe.
 
+### The picture travels to the fiche
+
+Tapping a card on Créateurs, Nourriture & boissons, Découvrir or À essayer no longer cuts to the
+fiche: the photograph stays on screen and grows into the head of it. It is the one animation in the
+app, and it earns the exception because it answers a question a cut leaves open — *is this the same
+thing I tapped?* — on the one screen whose whole subject is a picture.
+
+**One seam, not four.** Every content photograph in the app is drawn by `ContentImage`, so the
+shared element is declared there and each caller passes the id it already has. The four lists were
+never going to stay in step if each wired its own.
+
+**The scope is a CompositionLocal because the alternative is a parameter on every layer between.**
+`NavGraph` wraps the whole display in one `SharedTransitionLayout` — anything narrower would put
+the card and the fiche in different layouts, which is the one arrangement that cannot animate — and
+hands the scope down. It is nullable on purpose: `LocalNavAnimatedContentScope` *throws* rather
+than returning null when it is read outside a `NavDisplay`, and every preview in the app draws
+these cards outside one, so the nullable scope is what the branch is taken on.
+
+**The fiche names the Happening it is about.** `HappeningUiModel.id` is not decoration on the
+model: it is the key the two halves match on. It is empty until the detail lands, like the title
+beside it — which means the transition begins when the content resolves rather than on the first
+frame. The bundle is already in memory by then, so that is a frame, not a wait.
+
 ## Open
 
 **The accent colour.** `#14618F` is the primary, not an accent — the terminology in earlier

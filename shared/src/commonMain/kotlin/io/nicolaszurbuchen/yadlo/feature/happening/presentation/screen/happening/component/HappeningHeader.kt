@@ -69,6 +69,8 @@ import io.nicolaszurbuchen.yadlo.design.theme.spacing
  */
 @Composable
 fun HappeningHeader(
+    /** The Happening this fiche is about, which is what the card that opened it shares. */
+    happeningId: String,
     imageUrl: String?,
     categoryId: String,
     categoryLabel: String,
@@ -85,6 +87,7 @@ fun HappeningHeader(
     ) {
         ContentImage(
             imageUrl = imageUrl,
+            sharedKey = happeningId,
             modifier = Modifier.fillMaxSize(),
         )
 

@@ -51,6 +51,20 @@ class HappeningUiMapperTest {
     }
 
     @Test
+    fun toUiModel_carriesTheHappeningId_soThePhotographCanBeSharedWithTheCardThatOpenedIt() {
+        // Not decoration on the model: it is the key the shared-element transition matches on, and
+        // a fiche that did not carry it would open with a cut instead of the picture travelling.
+        assertEquals("dubside", state(detail()).toUiModel().id)
+    }
+
+    @Test
+    fun toUiModel_beforeTheFirstEmission_hasNoIdToShare() {
+        // Empty rather than a guess, like the title beside it. Nothing is drawn from it until the
+        // detail lands, so there is nothing for a wrong answer to break.
+        assertEquals("", HappeningState(now = NOW).toUiModel().id)
+    }
+
+    @Test
     fun toUiModel_loadedWithNoDetail_isMissingRatherThanLoading() {
         // The Happening has gone from the content, which reads differently from "not yet".
         val model = HappeningState(now = NOW, detail = null, isLoaded = true).toUiModel()

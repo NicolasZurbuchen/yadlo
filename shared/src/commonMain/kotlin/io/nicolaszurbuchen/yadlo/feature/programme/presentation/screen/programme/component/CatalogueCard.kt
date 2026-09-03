@@ -69,6 +69,7 @@ fun CatalogueCard(
     ) {
         ContentImage(
             imageUrl = entry.imageUrl,
+            sharedKey = entry.id,
             modifier =
                 Modifier
                     .fillMaxWidth()

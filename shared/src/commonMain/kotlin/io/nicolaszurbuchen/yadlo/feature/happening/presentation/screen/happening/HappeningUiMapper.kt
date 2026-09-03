@@ -39,6 +39,7 @@ import yadlo.shared.generated.resources.share_happening_stand
 fun HappeningState.toUiModel(): HappeningUiModel {
     val blank =
         HappeningUiModel(
+            id = "",
             // Loading and missing are read off the State's two fields rather than off a null
             // detail, which on its own cannot tell "not yet" from "no longer".
             isLoading = !isLoaded,
@@ -63,6 +64,7 @@ fun HappeningState.toUiModel(): HappeningUiModel {
     val loaded = detail ?: return blank
 
     return blank.copy(
+        id = loaded.id,
         title = loaded.name,
         imageUrl = loaded.imageUrl,
         dietary = loaded.dietary.toDietaryTags(),

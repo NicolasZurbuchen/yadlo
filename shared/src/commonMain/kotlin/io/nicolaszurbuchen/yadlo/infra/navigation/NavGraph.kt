@@ -1,6 +1,8 @@
 package io.nicolaszurbuchen.yadlo.infra.navigation
 
+import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.NavKey
@@ -20,9 +22,16 @@ fun NavGraph(
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    NavDisplay(
-        entries = entries,
-        onBack = { onBack() },
-        modifier = modifier,
-    )
+    // The whole display is one shared-transition layout, because a picture flies between two
+    // entries of it — a card on a list and the head of the fiche it opens. Wrapping anything
+    // narrower would put the source and the target in different layouts, which is the one
+    // arrangement that cannot animate.
+    SharedTransitionLayout(modifier = modifier) {
+        CompositionLocalProvider(LocalSharedTransitionScope provides this) {
+            NavDisplay(
+                entries = entries,
+                onBack = { onBack() },
+            )
+        }
+    }
 }

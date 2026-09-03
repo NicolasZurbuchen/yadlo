@@ -49,6 +49,7 @@ private class HappeningScreenStateProvider : PreviewParameterProvider<HappeningU
         isLoading: Boolean = false,
         isMissing: Boolean = false,
     ) = HappeningUiModel(
+        id = "",
         isLoading = isLoading,
         isMissing = isMissing,
         title = "",
@@ -70,6 +71,7 @@ private class HappeningScreenStateProvider : PreviewParameterProvider<HappeningU
 
     private fun artist() =
         blank().copy(
+            id = "dj-alf",
             title = "DJ ALF",
             categoryId = "musique",
             categoryLabel = "MUSIQUE",
@@ -119,6 +121,7 @@ private class HappeningScreenStateProvider : PreviewParameterProvider<HappeningU
 
     private fun activity() =
         blank().copy(
+            id = "silent-party",
             title = "Silent Party",
             categoryId = "silent",
             categoryLabel = "SILENT PARTY",
@@ -157,6 +160,7 @@ private class HappeningScreenStateProvider : PreviewParameterProvider<HappeningU
 
     private fun stand() =
         blank().copy(
+            id = "vegan-fabrik",
             title = "Vegan Fabrik",
             categoryId = "restauration",
             categoryLabel = "RESTAURATION",

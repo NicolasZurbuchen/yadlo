@@ -88,6 +88,7 @@ fun StandCard(
     ) {
         ContentImage(
             imageUrl = stand.imageUrl,
+            sharedKey = stand.id,
             modifier =
                 Modifier
                     .fillMaxWidth()
