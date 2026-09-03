@@ -57,6 +57,14 @@ private fun Modifier.sharedPicture(key: String?): Modifier {
         sharedElement(
             sharedContentState = rememberSharedContentState(key = key),
             animatedVisibilityScope = LocalNavAnimatedContentScope.current,
+            // Drawn in its own screen rather than in the overlay above both.
+            //
+            // In the overlay it is above everything, which costs twice: the fiche’s own title and
+            // its bar are painted under it and only reappear when the animation ends, and the
+            // picture reads as a third thing moving between two screens rather than as the thing
+            // one of them is made of. In place, it is clipped and layered by whatever is around
+            // it, so the title sits over it the whole way.
+            renderInOverlayDuringTransition = false,
         )
     }
 }

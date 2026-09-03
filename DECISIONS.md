@@ -1786,6 +1786,17 @@ model: it is the key the two halves match on. It is empty until the detail lands
 beside it — which means the transition begins when the content resolves rather than on the first
 frame. The bundle is already in memory by then, so that is a frame, not a wait.
 
+**The picture is drawn in place, not in the overlay above both screens.** That is the default, and
+it cost twice: the fiche’s own title and bar were painted *under* the travelling picture and only
+reappeared once it landed, and the picture read as a third thing moving between two screens rather
+than as the thing one of them is made of. Drawn in place it is clipped and layered by whatever is
+around it, so the title sits over it the whole way.
+
+**Both screens fade, and only this destination does.** The platform push slides and scales the
+outgoing screen while the picture travels over it, which is two motions the eye has to reconcile
+with each other. Fading leaves the picture as the only thing that moves. Every other push in the
+app keeps the default — this is the only screen with something travelling into it.
+
 ## Open
 
 **The accent colour.** `#14618F` is the primary, not an accent — the terminology in earlier
