@@ -1,8 +1,5 @@
 package io.nicolaszurbuchen.yadlo.app.navigation
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -266,14 +263,10 @@ fun MainScaffold(modifier: Modifier = Modifier) {
         }
 
         // Both bars belong to the tab roots — a fiche is full-screen with a back chevron instead,
-        // and the prototypes show no bar on a detail screen. They slide out rather than vanish, so
-        // the title still covers the status bar for as long as the screen under it is still there.
-        AnimatedVisibility(
-            visible = isAtTabRoot,
-            enter = slideInVertically { -it },
-            exit = slideOutVertically { -it },
-            modifier = Modifier.align(Alignment.TopCenter),
-        ) {
+        // and the prototypes show no bar on a detail screen. They appear and go without an
+        // animation of their own: the screen they belong to is already sliding, and a bar sliding
+        // vertically across it was a third thing moving in a second direction.
+        if (isAtTabRoot) {
             // Yadlo, and when. On every tab root, so the answer to "which weekend is this?" is
             // never more than a glance away and no screen has to spend a line of its own saying it.
             YadloTopAppBar(
@@ -292,18 +285,13 @@ fun MainScaffold(modifier: Modifier = Modifier) {
                     }
                 },
                 modifier =
-                    Modifier.onSizeChanged { size ->
-                        chrome = chrome.copy(top = with(density) { size.height.toDp() })
-                    },
+                    Modifier
+                        .align(Alignment.TopCenter)
+                        .onSizeChanged { size ->
+                            chrome = chrome.copy(top = with(density) { size.height.toDp() })
+                        },
             )
-        }
 
-        AnimatedVisibility(
-            visible = isAtTabRoot,
-            enter = slideInVertically { it },
-            exit = slideOutVertically { it },
-            modifier = Modifier.align(Alignment.BottomCenter),
-        ) {
             MainNavigationBar(
                 selectedTab = selectedTab,
                 onTabClick = { tab ->
@@ -316,9 +304,11 @@ fun MainScaffold(modifier: Modifier = Modifier) {
                     }
                 },
                 modifier =
-                    Modifier.onSizeChanged { size ->
-                        chrome = chrome.copy(bottom = with(density) { size.height.toDp() })
-                    },
+                    Modifier
+                        .align(Alignment.BottomCenter)
+                        .onSizeChanged { size ->
+                            chrome = chrome.copy(bottom = with(density) { size.height.toDp() })
+                        },
             )
         }
     }
