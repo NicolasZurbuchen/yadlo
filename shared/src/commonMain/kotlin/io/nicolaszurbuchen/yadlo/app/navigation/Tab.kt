@@ -34,6 +34,15 @@ enum class Tab(
     val label: StringResource,
     val selectedIcon: ImageVector,
     val unselectedIcon: ImageVector,
+    /**
+     * Whether this tab draws more blue directly under the bar.
+     *
+     * The chrome ends in a wave, and it can only end once: a wave drawn where the bar meets
+     * another blue block would notch the page's colour into the middle of the chrome. So the
+     * two tabs that carry their own band — the chip rows and axis on Programme, the scale
+     * strip on Mon Yadlo — take a flat bar and put the wave at the bottom of the band instead.
+     */
+    val continuesChrome: Boolean = false,
 ) {
     HOME(
         root = HomeMainDestination,
@@ -46,10 +55,12 @@ enum class Tab(
         label = Res.string.tab_programme,
         selectedIcon = Icons.Filled.CalendarMonth,
         unselectedIcon = Icons.Outlined.CalendarMonth,
+        continuesChrome = true,
     ),
     MON_YADLO(
         root = MonYadloMainDestination,
         label = Res.string.tab_mon_yadlo,
+        continuesChrome = true,
         // The heart is the save affordance everywhere else in the app, so the tab that holds
         // saved Slots wears the same symbol rather than inventing a second vocabulary for it.
         selectedIcon = Icons.Filled.Favorite,

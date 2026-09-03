@@ -291,6 +291,9 @@ fun MainScaffold(modifier: Modifier = Modifier) {
                         }
                     }
                 },
+                // Flat where the tab draws more blue directly underneath: the chrome ends in a
+                // wave and can only end once.
+                wavyEdge = !selectedTab.continuesChrome,
                 modifier =
                     Modifier.onSizeChanged { size ->
                         chrome = chrome.copy(top = with(density) { size.height.toDp() })

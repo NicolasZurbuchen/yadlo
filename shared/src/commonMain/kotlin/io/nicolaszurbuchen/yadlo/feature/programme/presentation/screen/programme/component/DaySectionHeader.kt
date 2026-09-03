@@ -10,8 +10,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import io.nicolaszurbuchen.yadlo.core.content.presentation.component.SlotScaleRow
+import io.nicolaszurbuchen.yadlo.design.theme.WAVE_DEPTH
 import io.nicolaszurbuchen.yadlo.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.design.theme.spacing
+import io.nicolaszurbuchen.yadlo.design.theme.waveEdgeBackground
 import io.nicolaszurbuchen.yadlo.feature.programme.presentation.screen.programme.DaySectionHeaderUiModel
 
 /**
@@ -47,8 +49,10 @@ fun DaySectionHeader(
         modifier =
             modifier
                 .fillMaxWidth()
-                .background(MaterialTheme.appColors.primarySubtle)
-                .padding(top = MaterialTheme.spacing.sm, bottom = MaterialTheme.spacing.xs),
+                // Blue, and the last of it before the rows — so the wave is here rather than on
+                // the chip block above, which defers to this one whenever a day header exists.
+                .waveEdgeBackground(MaterialTheme.appColors.primarySubtle)
+                .padding(top = MaterialTheme.spacing.sm, bottom = MaterialTheme.spacing.xs + WAVE_DEPTH),
     ) {
         Text(
             text = header.name.uppercase(),
