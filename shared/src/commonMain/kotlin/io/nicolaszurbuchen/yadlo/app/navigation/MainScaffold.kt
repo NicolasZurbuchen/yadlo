@@ -1,8 +1,9 @@
 package io.nicolaszurbuchen.yadlo.app.navigation
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -47,6 +48,7 @@ import io.nicolaszurbuchen.yadlo.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.feature.happening.presentation.navigation.HappeningDestination
 import io.nicolaszurbuchen.yadlo.feature.search.presentation.navigation.SearchDestination
 import io.nicolaszurbuchen.yadlo.infra.navigation.AppNavigator
+import io.nicolaszurbuchen.yadlo.infra.navigation.NAV_SLIDE_MILLIS
 import io.nicolaszurbuchen.yadlo.infra.navigation.NavGraph
 import io.nicolaszurbuchen.yadlo.infra.navigation.rememberNavEntries
 import io.nicolaszurbuchen.yadlo.infra.notification.NotificationTarget
@@ -266,12 +268,18 @@ fun MainScaffold(modifier: Modifier = Modifier) {
         }
 
         // Both bars belong to the tab roots — a fiche is full-screen with a back chevron instead,
-        // and the prototypes show no bar on a detail screen. They slide out rather than vanish, so
-        // the title still covers the status bar for as long as the screen under it is still there.
+        // and the prototypes show no bar on a detail screen.
+        //
+        // **They leave sideways, on the display's own duration, because they are part of the
+        // screen they belong to.** Drawn above it rather than inside it, so nothing carries them
+        // along and they have to be told to make the same journey: out to the left as the tab root
+        // goes, back in from the left as it returns. Off by a frame or a pixel and the bandeau
+        // visibly detaches from the page it caps. A tab switch keeps both roots, so neither moves
+        // and only the page between them travels.
         AnimatedVisibility(
             visible = isAtTabRoot,
-            enter = slideInVertically { -it },
-            exit = slideOutVertically { -it },
+            enter = slideInHorizontally(tween(NAV_SLIDE_MILLIS)) { -it },
+            exit = slideOutHorizontally(tween(NAV_SLIDE_MILLIS)) { -it },
             modifier = Modifier.align(Alignment.TopCenter),
         ) {
             // Yadlo, and when. On every tab root, so the answer to "which weekend is this?" is
@@ -300,8 +308,8 @@ fun MainScaffold(modifier: Modifier = Modifier) {
 
         AnimatedVisibility(
             visible = isAtTabRoot,
-            enter = slideInVertically { it },
-            exit = slideOutVertically { it },
+            enter = slideInHorizontally(tween(NAV_SLIDE_MILLIS)) { -it },
+            exit = slideOutHorizontally(tween(NAV_SLIDE_MILLIS)) { -it },
             modifier = Modifier.align(Alignment.BottomCenter),
         ) {
             MainNavigationBar(

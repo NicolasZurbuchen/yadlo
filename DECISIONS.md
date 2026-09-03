@@ -1724,6 +1724,41 @@ Everything not inside the pill takes the bar's own ink, selected and unselected 
 the top bar does with its title and its actions. The pill is the selection cue; a second one in the
 label would only be legible to somebody comparing two labels, which is not how a tab bar is read.
 
+### One transition, spelled out once
+
+**A push slides the new screen in from the right; going back slides it out the same way.** The
+oldest convention there is, and the only one a visitor does not have to learn: the thing that just
+arrived is to the right of the thing it came from, so the way back is to push it there again.
+
+**Written down rather than left to the default, because there is no single default.** Navigation 3
+ships a different one per platform — Android fades the outgoing screen and shrinks it towards the
+centre, iOS slides it — so the same push is two different apps depending on which build you are
+holding. Spelling it out in `NavGraph` also keeps a screen from acquiring an animation of its own
+as a side effect of where its entry happens to be declared.
+
+**The bars make the same journey as the page.** They used to slide up and down out of the frame as
+a fiche opened — a third element travelling in a second direction across the same 300 ms, which the
+eye could not follow. They go sideways now, on the display's own duration: out to the left as the
+tab root goes, back in from the left as it returns. They are drawn above the display rather than
+inside it, so nothing carries them and they have to be told; a frame or a pixel out and the bandeau
+visibly detaches from the page it caps. A tab switch keeps both roots, so neither bar moves and only
+the page between them travels.
+
+**The back gesture is a button press.** Navigation 3 reports the swipe's progress and seeks the pop
+animation to it, so a half-finished swipe parks the two screens half way across the window and a
+release finishes from wherever the thumb stopped. Nothing moves under the finger here: the display
+is handed a gesture state that nothing drives, so a release runs the pop from its start like any
+other back. The cost is the whole point of predictive back — you cannot see how far you have got, or
+peek at what is behind — and it buys an animation that is the same length and the same shape every
+time, which is the thing the app is being judged on at this size.
+
+**Deferred: the photograph travelling from the card to the fiche.** Built and rejected on the way
+it looked, not on whether it worked. A shared element is drawn in an overlay above both screens,
+so it visibly detaches — one picture flying over two screens doing something unrelated underneath
+— and taking it out of the overlay put it behind the title and the chevron that sit on top of it.
+Each fix moved the seam rather than closing it. It wants a pass of its own, with the fiche head
+and the card designed against each other rather than joined afterwards.
+
 ### A stand card says *Options*, not the coverage
 
 **Reversed: the card carried the full dietary tags.** *100 % végan · Options sans gluten · Tout sans
