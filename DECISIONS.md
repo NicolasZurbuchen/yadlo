@@ -1736,10 +1736,21 @@ centre, iOS slides it — so the same push is two different apps depending on wh
 holding. Spelling it out in `NavGraph` also keeps a screen from acquiring an animation of its own
 as a side effect of where its entry happens to be declared.
 
-**The bars do not animate at all.** They used to slide up and down out of the frame as a fiche
-opened. With the page itself now moving sideways, that was a third element travelling in a second
-direction across a 300 ms window, and the eye had nothing to follow. They are simply present on a
-tab root and absent below it.
+**The bars make the same journey as the page.** They used to slide up and down out of the frame as
+a fiche opened — a third element travelling in a second direction across the same 300 ms, which the
+eye could not follow. They go sideways now, on the display's own duration: out to the left as the
+tab root goes, back in from the left as it returns. They are drawn above the display rather than
+inside it, so nothing carries them and they have to be told; a frame or a pixel out and the bandeau
+visibly detaches from the page it caps. A tab switch keeps both roots, so neither bar moves and only
+the page between them travels.
+
+**The back gesture is a button press.** Navigation 3 reports the swipe's progress and seeks the pop
+animation to it, so a half-finished swipe parks the two screens half way across the window and a
+release finishes from wherever the thumb stopped. Nothing moves under the finger here: the display
+is handed a gesture state that nothing drives, so a release runs the pop from its start like any
+other back. The cost is the whole point of predictive back — you cannot see how far you have got, or
+peek at what is behind — and it buys an animation that is the same length and the same shape every
+time, which is the thing the app is being judged on at this size.
 
 **Deferred: the photograph travelling from the card to the fiche.** Built and rejected on the way
 it looked, not on whether it worked. A shared element is drawn in an overlay above both screens,

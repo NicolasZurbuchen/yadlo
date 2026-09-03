@@ -1,5 +1,9 @@
 package io.nicolaszurbuchen.yadlo.app.navigation
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -44,6 +48,7 @@ import io.nicolaszurbuchen.yadlo.design.theme.appColors
 import io.nicolaszurbuchen.yadlo.feature.happening.presentation.navigation.HappeningDestination
 import io.nicolaszurbuchen.yadlo.feature.search.presentation.navigation.SearchDestination
 import io.nicolaszurbuchen.yadlo.infra.navigation.AppNavigator
+import io.nicolaszurbuchen.yadlo.infra.navigation.NAV_SLIDE_MILLIS
 import io.nicolaszurbuchen.yadlo.infra.navigation.NavGraph
 import io.nicolaszurbuchen.yadlo.infra.navigation.rememberNavEntries
 import io.nicolaszurbuchen.yadlo.infra.notification.NotificationTarget
@@ -263,10 +268,20 @@ fun MainScaffold(modifier: Modifier = Modifier) {
         }
 
         // Both bars belong to the tab roots — a fiche is full-screen with a back chevron instead,
-        // and the prototypes show no bar on a detail screen. They appear and go without an
-        // animation of their own: the screen they belong to is already sliding, and a bar sliding
-        // vertically across it was a third thing moving in a second direction.
-        if (isAtTabRoot) {
+        // and the prototypes show no bar on a detail screen.
+        //
+        // **They leave sideways, on the display's own duration, because they are part of the
+        // screen they belong to.** Drawn above it rather than inside it, so nothing carries them
+        // along and they have to be told to make the same journey: out to the left as the tab root
+        // goes, back in from the left as it returns. Off by a frame or a pixel and the bandeau
+        // visibly detaches from the page it caps. A tab switch keeps both roots, so neither moves
+        // and only the page between them travels.
+        AnimatedVisibility(
+            visible = isAtTabRoot,
+            enter = slideInHorizontally(tween(NAV_SLIDE_MILLIS)) { -it },
+            exit = slideOutHorizontally(tween(NAV_SLIDE_MILLIS)) { -it },
+            modifier = Modifier.align(Alignment.TopCenter),
+        ) {
             // Yadlo, and when. On every tab root, so the answer to "which weekend is this?" is
             // never more than a glance away and no screen has to spend a line of its own saying it.
             YadloTopAppBar(
@@ -285,13 +300,18 @@ fun MainScaffold(modifier: Modifier = Modifier) {
                     }
                 },
                 modifier =
-                    Modifier
-                        .align(Alignment.TopCenter)
-                        .onSizeChanged { size ->
-                            chrome = chrome.copy(top = with(density) { size.height.toDp() })
-                        },
+                    Modifier.onSizeChanged { size ->
+                        chrome = chrome.copy(top = with(density) { size.height.toDp() })
+                    },
             )
+        }
 
+        AnimatedVisibility(
+            visible = isAtTabRoot,
+            enter = slideInHorizontally(tween(NAV_SLIDE_MILLIS)) { -it },
+            exit = slideOutHorizontally(tween(NAV_SLIDE_MILLIS)) { -it },
+            modifier = Modifier.align(Alignment.BottomCenter),
+        ) {
             MainNavigationBar(
                 selectedTab = selectedTab,
                 onTabClick = { tab ->
@@ -304,11 +324,9 @@ fun MainScaffold(modifier: Modifier = Modifier) {
                     }
                 },
                 modifier =
-                    Modifier
-                        .align(Alignment.BottomCenter)
-                        .onSizeChanged { size ->
-                            chrome = chrome.copy(bottom = with(density) { size.height.toDp() })
-                        },
+                    Modifier.onSizeChanged { size ->
+                        chrome = chrome.copy(bottom = with(density) { size.height.toDp() })
+                    },
             )
         }
     }
