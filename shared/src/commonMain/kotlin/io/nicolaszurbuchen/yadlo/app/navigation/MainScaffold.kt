@@ -2,12 +2,14 @@ package io.nicolaszurbuchen.yadlo.app.navigation
 
 import androidx.compose.animation.AnimatedContentTransitionScope.SlideDirection
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,6 +17,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
@@ -23,8 +26,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ShortNavigationBarItem
-import androidx.compose.material3.ShortNavigationBarItemDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -38,8 +39,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavBackStack
@@ -365,38 +369,21 @@ private fun MainNavigationBar(
             shadowElevation = BAR_ELEVATION,
         ) {
             // A Row rather than ShortNavigationBar: both of that component's measure policies open
-            // with `val width = constraints.maxWidth`, so it can never wrap its content. The items
-            // are the expressive ones either way, and they take no scope from the bar.
+            // with `val width = constraints.maxWidth`, so it can never wrap its content.
+            //
+            // One padding on all four sides, which is what puts the same gap beside the end bubbles
+            // as above and below them. The items butt against each other so that gap is the only
+            // one in the bar.
             Row(
-                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xs),
+                horizontalArrangement = Arrangement.spacedBy(0.dp),
                 verticalAlignment = Alignment.CenterVertically,
-                modifier =
-                    Modifier
-                        .selectableGroup()
-                        .padding(horizontal = MaterialTheme.spacing.sm, vertical = MaterialTheme.spacing.xs),
+                modifier = Modifier.selectableGroup().padding(BAR_PADDING),
             ) {
                 Tab.entries.forEach { tab ->
-                    val isSelected = tab == selectedTab
-
-                    ShortNavigationBarItem(
-                        selected = isSelected,
+                    TabItem(
+                        tab = tab,
+                        selected = tab == selectedTab,
                         onClick = { onTabClick(tab) },
-                        icon = {
-                            Icon(
-                                imageVector = if (isSelected) tab.selectedIcon else tab.unselectedIcon,
-                                contentDescription = stringResource(tab.label),
-                            )
-                        },
-                        // DECISIONS.md § The bar floats, and the labels went with the band.
-                        label = null,
-                        // accentChrome rather than accentSubtle, which is unreadable on this blue
-                        // — DECISIONS.md § The chrome is one frame.
-                        colors =
-                            ShortNavigationBarItemDefaults.colors(
-                                selectedIconColor = MaterialTheme.appColors.onAccentChrome,
-                                selectedIndicatorColor = MaterialTheme.appColors.accentChrome,
-                                unselectedIconColor = MaterialTheme.appColors.onPrimarySubtle,
-                            ),
                     )
                 }
             }
@@ -404,9 +391,72 @@ private fun MainNavigationBar(
     }
 }
 
+/**
+ * One tab: its icon over its name, and a bubble around both when it is the one showing.
+ *
+ * Hand-rolled rather than a `ShortNavigationBarItem`, whose two icon positions each give half of
+ * this — `Top` puts the label below the bubble instead of inside it, and `Start` puts the bubble
+ * around both but lays them out in a row.
+ */
+@Composable
+private fun TabItem(
+    tab: Tab,
+    selected: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    // accentChrome rather than accentSubtle, which is unreadable on this blue — DECISIONS.md § The
+    // chrome is one frame.
+    val bubble by
+        animateColorAsState(
+            targetValue = if (selected) MaterialTheme.appColors.accentChrome else Color.Transparent,
+            label = "bubble",
+        )
+    val ink by
+        animateColorAsState(
+            targetValue =
+                if (selected) MaterialTheme.appColors.onAccentChrome else MaterialTheme.appColors.onPrimarySubtle,
+            label = "ink",
+        )
+
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(ICON_TO_LABEL),
+        modifier =
+            modifier
+                // A stadium inside a stadium, so the two curves stay concentric and one padding is
+                // the same distance all the way round the corner.
+                .clip(CircleShape)
+                .background(bubble)
+                .selectable(selected = selected, role = Role.Tab, onClick = onClick)
+                .padding(horizontal = MaterialTheme.spacing.md, vertical = MaterialTheme.spacing.xs),
+    ) {
+        Icon(
+            imageVector = if (selected) tab.selectedIcon else tab.unselectedIcon,
+            // The label below says it, and Role.Tab merges the two into one announcement.
+            contentDescription = null,
+            tint = ink,
+        )
+
+        Text(
+            text = stringResource(tab.label),
+            style = MaterialTheme.typography.labelMedium,
+            color = ink,
+            maxLines = 1,
+        )
+    }
+}
+
 // How far the pill lifts off the three edges it no longer touches. Applied after the navigation-bar
 // inset, so it is clearance from the gesture bar rather than to it.
 private val BAR_MARGIN = 12.dp
+
+// The gap around the bubbles, on all four sides — see the Row above for why it is one number.
+private val BAR_PADDING = 8.dp
+
+// Tighter than any step on the spacing scale, because the icon and the name are one label rather
+// than two stacked things.
+private val ICON_TO_LABEL = 2.dp
 
 // The only raised surface in the app, and on the dark theme most of what separates the pill from
 // the page behind it — DECISIONS.md § The one shadow in the app.
