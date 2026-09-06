@@ -413,15 +413,18 @@ private fun EqualWidthRow(
         // Plus a couple of points, because an intrinsic width is a *measurement* of the text and
         // the glyphs draw a hair wider than it. Sized to the intrinsic exactly, the longest label
         // in the row loses the edge of its first and last letter.
-        val widest = measurables.maxOf { it.maxIntrinsicWidth(constraints.maxHeight) } + INTRINSIC_SLACK.roundToPx()
+        val needed = measurables.maxOf { it.maxIntrinsicWidth(constraints.maxHeight) } + INTRINSIC_SLACK.roundToPx()
 
-        // Capped by the room there actually is, so a narrow screen gives every tab a little less
-        // rather than pushing the last one off the edge.
+        // **The breath is added here rather than to the item's own padding, and that is the whole
+        // point of it.** Padding is inside the width a name asks for, so a cap that has to take
+        // something back takes it out of the name. Added on top, it is the first thing surrendered
+        // and the label is the last — which is what keeps every tab readable at a large system font
+        // and on a narrow screen, where there is no room for it anyway.
         val itemWidth =
             if (constraints.hasBoundedWidth) {
-                widest.coerceAtMost((constraints.maxWidth - gaps) / measurables.size)
+                (needed + ITEM_BREATH.roundToPx()).coerceAtMost((constraints.maxWidth - gaps) / measurables.size)
             } else {
-                widest
+                needed + ITEM_BREATH.roundToPx()
             }
 
         val placeables = measurables.map { it.measure(Constraints.fixedWidth(itemWidth)) }
@@ -509,6 +512,10 @@ private val ITEM_GAP = 4.dp
 // What a measured text width under-reports by. Two points covers Barlow at this size; it is a
 // fudge over Compose rather than a design value, which is why it is not on the spacing scale.
 private val INTRINSIC_SLACK = 2.dp
+
+// What every tab is given beyond the longest name, when the screen can afford it. See the layout
+// for why it is not the item's padding.
+private val ITEM_BREATH = 8.dp
 
 // Tighter than any step on the spacing scale, because the icon and the name are one label rather
 // than two stacked things.
