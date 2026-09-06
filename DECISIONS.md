@@ -1765,10 +1765,15 @@ that gets squeezed — the single case the rule exists for. A small layout takes
 width and gives it to all four instead, capped by the room there actually is, so a screen too narrow
 for the natural width shortens every tab a little rather than pushing the last one off the edge.
 
-The horizontal padding inside a bubble is four points rather than eight for the same reason: it only
-ever binds on *Programme*, since equal width already gives the short names more room than they ask
-for, and eight was enough to truncate that one on a 360dp screen. The bar measures **315dp** there
-and **317dp** on a 411dp screen, so the cap has not had to bite on either.
+**The tab reads *La Prog'*, and the long form is what broke it.** Equal width means every tab is as
+wide as the longest name, so *Programme* was setting all four — and it was still the one that would
+not quite fit. The short form is what anybody here calls it, and the width it gives back is what
+lets the bar survive a large system font: at 1.3x it measures 382dp of 411 with all four names
+whole, where the long form ran out. *Programme* stays the domain word, the tab it opens and the
+screen it lands on; only the label on the bar is short.
+
+The bar measures **317dp** on a 411dp screen and **323dp** on a 360dp one, so the cap has not had to
+bite on either.
 
 **It clears the gesture bar itself.** A `NavigationBar` consumes that inset as part of being the
 bottom of the screen, and this is not the bottom of anything. The inset and the margin are measured

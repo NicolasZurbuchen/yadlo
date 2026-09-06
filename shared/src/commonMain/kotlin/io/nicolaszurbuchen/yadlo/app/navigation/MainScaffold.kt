@@ -410,7 +410,10 @@ private fun EqualWidthRow(
         // Intrinsics rather than a first measuring pass: a Measurable may only be measured once,
         // so the widest cannot be found by measuring everyone and then measuring them again.
         val gaps = gap.roundToPx() * (measurables.size - 1).coerceAtLeast(0)
-        val widest = measurables.maxOf { it.maxIntrinsicWidth(constraints.maxHeight) }
+        // Plus a couple of points, because an intrinsic width is a *measurement* of the text and
+        // the glyphs draw a hair wider than it. Sized to the intrinsic exactly, the longest label
+        // in the row loses the edge of its first and last letter.
+        val widest = measurables.maxOf { it.maxIntrinsicWidth(constraints.maxHeight) } + INTRINSIC_SLACK.roundToPx()
 
         // Capped by the room there actually is, so a narrow screen gives every tab a little less
         // rather than pushing the last one off the edge.
@@ -473,9 +476,7 @@ private fun TabItem(
                 .clip(CircleShape)
                 .background(bubble)
                 .selectable(selected = selected, role = Role.Tab, onClick = onClick)
-                // Only ever binding on the longest name — equal width already gives the short ones
-                // more room than they ask for.
-                .padding(horizontal = MaterialTheme.spacing.xs, vertical = MaterialTheme.spacing.xs),
+                .padding(horizontal = MaterialTheme.spacing.sm, vertical = MaterialTheme.spacing.xs),
     ) {
         Icon(
             imageVector = if (selected) tab.selectedIcon else tab.unselectedIcon,
@@ -504,6 +505,10 @@ private val BAR_PADDING = 8.dp
 // Enough that two bubbles never meet while one is fading out under the other, and not so much that
 // the four stop reading as one control.
 private val ITEM_GAP = 4.dp
+
+// What a measured text width under-reports by. Two points covers Barlow at this size; it is a
+// fudge over Compose rather than a design value, which is why it is not on the spacing scale.
+private val INTRINSIC_SLACK = 2.dp
 
 // Tighter than any step on the spacing scale, because the icon and the name are one label rather
 // than two stacked things.
