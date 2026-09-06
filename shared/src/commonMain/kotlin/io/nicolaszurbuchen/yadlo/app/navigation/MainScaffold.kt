@@ -210,38 +210,8 @@ fun MainScaffold(modifier: Modifier = Modifier) {
         }
     val isAtTabRoot = currentStack.size <= 1
 
-    // **Which way the window travels, and the one thing the display and the bars both read.**
-    // Depth is one axis: a push arrives from the right and a pop leaves back towards it, on every
-    // tab. The bar is the other, and it is a row — the four roots are peers laid out left to right,
-    // so Plus arrives from the right of Mon Yadlo and Accueil from the left of it, the way pages of
-    // a pager do. Always-from-the-right made switching tabs read as going one level deeper into
-    // something, which is the one thing these four are not.
-    //
-    // Read during composition rather than from an effect: the entries list changes in the same
-    // frame the tab does, and the display computes its transform on that frame. An effect would
-    // publish the direction one frame after the animation it describes had already started.
-    var previousTab by remember { mutableStateOf(selectedTab) }
-    var previousDepth by remember { mutableIntStateOf(currentStack.size) }
-    var slideTowards by remember { mutableStateOf(SlideDirection.Left) }
-
-    if (selectedTab != previousTab || currentStack.size != previousDepth) {
-        slideTowards =
-            when {
-                selectedTab != previousTab -> {
-                    if (selectedTab.ordinal > previousTab.ordinal) SlideDirection.Left else SlideDirection.Right
-                }
-
-                currentStack.size > previousDepth -> {
-                    SlideDirection.Left
-                }
-
-                else -> {
-                    SlideDirection.Right
-                }
-            }
-        previousTab = selectedTab
-        previousDepth = currentStack.size
-    }
+    // DECISIONS.md § One transition, spelled out once
+    val slideTowards = rememberSlideDirection(selectedTab, currentStack.size)
 
     // **The magnifier belongs to the shell, and that is what lets it mean "everything".** This bar
     // is the same on all four tabs — the festival's name and the edition's dates, never a tab title
@@ -302,19 +272,8 @@ fun MainScaffold(modifier: Modifier = Modifier) {
             )
         }
 
-        // Both bars belong to the tab roots — a fiche is full-screen with a back chevron instead,
-        // and the prototypes show no bar on a detail screen.
-        //
-        // **They leave sideways, on the display's own duration, because they are part of the
-        // screen they belong to.** Drawn above it rather than inside it, so nothing carries them
-        // along and they have to be told to make the same journey, on the same duration and towards
-        // the same side. Off by a frame or a pixel and the bandeau visibly detaches from the page it
-        // caps. Enter and exit are the two ends of one movement, which is why they read the
-        // direction with opposite signs.
-        //
-        // A tab switch between two roots never reaches this: both are visible before and after, so
-        // neither bar moves and only the page between them travels. What does reach it is leaving a
-        // fiche for another tab, and there the bars have to arrive from the side that tab is on.
+        // Both bars belong to the tab roots, and travel with them — DECISIONS.md § One transition,
+        // spelled out once. Enter and exit are the two ends of one movement, hence the opposite signs.
         AnimatedVisibility(
             visible = isAtTabRoot,
             enter = slideInHorizontally(tween(NAV_SLIDE_MILLIS)) { if (slideTowards == SlideDirection.Left) it else -it },
@@ -401,6 +360,39 @@ internal fun formatEditionDates(days: List<FestivalDay>): String? {
         first.month != last.month -> "$firstDay.$firstMonth – $lastDay.$lastMonth.${last.year}"
         else -> "$firstDay – $lastDay.$lastMonth.${last.year}"
     }
+}
+
+@Composable
+private fun rememberSlideDirection(
+    selectedTab: Tab,
+    depth: Int,
+): SlideDirection {
+    var previousTab by remember { mutableStateOf(selectedTab) }
+    var previousDepth by remember { mutableIntStateOf(depth) }
+    var towards by remember { mutableStateOf(SlideDirection.Left) }
+
+    // Derived in composition, not in an effect: the entries list changes in the same frame the tab
+    // does and the display reads this on that frame, so an effect would publish it one frame late.
+    if (selectedTab != previousTab || depth != previousDepth) {
+        towards =
+            when {
+                selectedTab != previousTab -> {
+                    if (selectedTab.ordinal > previousTab.ordinal) SlideDirection.Left else SlideDirection.Right
+                }
+
+                depth > previousDepth -> {
+                    SlideDirection.Left
+                }
+
+                else -> {
+                    SlideDirection.Right
+                }
+            }
+        previousTab = selectedTab
+        previousDepth = depth
+    }
+
+    return towards
 }
 
 /**

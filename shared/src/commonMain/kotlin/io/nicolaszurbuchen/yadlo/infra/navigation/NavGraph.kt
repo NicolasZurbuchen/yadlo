@@ -17,34 +17,22 @@ import androidx.navigation3.ui.NavDisplay
 import androidx.navigationevent.compose.rememberNavigationEventState
 import io.nicolaszurbuchen.yadlo.infra.platform.BackHandler
 
-/**
- * How long a screen takes to cross the window, and the one number the whole app's navigation moves
- * on. The chrome in `MainScaffold` leaves and returns on it too, so that a tab root and the bars
- * belonging to it travel as one thing rather than two.
- *
- * Material's own duration for a full-screen enter. Long enough to be followed across the width of a
- * phone, short enough that reaching a fiche four times in a row does not feel like waiting.
- */
+// Long enough to be followed across the width of a phone, short enough that reaching a fiche four
+// times in a row does not feel like waiting. The chrome in MainScaffold moves on it too.
 const val NAV_SLIDE_MILLIS = 300
 
 /**
- * Renders already-decorated entries. It owns no stack and knows nothing about tabs — the caller
- * decides which set of entries is visible, which is what lets four tabs each keep their own
- * history while sharing one display.
+ * Renders one back stack's already-decorated entries. Call it with the entries of a single stack —
+ * see [rememberNavEntries] for why that matters.
  *
- * Entries come in rather than a back stack because a display that is handed a different stack has
- * no way to swap the decorator state that belongs to it. See [rememberNavEntries].
+ * [slideTowards] is the side the next forward move travels towards, which is the caller's to decide:
+ * a push and a sibling tab mean different things and arrive from different edges. Going back is
+ * always its mirror.
  */
 @Composable
 fun NavGraph(
     entries: List<NavEntry<NavKey>>,
     onBack: () -> Unit,
-    /**
-     * Which way the window travels on the next forward move: [SlideDirection.Left] for a screen
-     * arriving from the right, [SlideDirection.Right] for one arriving from the left. Decided by
-     * the caller because it depends on what the move *means* — a push always comes from the right,
-     * a sibling tab comes from the side it sits on — and this display knows about neither.
-     */
     slideTowards: SlideDirection,
     modifier: Modifier = Modifier,
 ) {
@@ -56,53 +44,32 @@ fun NavGraph(
         )
     val scene = sceneState.currentScene
 
-    // **The back gesture is a button press, and the screen does not move under the finger.** The
-    // display's own handler reports the gesture's progress and seeks the pop animation to it, so a
-    // half-finished swipe leaves the two screens parked half way across the window. Wiring a plain
-    // BackHandler instead — and passing a gesture state nothing ever drives — leaves that state
-    // idle, which is what makes a release run the pop below from its start rather than from
-    // wherever the thumb stopped.
-    //
-    // This is the shape of `NavDisplay(entries, onBack)`'s own body, minus its `NavigationBackHandler`.
-    // Taking the overload below is the only way in: the wiring is not a parameter of the short one.
+    // NavDisplay(entries, onBack) would register NavigationBackHandler here and feed this state the
+    // gesture's progress. Left undriven on purpose — DECISIONS.md § One transition, spelled out once
+    // — and this longer overload is the only one that lets a caller do that.
     val gestureState =
         rememberNavigationEventState(
             currentInfo = SceneInfo(scene),
             backInfo = sceneState.previousScenes.map { SceneInfo(it) },
         )
 
-    // One press pops one screen, however many entries the scene turns out to be holding. Guarded on
-    // the scene rather than the list, so the tab roots stay unpoppable and back there falls through
-    // to the shell.
+    // A scene can hold more than one entry, and one press pops one scene.
     BackHandler(enabled = scene.previousEntries.isNotEmpty()) {
         repeat(entries.size - scene.previousEntries.size) { onBack() }
     }
 
-    // **One transition for the whole app, written here rather than per entry.** Navigation 3 ships
-    // a different default on each platform — Android fades and shrinks the outgoing screen towards
-    // the middle, iOS slides — so leaving them alone means the same push looks like two different
-    // apps. Spelling it out once is also what keeps a screen from acquiring an animation of its own
-    // as a side effect of where it happens to be declared.
-    //
-    // Only the forward spec is steerable. Going back is going back whatever it undid, and the
-    // display picks it itself: a stack whose first entry changed is a replacement rather than a pop,
-    // which is exactly why swapping tabs reaches the spec above and never this one.
     NavDisplay(
         sceneState = sceneState,
         navigationEventState = gestureState,
         transitionSpec = { slide(slideTowards) },
         popTransitionSpec = { slide(SlideDirection.Right) },
-        // Unreachable while the gesture state stays idle, and set anyway: a Scene that asks for a
-        // predictive pop should get the pop this app has, not the platform's own.
+        // Unreachable while the gesture state stays idle, and set so a Scene that asks for one is
+        // not handed the platform default instead.
         predictivePopTransitionSpec = { slide(SlideDirection.Right) },
         modifier = modifier,
     )
 }
 
-/**
- * The screen being opened slides in from the edge the screen being left slides out towards, both
- * covering the full width, so the two read as one sheet moving rather than two things happening.
- */
 private fun AnimatedContentTransitionScope<Scene<NavKey>>.slide(towards: SlideDirection): ContentTransform =
     slideIntoContainer(towards, tween(NAV_SLIDE_MILLIS)) togetherWith
         slideOutOfContainer(towards, tween(NAV_SLIDE_MILLIS))
