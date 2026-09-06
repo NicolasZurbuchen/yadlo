@@ -1,8 +1,10 @@
 package io.nicolaszurbuchen.yadlo.app.navigation
 
+import androidx.compose.animation.AnimatedContentTransitionScope.SlideDirection
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -58,6 +60,7 @@ import io.nicolaszurbuchen.yadlo.design.theme.spacing
 import io.nicolaszurbuchen.yadlo.feature.happening.presentation.navigation.HappeningDestination
 import io.nicolaszurbuchen.yadlo.feature.search.presentation.navigation.SearchDestination
 import io.nicolaszurbuchen.yadlo.infra.navigation.AppNavigator
+import io.nicolaszurbuchen.yadlo.infra.navigation.NAV_SLIDE_MILLIS
 import io.nicolaszurbuchen.yadlo.infra.navigation.NavGraph
 import io.nicolaszurbuchen.yadlo.infra.navigation.rememberNavEntries
 import io.nicolaszurbuchen.yadlo.infra.notification.NotificationTarget
@@ -72,12 +75,8 @@ import yadlo.shared.generated.resources.Res
 import yadlo.shared.generated.resources.search_action
 
 /**
- * The tab shell: four independent back stacks, one of which is visible.
- *
- * Each tab keeps its own stack rather than sharing one, because a fiche is reached from more than
- * one place — the same Happening opens from Programme and from Plus › Nourriture — and it has to
- * return to wherever it was opened from. A single shared stack would also stack tab roots on top
- * of each other, so backing out of Plus would land on a fiche the user left in Programme.
+ * The tab shell: four independent back stacks, one of which is visible — DECISIONS.md § Each tab
+ * keeps its own back stack.
  */
 @Composable
 fun MainScaffold(modifier: Modifier = Modifier) {
@@ -88,20 +87,11 @@ fun MainScaffold(modifier: Modifier = Modifier) {
     val clock = koinInject<AppClock>()
     val notificationRelay = koinInject<NotificationTargetRelay>()
 
-    // Read here rather than by each tab's own store: the bar belongs to the shell, and four
-    // screens deriving the same two strings is four places for them to drift apart.
     val status by contentRepository.observeStatus().collectAsStateWithLifecycle()
     val ready = status as? ContentStatus.Ready
 
-    // **The dates come off the bar between editions.** They are the answer to "which weekend is
-    // this?", and off season there is no weekend to be on the way to — the countdown on Accueil is
-    // where a date eight months out belongs, next to the number of days that gives it a meaning.
-    //
-    // Recomputed when the content changes and when the debug clock is moved, but not on a ticker.
-    // Every boundary that can hide or restore the dates is content-driven — a programme published,
-    // an edition swapped — except the one at six weeks past the festival, which no session is going
-    // to be open across. [AppClock.jumps] never emits in a release build, so this costs a
-    // subscription that never fires and keeps the time-travel panel honest.
+    // Recomputed on content and on a debug clock jump, never on a ticker — DECISIONS.md § The dates
+    // come off the bar between editions. [AppClock.jumps] never emits in a release build.
     var clockMoved by remember { mutableIntStateOf(0) }
     LaunchedEffect(clock) {
         clock.jumps.collect { clockMoved++ }
@@ -115,18 +105,9 @@ fun MainScaffold(modifier: Modifier = Modifier) {
             )
         }
 
-    // **The tab the app opens on, and the only place the Phase decides navigation.** Accueil for
-    // 361 days of the year; Programme for the four the festival is running, because during LIVE
-    // the question is "what is on now" and Accueil's honest answer to it is the other tab.
-    //
-    // A `remember` rather than a `LaunchedEffect`, and above the read of the selected tab rather
-    // than below it: an effect runs after composition, so the shell would draw one frame of
-    // Accueil on the Saturday morning before replacing it. Written here, [TabNavigator.selectStart]
-    // has already moved before the flow below is first read. The same shape App.kt uses to install
-    // the image loader.
-    //
-    // The shell is not composed until the content is Ready — App.kt holds the splash until then —
-    // so the Phase is known on the first pass and there is no second chance to wait for.
+    // A `remember` above the read below, never an effect: an effect runs after composition, so the
+    // shell would draw one frame of Accueil on the Saturday morning before replacing it. See
+    // DECISIONS.md § It is a start destination, not a redirect.
     val isColdStart =
         remember(Unit) {
             tabNavigator.selectStart(if (phase == Phase.LIVE) Tab.PROGRAMME else Tab.HOME)
@@ -134,13 +115,10 @@ fun MainScaffold(modifier: Modifier = Modifier) {
 
     val selectedTab by tabNavigator.selectedTab.collectAsStateWithLifecycle()
 
-    // Scheduling and the permission ask, both of which need the shell to exist and neither of which
-    // draws anything. Kept in one composable rather than four effects inlined here.
     ReminderEffects()
 
-    // Declared one by one rather than built in a loop: these are composables, and the call order
-    // has to be identical on every recomposition. Each rememberNavEntries call is also its own
-    // composition slot, which is what gives each tab decorator state of its own.
+    // One call per stack and never a loop: these are composables, so the call order has to be
+    // identical on every recomposition. See rememberNavEntries.
     val homeStack = rememberNavBackStack(navConfig, Tab.HOME.root)
     val programmeStack = rememberNavBackStack(navConfig, Tab.PROGRAMME.root)
     val monYadloStack = rememberNavBackStack(navConfig, Tab.MON_YADLO.root)
@@ -161,14 +139,9 @@ fun MainScaffold(modifier: Modifier = Modifier) {
             )
         }
 
-    // **A notification tap arrives here, and it is the one thing allowed to move the visitor.**
-    // It is written below the stacks rather than beside the other effects because it needs them: a
-    // Slot reminder opens a fiche, and a fiche is a push onto the Programme tab's own stack, not a
-    // tab switch. Pushing it there rather than onto whichever tab happens to be showing is what
-    // makes backing out of it land on the Programme — the tab the reminder was about.
-    //
-    // Consumed rather than left set, because a target is an event: without that, every
-    // recomposition and every rotation would send the visitor back to the same fiche.
+    // A reminder pushes onto the Programme's own stack rather than onto whichever tab is showing —
+    // DECISIONS.md § Notifications. Consumed because a target is an event: left set, every
+    // recomposition would send the visitor back to the same fiche.
     val notificationTarget by notificationRelay.target.collectAsStateWithLifecycle()
     LaunchedEffect(notificationTarget) {
         when (val target = notificationTarget) {
@@ -193,17 +166,8 @@ fun MainScaffold(modifier: Modifier = Modifier) {
         notificationRelay.consume()
     }
 
-    // **A cold start opens each tab at its root, and the saved stacks are for rotation only.**
-    // Navigation 3 restores every stack from saved state, which does not distinguish a rotation from
-    // a process Android killed while the app was in the background — and the two want opposite
-    // things. Restoring after a rotation is the whole point; restoring after a kill dropped the
-    // visitor several screens deep into a tab they had not chosen, since the selected tab is not
-    // saved and had already gone back to the Phase's answer. Half-restored was the worst of both, so
-    // this makes a cold start clean: the Phase's tab, every stack at its root.
-    //
-    // In a `remember` rather than an effect, and above the reads below, because an effect runs after
-    // composition — NavDisplay would draw one frame of the screen being popped. The same reason
-    // selectStart is written where it is.
+    // DECISIONS.md § A cold start opens every tab at its root. In a `remember` above the reads
+    // below, for the same reason selectStart is.
     remember(Unit) {
         if (isColdStart) stacks.values.forEach { it.popToRoot() }
     }
@@ -218,53 +182,36 @@ fun MainScaffold(modifier: Modifier = Modifier) {
         }
     val isAtTabRoot = currentStack.size <= 1
 
-    // **The magnifier belongs to the shell, and that is what lets it mean "everything".** This bar
-    // is the same on all four tabs — the festival's name and the edition's dates, never a tab title
-    // — so an action in it inherits that rather than reading as a control over the tab underneath.
-    // The corpus behind it is one index, and the results say so by answering with headings from
-    // places the reader did not come from.
-    //
-    // **Not on Accueil**, which carries the search block itself: an icon and a field on one screen
-    // are two doors to the same room, side by side. The block is the one that teaches the app has a
-    // search, so it wins where they collide, and the icon covers the three tabs that have no room
-    // for a field.
-    //
-    // **No Phase gate, which is a reversal** — DECISIONS.md § Search is enabled all year. Half the
-    // corpus never expires: paiement, horaires, comment venir, devenir bénévole and nous écrire are
-    // live truth rather than an edition, and off season they are the most useful thing in the app.
-    // The other half is last July, which is the edition the bundle holds anyway.
+    // DECISIONS.md § One transition, spelled out once
+    val slideTowards = rememberSlideDirection(selectedTab, currentStack.size)
+
+    // DECISIONS.md § The bar can carry it because the bar is not a tab’s. In every Phase, and on
+    // the three tabs with no room for the block — § Search.
     val showsSearch = selectedTab != Tab.HOME
 
-    // SideEffect, not LaunchedEffect: this has to be true before the frame the user can touch.
-    // LaunchedEffect publishes on a coroutine after composition, which leaves a window where the
-    // bar has already switched tabs but the navigator still points at the tab being left, so a
-    // tap landing in that window pushes onto the wrong stack.
+    // SideEffect, not LaunchedEffect: a coroutine publishes after composition, leaving a window in
+    // which a tap would push onto the tab being left rather than the one now showing.
     SideEffect {
         appNavigator.attach(currentStack)
     }
 
-    // Only the root-level case is handled here. Deeper than that, NavDisplay is the inner back
-    // handler and pops its own stack. On iOS there is no system back and this is a no-op.
+    // Only the root-level case: deeper than that, NavGraph's own handler pops the stack first. A
+    // no-op on iOS, which has no system back.
     BackHandler(enabled = isAtTabRoot && selectedTab != Tab.HOME) {
         tabNavigator.select(Tab.HOME)
     }
 
-    // Measured from the bars themselves rather than assumed from a Material token, and held across
-    // the frames they are hidden for. See [TabChromeInsets] for why it must not move.
+    // Measured rather than assumed, and held across the frames the bars are hidden for — see
+    // [TabChromeInsets] for why it must not move.
     val density = LocalDensity.current
     var chrome by remember { mutableStateOf(TabChromeInsets()) }
 
-    // The ground the tabs are drawn on. A Scaffold painted this for free and a Box does not, so
-    // dropping the Scaffold left every tab falling through to the platform root's own white.
+    // A Box paints no ground of its own, so without this every tab falls through to the platform
+    // root's white.
     Box(modifier = modifier.fillMaxSize().background(MaterialTheme.appColors.background)) {
-        // The graph owns the whole window at every depth. Nothing about its size depends on whether
-        // the current tab is at its root, which is what stops the screen behind a push from being
-        // re-measured while it is still on screen.
-        //
-        // LocalContentColor is the other thing the Scaffold used to hand down, through the Surface
-        // it wraps its content in. Material's ripple defaults to it, so with nothing providing it
-        // the four tabs fell back to foundation's plain black — a tap on an annonce lit up in a
-        // colour belonging to no theme, and in dark mode barely lit up at all.
+        // The graph owns the whole window at every depth — see [TabChromeInsets]. Material's ripple
+        // reads LocalContentColor, and nothing else provides it here, so without it a tap lights up
+        // in foundation's plain black.
         CompositionLocalProvider(
             LocalTabChromeInsets provides chrome,
             LocalContentColor provides MaterialTheme.appColors.textPrimary,
@@ -272,28 +219,25 @@ fun MainScaffold(modifier: Modifier = Modifier) {
             NavGraph(
                 entries = currentEntries,
                 onBack = { currentStack.popOne() },
+                slideTowards = slideTowards,
                 modifier = Modifier.fillMaxSize(),
             )
         }
 
-        // Both bars belong to the tab roots — a fiche is full-screen with a back chevron instead,
-        // and the prototypes show no bar on a detail screen. They slide out rather than vanish, so
-        // the title still covers the status bar for as long as the screen under it is still there.
+        // Both bars belong to the tab roots, and travel with them — DECISIONS.md § One transition,
+        // spelled out once. Enter and exit are the two ends of one movement, hence the opposite signs.
         AnimatedVisibility(
             visible = isAtTabRoot,
-            enter = slideInVertically { -it },
-            exit = slideOutVertically { -it },
+            enter = slideInHorizontally(tween(NAV_SLIDE_MILLIS)) { if (slideTowards == SlideDirection.Left) it else -it },
+            exit = slideOutHorizontally(tween(NAV_SLIDE_MILLIS)) { if (slideTowards == SlideDirection.Left) -it else it },
             modifier = Modifier.align(Alignment.TopCenter),
         ) {
-            // Yadlo, and when. On every tab root, so the answer to "which weekend is this?" is
-            // never more than a glance away and no screen has to spend a line of its own saying it.
             YadloTopAppBar(
                 title = ready?.bundle?.festival?.name.orEmpty(),
                 subtitle = ready?.bundle?.edition?.days?.takeUnless { phase == Phase.OFF_SEASON }?.let(::formatEditionDates),
                 actions = {
                     if (showsSearch) {
-                        // Pushed onto the tab that is showing, like every other detail screen, so
-                        // backing out of a search lands on the tab it was opened from.
+                        // Pushed onto the tab showing, so backing out lands where it was opened from.
                         IconButton(onClick = { appNavigator.navigateTo(SearchDestination) }) {
                             Icon(
                                 imageVector = Icons.Outlined.Search,
@@ -311,16 +255,14 @@ fun MainScaffold(modifier: Modifier = Modifier) {
 
         AnimatedVisibility(
             visible = isAtTabRoot,
-            enter = slideInVertically { it },
-            exit = slideOutVertically { it },
+            enter = slideInHorizontally(tween(NAV_SLIDE_MILLIS)) { if (slideTowards == SlideDirection.Left) it else -it },
+            exit = slideOutHorizontally(tween(NAV_SLIDE_MILLIS)) { if (slideTowards == SlideDirection.Left) -it else it },
             modifier = Modifier.align(Alignment.BottomCenter),
         ) {
             MainNavigationBar(
                 selectedTab = selectedTab,
                 onTabClick = { tab ->
                     if (tab == selectedTab) {
-                        // Re-tapping the active tab returns to its root. The standard way out of a
-                        // deep stack without hunting for the back gesture.
                         stacks.getValue(tab).popToRoot()
                     } else {
                         tabNavigator.select(tab)
@@ -335,9 +277,8 @@ fun MainScaffold(modifier: Modifier = Modifier) {
     }
 }
 
-// A tab's root is not poppable. NavDisplay throws the moment it is handed an empty list, and it
-// renders in the same frame the list is mutated, so an unguarded pop turns a double-tap into a
-// crash rather than a no-op.
+// NavDisplay throws when handed an empty list and renders in the same frame the list is mutated, so
+// an unguarded pop turns a double-tap into a crash rather than a no-op.
 private fun NavBackStack<NavKey>.popOne() {
     if (size > 1) removeAt(size - 1)
 }
@@ -367,29 +308,39 @@ internal fun formatEditionDates(days: List<FestivalDay>): String? {
     }
 }
 
-/**
- * **A pill that floats over the content rather than a band that ends it.** The bar used to sit on
- * the bottom edge and own a strip of the window; it now wraps its four tabs, centres, and lifts off
- * all three edges, with the list running underneath it. What the tab bar costs the page is a
- * shadow instead of a band.
- *
- * **The same blue as the bar at the top, which is what makes the two read as one frame.** It was
- * Material's own `surfaceContainer` — a near-white in light and a near-black in dark — so the app
- * had a coloured band above the page and a neutral one below it, and the ground the tabs are drawn
- * on ran out at a different place from the chrome that holds them. Floating makes that ground a
- * shape rather than an edge, which is the one thing it had to keep.
- *
- * **The accent stays, and it had to change step to survive the move.** The selected tab keeps its
- * rose pill; what it cannot keep is `accentSubtle`, which is chosen against a page ground and
- * measures 1.34:1 on the dark bandeau blue — an indicator that is simply not there. See
- * [io.nicolaszurbuchen.yadlo.design.theme.AppColors.accentChrome], which is the same accent at
- * the step each theme's bar can actually carry.
- *
- * **No labels, so the icon carries the name.** A pill that wraps its content cannot hold four
- * French labels — *Mon Yadlo* and *Programme* alone are most of a phone — and a bar that stretches
- * to fit them is the band again under another name. The label becomes the icon’s
- * `contentDescription`, which is where a screen reader was reading it from anyway.
- */
+@Composable
+private fun rememberSlideDirection(
+    selectedTab: Tab,
+    depth: Int,
+): SlideDirection {
+    var previousTab by remember { mutableStateOf(selectedTab) }
+    var previousDepth by remember { mutableIntStateOf(depth) }
+    var towards by remember { mutableStateOf(SlideDirection.Left) }
+
+    // Derived in composition, not in an effect: the entries list changes in the same frame the tab
+    // does and the display reads this on that frame, so an effect would publish it one frame late.
+    if (selectedTab != previousTab || depth != previousDepth) {
+        towards =
+            when {
+                selectedTab != previousTab -> {
+                    if (selectedTab.ordinal > previousTab.ordinal) SlideDirection.Left else SlideDirection.Right
+                }
+
+                depth > previousDepth -> {
+                    SlideDirection.Left
+                }
+
+                else -> {
+                    SlideDirection.Right
+                }
+            }
+        previousTab = selectedTab
+        previousDepth = depth
+    }
+
+    return towards
+}
+
 @Composable
 private fun MainNavigationBar(
     selectedTab: Tab,
@@ -398,10 +349,9 @@ private fun MainNavigationBar(
 ) {
     Box(
         contentAlignment = Alignment.Center,
-        // The pill clears the gesture bar itself, because it no longer sits on the window edge: a
-        // NavigationBar consumed that inset as part of being the bottom of the screen, and this is
-        // not the bottom of anything. Measured with the inset and the margin included, so the lists
-        // underneath still pad by exactly what the bar covers.
+        // A NavigationBar consumes this inset for free and a Surface does not — DECISIONS.md § It
+        // clears the gesture bar itself. Inside onSizeChanged, so the lists underneath pad by the
+        // whole of what the bar covers rather than by the pill alone.
         modifier =
             modifier
                 .fillMaxWidth()
@@ -412,16 +362,11 @@ private fun MainNavigationBar(
             color = MaterialTheme.appColors.primarySubtle,
             contentColor = MaterialTheme.appColors.onPrimarySubtle,
             shape = CircleShape,
-            // The one shadow in the app. Nothing else here is raised, so this is what says the bar
-            // is over the page rather than part of it — and on the dark theme, where the pill and
-            // the page are close in value, it is most of what says it at all.
             shadowElevation = BAR_ELEVATION,
         ) {
-            // A Row rather than ShortNavigationBar, and the reason is in that component: both its
-            // measure policies open with `val width = constraints.maxWidth`, so the bar is always
-            // as wide as it is offered and Centered only centres the items inside it. The pill has
-            // to wrap. The items are the expressive ones either way — they are what carry the look,
-            // and they take no scope from the bar.
+            // A Row rather than ShortNavigationBar: both of that component's measure policies open
+            // with `val width = constraints.maxWidth`, so it can never wrap its content. The items
+            // are the expressive ones either way, and they take no scope from the bar.
             Row(
                 horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xs),
                 verticalAlignment = Alignment.CenterVertically,
@@ -442,10 +387,10 @@ private fun MainNavigationBar(
                                 contentDescription = stringResource(tab.label),
                             )
                         },
-                        // Null rather than a hidden label: the pill wraps its content, so a label
-                        // that is present but not drawn would still be reserving width for four
-                        // French words. The name is on the icon instead.
+                        // DECISIONS.md § The bar floats, and the labels went with the band.
                         label = null,
+                        // accentChrome rather than accentSubtle, which is unreadable on this blue
+                        // — DECISIONS.md § The chrome is one frame.
                         colors =
                             ShortNavigationBarItemDefaults.colors(
                                 selectedIconColor = MaterialTheme.appColors.onAccentChrome,
@@ -459,8 +404,10 @@ private fun MainNavigationBar(
     }
 }
 
-// How far the pill lifts off the three edges it no longer touches. The window insets are handled
-// by the scaffold above, so this is clearance from the gesture bar rather than to it.
+// How far the pill lifts off the three edges it no longer touches. Applied after the navigation-bar
+// inset, so it is clearance from the gesture bar rather than to it.
 private val BAR_MARGIN = 12.dp
 
+// The only raised surface in the app, and on the dark theme most of what separates the pill from
+// the page behind it — DECISIONS.md § The one shadow in the app.
 private val BAR_ELEVATION = 6.dp
