@@ -1,5 +1,6 @@
 package io.nicolaszurbuchen.yadlo.app.navigation
 
+import androidx.compose.animation.AnimatedContentTransitionScope.SlideDirection
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
@@ -209,6 +210,39 @@ fun MainScaffold(modifier: Modifier = Modifier) {
         }
     val isAtTabRoot = currentStack.size <= 1
 
+    // **Which way the window travels, and the one thing the display and the bars both read.**
+    // Depth is one axis: a push arrives from the right and a pop leaves back towards it, on every
+    // tab. The bar is the other, and it is a row — the four roots are peers laid out left to right,
+    // so Plus arrives from the right of Mon Yadlo and Accueil from the left of it, the way pages of
+    // a pager do. Always-from-the-right made switching tabs read as going one level deeper into
+    // something, which is the one thing these four are not.
+    //
+    // Read during composition rather than from an effect: the entries list changes in the same
+    // frame the tab does, and the display computes its transform on that frame. An effect would
+    // publish the direction one frame after the animation it describes had already started.
+    var previousTab by remember { mutableStateOf(selectedTab) }
+    var previousDepth by remember { mutableIntStateOf(currentStack.size) }
+    var slideTowards by remember { mutableStateOf(SlideDirection.Left) }
+
+    if (selectedTab != previousTab || currentStack.size != previousDepth) {
+        slideTowards =
+            when {
+                selectedTab != previousTab -> {
+                    if (selectedTab.ordinal > previousTab.ordinal) SlideDirection.Left else SlideDirection.Right
+                }
+
+                currentStack.size > previousDepth -> {
+                    SlideDirection.Left
+                }
+
+                else -> {
+                    SlideDirection.Right
+                }
+            }
+        previousTab = selectedTab
+        previousDepth = currentStack.size
+    }
+
     // **The magnifier belongs to the shell, and that is what lets it mean "everything".** This bar
     // is the same on all four tabs — the festival's name and the edition's dates, never a tab title
     // — so an action in it inherits that rather than reading as a control over the tab underneath.
@@ -263,6 +297,7 @@ fun MainScaffold(modifier: Modifier = Modifier) {
             NavGraph(
                 entries = currentEntries,
                 onBack = { currentStack.popOne() },
+                slideTowards = slideTowards,
                 modifier = Modifier.fillMaxSize(),
             )
         }
@@ -272,14 +307,18 @@ fun MainScaffold(modifier: Modifier = Modifier) {
         //
         // **They leave sideways, on the display's own duration, because they are part of the
         // screen they belong to.** Drawn above it rather than inside it, so nothing carries them
-        // along and they have to be told to make the same journey: out to the left as the tab root
-        // goes, back in from the left as it returns. Off by a frame or a pixel and the bandeau
-        // visibly detaches from the page it caps. A tab switch keeps both roots, so neither moves
-        // and only the page between them travels.
+        // along and they have to be told to make the same journey, on the same duration and towards
+        // the same side. Off by a frame or a pixel and the bandeau visibly detaches from the page it
+        // caps. Enter and exit are the two ends of one movement, which is why they read the
+        // direction with opposite signs.
+        //
+        // A tab switch between two roots never reaches this: both are visible before and after, so
+        // neither bar moves and only the page between them travels. What does reach it is leaving a
+        // fiche for another tab, and there the bars have to arrive from the side that tab is on.
         AnimatedVisibility(
             visible = isAtTabRoot,
-            enter = slideInHorizontally(tween(NAV_SLIDE_MILLIS)) { -it },
-            exit = slideOutHorizontally(tween(NAV_SLIDE_MILLIS)) { -it },
+            enter = slideInHorizontally(tween(NAV_SLIDE_MILLIS)) { if (slideTowards == SlideDirection.Left) it else -it },
+            exit = slideOutHorizontally(tween(NAV_SLIDE_MILLIS)) { if (slideTowards == SlideDirection.Left) -it else it },
             modifier = Modifier.align(Alignment.TopCenter),
         ) {
             // Yadlo, and when. On every tab root, so the answer to "which weekend is this?" is
@@ -308,8 +347,8 @@ fun MainScaffold(modifier: Modifier = Modifier) {
 
         AnimatedVisibility(
             visible = isAtTabRoot,
-            enter = slideInHorizontally(tween(NAV_SLIDE_MILLIS)) { -it },
-            exit = slideOutHorizontally(tween(NAV_SLIDE_MILLIS)) { -it },
+            enter = slideInHorizontally(tween(NAV_SLIDE_MILLIS)) { if (slideTowards == SlideDirection.Left) it else -it },
+            exit = slideOutHorizontally(tween(NAV_SLIDE_MILLIS)) { if (slideTowards == SlideDirection.Left) -it else it },
             modifier = Modifier.align(Alignment.BottomCenter),
         ) {
             MainNavigationBar(

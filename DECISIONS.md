@@ -1736,6 +1736,19 @@ centre, iOS slides it — so the same push is two different apps depending on wh
 holding. Spelling it out in `NavGraph` also keeps a screen from acquiring an animation of its own
 as a side effect of where its entry happens to be declared.
 
+**Depth comes from the right; a sibling comes from the side it is on.** A push is one direction
+because it is one relation — the fiche is *under* the card that opened it, and under is to the
+right. The four tab roots are not under anything and not under each other: they are peers laid out
+in a row, and the row is on screen, at the bottom, being pointed at. Always-from-the-right made
+crossing that row read as descending into something, four times, in whichever order you happened
+to tap. Now Plus arrives from the right of Mon Yadlo and Accueil from the left of it, the way pages
+of a pager do, and the bars stay still while the page passes between them.
+
+Only the forward direction is steerable, and the caller is what steers it — the display is handed a
+side, not a concept of tabs. Going back needs no such decision: a stack whose first entry changed
+is a replacement rather than a pop, which is exactly why swapping tabs reaches the forward spec and
+a pop never carries a lateral direction into a screen it did not come from.
+
 **The bars make the same journey as the page.** They used to slide up and down out of the frame as
 a fiche opened — a third element travelling in a second direction across the same 300 ms, which the
 eye could not follow. They go sideways now, on the display's own duration: out to the left as the

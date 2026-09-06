@@ -39,6 +39,13 @@ const val NAV_SLIDE_MILLIS = 300
 fun NavGraph(
     entries: List<NavEntry<NavKey>>,
     onBack: () -> Unit,
+    /**
+     * Which way the window travels on the next forward move: [SlideDirection.Left] for a screen
+     * arriving from the right, [SlideDirection.Right] for one arriving from the left. Decided by
+     * the caller because it depends on what the move *means* — a push always comes from the right,
+     * a sibling tab comes from the side it sits on — and this display knows about neither.
+     */
+    slideTowards: SlideDirection,
     modifier: Modifier = Modifier,
 ) {
     val sceneState =
@@ -76,10 +83,14 @@ fun NavGraph(
     // the middle, iOS slides — so leaving them alone means the same push looks like two different
     // apps. Spelling it out once is also what keeps a screen from acquiring an animation of its own
     // as a side effect of where it happens to be declared.
+    //
+    // Only the forward spec is steerable. Going back is going back whatever it undid, and the
+    // display picks it itself: a stack whose first entry changed is a replacement rather than a pop,
+    // which is exactly why swapping tabs reaches the spec above and never this one.
     NavDisplay(
         sceneState = sceneState,
         navigationEventState = gestureState,
-        transitionSpec = { slide(SlideDirection.Left) },
+        transitionSpec = { slide(slideTowards) },
         popTransitionSpec = { slide(SlideDirection.Right) },
         // Unreachable while the gesture state stays idle, and set anyway: a Scene that asks for a
         // predictive pop should get the pop this app has, not the platform's own.
