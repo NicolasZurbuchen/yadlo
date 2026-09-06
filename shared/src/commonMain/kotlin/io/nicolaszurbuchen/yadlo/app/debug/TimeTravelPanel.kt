@@ -12,9 +12,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -70,8 +73,13 @@ import kotlin.time.Instant
  *
  * The strings are hardcoded English rather than resources: they are for whoever is holding the
  * device with the IDE open, and putting them in `strings.xml` would ship them.
+ *
+ * Expanded, it is a `ModalBottomSheet` rather than a panel over a scrim of its own. The scrim was
+ * a full-size sibling *under* the panel, and the panel took no pointer input, so every tap that
+ * missed a control fell through and closed it — which is most taps on a form. A sheet also draws
+ * in its own window, so it is above the floating tab bar instead of behind it.
  */
-@OptIn(ExperimentalLayoutApi::class)
+@OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun TimeTravelPanel(modifier: Modifier = Modifier) {
     val flags = koinInject<BuildFlags>()
@@ -104,41 +112,33 @@ fun TimeTravelPanel(modifier: Modifier = Modifier) {
     val closesAt = days.lastOrNull()?.end
 
     Box(modifier = modifier.fillMaxSize()) {
-        if (!isExpanded) {
-            Text(
-                text = if (simulated == null) "⏱ live" else "⏱ $label",
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.appColors.onAccent,
-                modifier =
-                    Modifier
-                        .align(Alignment.BottomEnd)
-                        .padding(end = MaterialTheme.spacing.sm, bottom = COLLAPSED_BOTTOM_INSET)
-                        .clip(MaterialTheme.shapes.small)
-                        .background(MaterialTheme.appColors.accent)
-                        .clickable { isExpanded = true }
-                        .padding(horizontal = MaterialTheme.spacing.sm, vertical = MaterialTheme.spacing.xs),
-            )
-            return@Box
-        }
-
-        // A scrim that closes on tap, so the panel never traps whoever opened it.
-        Box(
+        Text(
+            text = if (simulated == null) "⏱ live" else "⏱ $label",
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.appColors.onAccent,
             modifier =
                 Modifier
-                    .fillMaxSize()
-                    .background(MaterialTheme.appColors.scrim)
-                    .clickable { isExpanded = false },
+                    .align(Alignment.BottomEnd)
+                    .padding(end = MaterialTheme.spacing.sm, bottom = COLLAPSED_BOTTOM_INSET)
+                    .clip(MaterialTheme.shapes.small)
+                    .background(MaterialTheme.appColors.accent)
+                    .clickable { isExpanded = true }
+                    .padding(horizontal = MaterialTheme.spacing.sm, vertical = MaterialTheme.spacing.xs),
         )
+    }
 
+    if (!isExpanded) return
+
+    ModalBottomSheet(
+        onDismissRequest = { isExpanded = false },
+        // Skipping half-expanded: this is a form, and a sheet that opens at half height puts the
+        // two fields under the fold on the one screen where every control matters.
+        sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+        containerColor = MaterialTheme.appColors.surface,
+    ) {
         Column(
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm),
-            modifier =
-                Modifier
-                    .align(Alignment.BottomCenter)
-                    .padding(MaterialTheme.spacing.sm)
-                    .clip(MaterialTheme.shapes.medium)
-                    .background(MaterialTheme.appColors.surface)
-                    .padding(MaterialTheme.spacing.md),
+            modifier = Modifier.padding(horizontal = MaterialTheme.spacing.md).padding(bottom = MaterialTheme.spacing.md),
         ) {
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -321,8 +321,9 @@ private val NUDGES: List<Pair<String, Duration>> =
         "+1 d" to 1.days,
     )
 
-/** Clears the bottom navigation bar so the collapsed pill never sits on top of a tab. */
-private val COLLAPSED_BOTTOM_INSET = 96.dp
+// Clears the floating tab bar, which is taller than the band it replaced and grows again with the
+// system font. Measured at 1.3x, where the bar's top edge is 115dp off the bottom of the window.
+private val COLLAPSED_BOTTOM_INSET = 128.dp
 
 private const val DATE_FIELD_WEIGHT = 1.4f
 private const val TIME_FIELD_WEIGHT = 1f
