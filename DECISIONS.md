@@ -1713,6 +1713,24 @@ restrictions on displays 600dp and wider, which this app targets. A tablet or an
 therefore rotates, and the layouts survive it for the same reason they do not benefit from it. The
 declaration is what stops a phone rotating, which is what it is for.
 
+### Lists stay `List`
+
+**`compose_disallow_unstable_collections` stays off, and the commented-out line inviting somebody
+to turn it on is gone.** It flags `List`, `Set` and `Map` as `@Composable` parameters: Compose
+cannot prove the interface is immutable, so it marks the composable unstable and never skips it —
+the function re-runs whenever its parent does, with identical arguments. A `data class` does not
+fix that, and neither does the list actually being immutable at run time; only a type Compose
+knows is stable does, which means `kotlinx.collections.immutable`.
+
+The cost is not the dependency. **21 UiModel files** hold a `List`, **around 30 composable
+parameters** take a raw collection, and each conversion drags its mapper and its test with it. The
+benefit is skippability, which is a performance fix — and nothing here has a performance problem to
+fix. Four tabs of short lists, the longest of them sixteen rows, none of it recomposing visibly.
+
+Adopting it on the argument that it is more correct would be paying a real cost for a measured
+benefit of zero. The line stayed commented out for months because it is genuinely a question; this
+is the answer, and what would reopen it is a screen that stutters, not a count of `List`s.
+
 ### The chrome is one frame
 
 **The bottom bar takes the top bar's blue.** It was Material's own `surfaceContainer` — a near-white

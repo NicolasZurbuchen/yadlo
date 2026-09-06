@@ -53,20 +53,30 @@ class LayerBoundariesTest {
     }
 
     /**
-     * `infra/` is plumbing: it knows no feature, and it knows no domain either.
+     * **`infra/` imports nothing of this app**, which is the property the placement rule leans on:
+     * a file goes here when it would be as much at home in another project, and that is only
+     * checkable if nothing here names a Slot, a token or a screen.
      *
-     * This carried two exclusions, `AppModule` and `NavGraph`, and both were dead. `AppModule` has
-     * lived in `app/di/` for as long as the rule has existed, so it was never in scope; `NavGraph`
-     * is in `infra/navigation/` and has zero feature imports. An exclusion that matches nothing
-     * reads as a known exception and is really an invitation — see #73.
+     * Widened from *may not import features*. Everything else in the tree was already fenced —
+     * `design/` may not reach the domain, `core/` may not reach the features, nothing may reach
+     * `app/` — and `infra/` was the one layer whose stated invariant nothing enforced, so
+     * `infra -> core` and `infra -> design` were both open. It carried two dead exclusions too,
+     * `AppModule` and `NavGraph`, neither of which was ever in scope; an exclusion that matches
+     * nothing reads as a known exception and is really an invitation.
+     *
+     * The two generated packages are not exceptions to it. `cache` is SQLDelight's output and
+     * `shared` is Compose's resource accessor: both are written by the build from files `infra/`
+     * already owns, and neither is a layer.
      */
     @Test
-    fun `infra should not depend on features`() {
+    fun `infra should not depend on anything else in the project`() {
+        val layers = listOf("app", "core", "design", "feature")
+
         Konsist.scopeFromProject()
             .files
             .filter { it.hasPackage("..infra..") }
-            .assertFalse {
-                it.imports.any { import -> isProjectImportFrom(import.name, "feature") }
+            .assertFalse { file ->
+                file.imports.any { import -> layers.any { isProjectImportFrom(import.name, it) } }
             }
     }
 

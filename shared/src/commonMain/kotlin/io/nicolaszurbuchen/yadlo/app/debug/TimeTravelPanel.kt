@@ -12,9 +12,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -49,6 +53,7 @@ import kotlinx.datetime.atTime
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 import org.koin.compose.koinInject
+import kotlin.math.roundToInt
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.hours
@@ -70,8 +75,13 @@ import kotlin.time.Instant
  *
  * The strings are hardcoded English rather than resources: they are for whoever is holding the
  * device with the IDE open, and putting them in `strings.xml` would ship them.
+ *
+ * Expanded, it is a `ModalBottomSheet` rather than a panel over a scrim of its own. The scrim was
+ * a full-size sibling *under* the panel, and the panel took no pointer input, so every tap that
+ * missed a control fell through and closed it — which is most taps on a form. A sheet also draws
+ * in its own window, so it is above the floating tab bar instead of behind it.
  */
-@OptIn(ExperimentalLayoutApi::class)
+@OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun TimeTravelPanel(modifier: Modifier = Modifier) {
     val flags = koinInject<BuildFlags>()
@@ -93,9 +103,13 @@ fun TimeTravelPanel(modifier: Modifier = Modifier) {
     val readingLocal = reading.toLocalDateTime(FESTIVAL_TIME_ZONE)
     val label = "${reading.formatAsShortDate(FESTIVAL_TIME_ZONE)} ${reading.formatAsTimeOfDay(FESTIVAL_TIME_ZONE)}"
 
-    var dateField by remember(isExpanded) { mutableStateOf(readingLocal.date.toString()) }
+    // Re-seeded whenever the clock is moved, so the fields say what the reading above says and Go
+    // cannot send you back to wherever the panel was opened. Keyed on the simulated instant rather
+    // than on the reading: in live mode that ticks every recomposition and would eat what is typed,
+    // and in simulated mode it only changes when something else here has already moved the clock.
+    var dateField by remember(isExpanded, simulated) { mutableStateOf(readingLocal.date.toString()) }
     var timeField by
-        remember(isExpanded) {
+        remember(isExpanded, simulated) {
             mutableStateOf("${readingLocal.hour.toString().padStart(2, '0')}:${readingLocal.minute.toString().padStart(2, '0')}")
         }
 
@@ -104,41 +118,33 @@ fun TimeTravelPanel(modifier: Modifier = Modifier) {
     val closesAt = days.lastOrNull()?.end
 
     Box(modifier = modifier.fillMaxSize()) {
-        if (!isExpanded) {
-            Text(
-                text = if (simulated == null) "⏱ live" else "⏱ $label",
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.appColors.onAccent,
-                modifier =
-                    Modifier
-                        .align(Alignment.BottomEnd)
-                        .padding(end = MaterialTheme.spacing.sm, bottom = COLLAPSED_BOTTOM_INSET)
-                        .clip(MaterialTheme.shapes.small)
-                        .background(MaterialTheme.appColors.accent)
-                        .clickable { isExpanded = true }
-                        .padding(horizontal = MaterialTheme.spacing.sm, vertical = MaterialTheme.spacing.xs),
-            )
-            return@Box
-        }
-
-        // A scrim that closes on tap, so the panel never traps whoever opened it.
-        Box(
+        Text(
+            text = if (simulated == null) "⏱ live" else "⏱ $label",
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.appColors.onAccent,
             modifier =
                 Modifier
-                    .fillMaxSize()
-                    .background(MaterialTheme.appColors.scrim)
-                    .clickable { isExpanded = false },
+                    .align(Alignment.BottomEnd)
+                    .padding(end = MaterialTheme.spacing.sm, bottom = COLLAPSED_BOTTOM_INSET)
+                    .clip(MaterialTheme.shapes.small)
+                    .background(MaterialTheme.appColors.accent)
+                    .clickable { isExpanded = true }
+                    .padding(horizontal = MaterialTheme.spacing.sm, vertical = MaterialTheme.spacing.xs),
         )
+    }
 
+    if (!isExpanded) return
+
+    ModalBottomSheet(
+        onDismissRequest = { isExpanded = false },
+        // Skipping half-expanded: this is a form, and a sheet that opens at half height puts the
+        // two fields under the fold on the one screen where every control matters.
+        sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+        containerColor = MaterialTheme.appColors.surface,
+    ) {
         Column(
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm),
-            modifier =
-                Modifier
-                    .align(Alignment.BottomCenter)
-                    .padding(MaterialTheme.spacing.sm)
-                    .clip(MaterialTheme.shapes.medium)
-                    .background(MaterialTheme.appColors.surface)
-                    .padding(MaterialTheme.spacing.md),
+            modifier = Modifier.padding(horizontal = MaterialTheme.spacing.md).padding(bottom = MaterialTheme.spacing.md),
         ) {
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -163,6 +169,45 @@ fun TimeTravelPanel(modifier: Modifier = Modifier) {
                 style = MaterialTheme.typography.displayMedium,
                 color = MaterialTheme.appColors.primary,
             )
+
+            // **A whole day in one gesture, which is the axis nearly every state turns on.** The
+            // fields below set a date and the nudges step a known amount; neither answers "what
+            // does this screen look like across an evening", which is one drag.
+            //
+            // Held locally while the thumb is down. The value it writes comes back through the
+            // clock and out of `reading`, so reading the position straight off that would let a
+            // round trip fight the finger.
+            var scrubbed by remember(isExpanded) { mutableStateOf<Float?>(null) }
+
+            Slider(
+                value = scrubbed ?: (readingLocal.hour * MINUTES_PER_HOUR + readingLocal.minute).toFloat(),
+                onValueChange = { minutes ->
+                    scrubbed = minutes
+
+                    val ofDay = minutes.roundToInt()
+                    val time = LocalTime(hour = ofDay / MINUTES_PER_HOUR, minute = ofDay % MINUTES_PER_HOUR)
+                    clock.simulateAt(readingLocal.date.atTime(time).toInstant(FESTIVAL_TIME_ZONE))
+                },
+                onValueChangeFinished = { scrubbed = null },
+                valueRange = 0f..(MINUTES_PER_DAY - SLIDER_STEP).toFloat(),
+                // Konsist counts the ends; Material counts the stops between them.
+                steps = MINUTES_PER_DAY / SLIDER_STEP - 2,
+            )
+
+            // A thumb with no scale under it is a guess. Quarters of the day are enough to aim by,
+            // and the reading above says exactly where it landed.
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                HOUR_MARKS.forEach { mark ->
+                    Text(
+                        text = mark,
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.appColors.textSecondary,
+                    )
+                }
+            }
 
             Row(horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm)) {
                 OutlinedTextField(
@@ -321,8 +366,18 @@ private val NUDGES: List<Pair<String, Duration>> =
         "+1 d" to 1.days,
     )
 
-/** Clears the bottom navigation bar so the collapsed pill never sits on top of a tab. */
-private val COLLAPSED_BOTTOM_INSET = 96.dp
+// Clears the floating tab bar, which is taller than the band it replaced and grows again with the
+// system font. Measured at 1.3x, where the bar's top edge is 115dp off the bottom of the window.
+private val COLLAPSED_BOTTOM_INSET = 128.dp
+
+// Five minutes rather than the fifteen the nudges step: the windows worth landing inside are
+// twenty minutes wide (ENDING) and sixty (COUNTDOWN), and a step that cannot stop inside the
+// smaller of them is a slider that cannot reach the states it exists to reach.
+private const val SLIDER_STEP = 5
+private const val MINUTES_PER_HOUR = 60
+private const val MINUTES_PER_DAY = 24 * MINUTES_PER_HOUR
+
+private val HOUR_MARKS = listOf("00:00", "06:00", "12:00", "18:00", "24:00")
 
 private const val DATE_FIELD_WEIGHT = 1.4f
 private const val TIME_FIELD_WEIGHT = 1f
