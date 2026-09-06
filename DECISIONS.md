@@ -1730,6 +1730,67 @@ with white ink in light (3.45:1 on the bar) and rose400 with near-black in dark 
 ends with the theme like every other pair in the file, and asserted in `AppColorTest` rather than
 left as prose.
 
+**The bar floats.** It sat on the bottom edge and owned a strip of the window; it now wraps its
+four tabs, centres, and lifts twelve points off all three edges, with the list running underneath.
+The blue is the one thing that had to survive the move — it is what makes the two bars one frame —
+so the ground became a shape rather than an edge.
+
+**~~The labels went with the band.~~ Reversed: they fit, and the first answer was estimated rather
+than measured.** The claim was that a pill wrapping its content cannot hold four French words, and
+it was wrong by a wide margin. *Accueil · Programme · Mon Yadlo · Plus* at `labelMedium` measure
+**325dp** — 79% of a 411dp screen, 91% of a 360dp one — which is a pill on both and a band on
+neither. An icon a sighted reader has to decode was the real cost, and it was being paid to save
+width that was never needed.
+
+**The bubble wraps the name as well as the icon**, which is the part Material does not offer: a
+`ShortNavigationBarItem` puts the indicator around the icon alone when the icon is on top, and
+around both only when it lays them out in a row. The item is written out here instead. Telegram’s
+bar is the reference, and this is the half of it that carries the meaning — the selected tab is a
+shape you can see from across a table rather than a tint you have to compare against its
+neighbours.
+
+**One padding sets the frame, and the two stadiums are concentric.** Eight points, on all four
+sides of the row, so the space beside the end bubbles is the space above and below them — the thing
+the eye actually checks. That only works because the bubble is a stadium inside a stadium: a smaller
+corner radius inside a larger one leaves the gap wider at the corner than along the edge, and a
+fully round container with a square-ish bubble clips it.
+
+**Four points between the bubbles, because a selection crossfades rather than slides.** For the
+length of the fade both are painted, and touching they read as one wide shape changing colour
+instead of two tabs swapping.
+
+**Every tab is as wide as the widest of them.** Not a `Row` with weights: a weight is a share of
+the total, so four equal weights hand each item the *average* width and the longest name is the one
+that gets squeezed — the single case the rule exists for. A small layout takes the maximum intrinsic
+width and gives it to all four instead, capped by the room there actually is, so a screen too narrow
+for the natural width shortens every tab a little rather than pushing the last one off the edge.
+
+**The tab reads *La Prog'*, and the long form is what broke it.** Equal width means every tab is as
+wide as the longest name, so *Programme* was setting all four — and it was still the one that would
+not quite fit. The short form is what anybody here calls it, and the width it gives back is what
+lets the bar survive a large system font: at 1.3x it measures 382dp of 411 with all four names
+whole, where the long form ran out. *Programme* stays the domain word, the tab it opens and the
+screen it lands on; only the label on the bar is short.
+
+**Every tab is also four points wider than the longest name needs, and that four is the first
+thing given up.** It is added by the layout rather than to the item's own padding, and the
+difference is the whole of it: padding sits *inside* the width a name asks for, so a cap that has to
+take something back takes it out of the name. Added on top, it is surrendered before the label is
+touched. Put in the padding first, and it truncated *Mon Yadlo* at a 1.3x system font — which is the
+case the breath was least needed and most expensive.
+
+The bar measures **333dp** on a 411dp screen, **336dp** on a 360dp one and **387dp** at 1.3x, every
+name whole in all three. The two larger figures are the cap doing its job: it takes the breath, and
+stops there.
+
+**It clears the gesture bar itself.** A `NavigationBar` consumes that inset as part of being the
+bottom of the screen, and this is not the bottom of anything. The inset and the margin are measured
+together with the pill, so the lists underneath still pad by exactly what the bar covers.
+
+**The one shadow in the app.** Nothing else here is raised. On the dark theme, where the pill and
+the page sit close in value, it is most of what says the bar is over the page rather than part of
+it.
+
 Everything not inside the pill takes the bar's own ink, selected and unselected alike, exactly as
 the top bar does with its title and its actions. The pill is the selection cue; a second one in the
 label would only be legible to somebody comparing two labels, which is not how a tab bar is read.
