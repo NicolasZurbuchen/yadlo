@@ -1772,15 +1772,15 @@ lets the bar survive a large system font: at 1.3x it measures 382dp of 411 with 
 whole, where the long form ran out. *Programme* stays the domain word, the tab it opens and the
 screen it lands on; only the label on the bar is short.
 
-**Every tab is also eight points wider than the longest name needs, and that eight is the first
+**Every tab is also four points wider than the longest name needs, and that four is the first
 thing given up.** It is added by the layout rather than to the item's own padding, and the
 difference is the whole of it: padding sits *inside* the width a name asks for, so a cap that has to
 take something back takes it out of the name. Added on top, it is surrendered before the label is
 touched. Put in the padding first, and it truncated *Mon Yadlo* at a 1.3x system font — which is the
 case the breath was least needed and most expensive.
 
-The bar measures **349dp** on a 411dp screen, **336dp** on a 360dp one and **387dp** at 1.3x, every
-name whole in all three. The two smaller figures are the cap doing its job: it takes the breath, and
+The bar measures **333dp** on a 411dp screen, **336dp** on a 360dp one and **387dp** at 1.3x, every
+name whole in all three. The two larger figures are the cap doing its job: it takes the breath, and
 stops there.
 
 **It clears the gesture bar itself.** A `NavigationBar` consumes that inset as part of being the

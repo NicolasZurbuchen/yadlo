@@ -515,7 +515,7 @@ private val INTRINSIC_SLACK = 2.dp
 
 // What every tab is given beyond the longest name, when the screen can afford it. See the layout
 // for why it is not the item's padding.
-private val ITEM_BREATH = 8.dp
+private val ITEM_BREATH = 4.dp
 
 // Tighter than any step on the spacing scale, because the icon and the name are one label rather
 // than two stacked things.
