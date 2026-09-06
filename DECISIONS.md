@@ -1749,12 +1749,26 @@ bar is the reference, and this is the half of it that carries the meaning — th
 shape you can see from across a table rather than a tint you have to compare against its
 neighbours.
 
-**One padding sets every gap in the bar, and the two stadiums are concentric.** Eight points, on
-all four sides of the row, so the space beside the end bubbles is the space above and below them —
-the thing the eye actually checks. That only works because the bubble is a stadium inside a
-stadium: a smaller corner radius inside a larger one leaves the gap wider at the corner than along
-the edge, and a fully round container with a square-ish bubble clips it. The items butt against
-each other so that padding is the only gap in the bar.
+**One padding sets the frame, and the two stadiums are concentric.** Eight points, on all four
+sides of the row, so the space beside the end bubbles is the space above and below them — the thing
+the eye actually checks. That only works because the bubble is a stadium inside a stadium: a smaller
+corner radius inside a larger one leaves the gap wider at the corner than along the edge, and a
+fully round container with a square-ish bubble clips it.
+
+**Four points between the bubbles, because a selection crossfades rather than slides.** For the
+length of the fade both are painted, and touching they read as one wide shape changing colour
+instead of two tabs swapping.
+
+**Every tab is as wide as the widest of them.** Not a `Row` with weights: a weight is a share of
+the total, so four equal weights hand each item the *average* width and the longest name is the one
+that gets squeezed — the single case the rule exists for. A small layout takes the maximum intrinsic
+width and gives it to all four instead, capped by the room there actually is, so a screen too narrow
+for the natural width shortens every tab a little rather than pushing the last one off the edge.
+
+The horizontal padding inside a bubble is four points rather than eight for the same reason: it only
+ever binds on *Programme*, since equal width already gives the short names more room than they ask
+for, and eight was enough to truncate that one on a 360dp screen. The bar measures **315dp** there
+and **317dp** on a 411dp screen, so the cap has not had to bite on either.
 
 **It clears the gesture bar itself.** A `NavigationBar` consumes that inset as part of being the
 bottom of the screen, and this is not the bottom of anything. The inset and the margin are measured

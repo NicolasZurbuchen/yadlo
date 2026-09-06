@@ -41,9 +41,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Constraints
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavBackStack
@@ -372,11 +376,9 @@ private fun MainNavigationBar(
             // with `val width = constraints.maxWidth`, so it can never wrap its content.
             //
             // One padding on all four sides, which is what puts the same gap beside the end bubbles
-            // as above and below them. The items butt against each other so that gap is the only
-            // one in the bar.
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(0.dp),
-                verticalAlignment = Alignment.CenterVertically,
+            // as above and below them.
+            EqualWidthRow(
+                gap = ITEM_GAP,
                 modifier = Modifier.selectableGroup().padding(BAR_PADDING),
             ) {
                 Tab.entries.forEach { tab ->
@@ -386,6 +388,48 @@ private fun MainNavigationBar(
                         onClick = { onTabClick(tab) },
                     )
                 }
+            }
+        }
+    }
+}
+
+/**
+ * Lays out its children in a row, every one as wide as the widest of them.
+ *
+ * A `Row` with a weight on each child cannot do this. A weight is a share of the row's total, so
+ * four equal weights give each child the *average* width — which squeezes the longest label, the
+ * one case the whole thing exists for.
+ */
+@Composable
+private fun EqualWidthRow(
+    gap: Dp,
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit,
+) {
+    Layout(content = content, modifier = modifier) { measurables, constraints ->
+        // Intrinsics rather than a first measuring pass: a Measurable may only be measured once,
+        // so the widest cannot be found by measuring everyone and then measuring them again.
+        val gaps = gap.roundToPx() * (measurables.size - 1).coerceAtLeast(0)
+        val widest = measurables.maxOf { it.maxIntrinsicWidth(constraints.maxHeight) }
+
+        // Capped by the room there actually is, so a narrow screen gives every tab a little less
+        // rather than pushing the last one off the edge.
+        val itemWidth =
+            if (constraints.hasBoundedWidth) {
+                widest.coerceAtMost((constraints.maxWidth - gaps) / measurables.size)
+            } else {
+                widest
+            }
+
+        val placeables = measurables.map { it.measure(Constraints.fixedWidth(itemWidth)) }
+        val width = itemWidth * placeables.size + gaps
+        val height = placeables.maxOf { it.height }
+
+        layout(width, height) {
+            var x = 0
+            placeables.forEach { placeable ->
+                placeable.placeRelative(x, (height - placeable.height) / 2)
+                x += placeable.width + gap.roundToPx()
             }
         }
     }
@@ -429,7 +473,9 @@ private fun TabItem(
                 .clip(CircleShape)
                 .background(bubble)
                 .selectable(selected = selected, role = Role.Tab, onClick = onClick)
-                .padding(horizontal = MaterialTheme.spacing.md, vertical = MaterialTheme.spacing.xs),
+                // Only ever binding on the longest name — equal width already gives the short ones
+                // more room than they ask for.
+                .padding(horizontal = MaterialTheme.spacing.xs, vertical = MaterialTheme.spacing.xs),
     ) {
         Icon(
             imageVector = if (selected) tab.selectedIcon else tab.unselectedIcon,
@@ -443,6 +489,7 @@ private fun TabItem(
             style = MaterialTheme.typography.labelMedium,
             color = ink,
             maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
         )
     }
 }
@@ -451,8 +498,12 @@ private fun TabItem(
 // inset, so it is clearance from the gesture bar rather than to it.
 private val BAR_MARGIN = 12.dp
 
-// The gap around the bubbles, on all four sides — see the Row above for why it is one number.
+// The gap around the bubbles, on all four sides — see the row above for why it is one number.
 private val BAR_PADDING = 8.dp
+
+// Enough that two bubbles never meet while one is fading out under the other, and not so much that
+// the four stop reading as one control.
+private val ITEM_GAP = 4.dp
 
 // Tighter than any step on the spacing scale, because the icon and the name are one label rather
 // than two stacked things.
