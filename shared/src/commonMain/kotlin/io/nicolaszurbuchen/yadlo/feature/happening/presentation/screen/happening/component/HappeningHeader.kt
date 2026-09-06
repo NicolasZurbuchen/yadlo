@@ -146,8 +146,7 @@ fun HappeningHeader(
                 Modifier
                     .align(Alignment.BottomCenter)
                     .fillMaxWidth()
-                    // Its flat part is the three points it always was; the wave hangs into the
-                    // page under it, the same way every bar in the app now ends.
+                    // DECISIONS.md § The chrome ends in a wave
                     .height(CATEGORY_RULE_HEIGHT + WAVE_DEPTH)
                     .waveEdgeBackground(category.fill),
         )

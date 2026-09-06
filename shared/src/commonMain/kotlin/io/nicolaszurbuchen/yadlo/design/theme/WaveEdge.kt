@@ -15,22 +15,14 @@ import androidx.compose.ui.unit.dp
 import kotlin.math.roundToInt
 
 /**
- * The app's one piece of decoration: everything blue ends in a wave instead of a straight line.
+ * A rectangle whose bottom edge is a wave — DECISIONS.md § The chrome ends in a wave.
  *
- * The lake is the whole festival — three days on a beach, under a mark that is a horizon over water
- * — so the edge where the chrome meets the page is the one place a straight line was doing no work.
- * It is drawn wherever the blue stops: the bottom of a top bar, of the Programme's chip block, of a
- * sticky day header, and of the rule under a fiche's photograph.
+ * [depth] is taken *out of* the height rather than added to it, so a caller pads by the same amount
+ * to keep the flat part the size it was.
  *
- * **The wave hangs below the bar rather than being cut out of it.** A trough carved upward would eat
- * into whatever the bar is holding at that x — a title's descenders, the last chip in a row — and by
- * a different amount along its length. Here the flat part is exactly what it always was and the wave
- * is added under it, so the only thing that changes is where the page begins.
- *
- * **A whole number of periods, always.** [wavelength] is a target rather than a measurement: the
- * shape divides the width by it, rounds to the nearest whole number of crests and stretches them to
- * fit. A wave cut off mid-period leaves one edge on a crest and the other on a trough, which on a
- * phone in landscape is the difference between an edge and a mistake.
+ * [wavelength] is a target rather than a measurement: the shape divides the width by it, rounds to
+ * a whole number of crests and stretches them to fit, because a wave cut off mid-period leaves one
+ * edge on a crest and the other in a trough.
  */
 data class WaveEdge(
     val depth: Dp = WAVE_DEPTH,
@@ -83,15 +75,10 @@ fun Modifier.waveEdgeBackground(
     depth: Dp = WAVE_DEPTH,
 ): Modifier = background(color = color, shape = WaveEdge(depth = depth))
 
-/**
- * Deep enough to read as a shape rather than as a printing fault, shallow enough that a title above
- * it is still on a bar. It is also what every caller pads by, so it is what the decoration costs in
- * vertical space on every screen.
- */
+// Deep enough to read as a shape rather than as a printing fault at arm's length in sunlight, and
+// what every caller pads by — so it is what the decoration costs on every screen.
 val WAVE_DEPTH = 12.dp
 
-/**
- * About four crests on a phone. Fewer reads as a scallop and starts competing with the content;
- * many more turn the edge into a texture that shimmers at small sizes.
- */
+// About four crests on a phone. Fewer reads as a scallop and competes with the content; many more
+// turn the edge into a texture that shimmers at small sizes.
 val WAVE_LENGTH = 96.dp

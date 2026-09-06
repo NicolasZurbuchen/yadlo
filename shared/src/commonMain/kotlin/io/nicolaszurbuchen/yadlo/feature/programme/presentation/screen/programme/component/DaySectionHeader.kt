@@ -49,8 +49,7 @@ fun DaySectionHeader(
         modifier =
             modifier
                 .fillMaxWidth()
-                // Blue, and the last of it before the rows — so the wave is here rather than on
-                // the chip block above, which defers to this one whenever a day header exists.
+                // DECISIONS.md § The chrome ends in a wave
                 .waveEdgeBackground(MaterialTheme.appColors.primarySubtle)
                 .padding(top = MaterialTheme.spacing.sm, bottom = MaterialTheme.spacing.xs + WAVE_DEPTH),
     ) {

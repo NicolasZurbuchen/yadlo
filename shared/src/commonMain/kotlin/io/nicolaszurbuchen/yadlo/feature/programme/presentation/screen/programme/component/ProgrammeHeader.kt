@@ -60,15 +60,9 @@ fun ProgrammeHeader(
     onCategoryClick: (String) -> Unit,
     onAllCategoriesClick: () -> Unit,
     modifier: Modifier = Modifier,
-    /**
-     * False under *Tous*, where a sticky [DaySectionHeader] sits directly under this block and is
-     * blue too. The chrome ends in a wave and can only end once: waving here as well would put a
-     * band of page colour between two blues.
-     */
     wavyEdge: Boolean = true,
 ) {
-    // The bottom of the chrome on this tab is here rather than on the bar above it — see
-    // Tab.continuesChrome — except under *Tous*, where the day header below takes it instead.
+    // DECISIONS.md § The chrome ends in a wave
     Column(
         modifier =
             modifier

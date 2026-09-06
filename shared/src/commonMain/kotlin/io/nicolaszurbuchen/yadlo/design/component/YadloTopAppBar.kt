@@ -71,6 +71,9 @@ import yadlo.shared.generated.resources.ic_yadlo
  * weighted against the mark so the two read as a single lockup rather than as a drawing with a
  * caption. See [wordmarkStyle], where both numbers are measured rather than picked. Everywhere else
  * the title names the screen, and stays the heading it has always been.
+ *
+ * [wavyEdge] is false on the two tab roots whose own chrome carries the wave instead — DECISIONS.md
+ * § The chrome ends in a wave.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -80,11 +83,6 @@ fun YadloTopAppBar(
     subtitle: String? = null,
     onBackClick: (() -> Unit)? = null,
     actions: @Composable RowScope.() -> Unit = {},
-    /**
-     * False on the two tab roots whose own chrome carries the wave instead — see
-     * [io.nicolaszurbuchen.yadlo.app.navigation.Tab.continuesChrome]. The chrome can only end
-     * once, and this bar is not where it ends on those two.
-     */
     wavyEdge: Boolean = true,
 ) {
     // The same condition the mark is drawn off, read once: a bar with no way back is a tab root,
@@ -93,8 +91,8 @@ fun YadloTopAppBar(
     // heading it has always been.
     val isTabRoot = onBackClick == null
 
-    // The wave is added under the bar rather than cut out of it, so the flat part is exactly
-    // what it always was and only the page below starts lower. See [WaveEdge].
+    // What the wave costs in height, and zero when there is none: the Spacer below is the whole
+    // of it, so the bar itself keeps the height Material gave it.
     val waveDepth = if (wavyEdge) WAVE_DEPTH else 0.dp
 
     Column(

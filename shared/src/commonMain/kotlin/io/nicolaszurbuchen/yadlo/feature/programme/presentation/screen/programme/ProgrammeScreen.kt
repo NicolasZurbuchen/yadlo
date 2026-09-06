@@ -64,8 +64,7 @@ fun ProgrammeScreen(
 
     Column(modifier = modifier.fillMaxSize().padding(top = chrome.top)) {
         ProgrammeHeader(
-            // A day header is blue and sticks directly under this block, so under *Tous* it is
-            // the bottom of the chrome and this is not.
+            // DECISIONS.md § The chrome ends in a wave
             wavyEdge = state.sections.none { it.header != null },
             scopes = state.scopes,
             categories = state.categories,

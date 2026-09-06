@@ -28,20 +28,15 @@ import yadlo.shared.generated.resources.tab_programme
  * This lives in `app/` rather than any feature because it is the one place that knows all four
  * exist. Declaration order *is* display order — the bar iterates the entries — so reordering this
  * enum reorders the app.
+ *
+ * [continuesChrome] is true for the two tabs that draw their own blue under the bar, which is
+ * what decides where the wave goes — DECISIONS.md § The chrome ends in a wave.
  */
 enum class Tab(
     val root: NavKey,
     val label: StringResource,
     val selectedIcon: ImageVector,
     val unselectedIcon: ImageVector,
-    /**
-     * Whether this tab draws more blue directly under the bar.
-     *
-     * The chrome ends in a wave, and it can only end once: a wave drawn where the bar meets
-     * another blue block would notch the page's colour into the middle of the chrome. So the
-     * two tabs that carry their own band — the chip rows and axis on Programme, the scale
-     * strip on Mon Yadlo — take a flat bar and put the wave at the bottom of the band instead.
-     */
     val continuesChrome: Boolean = false,
 ) {
     HOME(

@@ -70,7 +70,7 @@ fun MonYadloScreen(
                 modifier =
                     Modifier
                         .fillMaxWidth()
-                        // The bottom of the chrome on this tab — see Tab.continuesChrome.
+                        // DECISIONS.md § The chrome ends in a wave
                         .waveEdgeBackground(MaterialTheme.appColors.primarySubtle)
                         .padding(bottom = MaterialTheme.spacing.xs + WAVE_DEPTH),
             ) {

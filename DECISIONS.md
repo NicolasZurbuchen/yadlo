@@ -392,6 +392,16 @@ otherwise stop at an ATM.
 the site is small enough to see in 360° from the middle, so the map is a static zoomable
 plan, not an interactive tab.
 
+**Each tab keeps its own back stack.** One shared stack was the obvious thing and it fails twice.
+A fiche is reached from more than one place — the same Happening opens from the Programme and from
+Plus › Nourriture — and it has to return to whichever one opened it. And a shared stack puts tab
+roots on top of each other, so backing out of Plus lands on a fiche left behind in the Programme.
+
+**The dates come off the bar between editions.** *Yadlo · 10 – 12.07.2026* answers "which weekend
+is this?", and in OFF_SEASON there is no weekend to be on the way to yet. A date eight months out
+belongs next to the number of days that gives it a meaning, which is the countdown on Accueil, not
+under the festival's name on every screen. The name stays; only the dates go.
+
 **Programme layout: option B2.** One chronological list per day. No calendar column and no
 "now" line. Each row carries its state as a pill (`dans N min` / `en cours` / `se termine`)
 and, when live, a raised bar with a progress fill. Past rows dim.
@@ -1720,9 +1730,142 @@ with white ink in light (3.45:1 on the bar) and rose400 with near-black in dark 
 ends with the theme like every other pair in the file, and asserted in `AppColorTest` rather than
 left as prose.
 
+**The bar floats.** It sat on the bottom edge and owned a strip of the window; it now wraps its
+four tabs, centres, and lifts twelve points off all three edges, with the list running underneath.
+The blue is the one thing that had to survive the move — it is what makes the two bars one frame —
+so the ground became a shape rather than an edge.
+
+**~~The labels went with the band.~~ Reversed: they fit, and the first answer was estimated rather
+than measured.** The claim was that a pill wrapping its content cannot hold four French words, and
+it was wrong by a wide margin. *Accueil · Programme · Mon Yadlo · Plus* at `labelMedium` measure
+**325dp** — 79% of a 411dp screen, 91% of a 360dp one — which is a pill on both and a band on
+neither. An icon a sighted reader has to decode was the real cost, and it was being paid to save
+width that was never needed.
+
+**The bubble wraps the name as well as the icon**, which is the part Material does not offer: a
+`ShortNavigationBarItem` puts the indicator around the icon alone when the icon is on top, and
+around both only when it lays them out in a row. The item is written out here instead. Telegram’s
+bar is the reference, and this is the half of it that carries the meaning — the selected tab is a
+shape you can see from across a table rather than a tint you have to compare against its
+neighbours.
+
+**One padding sets the frame, and the two stadiums are concentric.** Eight points, on all four
+sides of the row, so the space beside the end bubbles is the space above and below them — the thing
+the eye actually checks. That only works because the bubble is a stadium inside a stadium: a smaller
+corner radius inside a larger one leaves the gap wider at the corner than along the edge, and a
+fully round container with a square-ish bubble clips it.
+
+**Four points between the bubbles, because a selection crossfades rather than slides.** For the
+length of the fade both are painted, and touching they read as one wide shape changing colour
+instead of two tabs swapping.
+
+**Every tab is as wide as the widest of them.** Not a `Row` with weights: a weight is a share of
+the total, so four equal weights hand each item the *average* width and the longest name is the one
+that gets squeezed — the single case the rule exists for. A small layout takes the maximum intrinsic
+width and gives it to all four instead, capped by the room there actually is, so a screen too narrow
+for the natural width shortens every tab a little rather than pushing the last one off the edge.
+
+**The tab reads *La Prog'*, and the long form is what broke it.** Equal width means every tab is as
+wide as the longest name, so *Programme* was setting all four — and it was still the one that would
+not quite fit. The short form is what anybody here calls it, and the width it gives back is what
+lets the bar survive a large system font: at 1.3x it measures 382dp of 411 with all four names
+whole, where the long form ran out. *Programme* stays the domain word, the tab it opens and the
+screen it lands on; only the label on the bar is short.
+
+**Every tab is also four points wider than the longest name needs, and that four is the first
+thing given up.** It is added by the layout rather than to the item's own padding, and the
+difference is the whole of it: padding sits *inside* the width a name asks for, so a cap that has to
+take something back takes it out of the name. Added on top, it is surrendered before the label is
+touched. Put in the padding first, and it truncated *Mon Yadlo* at a 1.3x system font — which is the
+case the breath was least needed and most expensive.
+
+The bar measures **333dp** on a 411dp screen, **336dp** on a 360dp one and **387dp** at 1.3x, every
+name whole in all three. The two larger figures are the cap doing its job: it takes the breath, and
+stops there.
+
+**It clears the gesture bar itself.** A `NavigationBar` consumes that inset as part of being the
+bottom of the screen, and this is not the bottom of anything. The inset and the margin are measured
+together with the pill, so the lists underneath still pad by exactly what the bar covers.
+
+**The one shadow in the app.** Nothing else here is raised. On the dark theme, where the pill and
+the page sit close in value, it is most of what says the bar is over the page rather than part of
+it.
+
 Everything not inside the pill takes the bar's own ink, selected and unselected alike, exactly as
 the top bar does with its title and its actions. The pill is the selection cue; a second one in the
 label would only be legible to somebody comparing two labels, which is not how a tab bar is read.
+
+### The chrome ends in a wave
+
+The lake is the whole festival — three days on a beach, under a mark that is a horizon over water
+— and the edge where the blue met the page was a straight line doing no work. It is a wave now,
+everywhere the blue stops: under a top bar, under the Programme’s chip block, under a sticky day
+header, and under the rule that separates a fiche’s photograph from its text.
+
+**It hangs below the bar rather than being cut out of it.** A trough carved upward would eat into
+whatever the bar is holding at that x — a title’s descenders, the last chip in a row — and by a
+different amount along its length. Added underneath, the flat part of every bar is exactly what it
+always was and the only thing that changes is where the page begins: twelve points lower.
+
+**It can only end once, which is the whole of the complexity.** Two blue blocks meeting with a wave
+between them puts a band of page colour in the middle of the chrome, and the app stacks blue on
+blue in three places. So the bar asks whether the tab draws more of it — `Tab.continuesChrome`,
+true for Programme and Mon Yadlo — and the Programme’s chip block asks the same question of the day
+header, which under *Tous* sticks directly beneath it. Each screen has exactly one wave, at the
+bottom of whichever blue is last.
+
+**Twelve points, and a whole number of periods.** Six read as a printing fault at arm’s length in
+sunlight, which is the only place this has to work. The wavelength is a target rather than a
+measurement: the shape divides the width by it and stretches the crests to fit, because a wave cut
+off mid-period leaves one edge on a crest and the other in a trough.
+
+### One transition, spelled out once
+
+**A push slides the new screen in from the right; going back slides it out the same way.** The
+oldest convention there is, and the only one a visitor does not have to learn: the thing that just
+arrived is to the right of the thing it came from, so the way back is to push it there again.
+
+**Written down rather than left to the default, because there is no single default.** Navigation 3
+ships a different one per platform — Android fades the outgoing screen and shrinks it towards the
+centre, iOS slides it — so the same push is two different apps depending on which build you are
+holding. Spelling it out in `NavGraph` also keeps a screen from acquiring an animation of its own
+as a side effect of where its entry happens to be declared.
+
+**Depth comes from the right; a sibling comes from the side it is on.** A push is one direction
+because it is one relation — the fiche is *under* the card that opened it, and under is to the
+right. The four tab roots are not under anything and not under each other: they are peers laid out
+in a row, and the row is on screen, at the bottom, being pointed at. Always-from-the-right made
+crossing that row read as descending into something, four times, in whichever order you happened
+to tap. Now Plus arrives from the right of Mon Yadlo and Accueil from the left of it, the way pages
+of a pager do, and the bars stay still while the page passes between them.
+
+Only the forward direction is steerable, and the caller is what steers it — the display is handed a
+side, not a concept of tabs. Going back needs no such decision: a stack whose first entry changed
+is a replacement rather than a pop, which is exactly why swapping tabs reaches the forward spec and
+a pop never carries a lateral direction into a screen it did not come from.
+
+**The bars make the same journey as the page.** They used to slide up and down out of the frame as
+a fiche opened — a third element travelling in a second direction across the same 300 ms, which the
+eye could not follow. They go sideways now, on the display's own duration: out to the left as the
+tab root goes, back in from the left as it returns. They are drawn above the display rather than
+inside it, so nothing carries them and they have to be told; a frame or a pixel out and the bandeau
+visibly detaches from the page it caps. A tab switch keeps both roots, so neither bar moves and only
+the page between them travels.
+
+**The back gesture is a button press.** Navigation 3 reports the swipe's progress and seeks the pop
+animation to it, so a half-finished swipe parks the two screens half way across the window and a
+release finishes from wherever the thumb stopped. Nothing moves under the finger here: the display
+is handed a gesture state that nothing drives, so a release runs the pop from its start like any
+other back. The cost is the whole point of predictive back — you cannot see how far you have got, or
+peek at what is behind — and it buys an animation that is the same length and the same shape every
+time, which is the thing the app is being judged on at this size.
+
+**Deferred: the photograph travelling from the card to the fiche.** Built and rejected on the way
+it looked, not on whether it worked. A shared element is drawn in an overlay above both screens,
+so it visibly detaches — one picture flying over two screens doing something unrelated underneath
+— and taking it out of the overlay put it behind the title and the chevron that sit on top of it.
+Each fix moved the seam rather than closing it. It wants a pass of its own, with the fiche head
+and the card designed against each other rather than joined afterwards.
 
 ### A stand card says *Options*, not the coverage
 
@@ -1748,29 +1891,20 @@ now dims with its time, at the same value, and only while the row itself is not 
 row whose every hour is past dims as a whole, and dimming again inside it would take the bar to 20%
 and out of the day it exists to describe.
 
-### The chrome ends in a wave
+### The networks close every phase
 
-The lake is the whole festival — three days on a beach, under a mark that is a horizon over water
-— and the edge where the blue met the page was a straight line doing no work. It is a wave now,
-everywhere the blue stops: under a top bar, under the Programme’s chip block, under a sticky day
-header, and under the rule that separates a fiche’s photograph from its text.
+APPROACHING used to be the one phase without the social row. The argument was that it is the only
+moment Accueil has an errand — the payment rule and *comment venir*, three days out — and that a
+screen with something to do should not end by offering a way off the app.
 
-**It hangs below the bar rather than being cut out of it.** A trough carved upward would eat into
-whatever the bar is holding at that x — a title’s descenders, the last chip in a row — and by a
-different amount along its length. Added underneath, the flat part of every bar is exactly what it
-always was and the only thing that changes is where the page begins: twelve points lower.
+Reversed. The row is last on the stack in every phase it appears in, which is not where anyone
+holding an errand is looking; what the omission actually produced was a stack that ends differently
+on one screen out of five, and a difference that small reads as something missing rather than as
+restraint. The networks are also the one block that is *more* useful in the days before the gates
+open, because that is when the association is posting.
 
-**It can only end once, which is the whole of the complexity.** Two blue blocks meeting with a wave
-between them puts a band of page colour in the middle of the chrome, and the app stacks blue on
-blue in three places. So the bar asks whether the tab draws more of it — `Tab.continuesChrome`,
-true for Programme and Mon Yadlo — and the Programme’s chip block asks the same question of the day
-header, which under *Tous* sticks directly beneath it. Each screen has exactly one wave, at the
-bottom of whichever blue is last.
-
-**Twelve points, and a whole number of periods.** Six read as a printing fault at arm’s length in
-sunlight, which is the only place this has to work. The wavelength is a target rather than a
-measurement: the shape divides the width by it and stretches the crests to fit, because a wave cut
-off mid-period leaves one edge on a crest and the other in a trough.
+The ordering that carries this phase is untouched and is the real difference between it and the two
+long ones: quick access over the annonces, because at J-3 the errand is the news.
 
 ## Open
 
