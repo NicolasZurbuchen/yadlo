@@ -779,6 +779,18 @@ class PresentationLayerTest {
      *
      * Imports cannot catch this: the offending types sat in the same package as the Contract that
      * used them, so there was nothing to import. It is checked on declared types instead.
+     *
+     * **It forbids rendering models, not UI state, and the difference is who the type is for.** A
+     * Store may hold state that has no domain behind it — which of five chips is selected is a real
+     * thing to remember and the festival has no opinion about it. What it may not hold is the type a
+     * Composable is handed. On the Programme those are two types and the split is visible:
+     * `ScopeChipUiModel` is a label and a selected flag, drawn, and stays out of the Contract;
+     * `ProgrammeScopeState` is which scope is chosen, and belongs to the Store like every other
+     * field of its State. See #63, which is where that was argued out.
+     *
+     * The check is the `UiModel` suffix, so it is a naming convention with a tripwire on it rather
+     * than a proof — renaming a type past it is possible, and was in fact how the Programme first
+     * went green. That is only a dodge when the new name is a lie; here it was the correction.
      */
     @Test
     fun `Contract files must not use UiModel types`() {
