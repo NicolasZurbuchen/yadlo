@@ -392,6 +392,16 @@ otherwise stop at an ATM.
 the site is small enough to see in 360° from the middle, so the map is a static zoomable
 plan, not an interactive tab.
 
+**Each tab keeps its own back stack.** One shared stack was the obvious thing and it fails twice.
+A fiche is reached from more than one place — the same Happening opens from the Programme and from
+Plus › Nourriture — and it has to return to whichever one opened it. And a shared stack puts tab
+roots on top of each other, so backing out of Plus lands on a fiche left behind in the Programme.
+
+**The dates come off the bar between editions.** *Yadlo · 10 – 12.07.2026* answers "which weekend
+is this?", and in OFF_SEASON there is no weekend to be on the way to yet. A date eight months out
+belongs next to the number of days that gives it a meaning, which is the countdown on Accueil, not
+under the festival's name on every screen. The name stays; only the dates go.
+
 **Programme layout: option B2.** One chronological list per day. No calendar column and no
 "now" line. Each row carries its state as a pill (`dans N min` / `en cours` / `se termine`)
 and, when live, a raised bar with a progress fill. Past rows dim.
