@@ -16,6 +16,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -52,6 +53,7 @@ import kotlinx.datetime.atTime
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 import org.koin.compose.koinInject
+import kotlin.math.roundToInt
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.hours
@@ -101,9 +103,13 @@ fun TimeTravelPanel(modifier: Modifier = Modifier) {
     val readingLocal = reading.toLocalDateTime(FESTIVAL_TIME_ZONE)
     val label = "${reading.formatAsShortDate(FESTIVAL_TIME_ZONE)} ${reading.formatAsTimeOfDay(FESTIVAL_TIME_ZONE)}"
 
-    var dateField by remember(isExpanded) { mutableStateOf(readingLocal.date.toString()) }
+    // Re-seeded whenever the clock is moved, so the fields say what the reading above says and Go
+    // cannot send you back to wherever the panel was opened. Keyed on the simulated instant rather
+    // than on the reading: in live mode that ticks every recomposition and would eat what is typed,
+    // and in simulated mode it only changes when something else here has already moved the clock.
+    var dateField by remember(isExpanded, simulated) { mutableStateOf(readingLocal.date.toString()) }
     var timeField by
-        remember(isExpanded) {
+        remember(isExpanded, simulated) {
             mutableStateOf("${readingLocal.hour.toString().padStart(2, '0')}:${readingLocal.minute.toString().padStart(2, '0')}")
         }
 
@@ -163,6 +169,45 @@ fun TimeTravelPanel(modifier: Modifier = Modifier) {
                 style = MaterialTheme.typography.displayMedium,
                 color = MaterialTheme.appColors.primary,
             )
+
+            // **A whole day in one gesture, which is the axis nearly every state turns on.** The
+            // fields below set a date and the nudges step a known amount; neither answers "what
+            // does this screen look like across an evening", which is one drag.
+            //
+            // Held locally while the thumb is down. The value it writes comes back through the
+            // clock and out of `reading`, so reading the position straight off that would let a
+            // round trip fight the finger.
+            var scrubbed by remember(isExpanded) { mutableStateOf<Float?>(null) }
+
+            Slider(
+                value = scrubbed ?: (readingLocal.hour * MINUTES_PER_HOUR + readingLocal.minute).toFloat(),
+                onValueChange = { minutes ->
+                    scrubbed = minutes
+
+                    val ofDay = minutes.roundToInt()
+                    val time = LocalTime(hour = ofDay / MINUTES_PER_HOUR, minute = ofDay % MINUTES_PER_HOUR)
+                    clock.simulateAt(readingLocal.date.atTime(time).toInstant(FESTIVAL_TIME_ZONE))
+                },
+                onValueChangeFinished = { scrubbed = null },
+                valueRange = 0f..(MINUTES_PER_DAY - SLIDER_STEP).toFloat(),
+                // Konsist counts the ends; Material counts the stops between them.
+                steps = MINUTES_PER_DAY / SLIDER_STEP - 2,
+            )
+
+            // A thumb with no scale under it is a guess. Quarters of the day are enough to aim by,
+            // and the reading above says exactly where it landed.
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                HOUR_MARKS.forEach { mark ->
+                    Text(
+                        text = mark,
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.appColors.textSecondary,
+                    )
+                }
+            }
 
             Row(horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm)) {
                 OutlinedTextField(
@@ -324,6 +369,15 @@ private val NUDGES: List<Pair<String, Duration>> =
 // Clears the floating tab bar, which is taller than the band it replaced and grows again with the
 // system font. Measured at 1.3x, where the bar's top edge is 115dp off the bottom of the window.
 private val COLLAPSED_BOTTOM_INSET = 128.dp
+
+// Five minutes rather than the fifteen the nudges step: the windows worth landing inside are
+// twenty minutes wide (ENDING) and sixty (COUNTDOWN), and a step that cannot stop inside the
+// smaller of them is a slider that cannot reach the states it exists to reach.
+private const val SLIDER_STEP = 5
+private const val MINUTES_PER_HOUR = 60
+private const val MINUTES_PER_DAY = 24 * MINUTES_PER_HOUR
+
+private val HOUR_MARKS = listOf("00:00", "06:00", "12:00", "18:00", "24:00")
 
 private const val DATE_FIELD_WEIGHT = 1.4f
 private const val TIME_FIELD_WEIGHT = 1f
