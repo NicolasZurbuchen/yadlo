@@ -1795,6 +1795,34 @@ Everything not inside the pill takes the bar's own ink, selected and unselected 
 the top bar does with its title and its actions. The pill is the selection cue; a second one in the
 label would only be legible to somebody comparing two labels, which is not how a tab bar is read.
 
+### The chrome does not end in a wave
+
+Built, looked at, and dropped. The idea was that the lake is the whole festival, so the edge where
+the blue stops should be a wave rather than a straight line — under the top bar, under the
+Programme’s chip block, under a sticky day header, and under the rule that closes a fiche’s
+photograph. It is recorded here because it is a tempting idea that will occur to somebody again.
+
+**It read as less than it promised.** A wave is a shape you notice once and then have to keep
+looking at on every screen, and what it bought was not worth what it cost the chrome’s quietness.
+
+**It has to end exactly once per screen, and the app stacks blue on blue in three places.** That
+put a `continuesChrome` flag on `Tab`, a `wavyEdge` parameter on the shared bar, and a conditional
+in three more components — so which of five things drew the wave depended on the tab, the scope
+chip and whether a day header existed. Every one of those is a place for two blues to meet with a
+band of page colour between them, and the only way to know was to look.
+
+**A 3dp rule cannot carry a 12dp wave.** On the fiche the rule is bottom-aligned over the
+photograph, so a wave deep enough to read at arm’s length cut into the picture and across the
+title. No depth fixes it: any symmetric wave on an overlay eats the image, and hanging it below
+instead costs vertical space on the one screen that has none to give.
+
+**And the chrome now moves.** The bars travel sideways with the page — § One transition, spelled
+out once — so the wave is a shape in motion on every push, pop and tab switch, which is where the
+remaining problems were. Solving them is a project rather than a detail.
+
+What would have to be true to revisit it: a wave that belongs to the *page* rather than to each
+bar, so there is one of them by construction instead of five that have to agree.
+
 ### One transition, spelled out once
 
 **A push slides the new screen in from the right; going back slides it out the same way.** The
