@@ -60,11 +60,13 @@ ended).
 
 ## 🖼️ Showcase
 
-<img src="assets/yadlo-accueil.jpg" width="150">  <img src="assets/yadlo-programme.jpg" width="150">  <img src="assets/yadlo-mon-yadlo.jpg" width="150">  <img src="assets/yadlo-fiche.jpg" width="150">  <img src="assets/yadlo-stands.jpg" width="150">  <img src="assets/yadlo-menu.jpg" width="150">
+<img src="assets/yadlo-accueil.jpeg" width="150">  <img src="assets/yadlo-programme.jpeg" width="150">  <img src="assets/yadlo-mon-yadlo.jpeg" width="150">  <img src="assets/yadlo-plus.jpeg" width="150">  <img src="assets/yadlo-search.jpeg" width="150">  <img src="assets/yadlo-fiche.jpeg" width="150">  <img src="assets/yadlo-stands.jpeg" width="150">  <img src="assets/yadlo-menu.jpeg" width="150">  <img src="assets/yadlo-paiement.jpeg" width="150">  <img src="assets/yadlo-notification.jpeg" width="150">
 
 *Accueil during LIVE · the Programme opened on the day you are standing in, with every live state
-written out · a saved plan on the rail · an activity fiche and its three dates, one of them saved ·
-the stands grid with its dietary filters · a menu with prices and per-dish marks.*
+written out · a saved plan on the rail · everything practical under Plus · one search across the
+programme, the stands and the practical pages at once · an activity fiche and its three dates, one
+of them saved · the stands grid with its dietary filters · a menu with prices and per-dish marks ·
+what the site takes and what it does not · the reminders a saved Slot schedules.*
 
 ---
 
